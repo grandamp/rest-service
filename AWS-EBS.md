@@ -20,3 +20,9 @@ eb status
 ```
 eb scale 2
 ```
+
+## TLS & Default Deploy Security Considerations
+
+Deploying to Elasic Beanstalk according to the steps above will default to HTTP without TLS.
+
+Rather than altering the Elastic Load Balancer with a custom domain and certificate, I opted to use the AWS API Gateway with a custom domiain.
