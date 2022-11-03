@@ -29,7 +29,7 @@ I deploy the updated .war to a basic AWS Elastic Beanstalk environment, then exe
 - Elastic Beanstalk Deployment
 
 $ `eb status api-keysupport-rest-dev`
-'''
+```
 Environment details for: api-keysupport-rest-dev
   Application name: api-keysupport-rest
   Region: us-east-1
@@ -41,10 +41,10 @@ Environment details for: api-keysupport-rest-dev
   Updated: 2022-11-02 19:42:10.042000+00:00
   Status: Ready
   Health: Green
-'''
+```
   
 $ `eb deploy api-keysupport-rest-dev`
-'''
+```
 Uploading: [##################################################] 100% Done...
 2022-11-03 16:04:14    INFO    Environment update is starting.      
 2022-11-03 16:04:20    INFO    Deploying new version to instance(s).
@@ -70,11 +70,11 @@ Uploading: [##################################################] 100% Done...
 2022-11-03 16:10:00    INFO    Batch 2: Completed application deployment.
 2022-11-03 16:10:05    INFO    New application version was deployed to running EC2 instances.
 2022-11-03 16:10:05    INFO    Environment update completed successfully.
-'''
+```
                                                                       
 $ `eb status api-keysupport-rest-dev`
-'''
-Environment details for: api-keysupport-rest-dev
+```
+  Environment details for: api-keysupport-rest-dev
   Application name: api-keysupport-rest
   Region: us-east-1
   Deployed Version: app-fac7-221103_120410954843
@@ -85,7 +85,7 @@ Environment details for: api-keysupport-rest-dev
   Updated: 2022-11-03 16:10:05.703000+00:00
   Status: Ready
   Health: Green
-'''
+```
 
 - State TAPTest (revoked)
 
