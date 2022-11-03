@@ -9,6 +9,10 @@ A WIP to replace the Treasury SCVP service
 
 - See [AWS Elastic Beanstalk](/AWS-EBS.md)
 
+## Current API Documentation
+
+- See [Swagger-UI](https://api.keysupport.org/swagger-ui/index.html)
+
 ## How to Contribute
 The source repository exists [here](https://github.com/grandamp/rest-service).
 
