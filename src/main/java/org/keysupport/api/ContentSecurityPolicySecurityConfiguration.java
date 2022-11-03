@@ -25,7 +25,10 @@ public class ContentSecurityPolicySecurityConfiguration {
     	long maxAge = 2592000;
     	reportTo.maxAge = maxAge;
     	Endpoint self = new Endpoint();
-    	self.url = "http://api-keysupport-rest-dev.us-east-1.elasticbeanstalk.com/report";
+    	/*
+    	 * TODO:  Add the service URL to application properties
+    	 */
+    	self.url = "http://api.keysupport.org/report";
     	List<Endpoint> endpoints = new ArrayList<Endpoint>();
     	endpoints.add(self);
     	reportTo.endpoints = endpoints;

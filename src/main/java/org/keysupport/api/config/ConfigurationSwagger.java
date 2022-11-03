@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
 
 /*
  * SpringDoc Docs:  https://springdoc.org/
@@ -15,6 +16,10 @@ public class ConfigurationSwagger {
     @Bean
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
+            	/*
+            	 * TODO:  Add the service URL to application properties
+            	 */
+        		.addServersItem(new Server().url("https://api.keysupport.org"))
                 .info(new Info().title("Certificate Validation Service API")
                 .description("Spring Boot reference implementation of the API")
                 .version("v0.0.1")
