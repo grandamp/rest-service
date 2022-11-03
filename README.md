@@ -1,6 +1,14 @@
 # rest-service
 A WIP to replace the Treasury SCVP service
 
+## Building and Testing
+
+- See [Testing](/TESTING.md)
+
+## Deploying to AWS Elasitic Beanstalk
+
+- See [AWS Elastic Beanstalk](/AWS-EBS.md)
+
 ## How to Contribute
 The source repository exists [here](https://github.com/grandamp/rest-service).
 
