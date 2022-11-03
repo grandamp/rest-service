@@ -5,17 +5,13 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.jose4j.base64url.internal.apache.commons.codec.binary.Base64;
 import org.keysupport.api.config.ConfigurationPolicies;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.ValidatePKIX;
-import org.keysupport.api.pkix.X509Util;
+import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssRequest;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.slf4j.Logger;
@@ -118,61 +114,10 @@ public class ValidateController {
 			throw new ServiceException("Error decoding x509Certificate");
 		}
 		/*
-		 * TODO:  The section of code below will be migrated to a validation class
+		 * Validate and return the result
 		 */
-		VssResponse response = new VssResponse();
-		/*
-		 * When decoding the certificate contents, don't always assume that the
-		 * fields will be non-NULL. For example, cardAuth certs MAY have a NULL
-		 * subject name.
-		 */
-		if (null != clientCert.getSubjectDN()) {
-			response.x509SubjectName = clientCert.getSubjectDN().toString();
-		}
-		if (null != clientCert.getIssuerDN()) {
-			response.x509IssuerName = clientCert.getIssuerDN().toString();
-		}
-		if (null != clientCert.getSerialNumber()) {
-			response.x509SerialNumber = clientCert.getSerialNumber().toString();
-		}
-		/*
-		 * Get subjectAltName values, swallow the exception as far as the
-		 * consumer is concerned, but log it.
-		 */
-		try {
-			response.x509SubjectAltName = X509Util.getSubjectAlternativeNames(clientCert);
-		} catch (IOException e) {
-			LOG.error("Error parsing Certificate SAN.", e);
-		}
-		/*
-		 * Set validationTime and nextUpdate in the response
-		 *
-		 * Date Format now conforms to ISO 8601:
-		 *
-		 * http://xkcd.com/1179/
-		 */
-		Date now = new Date();
-		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-		dFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-		response.validationTime = dFormat.format(now);
-		/*
-		 * TODO: nextUpdate will be based on CRL, for now we will calculate a date that is one hour from now.
-		 */
-	    Calendar calendar = Calendar.getInstance();
-	    calendar.setTime(now);
-	    calendar.add(Calendar.HOUR_OF_DAY, 1);
-	    response.nextUpdate = dFormat.format(calendar.getTime());
-	    /*
-	     * Add x5t#S256
-	     */
-	    response.x5tS256 = X509Util.x5tS256(clientCert);
-		/*
-		 * TODO:  The section of code above will be migrated to a validation class
-		 */
-		/*
-		 * Return the result
-		 */
-	    response = ValidatePKIX.validate(response, clientCert, ConfigurationPolicies.getValidationPolicies().validationPolicies.get(0));
+	    ValidationPolicy valPol = ConfigurationPolicies.getPolicy(oid.toString());
+	    VssResponse response = ValidatePKIX.validate(clientCert, valPol, request.wantBackList);
 		try {
 			String output = mapper.writeValueAsString(response);
 			LOG.info("{\"ValidationResponse\":" + output + "}");
@@ -183,7 +128,7 @@ public class ValidateController {
 		} catch (IOException e) {
 			LOG.error("Error converting POJO to JSON", e);
 		}
-		return new ResponseEntity<VssResponse>(response, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}
 

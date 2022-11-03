@@ -1,6 +1,7 @@
 package org.keysupport.api.pkix;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -27,10 +28,14 @@ import java.security.cert.PKIXCertPathValidatorResult;
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.jose4j.base64url.internal.apache.commons.codec.binary.Base64;
 import org.keysupport.api.RestServiceEventLogger;
@@ -43,6 +48,7 @@ import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.ValidationSuccessData;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.keysupport.api.pojo.vss.WantBack;
+import org.keysupport.api.pojo.vss.WantBackTypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,8 +62,53 @@ public class ValidatePKIX {
 
 	private final static Logger LOG = LoggerFactory.getLogger(ValidatePKIX.class);
 
-	public static VssResponse validate(VssResponse vssResponse, X509Certificate cert, ValidationPolicy valPol) {
-
+	public static VssResponse validate(X509Certificate cert, ValidationPolicy valPol, List<WantBackTypeToken> wantBackList) {
+		VssResponse response = new VssResponse();
+		/*
+		 * When decoding the certificate contents, don't always assume that the
+		 * fields will be non-NULL. For example, cardAuth certs MAY have a NULL
+		 * subject name.
+		 */
+		if (null != cert.getSubjectDN()) {
+			response.x509SubjectName = cert.getSubjectDN().toString();
+		}
+		if (null != cert.getIssuerDN()) {
+			response.x509IssuerName = cert.getIssuerDN().toString();
+		}
+		if (null != cert.getSerialNumber()) {
+			response.x509SerialNumber = cert.getSerialNumber().toString();
+		}
+		/*
+		 * Get subjectAltName values, swallow the exception as far as the
+		 * consumer is concerned, but log it.
+		 */
+		try {
+			response.x509SubjectAltName = X509Util.getSubjectAlternativeNames(cert);
+		} catch (IOException e) {
+			LOG.error("Error parsing Certificate SAN.", e);
+		}
+		/*
+		 * Set validationTime and nextUpdate in the response
+		 *
+		 * Date Format now conforms to ISO 8601:
+		 *
+		 * http://xkcd.com/1179/
+		 */
+		Date now = new Date();
+		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		dFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		response.validationTime = dFormat.format(now);
+		/*
+		 * TODO: nextUpdate will be based on CRL, for now we will calculate a date that is one hour from now.
+		 */
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(now);
+	    calendar.add(Calendar.HOUR_OF_DAY, 1);
+	    response.nextUpdate = dFormat.format(calendar.getTime());
+	    /*
+	     * Add x5t#S256
+	     */
+	    response.x5tS256 = X509Util.x5tS256(cert);
 		/**
 		 * <pre>
 		 * Set System and Security properties to make the Sun provider: - Fetch CRLs via
@@ -84,7 +135,7 @@ public class ValidatePKIX {
 		try {
 			cert.checkValidity();
 		} catch (CertificateExpiredException e) { 
-			RestServiceEventLogger.logEvent(vssResponse, e);
+			RestServiceEventLogger.logEvent(response, e);
 			ValidationFailureData vfd = new ValidationFailureData();
 			vfd.isAffirmativelyInvalid = true;
 			List<InvalidityReason> invalidityReasonList = new ArrayList<InvalidityReason>();
@@ -93,10 +144,10 @@ public class ValidatePKIX {
 			iReason.invalidityReasonText = e.getMessage();
 			invalidityReasonList.add(iReason);
 			vfd.invalidityReasonList = invalidityReasonList;
-			vssResponse.validationFailureData = vfd;
-			return vssResponse;
+			response.validationFailureData = vfd;
+			return response;
 		} catch (CertificateNotYetValidException e) {
-			RestServiceEventLogger.logEvent(vssResponse, e);
+			RestServiceEventLogger.logEvent(response, e);
 			ValidationFailureData vfd = new ValidationFailureData();
 			vfd.isAffirmativelyInvalid = true;
 			List<InvalidityReason> invalidityReasonList = new ArrayList<InvalidityReason>();
@@ -105,8 +156,8 @@ public class ValidatePKIX {
 			iReason.invalidityReasonText = e.getMessage();
 			invalidityReasonList.add(iReason);
 			vfd.invalidityReasonList = invalidityReasonList;
-			vssResponse.validationFailureData = vfd;
-			return vssResponse;
+			response.validationFailureData = vfd;
+			return response;
 		}
 		/*
 		 * Before we dive into RFC5280, we should perform a minimum algorithm/keySize check. 
@@ -213,7 +264,7 @@ public class ValidatePKIX {
 		} catch (InvalidAlgorithmParameterException e) {
 			LOG.error("Error with CertPathBuilder", e);
 		} catch (CertPathBuilderException e) {
-			RestServiceEventLogger.logEvent(vssResponse, e);
+			RestServiceEventLogger.logEvent(response, e);
 			/*
 			 * Construct and return validation response.
 			 * 
@@ -230,8 +281,8 @@ public class ValidatePKIX {
 			iReason.invalidityReasonText = e.getCause().getMessage();
 			invalidityReasonList.add(iReason);
 			vfd.invalidityReasonList = invalidityReasonList;
-			vssResponse.validationFailureData = vfd;
-			return vssResponse;
+			response.validationFailureData = vfd;
+			return response;
 		}
 		CertPath cp = result.getCertPath();
 		/*
@@ -248,7 +299,7 @@ public class ValidatePKIX {
 		try {
 			pvr = (PKIXCertPathValidatorResult) cpv.validate(cp, params);
 		} catch (CertPathValidatorException e) {
-			RestServiceEventLogger.logEvent(vssResponse, e);
+			RestServiceEventLogger.logEvent(response, e);
 			ValidationFailureData vfd = new ValidationFailureData();
 			vfd.isAffirmativelyInvalid = true;
 			List<InvalidityReason> invalidityReasonList = new ArrayList<InvalidityReason>();
@@ -257,8 +308,8 @@ public class ValidatePKIX {
 			iReason.invalidityReasonText = e.getMessage();
 			invalidityReasonList.add(iReason);
 			vfd.invalidityReasonList = invalidityReasonList;
-			vssResponse.validationFailureData = vfd;
-			return vssResponse;
+			response.validationFailureData = vfd;
+			return response;
 		} catch (InvalidAlgorithmParameterException e) {
 			LOG.error("Internal Validation Error", e);
 			throw new ServiceException("Internal Validation Error");
@@ -281,7 +332,7 @@ public class ValidatePKIX {
 		 * 
 		 * TODO: For now, add the certpath even if the client didn't request it.
 		 */
-		vssResponse.validationResultToken = "SUCCESS";
+		response.validationResultToken = "SUCCESS";
 		ValidationSuccessData vsd = new ValidationSuccessData();
 		List<JsonX509Certificate> x509CertificateList = new ArrayList<JsonX509Certificate>();
 		for (Certificate currentCert : cp.getCertificates()) {
@@ -301,7 +352,7 @@ public class ValidatePKIX {
 		List<WantBack> wbList = new ArrayList<WantBack>();
 		wbList.add(wb);
 		vsd.wantBackResultList = wbList;
-		vssResponse.validationSuccessData = vsd;
-		return vssResponse;
+		response.validationSuccessData = vsd;
+		return response;
 	}
 }

@@ -87,4 +87,11 @@ public class ConfigurationPolicies {
 		return validationPolicies;
 
 	}
+
+	public static ValidationPolicy getPolicy(String string) {
+		/*
+		 * TODO: Return requested policy, for now, we will return `Default policy Prod and Cite`
+		 */
+		return ConfigurationPolicies.getValidationPolicies().validationPolicies.get(0);
+	}
 }
