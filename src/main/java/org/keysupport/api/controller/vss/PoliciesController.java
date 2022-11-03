@@ -18,7 +18,6 @@ public class PoliciesController {
 	@GetMapping(path = "/vss/v2/policies", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<ValidationPolicies> policies() {
 		return new ResponseEntity<>(ConfigurationPolicies.getValidationPolicies(), HttpStatus.OK);
-		
 	}
 
 }

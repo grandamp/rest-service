@@ -18,7 +18,6 @@ public class TrustAnchorsController {
 
 	@GetMapping(path = "/vss/v2/trustanchors", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<TrustAnchors> trustAnchors() {
-
 		return new ResponseEntity<>(ConfigurationTrustAnchors.getTrustAnchors(), HttpStatus.OK);
 	}
 
