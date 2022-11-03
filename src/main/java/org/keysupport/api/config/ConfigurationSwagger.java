@@ -3,24 +3,25 @@ package org.keysupport.api.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 
 /*
- * SpringFox Docs:  https://springfox.github.io/springfox/docs/current/
- *
- * TODO:  See if we should use SpringDoc instead:  https://springdoc.org/migrating-from-springfox.html
+ * SpringDoc Docs:  https://springdoc.org/
  */
 @Configuration
-public class ConfigurationSwagger {
+public class ConfigurationSwagger {    
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-          .select()
-          .apis(RequestHandlerSelectors.any())
-          .paths(PathSelectors.any())
-          .build();
+    public OpenAPI springShopOpenAPI() {
+        return new OpenAPI()
+                .info(new Info().title("Certificate Validation Service API")
+                .description("Spring Boot reference implementation of the API")
+                .version("v0.0.1")
+                .license(new License()
+                		.name("CC0 1.0 Universal")
+                		.url("https://creativecommons.org/publicdomain/zero/1.0/")
+                		)
+                );
     }
 }
