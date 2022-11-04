@@ -13,7 +13,7 @@ public class SwaggerRedirectController {
 	
 	@RequestMapping("/")
     public RedirectView handleRoot() {
-        return new RedirectView("/swagger-ui/index.html");
+        return new RedirectView("https://api.keysupport.org/swagger-ui/index.html");
     }
 
 }
