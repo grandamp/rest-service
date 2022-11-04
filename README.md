@@ -1,5 +1,5 @@
 # rest-service
-A WIP to replace the Treasury SCVP service
+A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-testing/blob/master/utilities/vss2/README.md), with something more modern.
 
 ## Building and Testing
 
