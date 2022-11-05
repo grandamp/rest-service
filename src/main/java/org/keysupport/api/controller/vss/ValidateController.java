@@ -5,12 +5,15 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.jose4j.base64url.internal.apache.commons.codec.binary.Base64;
 import org.keysupport.api.config.ConfigurationPolicies;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.ValidatePKIX;
+import org.keysupport.api.pkix.X509Util;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssRequest;
 import org.keysupport.api.pojo.vss.VssResponse;
@@ -21,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -43,27 +47,22 @@ public class ValidateController {
 	private final int PEM_SIZE_LIMIT = 8192;
 
 	@PostMapping(path = "/vss/v2/validate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<VssResponse> validate(@RequestBody VssRequest request) {
+	ResponseEntity<VssResponse> validate(@RequestBody VssRequest request, @RequestHeader Map<String, String> headers) {
 
 		ObjectMapper mapper = new ObjectMapper();
 		ASN1ObjectIdentifier oid = null;
 		X509Certificate clientCert = null;
-		CertificateFactory cf;
-		ByteArrayInputStream bais;
+		CertificateFactory cf = null;
+		ByteArrayInputStream bais = null;
+		;
+		String x5tS256 = null;
 
 		/*
-		 * First, lets log the request.
+		 * First, lets validate the request.
+		 * 
+		 * TODO: Any errors should be logged, along with all client headers, via
+		 * LOG.error(...)
 		 */
-		try {
-			String output = mapper.writeValueAsString(request);
-			LOG.info("{\"ValidationRequest\":" + output + "}");
-		} catch (JsonGenerationException e) {
-			LOG.error("Error converting POJO to JSON", e);
-		} catch (JsonMappingException e) {
-			LOG.error("Error converting POJO to JSON", e);
-		} catch (IOException e) {
-			LOG.error("Error converting POJO to JSON", e);
-		}
 
 		/*
 		 * Ensure we have validationPolicy and clientCertificate
@@ -88,6 +87,9 @@ public class ValidateController {
 
 		/*
 		 * Check the x509Certificate
+		 * 
+		 * TODO: Since we render the X509Certificate here, lets generate x5t256 here, so
+		 * we can log the request metadata in `additionalProperties`
 		 */
 		String pemCert = request.x509Certificate;
 		try {
@@ -113,11 +115,37 @@ public class ValidateController {
 			LOG.error("Error decoding certificate, returning SERVICEFAIL", e);
 			throw new ServiceException("Error decoding x509Certificate");
 		}
+
 		/*
-		 * Validate and return the result
+		 * \ * Derive x5t#S256
 		 */
-	    ValidationPolicy valPol = ConfigurationPolicies.getPolicy(oid.toString());
-	    VssResponse response = ValidatePKIX.validate(clientCert, valPol, request.wantBackList);
+		x5tS256 = X509Util.x5tS256(clientCert);
+
+		/*
+		 * Add metadata to the request via `additionalProperties` so we can log it.
+		 */
+		request.setAdditionalProperty("x5t#S256", x5tS256);
+		request.setAdditionalProperty("requestHeaders", headers);
+
+		/*
+		 * Log the request in JSON
+		 */
+		try {
+			String output = mapper.writeValueAsString(request);
+			LOG.info("{\"ValidationRequest\":" + output + "}");
+		} catch (JsonGenerationException e) {
+			LOG.error("Error converting POJO to JSON", e);
+		} catch (JsonMappingException e) {
+			LOG.error("Error converting POJO to JSON", e);
+		} catch (IOException e) {
+			LOG.error("Error converting POJO to JSON", e);
+		}
+
+		/*
+		 * Validate, log, and; return the result
+		 */
+		ValidationPolicy valPol = ConfigurationPolicies.getPolicy(oid.toString());
+		VssResponse response = ValidatePKIX.validate(clientCert, x5tS256, valPol, request.wantBackList);
 		try {
 			String output = mapper.writeValueAsString(response);
 			LOG.info("{\"ValidationResponse\":" + output + "}");

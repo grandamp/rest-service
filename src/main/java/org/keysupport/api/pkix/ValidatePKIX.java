@@ -62,7 +62,7 @@ public class ValidatePKIX {
 
 	private final static Logger LOG = LoggerFactory.getLogger(ValidatePKIX.class);
 
-	public static VssResponse validate(X509Certificate cert, ValidationPolicy valPol, List<WantBackTypeToken> wantBackList) {
+	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, List<WantBackTypeToken> wantBackList) {
 		VssResponse response = new VssResponse();
 		/*
 		 * When decoding the certificate contents, don't always assume that the
@@ -108,7 +108,7 @@ public class ValidatePKIX {
 	    /*
 	     * Add x5t#S256
 	     */
-	    response.x5tS256 = X509Util.x5tS256(cert);
+	    response.x5tS256 = x5tS256;
 		/**
 		 * <pre>
 		 * Set System and Security properties to make the Sun provider: - Fetch CRLs via
