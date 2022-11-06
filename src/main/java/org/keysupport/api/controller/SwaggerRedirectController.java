@@ -9,10 +9,12 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 public class SwaggerRedirectController {
 
+	private final String BASE_URI = System.getenv("BASE_URI");
+	
 	@Operation(hidden = true)
 	@RequestMapping("/")
     public RedirectView handleRoot() {
-        return new RedirectView("https://api.keysupport.org/swagger-ui/index.html");
+        return new RedirectView(BASE_URI + "/swagger-ui/index.html");
     }
 
 }
