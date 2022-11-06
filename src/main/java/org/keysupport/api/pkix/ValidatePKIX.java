@@ -342,6 +342,7 @@ public class ValidatePKIX {
 			x509CertificateList.add(bCert);
 		}
 		JsonX509CertificateList bList = new JsonX509CertificateList();
+		bList.x509CertificateList = x509CertificateList;
 		response.certPath = bList;
 		return response;
 	}
