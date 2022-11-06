@@ -48,7 +48,6 @@ import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.ValidationSuccessData;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.keysupport.api.pojo.vss.WantBack;
-import org.keysupport.api.pojo.vss.WantBackTypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +61,7 @@ public class ValidatePKIX {
 
 	private final static Logger LOG = LoggerFactory.getLogger(ValidatePKIX.class);
 
-	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, List<WantBackTypeToken> wantBackList) {
+	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol) {
 		VssResponse response = new VssResponse();
 		/*
 		 * When decoding the certificate contents, don't always assume that the

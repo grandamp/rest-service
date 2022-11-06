@@ -152,7 +152,7 @@ public class ValidateController {
 		/*
 		 * Validate, log, and; return the result
 		 */
-		response = ValidatePKIX.validate(clientCert, x5tS256, valPol, request.wantBackList);
+		response = ValidatePKIX.validate(clientCert, x5tS256, valPol);
 		try {
 			String output = mapper.writeValueAsString(response);
 			LOG.info("{\"ValidationResponse\":" + output + "}");
