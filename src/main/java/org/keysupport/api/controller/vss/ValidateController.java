@@ -83,6 +83,15 @@ public class ValidateController {
 				throw new ServiceException("validationPolicy must be an Object Identifier");
 			}
 		}
+		
+		/*
+		 * Check to see if we have the policy, otherwise throw an error
+		 */
+		ValidationPolicy valPol = ConfigurationPolicies.getPolicy(oid.toString());
+		if (null == valPol) {
+			LOG.error("Invalid Policy Specified: " + oid.toString());
+			throw new ServiceException("Invalid Policy Specified");
+		}
 
 		/*
 		 * Check the x509Certificate
@@ -140,7 +149,6 @@ public class ValidateController {
 		/*
 		 * Validate, log, and; return the result
 		 */
-		ValidationPolicy valPol = ConfigurationPolicies.getPolicy(oid.toString());
 		VssResponse response = ValidatePKIX.validate(clientCert, x5tS256, valPol, request.wantBackList);
 		try {
 			String output = mapper.writeValueAsString(response);
