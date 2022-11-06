@@ -45,9 +45,7 @@ import org.keysupport.api.pojo.vss.JsonX509Certificate;
 import org.keysupport.api.pojo.vss.JsonX509CertificateList;
 import org.keysupport.api.pojo.vss.ValidationFailureData;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
-import org.keysupport.api.pojo.vss.ValidationSuccessData;
 import org.keysupport.api.pojo.vss.VssResponse;
-import org.keysupport.api.pojo.vss.WantBack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -332,7 +330,6 @@ public class ValidatePKIX {
 		 * TODO: For now, add the certpath even if the client didn't request it.
 		 */
 		response.validationResultToken = "SUCCESS";
-		ValidationSuccessData vsd = new ValidationSuccessData();
 		List<JsonX509Certificate> x509CertificateList = new ArrayList<JsonX509Certificate>();
 		for (Certificate currentCert : cp.getCertificates()) {
 			JsonX509Certificate bCert = new JsonX509Certificate();
@@ -345,13 +342,7 @@ public class ValidatePKIX {
 			x509CertificateList.add(bCert);
 		}
 		JsonX509CertificateList bList = new JsonX509CertificateList();
-		bList.x509CertificateList = x509CertificateList;
-		WantBack wb = new WantBack();
-		wb.certPath = bList;
-		List<WantBack> wbList = new ArrayList<WantBack>();
-		wbList.add(wb);
-		vsd.wantBackResultList = wbList;
-		response.validationSuccessData = vsd;
+		response.certPath = bList;
 		return response;
 	}
 }

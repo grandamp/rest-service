@@ -75,10 +75,12 @@ public class VssResponse {
 	public String validationResultToken;
 
 	/**
-	 * Field validationSuccessData.
+	 * Field certPath.
+	 *
+	 * Base64 Encoded
 	 */
-	@JsonProperty("validationSuccessData")
-	public ValidationSuccessData validationSuccessData;
+	@JsonProperty("certPath")
+	public JsonX509CertificateList certPath;
 
 	/**
 	 * Field validationFailureData.
