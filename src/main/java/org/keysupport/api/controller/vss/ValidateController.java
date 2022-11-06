@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
@@ -61,7 +60,7 @@ public class ValidateController {
 		 * First, lets validate the request.
 		 * 
 		 * TODO: Any errors should be logged, along with all client headers, via
-		 * LOG.error(...)
+		 *   - LOG.error(...)
 		 */
 
 		/*
@@ -87,9 +86,6 @@ public class ValidateController {
 
 		/*
 		 * Check the x509Certificate
-		 * 
-		 * TODO: Since we render the X509Certificate here, lets generate x5t256 here, so
-		 * we can log the request metadata in `additionalProperties`
 		 */
 		String pemCert = request.x509Certificate;
 		try {
@@ -117,7 +113,7 @@ public class ValidateController {
 		}
 
 		/*
-		 * \ * Derive x5t#S256
+		 * Derive x5t#S256
 		 */
 		x5tS256 = X509Util.x5tS256(clientCert);
 

@@ -4,13 +4,27 @@
 
 - Enter into project directory, and initialize and deploy to your AWS account
 
+- Make note of S3 bucket supporting the code deploy, or create in advance
+
 ```
 eb init
 eb setenv SPRING_PROFILES_ACTIVE=beanstalk
 eb setenv SERVER_PORT=5000
+eb setenv S3_BUCKET=elasticbeanstalk-us-east-1-216896468348
 eb use my-env-name
 eb list
 eb create --single
+```
+
+Deploy the configuration directory to the bucket
+
+```
+aws s3 sync configuration s3://elasticbeanstalk-us-east-1-216896468348/configuration
+```
+
+Deploy the application
+
+```
 mvn clean package spring-boot:repackage
 eb deploy
 eb status

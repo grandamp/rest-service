@@ -21,6 +21,9 @@ import org.keysupport.api.pojo.vss.TrustAnchors;
  *     }
  *   ]
  * }
+ * 
+ * TODO:  We migrated the TrustAnchors and ValidationPolicies to JSON configs in AWS S3, so we need to figure out lifecycle rules for updates.
+ * 
  */
 
 public class ConfigurationTrustAnchors {
