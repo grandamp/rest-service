@@ -1,6 +1,7 @@
 package org.keysupport.api.pkix;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
@@ -8,6 +9,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.UUID;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Primitive;
@@ -210,6 +212,16 @@ public class X509Util {
 			LOG.error("Error decoding certificate, returning SERVICEFAIL", e);
 		}
 		return x5tS256;
+	}
+
+	/**
+	 * Return a UUID derived from the UTF-8 String provided
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public static UUID uuidFromName(String name) {
+		return UUID.nameUUIDFromBytes(name.getBytes(StandardCharsets.UTF_8));
 	}
 
 }

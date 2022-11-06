@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "validationPolicyId", "trustAnchors", "userPolicySet", "inhibitPolicyMapping", "requireExplicitPolicy", "inhibitAnyPolicy" })
+@JsonPropertyOrder({ "validationPolicyId", "validationPolicyName", "validationPolicyDescription", "trustAnchors", "userPolicySet", "inhibitPolicyMapping", "requireExplicitPolicy", "inhibitAnyPolicy" })
 public class ValidationPolicy {
 
 	/**

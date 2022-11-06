@@ -1,6 +1,5 @@
 package org.keysupport.api;
 
-import org.keysupport.api.singletons.TrustAnchorsSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,12 +46,6 @@ public class RestServiceApplication {
          */
         @SuppressWarnings("unused")
 		ValidationPoliciesSingleton validationPoliciesSingleton = ValidationPoliciesSingleton.getInstance();
-
-        /*
-         * Set our trustanchots singleton
-         */
-        @SuppressWarnings("unused")
-		TrustAnchorsSingleton trustAnchorsSingleton = TrustAnchorsSingleton.getInstance();
 
     }
 

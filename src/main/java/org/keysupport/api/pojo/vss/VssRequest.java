@@ -16,15 +16,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "validationPolicy", "wantBackList", "x509Certificate" })
+@JsonPropertyOrder({ "validationPolicyId", "x509Certificate" })
 public class VssRequest {
 
 	/**
-	 * Field validationPolicy.
+	 * Field validationPolicyId.
 	 */
 	@NotBlank
-	@JsonProperty("validationPolicy")
-	public String validationPolicy;
+	@JsonProperty("validationPolicyId")
+	public String validationPolicyId;
 
 	/**
 	 * Field x509Certificate
