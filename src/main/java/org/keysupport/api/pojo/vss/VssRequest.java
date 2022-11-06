@@ -1,7 +1,6 @@
 package org.keysupport.api.pojo.vss;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotBlank;
@@ -26,12 +25,6 @@ public class VssRequest {
 	@NotBlank
 	@JsonProperty("validationPolicy")
 	public String validationPolicy;
-
-	/**
-	 * Field wantBackList.
-	 */
-	@JsonProperty("wantBackList")
-	public List<WantBackTypeToken> wantBackList;
 
 	/**
 	 * Field x509Certificate
