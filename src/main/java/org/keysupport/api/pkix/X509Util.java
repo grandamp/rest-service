@@ -21,32 +21,39 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This is intended to be a class with static methods to
- * perform some basing X509 parsing.
+ * This is intended to be a class with static methods to perform some basing
+ * X509 parsing.
  */
 public class X509Util {
 
 	private final static Logger LOG = LoggerFactory.getLogger(X509Util.class);
+
+	/*
+	 * TODO: Make this class a helper that can compose `ValidationPolicy` with
+	 * `validationPolicyId` values as a `UUID` type-3 object.
+	 *
+	 * If needed, we can create an inner Helper class to run on the console.
+	 *
+	 * The intent would be to allow a human or code to define a validation policy.
+	 */
 
 	/**
 	 *
 	 */
 	private X509Util() {
 		/*
-		 *  Hidden constructor
+		 * Hidden constructor
 		 */
 	}
 
 	/**
 	 * Method getSubjectAlternativeNames.
 	 *
-	 * @param certificate
-	 *            X509Certificate
+	 * @param certificate X509Certificate
 	 * @return Map<String,String>
 	 * @throws IOException
 	 */
-	public static List<SANValue> getSubjectAlternativeNames(
-			X509Certificate certificate) throws IOException {
+	public static List<SANValue> getSubjectAlternativeNames(X509Certificate certificate) throws IOException {
 
 		byte[] encodedExtension;
 		List<SANValue> x509SubjectAltName = null;
@@ -56,18 +63,16 @@ public class X509Util {
 		GeneralName generalName;
 
 		/*
-		 * We are pulling the DER encoded value of subjectAltName and we are
-		 * going to parse each SAN value manually
+		 * We are pulling the DER encoded value of subjectAltName and we are going to
+		 * parse each SAN value manually
 		 */
 		encodedExtension = certificate.getExtensionValue("2.5.29.17");
 		x509SubjectAltName = new ArrayList<>();
 		if (null == encodedExtension) {
 			return x509SubjectAltName;
 		}
-		content = (DEROctetString) ASN1Primitive
-				.fromByteArray(encodedExtension);
-		sequence = (ASN1Sequence) ASN1Primitive.fromByteArray(content
-				.getOctets());
+		content = (DEROctetString) ASN1Primitive.fromByteArray(encodedExtension);
+		sequence = (ASN1Sequence) ASN1Primitive.fromByteArray(content.getOctets());
 		Enumeration<?> it = sequence.getObjects();
 		while (it.hasMoreElements()) {
 			generalName = GeneralName.getInstance(it.nextElement());
@@ -75,26 +80,21 @@ public class X509Util {
 			switch (tag) {
 			case GeneralName.otherName: {
 				/*
-				 * otherName requires the encoding of the value be defined by
-				 * the type-id, which is an ObjectIdentifier
+				 * otherName requires the encoding of the value be defined by the type-id, which
+				 * is an ObjectIdentifier
 				 */
 				ASN1Sequence otherName = (ASN1Sequence) generalName.getName();
-				ASN1ObjectIdentifier typeId = (ASN1ObjectIdentifier) otherName
-						.getObjectAt(0);
-				ASN1TaggedObject value = (ASN1TaggedObject) otherName
-						.getObjectAt(1);
+				ASN1ObjectIdentifier typeId = (ASN1ObjectIdentifier) otherName.getObjectAt(0);
+				ASN1TaggedObject value = (ASN1TaggedObject) otherName.getObjectAt(1);
 				/*
 				 * pivFASC-N (2.16.840.1.101.3.6.6)
 				 */
-				if (typeId.equals(new ASN1ObjectIdentifier(
-						"2.16.840.1.101.3.6.6"))) {
+				if (typeId.equals(new ASN1ObjectIdentifier("2.16.840.1.101.3.6.6"))) {
 					/*
-					 * Remove prepended "#", if it exists. Assuming it is
-					 * injected by Java code somewhere, because that character
-					 * is not part of the literal encoding.
+					 * Remove prepended "#", if it exists. Assuming it is injected by Java code
+					 * somewhere, because that character is not part of the literal encoding.
 					 */
-					String rawFascnValue = value.getObject().toString()
-							.toUpperCase();
+					String rawFascnValue = value.getObject().toString().toUpperCase();
 					if (rawFascnValue.startsWith("#")) {
 						rawFascnValue = rawFascnValue.substring(1);
 					}
@@ -105,8 +105,7 @@ public class X509Util {
 					/*
 					 * userPrincipalName (1.3.6.1.4.1.311.20.2.3)
 					 */
-				} else if (typeId.equals(new ASN1ObjectIdentifier(
-						"1.3.6.1.4.1.311.20.2.3"))) {
+				} else if (typeId.equals(new ASN1ObjectIdentifier("1.3.6.1.4.1.311.20.2.3"))) {
 					SANValue upn = new SANValue();
 					upn.type = "otherName:userPrincipalName";
 					upn.value = value.getObject().toString();
