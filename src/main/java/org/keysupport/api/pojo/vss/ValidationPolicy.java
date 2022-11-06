@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.boot.jackson.JsonComponent;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,19 +15,40 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "validationPolicyId", "trustAnchors", "userPolicySet", "inhibitPolicyMapping", "requireExplicitPolicy", "inhibitAnyPolicy" })
 public class ValidationPolicy {
 
 	/**
 	 * Field validationPolicyId
+	 * 
+	 * TODO: Migrate to UUID
 	 */
+	@NotBlank
 	@JsonProperty("validationPolicyId")
 	public String validationPolicyId;
 
 	/**
+	 * Field validationPolicyName
+	 * 
+	 * TODO: Integrate and document `validationPolicyName`
+	 */
+	@JsonProperty("validationPolicyName")
+	public String validationPolicyName;
+
+	/**
+	 * Field validationPolicyDescription
+	 * 
+	 * TODO: Integrate and document `validationPolicyDescription`
+	 */
+	@JsonProperty("validationPolicyDescription")
+	public String validationPolicyDescription;
+
+	/**
 	 * Field trustAnchors.
 	 */
+	@NotBlank
 	@JsonProperty("trustAnchors")
 	public List<JsonTrustAnchor> trustAnchors;
 
@@ -42,6 +67,7 @@ public class ValidationPolicy {
 	/**
 	 * Field requireExplicitPolicy
 	 */
+	@NotBlank
 	@JsonProperty("requireExplicitPolicy")
 	public boolean requireExplicitPolicy;
 
