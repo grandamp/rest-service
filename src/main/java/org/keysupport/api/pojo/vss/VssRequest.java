@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.boot.jackson.JsonComponent;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "validationPolicy", "wantBackList", "x509Certificate" })
 public class VssRequest {
@@ -18,6 +23,7 @@ public class VssRequest {
 	/**
 	 * Field validationPolicy.
 	 */
+	@NotBlank
 	@JsonProperty("validationPolicy")
 	public String validationPolicy;
 
@@ -30,6 +36,7 @@ public class VssRequest {
 	/**
 	 * Field x509Certificate
 	 */
+	@NotBlank
 	@JsonProperty("x509Certificate")
 	public String x509Certificate;
 

@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.boot.jackson.JsonComponent;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "x5t#S256", "x509SubjectName", "x509IssuerName", "x509SerialNumber", "x509SubjectAltName",
 		"validationTime", "nextUpdate", "validationResultToken", "validationFailureData", "validationSuccessData" })
@@ -19,6 +24,7 @@ public class VssResponse {
 	/**
 	 * Field x5t#S256.
 	 */
+	@NotBlank
 	@JsonProperty("x5t#S256")
 	public String x5tS256;
 
@@ -37,6 +43,7 @@ public class VssResponse {
 	/**
 	 * Field X509SerialNumber.
 	 */
+	@NotBlank
 	@JsonProperty("x509SerialNumber")
 	public String x509SerialNumber;
 
@@ -49,18 +56,21 @@ public class VssResponse {
 	/**
 	 * Field validationTime.
 	 */
+	@NotBlank
 	@JsonProperty("validationTime")
 	public String validationTime;
 
 	/**
 	 * Field nextUpdate.
 	 */
+	@NotBlank
 	@JsonProperty("nextUpdate")
 	public String nextUpdate;
 
 	/**
 	 * Field validationResultToken.
 	 */
+	@NotBlank
 	@JsonProperty("validationResultToken")
 	public String validationResultToken;
 

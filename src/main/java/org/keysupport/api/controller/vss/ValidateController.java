@@ -18,6 +18,7 @@ import org.keysupport.api.pojo.vss.VssRequest;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,9 @@ public class ValidateController {
 	 * Field PEM_SIZE_LIMIT
 	 */
 	private final int PEM_SIZE_LIMIT = 8192;
+	
+	@Autowired
+    private VssResponse response;
 
 	@PostMapping(path = "/vss/v2/validate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<VssResponse> validate(@RequestBody VssRequest request, @RequestHeader Map<String, String> headers) {
@@ -149,7 +153,7 @@ public class ValidateController {
 		/*
 		 * Validate, log, and; return the result
 		 */
-		VssResponse response = ValidatePKIX.validate(clientCert, x5tS256, valPol, request.wantBackList);
+		response = ValidatePKIX.validate(clientCert, x5tS256, valPol, request.wantBackList);
 		try {
 			String output = mapper.writeValueAsString(response);
 			LOG.info("{\"ValidationResponse\":" + output + "}");
