@@ -70,9 +70,8 @@ public class ValidateController {
 		/*
 		 * Ensure we have validationPolicy and clientCertificate
 		 */
-		if (null == request || null == request.validationPolicy || null == request.x509Certificate
-				|| null == request.wantBackList) {
-			throw new ServiceException("Request must include validationPolicy, wantBackList, and x509CertificateList");
+		if (null == request || null == request.validationPolicy || null == request.x509Certificate) {
+			throw new ServiceException("Request must include validationPolicy and x509Certificate");
 		}
 
 		/*
