@@ -273,7 +273,7 @@ public class ValidatePKIX {
 			Fail fail = new Fail();
 			fail.result = Fail.FAIL_VALUE;
 			fail.isAffirmativelyInvalid = true;
-			fail.invalidityReasonText = e.getLocalizedMessage();
+			fail.invalidityReasonText = e.getCause().getLocalizedMessage();
 			response.validationResult = fail;
 			return response;
 		}
