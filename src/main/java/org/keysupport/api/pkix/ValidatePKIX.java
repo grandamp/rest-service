@@ -120,9 +120,17 @@ public class ValidatePKIX {
 		 * within 24 hours within the FPKI (or any issuing CA or intermediate the
 		 * relying party is willing to trust).
 		 * 
+		 * See: https://docs.oracle.com/en/java/javase/11/security/java-pki-programmers-guide.html
+		 * 
+		 * - https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/RevocationChecker.java
+		 * 
+		 * Debug logging for CertPath can be enabled running the code via:
+		 * 
+		 * - java -Djava.security.debug=certpath -jar target/rest-service-eb.jar
 		 * 
 		 * <pre>
 		 */
+	    System.setProperty("java.security.debug", "certpath");
 		System.setProperty("com.sun.security.enableCRLDP", "true");
 		Security.setProperty("ocsp.enable", "true");
 		System.setProperty("com.sun.security.enableAIAcaIssuers", "true");

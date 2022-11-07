@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.jose4j.base64url.internal.apache.commons.codec.binary.Base64;
+import org.keysupport.api.ApiError;
 import org.keysupport.api.config.ConfigurationPolicies;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.ValidatePKIX;
@@ -19,13 +20,16 @@ import org.keysupport.api.pojo.vss.VssResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -180,6 +184,15 @@ public class ValidateController {
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 
+	}
+
+	/*
+	 * TODO:  Expand on error handling based on the exception or logic error
+	 */
+	@ExceptionHandler({ Exception.class })
+	public ResponseEntity<Object> handleAll(Exception e, WebRequest request) {
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
 
 }
