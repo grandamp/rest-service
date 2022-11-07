@@ -21,9 +21,9 @@ public class PoliciesController {
 		return new ResponseEntity<>(ConfigurationPolicies.getValidationPolicies(), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/vss/v2/policies/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<ValidationPolicy> policy(@PathVariable String id) {
-		ValidationPolicy requestedPolicy = ConfigurationPolicies.getPolicy(id);
+	@GetMapping(path = "/vss/v2/policies/{validationPolicyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<ValidationPolicy> policy(@PathVariable String validationPolicyId) {
+		ValidationPolicy requestedPolicy = ConfigurationPolicies.getPolicy(validationPolicyId);
 		if (null != requestedPolicy) {
 			return new ResponseEntity<>(requestedPolicy, HttpStatus.OK);
 		} else {
