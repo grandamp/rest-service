@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 public class CspReportController {
 
 	private final static Logger LOG = LoggerFactory.getLogger(CspReportController.class);
 
+	@Operation(hidden = true)
 	@PostMapping(path = "/report", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CspReportEntity> create(@RequestBody CspReportEntity entity) {
 		ObjectMapper mapper = new ObjectMapper();

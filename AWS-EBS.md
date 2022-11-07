@@ -8,9 +8,10 @@
 
 ```
 eb init
-eb setenv SPRING_PROFILES_ACTIVE=beanstalk
-eb setenv SERVER_PORT=5000
-eb setenv S3_BUCKET=elasticbeanstalk-us-east-1-216896468348
+eb setenv SPRING_PROFILES_ACTIVE=beanstalk -e api-keysupport-rest-dev
+eb setenv SERVER_PORT=5000 -e api-keysupport-rest-dev
+eb setenv S3_BUCKET=elasticbeanstalk-us-east-1-216896468348 -e api-keysupport-rest-dev
+eb setenv BASE_URI=https://api.keysupport.org -e api-keysupport-rest-dev
 eb use my-env-name
 eb list
 eb create --single
