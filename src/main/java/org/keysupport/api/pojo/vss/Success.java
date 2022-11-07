@@ -1,6 +1,7 @@
 package org.keysupport.api.pojo.vss;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.jackson.JsonComponent;
@@ -14,16 +15,20 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "certPath" })
+@JsonPropertyOrder({ "x509CertificatePath" })
 public class Success extends ValidationResult {
 
 	/**
-	 * Field certPath.
-	 *
-	 * Base64 Encoded
+	 * Static String value for "SUCCESS" result.
 	 */
-	@JsonProperty("certPath")
-	public JsonX509CertificateList certPath;
+	@JsonProperty("result")
+	public static final String result = "SUCCESS";
+	
+	/**
+	 * Field x509CertificatePath
+	 */
+	@JsonProperty("x509CertificatePath")
+	public List<JsonX509Certificate> x509CertificatePath;
 
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();

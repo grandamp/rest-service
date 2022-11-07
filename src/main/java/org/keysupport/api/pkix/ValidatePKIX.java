@@ -42,7 +42,6 @@ import org.keysupport.api.RestServiceEventLogger;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pojo.vss.Fail;
 import org.keysupport.api.pojo.vss.JsonX509Certificate;
-import org.keysupport.api.pojo.vss.JsonX509CertificateList;
 import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssResponse;
@@ -142,7 +141,6 @@ public class ValidatePKIX {
 		} catch (CertificateExpiredException e) { 
 			RestServiceEventLogger.logEvent(response, e);
 			Fail fail = new Fail();
-			fail.result = Fail.FAIL_VALUE;
 			fail.isAffirmativelyInvalid = true;
 			fail.invalidityReasonText = e.getLocalizedMessage();
 			response.validationResult = fail;
@@ -150,7 +148,6 @@ public class ValidatePKIX {
 		} catch (CertificateNotYetValidException e) {
 			RestServiceEventLogger.logEvent(response, e);
 			Fail fail = new Fail();
-			fail.result = Fail.FAIL_VALUE;
 			fail.isAffirmativelyInvalid = true;
 			fail.invalidityReasonText = e.getLocalizedMessage();
 			response.validationResult = fail;
@@ -271,7 +268,6 @@ public class ValidatePKIX {
 			 */
 			RestServiceEventLogger.logEvent(response, e);
 			Fail fail = new Fail();
-			fail.result = Fail.FAIL_VALUE;
 			fail.isAffirmativelyInvalid = true;
 			fail.invalidityReasonText = e.getCause().getLocalizedMessage();
 			response.validationResult = fail;
@@ -294,7 +290,6 @@ public class ValidatePKIX {
 		} catch (CertPathValidatorException e) {
 			RestServiceEventLogger.logEvent(response, e);
 			Fail fail = new Fail();
-			fail.result = Fail.FAIL_VALUE;
 			fail.isAffirmativelyInvalid = true;
 			fail.invalidityReasonText = e.getLocalizedMessage();
 			response.validationResult = fail;
@@ -322,7 +317,7 @@ public class ValidatePKIX {
 		 * TODO: For now, add the certpath even if the client didn't request it.
 		 */
 		Success success = new Success();
-		List<JsonX509Certificate> x509CertificateList = new ArrayList<JsonX509Certificate>();
+		List<JsonX509Certificate> x509CertificatePath = new ArrayList<JsonX509Certificate>();
 		for (Certificate currentCert : cp.getCertificates()) {
 			JsonX509Certificate bCert = new JsonX509Certificate();
 			try {
@@ -331,11 +326,9 @@ public class ValidatePKIX {
 			} catch (CertificateEncodingException e) {
 				LOG.error("Error Base64 encoding certificate from ReplyWantBack", e);
 			}
-			x509CertificateList.add(bCert);
+			x509CertificatePath.add(bCert);
 		}
-		JsonX509CertificateList bList = new JsonX509CertificateList();
-		bList.x509CertificateList = x509CertificateList;
-		success.certPath = bList;
+		success.x509CertificatePath = x509CertificatePath;
 		response.validationResult = success;
 		return response;
 	}
