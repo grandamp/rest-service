@@ -40,10 +40,10 @@ import java.util.TimeZone;
 import org.jose4j.base64url.internal.apache.commons.codec.binary.Base64;
 import org.keysupport.api.RestServiceEventLogger;
 import org.keysupport.api.controller.ServiceException;
-import org.keysupport.api.pojo.vss.InvalidityReason;
+import org.keysupport.api.pojo.vss.Fail;
 import org.keysupport.api.pojo.vss.JsonX509Certificate;
 import org.keysupport.api.pojo.vss.JsonX509CertificateList;
-import org.keysupport.api.pojo.vss.ValidationFailureData;
+import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.slf4j.Logger;
@@ -141,27 +141,19 @@ public class ValidatePKIX {
 			cert.checkValidity();
 		} catch (CertificateExpiredException e) { 
 			RestServiceEventLogger.logEvent(response, e);
-			ValidationFailureData vfd = new ValidationFailureData();
-			vfd.isAffirmativelyInvalid = true;
-			List<InvalidityReason> invalidityReasonList = new ArrayList<InvalidityReason>();
-			InvalidityReason iReason = new InvalidityReason();
-			iReason.invalidityReasonToken = "FAIL";
-			iReason.invalidityReasonText = e.getMessage();
-			invalidityReasonList.add(iReason);
-			vfd.invalidityReasonList = invalidityReasonList;
-			response.validationFailureData = vfd;
+			Fail fail = new Fail();
+			fail.result = Fail.FAIL_VALUE;
+			fail.isAffirmativelyInvalid = true;
+			fail.invalidityReasonText = e.getLocalizedMessage();
+			response.validationResult = fail;
 			return response;
 		} catch (CertificateNotYetValidException e) {
 			RestServiceEventLogger.logEvent(response, e);
-			ValidationFailureData vfd = new ValidationFailureData();
-			vfd.isAffirmativelyInvalid = true;
-			List<InvalidityReason> invalidityReasonList = new ArrayList<InvalidityReason>();
-			InvalidityReason iReason = new InvalidityReason();
-			iReason.invalidityReasonToken = "FAIL";
-			iReason.invalidityReasonText = e.getMessage();
-			invalidityReasonList.add(iReason);
-			vfd.invalidityReasonList = invalidityReasonList;
-			response.validationFailureData = vfd;
+			Fail fail = new Fail();
+			fail.result = Fail.FAIL_VALUE;
+			fail.isAffirmativelyInvalid = true;
+			fail.invalidityReasonText = e.getLocalizedMessage();
+			response.validationResult = fail;
 			return response;
 		}
 		/*
@@ -269,7 +261,6 @@ public class ValidatePKIX {
 		} catch (InvalidAlgorithmParameterException e) {
 			LOG.error("Error with CertPathBuilder", e);
 		} catch (CertPathBuilderException e) {
-			RestServiceEventLogger.logEvent(response, e);
 			/*
 			 * Construct and return validation response.
 			 * 
@@ -278,15 +269,12 @@ public class ValidatePKIX {
 			 * Otherwise, we need to instrument more data from e.getCause() and make a
 			 * decision.
 			 */
-			ValidationFailureData vfd = new ValidationFailureData();
-			vfd.isAffirmativelyInvalid = true;
-			List<InvalidityReason> invalidityReasonList = new ArrayList<InvalidityReason>();
-			InvalidityReason iReason = new InvalidityReason();
-			iReason.invalidityReasonToken = "FAIL";
-			iReason.invalidityReasonText = e.getCause().getMessage();
-			invalidityReasonList.add(iReason);
-			vfd.invalidityReasonList = invalidityReasonList;
-			response.validationFailureData = vfd;
+			RestServiceEventLogger.logEvent(response, e);
+			Fail fail = new Fail();
+			fail.result = Fail.FAIL_VALUE;
+			fail.isAffirmativelyInvalid = true;
+			fail.invalidityReasonText = e.getLocalizedMessage();
+			response.validationResult = fail;
 			return response;
 		}
 		CertPath cp = result.getCertPath();
@@ -305,15 +293,11 @@ public class ValidatePKIX {
 			pvr = (PKIXCertPathValidatorResult) cpv.validate(cp, params);
 		} catch (CertPathValidatorException e) {
 			RestServiceEventLogger.logEvent(response, e);
-			ValidationFailureData vfd = new ValidationFailureData();
-			vfd.isAffirmativelyInvalid = true;
-			List<InvalidityReason> invalidityReasonList = new ArrayList<InvalidityReason>();
-			InvalidityReason iReason = new InvalidityReason();
-			iReason.invalidityReasonToken = "FAIL";
-			iReason.invalidityReasonText = e.getMessage();
-			invalidityReasonList.add(iReason);
-			vfd.invalidityReasonList = invalidityReasonList;
-			response.validationFailureData = vfd;
+			Fail fail = new Fail();
+			fail.result = Fail.FAIL_VALUE;
+			fail.isAffirmativelyInvalid = true;
+			fail.invalidityReasonText = e.getLocalizedMessage();
+			response.validationResult = fail;
 			return response;
 		} catch (InvalidAlgorithmParameterException e) {
 			LOG.error("Internal Validation Error", e);
@@ -337,7 +321,7 @@ public class ValidatePKIX {
 		 * 
 		 * TODO: For now, add the certpath even if the client didn't request it.
 		 */
-		response.validationResultToken = "SUCCESS";
+		Success success = new Success();
 		List<JsonX509Certificate> x509CertificateList = new ArrayList<JsonX509Certificate>();
 		for (Certificate currentCert : cp.getCertificates()) {
 			JsonX509Certificate bCert = new JsonX509Certificate();
@@ -351,7 +335,8 @@ public class ValidatePKIX {
 		}
 		JsonX509CertificateList bList = new JsonX509CertificateList();
 		bList.x509CertificateList = x509CertificateList;
-		response.certPath = bList;
+		success.certPath = bList;
+		response.validationResult = success;
 		return response;
 	}
 }

@@ -68,25 +68,11 @@ public class VssResponse {
 	public String nextUpdate;
 
 	/**
-	 * Field validationResultToken.
+	 * Field validationResult.
 	 */
 	@NotBlank
-	@JsonProperty("validationResultToken")
-	public String validationResultToken;
-
-	/**
-	 * Field certPath.
-	 *
-	 * Base64 Encoded
-	 */
-	@JsonProperty("certPath")
-	public JsonX509CertificateList certPath;
-
-	/**
-	 * Field validationFailureData.
-	 */
-	@JsonProperty("validationFailureData")
-	public ValidationFailureData validationFailureData;
+	@JsonProperty("validationResult")
+	public ValidationResult validationResult;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or
