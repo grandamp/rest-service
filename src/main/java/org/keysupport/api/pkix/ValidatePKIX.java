@@ -43,6 +43,7 @@ import org.keysupport.api.pojo.vss.JsonX509Certificate;
 import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssResponse;
+import org.keysupport.api.singletons.IntermediateCacheSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,9 +60,8 @@ public class ValidatePKIX {
 	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol) {
 		VssResponse response = new VssResponse();
 		/*
-		 * When decoding the certificate contents, don't always assume that the
-		 * fields will be non-NULL. For example, cardAuth certs MAY have a NULL
-		 * subject name.
+		 * When decoding the certificate contents, don't always assume that the fields
+		 * will be non-NULL. For example, cardAuth certs MAY have a NULL subject name.
 		 */
 		if (null != cert.getSubjectDN()) {
 			response.x509SubjectName = cert.getSubjectDN().toString();
@@ -73,8 +73,8 @@ public class ValidatePKIX {
 			response.x509SerialNumber = cert.getSerialNumber().toString();
 		}
 		/*
-		 * Get subjectAltName values, swallow the exception as far as the
-		 * consumer is concerned, but log it.
+		 * Get subjectAltName values, swallow the exception as far as the consumer is
+		 * concerned, but log it.
 		 */
 		try {
 			response.x509SubjectAltName = X509Util.getSubjectAlternativeNames(cert);
@@ -93,16 +93,17 @@ public class ValidatePKIX {
 		dFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		response.validationTime = dFormat.format(now);
 		/*
-		 * TODO: nextUpdate will be based on CRL, for now we will calculate a date that is one hour from now.
+		 * TODO: nextUpdate will be based on CRL, for now we will calculate a date that
+		 * is one hour from now.
 		 */
-	    Calendar calendar = Calendar.getInstance();
-	    calendar.setTime(now);
-	    calendar.add(Calendar.HOUR_OF_DAY, 1);
-	    response.nextUpdate = dFormat.format(calendar.getTime());
-	    /*
-	     * Add x5t#S256
-	     */
-	    response.x5tS256 = x5tS256;
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(now);
+		calendar.add(Calendar.HOUR_OF_DAY, 1);
+		response.nextUpdate = dFormat.format(calendar.getTime());
+		/*
+		 * Add x5t#S256
+		 */
+		response.x5tS256 = x5tS256;
 		/**
 		 * <pre>
 		 * Set System and Security properties to make the Sun provider: - Fetch CRLs via
@@ -117,9 +118,11 @@ public class ValidatePKIX {
 		 * within 24 hours within the FPKI (or any issuing CA or intermediate the
 		 * relying party is willing to trust).
 		 * 
-		 * See: https://docs.oracle.com/en/java/javase/11/security/java-pki-programmers-guide.html
+		 * See:
+		 * https://docs.oracle.com/en/java/javase/11/security/java-pki-programmers-guide.html
 		 * 
-		 * - https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/RevocationChecker.java
+		 * -
+		 * https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/RevocationChecker.java
 		 * 
 		 * Debug logging for CertPath can be enabled running the code via:
 		 * 
@@ -127,16 +130,19 @@ public class ValidatePKIX {
 		 * 
 		 * <pre>
 		 */
-	    System.setProperty("java.security.debug", "certpath");
+		System.setProperty("java.security.debug", "certpath");
 		System.setProperty("com.sun.security.enableCRLDP", "true");
 		Security.setProperty("ocsp.enable", "true");
-		System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
+		/*
+		 * Temporary disable AIA fetch to test our intermediate store
+		 */
+		//System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
 		/*
 		 * 
 		 */
 		try {
 			cert.checkValidity();
-		} catch (CertificateExpiredException e) { 
+		} catch (CertificateExpiredException e) {
 			RestServiceEventLogger.logEvent(response, e);
 			Fail fail = new Fail();
 			fail.isAffirmativelyInvalid = true;
@@ -152,7 +158,8 @@ public class ValidatePKIX {
 			return response;
 		}
 		/*
-		 * Before we dive into RFC5280, we should perform a minimum algorithm/keySize check. 
+		 * Before we dive into RFC5280, we should perform a minimum algorithm/keySize
+		 * check.
 		 */
 		/*
 		 * Set RFC 5280 Inputs based on the selected certificate and validation policy
@@ -164,6 +171,9 @@ public class ValidatePKIX {
 		 * 
 		 * TODO: It would be more efficient if the TrustAnchor was already rendered as
 		 * an X509Certificate
+		 * 
+		 * TODO: Address policies that indicate multiple trust anchors, for now; we will
+		 * only inject the first trust anchor defined in the validation policy.
 		 */
 		String pemCert = valPol.trustAnchors.get(0).x509Certificate;
 		X509Certificate ta = null;
@@ -216,11 +226,13 @@ public class ValidatePKIX {
 		params.addCertStore(cstore);
 		/**
 		 * <pre>
-		 * TODO:  Add FPKI Intermediate Store
+		 * TODO:  Add FPKI Intermediate Store from our prototype IntermediateCacheSingleton
 		 * 
 		 * - https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/cert/CertStore.html
 		 * </pre>
 		 */
+		IntermediateCacheSingleton intermediateCacheSingleton = IntermediateCacheSingleton.getInstance();
+		params.addCertStore(intermediateCacheSingleton.getIntermediates());
 		/*
 		 * Build the certificate path
 		 */
