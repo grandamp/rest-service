@@ -3,11 +3,9 @@ package org.keysupport.api.pkix;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.Security;
-import java.security.SignatureException;
 import java.security.cert.CertPath;
 import java.security.cert.CertPathBuilder;
 import java.security.cert.CertPathBuilderException;
@@ -194,18 +192,6 @@ public class ValidatePKIX {
 		LOG.debug("Trust Anchor:\n" + ta.toString());
 		TrustAnchor anchor = new TrustAnchor(ta, null);
 		List<Certificate> cert_list = new ArrayList<Certificate>();
-		LOG.debug("Cert to validate:\n" + cert.toString());
-		/*
-		 * Temp debug code to see if TA signed this cert
-		 */
-		LOG.debug("Verifiying if TA Signed this cert:\n");
-		try {
-			cert.verify(ta.getPublicKey());
-			LOG.debug("Cert to validate is signed by Trust Anchor");
-		} catch (InvalidKeyException | CertificateException | NoSuchAlgorithmException | NoSuchProviderException
-				| SignatureException e) {
-			LOG.debug("Cert to validate is *not* signed by Trust Anchor");
-		}
 		cert_list.add(ta);
 		cert_list.add(cert);
 		CertStoreParameters cparam = new CollectionCertStoreParameters(cert_list);
