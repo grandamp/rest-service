@@ -18,6 +18,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Fail extends ValidationResult {
 
 	/**
+	 * Static String value for "FAIL" result.
+	 */
+	@JsonProperty("result")
+	public static final String result = "FAIL";
+	
+	/**
 	 * Field isAffirmativelyInvalid.
 	 */
 	@JsonProperty("isAffirmativelyInvalid")

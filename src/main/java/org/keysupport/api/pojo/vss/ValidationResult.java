@@ -14,11 +14,16 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.PROPERTY, property = "result")
 @JsonSubTypes({ @JsonSubTypes.Type(value = Fail.class, name = "FAIL"),
 		@JsonSubTypes.Type(value = Success.class, name = "SUCCESS") })
+@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(oneOf = { Fail.class, Success.class })))
 public class ValidationResult {
 
 	/**

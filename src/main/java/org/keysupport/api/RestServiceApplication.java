@@ -1,5 +1,6 @@
 package org.keysupport.api;
 
+import org.keysupport.api.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,12 @@ public class RestServiceApplication {
          */
         @SuppressWarnings("unused")
 		ValidationPoliciesSingleton validationPoliciesSingleton = ValidationPoliciesSingleton.getInstance();
+
+        /*
+         * Set our prototype cached Intermediate CertStore singleton
+         */
+        @SuppressWarnings("unused")
+		IntermediateCacheSingleton intermediateCacheSingleton = IntermediateCacheSingleton.getInstance();
 
     }
 
