@@ -5,6 +5,8 @@ A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-t
 
 - See [Testing](/TESTING.md)
 
+- Advanced Test Case, see [mTLS Testing (please open an issue if this link fails, inclusive of a screenshot)](https://x509.keysupport.org/swagger-ui/index.html)
+
 ## Deploying to AWS Elasitic Beanstalk
 
 - See [AWS Elastic Beanstalk](/AWS-EBS.md)
