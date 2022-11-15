@@ -1,3 +1,5 @@
+[![Build Status](https://github.com/grandamp/rest-service/actions/workflows/build.yml/badge.svg)](https://github.com/grandamp/rest-service/actions)
+
 # rest-service
 A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-testing/blob/master/utilities/vss2/README.md), with something more modern.
 
