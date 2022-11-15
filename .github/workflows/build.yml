@@ -6,7 +6,7 @@ on:
       - optimize
 jobs:
   build:
-    name: Unit tests
+    name: Build test
     runs-on: ubuntu-latest
     steps:
       #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
