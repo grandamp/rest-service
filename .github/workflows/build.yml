@@ -1,0 +1,28 @@
+name: Build Pipeline
+
+on: [push]
+
+jobs:
+  build:
+    name: Build test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      #Set up JDK 11
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+          java-package: jdk 
+      #Set up Maven cache
+      - name: Cache Maven packages
+        #This action allows caching dependencies and build outputs to improve workflow execution time.
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      #Build
+      - name: Build
+        run: mvn clean package spring-boot:repackage
