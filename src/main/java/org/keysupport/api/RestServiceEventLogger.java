@@ -19,7 +19,8 @@ public class RestServiceEventLogger {
 	/*
 	 * TODO: We should probably configure the eventType values as an Enum.
 	 * 
-	 * At the moment, we are logging validation failures, but; the intent is to log all major events.
+	 * At the moment, we are logging validation failures, but; the intent is to log
+	 * all major events.
 	 */
 
 	private final static Logger LOG = LoggerFactory.getLogger(RestServiceEventLogger.class);
@@ -34,14 +35,20 @@ public class RestServiceEventLogger {
 		ValidationEvent event = new ValidationEvent();
 		event.x5tS256 = vssResponse.x5tS256;
 		event.eventType = "VALPOL_FAIL";
+		/*
+		 * Check and see if this CertPathBuilderException contains a cause
+		 */
 		Throwable t = e.getCause();
-		if (t.getCause() instanceof CertificateRevokedException) {
-			event.message = t.getMessage();
+		if (null != t) {
+			if (t.getCause() instanceof CertificateRevokedException) {
+				event.message = t.getMessage();
+			} else {
+				LOG.error("TODO: Capture this exception cause: ", t);
+				LOG.error(t.getClass().getCanonicalName());
+			}
 		} else {
-			LOG.error("TODO: Capture this exception cause: ", t);
-			LOG.error(t.getClass().getCanonicalName());
+			event.message = e.getMessage();
 		}
-		event.message = e.getCause().getMessage();
 		try {
 			String eventStr = mapper.writeValueAsString(event);
 			LOG.warn(eventStr);
@@ -54,7 +61,7 @@ public class RestServiceEventLogger {
 		ValidationEvent event = new ValidationEvent();
 		event.x5tS256 = vssResponse.x5tS256;
 		event.eventType = "VALPOL_FAIL";
-		event.message = e.getCause().getMessage();
+		event.message = e.getMessage();
 		try {
 			String eventStr = mapper.writeValueAsString(event);
 			LOG.warn(eventStr);
@@ -67,7 +74,7 @@ public class RestServiceEventLogger {
 		ValidationEvent event = new ValidationEvent();
 		event.x5tS256 = vssResponse.x5tS256;
 		event.eventType = "VALPOL_FAIL";
-		event.message = e.getCause().getMessage();
+		event.message = e.getMessage();
 		try {
 			String eventStr = mapper.writeValueAsString(event);
 			LOG.warn(eventStr);
@@ -80,7 +87,7 @@ public class RestServiceEventLogger {
 		ValidationEvent event = new ValidationEvent();
 		event.x5tS256 = vssResponse.x5tS256;
 		event.eventType = "VALPOL_FAIL";
-		event.message = e.getCause().getMessage();
+		event.message = e.getMessage();
 		try {
 			String eventStr = mapper.writeValueAsString(event);
 			LOG.warn(eventStr);
