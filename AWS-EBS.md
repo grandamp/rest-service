@@ -12,7 +12,7 @@ eb setenv SPRING_PROFILES_ACTIVE=beanstalk -e api-keysupport-rest-dev
 eb setenv SERVER_PORT=5000 -e api-keysupport-rest-dev
 eb setenv S3_BUCKET=elasticbeanstalk-us-east-1-216896468348 -e api-keysupport-rest-dev
 eb setenv BASE_URI=https://api.keysupport.org -e api-keysupport-rest-dev
-eb use my-env-name
+eb use api-keysupport-rest-dev
 eb list
 eb create --single
 ```
@@ -38,6 +38,6 @@ eb scale 2
 
 ## TLS & Default Deploy Security Considerations
 
-Deploying to Elasic Beanstalk according to the steps above will default to HTTP without TLS.
+Deploying to Elastic Beanstalk according to the steps above will default to HTTP without TLS.
 
-Rather than altering the Elastic Load Balancer with a custom domain and certificate, I opted to use the AWS API Gateway with a custom domiain.
+Rather than altering the Elastic Load Balancer with a custom domain and certificate, I opted to use the AWS API Gateway with a custom domain.
