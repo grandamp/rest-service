@@ -13,11 +13,13 @@ A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-t
 
 - See [AWS Elastic Beanstalk](/AWS-EBS.md)
 
-## Current API Documentation
+## Current API Documentation & API Example
 
-- See [Swagger-UI](https://api.keysupport.org/swagger-ui/index.html)
+- See/Try the operational example via [this Swagger-UI](https://api.keysupport.org/swagger-ui/index.html), based on the above example [AWS Elastic Beanstalk](/AWS-EBS.md) deployment
+- [Current issues](https://github.com/grandamp/rest-service/issues) apply to example above
 
 ## How to Contribute
+
 The source repository exists [here](https://github.com/grandamp/rest-service).
 
 ### Public domain
