@@ -19,6 +19,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
+import java.security.cert.CertificateRevokedException;
 import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.PKIXBuilderParameters;
 import java.security.cert.PKIXCertPathBuilderResult;
@@ -267,8 +268,22 @@ public class ValidatePKIX {
 			RestServiceEventLogger.logEvent(response, e);
 			Fail fail = new Fail();
 			fail.isAffirmativelyInvalid = true;
-			fail.invalidityReasonText = e.getCause().getLocalizedMessage();
 			response.validationResult = fail;
+			/*
+			 * Resolve the real reason for the failure
+			 * 
+			 * We may want to customize the `invalidityReasonText`
+			 */
+			Throwable t = e.getCause();
+			if (null != t) {
+				if (t.getCause() instanceof CertificateRevokedException) {
+					fail.invalidityReasonText = t.getMessage();
+				} else {
+					fail.invalidityReasonText = t.getMessage();
+				}
+			} else {
+				fail.invalidityReasonText = e.getMessage();
+			}
 			return response;
 		}
 		CertPath cp = result.getCertPath();
