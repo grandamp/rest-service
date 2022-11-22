@@ -16,7 +16,7 @@
 	<description>Spring Boot Rest Service for api.keysupport.org</description>
 	<properties>
 		<java.version>11</java.version>
-		<aws.sdk.version>2.18.21</aws.sdk.version>
+		<aws.sdk.version>2.18.22-PREVIEW</aws.sdk.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -66,7 +66,7 @@
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
 			<artifactId>aws-crt-client</artifactId>
-			<version>${aws.sdk.version}-PREVIEW</version>
+			<version>${aws.sdk.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
