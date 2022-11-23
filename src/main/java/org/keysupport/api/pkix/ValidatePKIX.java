@@ -137,7 +137,7 @@ public class ValidatePKIX {
 		/*
 		 * Temporary disable AIA fetch to test our intermediate store
 		 */
-		//System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
+		// System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
 		/*
 		 * 
 		 */
@@ -260,28 +260,33 @@ public class ValidatePKIX {
 			/*
 			 * Construct and return validation response.
 			 * 
-			 * To be safe, we will flag `isAffirmativelyInvalid` as `true`.
-			 * 
 			 * Otherwise, we need to instrument more data from e.getCause() and make a
 			 * decision.
 			 */
 			RestServiceEventLogger.logEvent(response, e);
 			Fail fail = new Fail();
-			fail.isAffirmativelyInvalid = true;
 			response.validationResult = fail;
 			/*
 			 * Resolve the real reason for the failure
 			 * 
 			 * We may want to customize the `invalidityReasonText`
+			 * 
+			 * To be safe, we will flag `isAffirmativelyInvalid` as `true` for any
+			 * CertPathBuilderException that has an explicit
+			 * CertPathBuilderException.getCause().
+			 * 
+			 * Otherwise, we should assume the possibility that our cache is out of date.
 			 */
 			Throwable t = e.getCause();
 			if (null != t) {
+				fail.isAffirmativelyInvalid = true;
 				if (t.getCause() instanceof CertificateRevokedException) {
 					fail.invalidityReasonText = t.getMessage();
 				} else {
 					fail.invalidityReasonText = t.getMessage();
 				}
 			} else {
+				fail.isAffirmativelyInvalid = false;
 				fail.invalidityReasonText = e.getMessage();
 			}
 			return response;
