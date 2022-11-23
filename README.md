@@ -6,7 +6,7 @@ A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-t
 
 Why?  Many mTLS use-cases involve complex certificate validation in the application layer, which is *hard* to scale.
 
-This implementation is intended to allow a relying party/team to centralize that validation using a simple API, easily hosted by the relying party/team locally, or Via AWS Elastic Beanstalk.
+This implementation is intended to allow a relying party/team to centralize that validation using a simple API, easily hosted by the relying party/team locally, or via [AWS Elastic Beanstalk](/AWS-EBS.md).
 
 I.e., 
 
