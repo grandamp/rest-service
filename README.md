@@ -77,9 +77,9 @@ The service logs *all* requests, as well as *all* responses.  This allows for po
 
 As a relying party, you can perform post-processing on the logs for:
 
-- GCD Analysis of RSA keys based on modulus size
-- Determine PQC risk of ECC key usage
-- Lint all certificates to find non-compliant issuers
+- [GCD Analysis of RSA keys based on modulus size](https://factorable.net/resources.html)
+- [Determine PQC risk of ECC key usage](https://www.whitehouse.gov/wp-content/uploads/2022/11/M-23-02-M-Memo-on-Migrating-to-Post-Quantum-Cryptography.pdf)
+- [Lint all certificates](https://github.com/GSA/fpkilint) to find non-compliant issuers
 - Improve data quality within a certificate issuance ecosystem
 - ...
 
