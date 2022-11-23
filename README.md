@@ -8,7 +8,7 @@ Why?  Many mTLS use-cases involve complex certificate validation in the applicat
 
 This implementation is intended to allow a relying party/team to centralize that validation using a simple API, easily hosted by the relying party/team locally, or via [AWS Elastic Beanstalk](/AWS-EBS.md).
 
-I.e., 
+## Example use/business-case (mTLS Client Certificate Validation)
 
 After authenticating a user via mTLS [(preferably v1.3)](https://www.rfc-editor.org/rfc/rfc8446), a relying party can request validation from the service to determine if the certificate that is bound to the private key meets a given organization/team derived validation policy.
 
@@ -74,6 +74,14 @@ curl -v -X 'POST' \
 With the example above, the validation would fail, because a TLS client using my API gateway certificate would not validate successfully via the policy described above.
 
 The service logs *all* requests, as well as *all* responses.  This allows for post authentication analysis of the certificates to improve the overall infrastructure.
+
+As a relying party, you can perform post-processing on the logs for:
+
+- GCD Analysis of RSA keys based on modulus size
+- Determine PQC risk of ECC key usage
+- Lint all certificates to find non-compliant issuers
+- Improve data quality within a certificate issuance ecosystem
+- ...
 
 ## Building and Testing
 
