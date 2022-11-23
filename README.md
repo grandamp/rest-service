@@ -10,9 +10,9 @@ This implementation is intended to allow a relying party/team to centralize that
 
 I.e., 
 
-After authenticating a user via mTLS (preferably v1.3), a relying party can request validation from the service to determine if the certificate that is bound to the private key meets a given organization/team derived validation policy.
+After authenticating a user via mTLS [(preferably v1.3)](), a relying party can request validation from the service to determine if the certificate that is bound to the private key meets a given organization/team derived validation policy.
 
-Consider the U.S. Federal PKI, and; NIST SP 800-63-3.  If you would like to determine if a given mTLS user is leveraging IAL3/AAL3 credentials, a suitable validation policy (from an RFC 5280 perspective)[https://www.rfc-editor.org/rfc/rfc5280#section-6.1.1] *may* be:
+Consider the [U.S. Federal PKI](https://playbooks.idmanagement.gov/fpki/), and; [NIST SP 800-63-3](https://pages.nist.gov/800-63-3/sp800-63b.html#43-authenticator-assurance-level-3).  If you would like to determine if a given mTLS user is leveraging IAL3/AAL3 credentials, a suitable validation policy [from an RFC 5280 perspective](https://www.rfc-editor.org/rfc/rfc5280#section-6.1.1) *may* be:
 
 ```
 (a)  a prospective certification path of length n == {all FPKI Intermediates that have a relationship with FCPCAG2}
