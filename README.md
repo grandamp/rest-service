@@ -58,11 +58,11 @@ This service can implement such a policy using the service's following `validati
 }
 ```
 
-To validate a certificate that was presented by the client against this policy, the client simply needs to send the following request to the service, and parse the response:
+To validate a certificate that was presented by the client against this policy, the client simply needs to send the following request to the service [(such as my example service)](https://api.keysupport.org/swagger-ui/index.html), and parse the response [{example via `curl` and `jq`}](https://stedolan.github.io/jq/):
 
 ```
 curl -v -X 'POST' \
-  'http://localhost:5000/vss/v2/validate' \
+  'https://api.keysupport.org/vss/v2/validate' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
