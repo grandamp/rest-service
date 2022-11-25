@@ -17,25 +17,15 @@ public class RestServiceApplication {
 	 * TODO:  Define Spring Boot Properties:  https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
 	 */
     public static void main(String[] args) {
+    	/*
+    	 *  Set the default AWS Java2 Toolkit asynchronous HTTP client to AwsCrtAsyncHttpClient
+    	 */
+    	System.setProperty("software.amazon.awssdk.http.async.service.impl",
+    	"software.amazon.awssdk.http.crt.AwsCrtSdkHttpService");
         SpringApplication app = new SpringApplication(RestServiceApplication.class);
         app.setBannerMode(Banner.Mode.OFF);
         LOG.info("Service Starting");
         app.run(args);
-
-        /*
-         * Quick hack to get env and properties.  line.seperator with trash the JSON
-         */
-//      StringBuffer sb = new StringBuffer();
-//    	Map<String, String> env = System.getenv();
-//    	sb.append("{\"systemEnvironment\":{");
-//    	env.forEach((k, v) -> sb.append("\"" + k  + "\"" + ":" + "\"" + v + "\","));
-//    	sb.append("\"currentNanoTime\":" + System.nanoTime());
-//    	sb.append("},");
-//    	sb.append("\"systemProperties\":{");
-//    	System.getProperties().forEach((k, v) -> sb.append("\"" + k  + "\"" + ":" + "\"" + v + "\","));
-//    	sb.append("\"currentNanoTime\":" + System.nanoTime());
-//    	sb.append("}}");
-//    	LOG.info(sb.toString());
 
         /*
          * Set our policies singleton
@@ -48,7 +38,6 @@ public class RestServiceApplication {
          */
         @SuppressWarnings("unused")
 		IntermediateCacheSingleton intermediateCacheSingleton = IntermediateCacheSingleton.getInstance();
-
-    }
+   }
 
 }
