@@ -4,11 +4,21 @@
 
 At this point in time, the testing is manual, and functional.  I.e., does the service properly validate the certificate in contrast to the current production validation services.
 
-I've been running the Spring Boot service on localhost:5000, so when I make a change, I build and start the service, then execute the `curl` commands below.
+I've been running the Spring Boot service on localhost:5000, so when I make a change, I build and start the service, then execute the `curl` commands below.  
+
+The service is currently using S3 for fetching the current policies, which can be overridden using the example locally via [policies.json](./configuration/policies.json).  
+
+- Set S3 Bucket
+
+If using the AWS CLI and an S3 bucket, set the bucket name via:
+
+`export S3_BUCKET=<bucket_name>` 
 
 - Build and run
 
-`mvn clean package spring-boot:repackage; mvn spring-boot:run`
+I enable `certpath` and `TLS` debugging locally
+
+`mvn clean package spring-boot:repackage; java -Djava.security.debug=certpath -Djavax.net.debug=all -jar target/rest-service-eb.jar`
 
 - State TAPTest (revoked)
 
