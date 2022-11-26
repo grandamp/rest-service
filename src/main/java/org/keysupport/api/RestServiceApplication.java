@@ -1,6 +1,7 @@
 package org.keysupport.api;
 
-import org.keysupport.api.singletons.IntermediateCacheSingleton;
+import org.keysupport.api.pkix.cache.CacheAndDownloadTest;
+import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,10 @@ public class RestServiceApplication {
         SpringApplication app = new SpringApplication(RestServiceApplication.class);
         app.setBannerMode(Banner.Mode.OFF);
         LOG.info("Service Starting");
+        /*
+         * Test memcached/Elasticache before we start
+         */
+        CacheAndDownloadTest.getCRLsFromMd();
         app.run(args);
 
         /*

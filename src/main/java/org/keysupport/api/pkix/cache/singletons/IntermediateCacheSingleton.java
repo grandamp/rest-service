@@ -1,4 +1,4 @@
-package org.keysupport.api.singletons;
+package org.keysupport.api.pkix.cache.singletons;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

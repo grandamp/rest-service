@@ -39,12 +39,12 @@ import java.util.TimeZone;
 import org.jose4j.base64url.internal.apache.commons.codec.binary.Base64;
 import org.keysupport.api.RestServiceEventLogger;
 import org.keysupport.api.controller.ServiceException;
+import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.pojo.vss.Fail;
 import org.keysupport.api.pojo.vss.JsonX509Certificate;
 import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssResponse;
-import org.keysupport.api.singletons.IntermediateCacheSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
