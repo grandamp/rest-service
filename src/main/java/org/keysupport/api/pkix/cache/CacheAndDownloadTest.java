@@ -63,11 +63,11 @@ public class CacheAndDownloadTest {
 			}
 		}
 		/*
-		 * Download first CRL
+		 * Download 31nd CRL (http://pki.treasury.gov/DHS_CA2.crl)
 		 */
 		LOG.info("Downloading CRL data for the first URI we retrieved");
 		long now = System.currentTimeMillis();
-		request = HttpRequest.newBuilder().uri(crlUris.get(0)).build();
+		request = HttpRequest.newBuilder().uri(crlUris.get(31)).build();
 		response = null;
 		data = null;
 		try {
