@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * 
  * https://playbooks.idmanagement.gov/fpki/tools/fpkigraph/
  * 
- * (Source PKCS#7 CERTS-ONLY message containing all Federal PKI Intermediates)
+ * (Source CMS CERTS-ONLY message containing all Federal PKI Intermediates)
  * 
  * https://github.com/GSA/ficam-playbooks/raw/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b
  */
@@ -45,7 +45,7 @@ public class IntermediateCacheSingleton {
 	private IntermediateCacheSingleton() {
 
 		/*
-		 * Download the PKCS#7 File
+		 * Download the CMS object
 		 */
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(p7Uri)).build();
@@ -53,30 +53,37 @@ public class IntermediateCacheSingleton {
 		try {
 			response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
 		} catch (IOException e) {
-			LOG.error("Failed to download PKCS#7 file", e);
+			LOG.error("Failed to download CMS object", e);
 		} catch (InterruptedException e) {
-			LOG.error("Failed to download PKCS#7 file", e);
+			LOG.error("Failed to download CMS object", e);
 		}
 		byte[] data = response.body();
-		LOG.info("PKCS#7 file is " + data.length + " bytes in size");
+		LOG.info("CMS object is " + data.length + " bytes in size");
 		/*
-		 * Parse the PKCS#7 file
+		 * Parse the CMS object
 		 */
 		ByteArrayInputStream bais = new ByteArrayInputStream(data);
 		CertificateFactory cf = null;
 		try {
 			cf = CertificateFactory.getInstance("X.509");
 		} catch (CertificateException e) {
-			LOG.error("Failed to parse PKCS#7 file", e);
+			LOG.error("Failed to parse CMS object", e);
 		}
 		CertPath cp = null;
 		try {
 			cp = cf.generateCertPath(bais, "PKCS7");
 		} catch (CertificateException e) {
-			LOG.error("Failed to parse PKCS#7 file", e);
+			LOG.error("Failed to parse CMS object", e);
 		}
 		List<? extends Certificate> certs = cp.getCertificates();
-		LOG.info("PKCS#7 file contains " + certs.size() + " certificates");
+		LOG.info("CMS object contains " + certs.size() + " certificates");
+		/*
+		 * List the Intermediates we received
+		 */
+		for (Certificate cert : certs) {
+			LOG.info("CMS Cert:");
+			LOG.info(cert.toString());
+		}
 		/*
 		 * Place certificates into a Collection CertStore
 		 */
@@ -84,11 +91,11 @@ public class IntermediateCacheSingleton {
 		try {
 			intermediates = CertStore.getInstance("Collection", cparam, "SUN");
 		} catch (InvalidAlgorithmParameterException e) {
-			LOG.error("Failed to create CertStore from PKCS#7 file", e);
+			LOG.error("Failed to create CertStore from CMS object", e);
 		} catch (NoSuchAlgorithmException e) {
-			LOG.error("Failed to create CertStore from PKCS#7 file", e);
+			LOG.error("Failed to create CertStore from CMS object", e);
 		} catch (NoSuchProviderException e) {
-			LOG.error("Failed to create CertStore from PKCS#7 file", e);
+			LOG.error("Failed to create CertStore from CMS object", e);
 		}
 
 	}

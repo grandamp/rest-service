@@ -1,6 +1,5 @@
 package org.keysupport.api.pkix.cache;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -8,10 +7,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.security.cert.CertPath;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
 import java.util.List;
 
 import org.commonmark.node.Node;
@@ -25,54 +20,15 @@ public class CacheAndDownloadTest {
 
 	private final static Logger LOG = LoggerFactory.getLogger(CacheAndDownloadTest.class);
 
-	private static final String p7Uri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b";
-
 	private static final String mdUri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/staging/_fpki/2b_pivcas.md";
 
 	private static String configEndpoint = null;
 
 	/*
 	 * TODO:  Centralize our HTTP Client implementation, preferably using the AWS CRT Client, for now Using Native JDK11
+	 * 
+	 * Eliminated CacheAndDownloadTest.getP7Current() since it duplicates IntermediateCacheSingleton
 	 */
-	public static void getP7Current() {
-		/*
-		 * Create HTTP Client
-		 */
-		HttpClient client = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(p7Uri)).build();
-		/*
-		 * Get and Parse FPKI Playbook Graph CMS, looking for Intermediate CAs.
-		 */
-		HttpResponse<byte[]> response = null;
-		try {
-			response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
-		} catch (IOException e) {
-			LOG.error("Error fetching CMS object", e);
-		} catch (InterruptedException e) {
-			LOG.error("Error fetching CMS object", e);
-		}
-		byte[] data = response.body();
-		LOG.info("File is " + data.length + " bytes in size");
-		ByteArrayInputStream bais = new ByteArrayInputStream(data);
-		CertificateFactory cf = null;
-		try {
-			cf = CertificateFactory.getInstance("X.509");
-		} catch (CertificateException e) {
-			LOG.error("Error parsing CMS object", e);
-		}
-		CertPath cp = null;
-		try {
-			cp = cf.generateCertPath(bais, "PKCS7");
-		} catch (CertificateException e) {
-			LOG.error("Error parsing CMS object", e);
-		}
-		List<? extends Certificate> certs = cp.getCertificates();
-		LOG.info("File contains " + certs.size() + " certificates");
-		/*
-		 * List the Intermediates we received
-		 */
-		for (Certificate cert : certs) { System.out.println(cert); }
-	}
 
 	public static void getCRLsFromMd() {
 		/*
