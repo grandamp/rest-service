@@ -64,11 +64,11 @@ public class ValidatePKIX {
 		 * When decoding the certificate contents, don't always assume that the fields
 		 * will be non-NULL. For example, cardAuth certs MAY have a NULL subject name.
 		 */
-		if (null != cert.getSubjectDN()) {
-			response.x509SubjectName = cert.getSubjectDN().toString();
+		if (null != cert.getSubjectX500Principal()) {
+			response.x509SubjectName = cert.getSubjectX500Principal().toString();
 		}
-		if (null != cert.getIssuerDN()) {
-			response.x509IssuerName = cert.getIssuerDN().toString();
+		if (null != cert.getIssuerX500Principal()) {
+			response.x509IssuerName = cert.getIssuerX500Principal().toString();
 		}
 		if (null != cert.getSerialNumber()) {
 			response.x509SerialNumber = cert.getSerialNumber().toString();

@@ -8,6 +8,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -25,9 +27,11 @@ public class CacheAndDownloadTest {
 	private static String configEndpoint = null;
 
 	/*
-	 * TODO:  Centralize our HTTP Client implementation, preferably using the AWS CRT Client, for now Using Native JDK11
+	 * TODO: Centralize our HTTP Client implementation, preferably using the AWS CRT
+	 * Client, for now Using Native JDK11
 	 * 
-	 * Eliminated CacheAndDownloadTest.getP7Current() since it duplicates IntermediateCacheSingleton
+	 * Eliminated CacheAndDownloadTest.getP7Current() since it duplicates
+	 * IntermediateCacheSingleton
 	 */
 
 	public static void getCRLsFromMd() {
@@ -85,11 +89,12 @@ public class CacheAndDownloadTest {
 		/*
 		 * Memcached Start
 		 */
+		System.setProperty("net.spy.verifyAliveOnConnect", "true");
 		Integer clusterPort = 11211;
-        configEndpoint = System.getenv("MEMCACHED_CNF");
-        if (null == configEndpoint) {
-        	LOG.error("MEMCACHED_CNF Not Set!");
-        }
+		configEndpoint = System.getenv("MEMCACHED_CNF");
+		if (null == configEndpoint) {
+			LOG.error("MEMCACHED_CNF Not Set!");
+		}
 		MemcachedClient mcdClient = null;
 		try {
 			mcdClient = new MemcachedClient(new InetSocketAddress(configEndpoint, clusterPort));
@@ -97,9 +102,9 @@ public class CacheAndDownloadTest {
 			LOG.error("Error creating memcached client", e);
 		}
 		LOG.info("Caching the CRL data we retrieved");
-		mcdClient.set("crl0", 3600, data);
+		mcdClient.set(downloadURI.toASCIIString(), 3600, data);
 		now = System.currentTimeMillis();
-		byte[] data2 = (byte[]) mcdClient.get("crl0");
+		byte[] data2 = (byte[]) mcdClient.get(downloadURI.toASCIIString());
 		LOG.info("Fetching the CRL data we retrieved");
 		LOG.info("Cached Data is " + data2.length + " bytes in size");
 		later = System.currentTimeMillis();
