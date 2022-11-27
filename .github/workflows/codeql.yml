@@ -1,3 +1,5 @@
+
+
 # For most projects, this workflow file will not need changing; you simply need
 # to commit it to your repository.
 #
@@ -13,12 +15,14 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main" ]
+    branches: [ main ]
   schedule:
-    - cron: '37 4 * * 1'
+    # Runs at 11:32 UTC on Sun.
+    # https://crontab.guru/#32_11_*_*_0
+    - cron: '32 11 * * 0'
 
 jobs:
   analyze:
