@@ -29,6 +29,7 @@ import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -36,7 +37,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.jose4j.base64url.internal.apache.commons.codec.binary.Base64;
 import org.keysupport.api.RestServiceEventLogger;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
@@ -183,7 +183,7 @@ public class ValidatePKIX {
 			CertificateFactory cf = null;
 			ByteArrayInputStream bais = null;
 			try {
-				certBytes = Base64.decodeBase64(pemCert);
+				certBytes = Base64.getDecoder().decode(pemCert);
 			} catch (Throwable e) {
 				LOG.error("Internal Validation Error", e);
 				throw new ServiceException("Internal Validation Error");
@@ -339,7 +339,7 @@ public class ValidatePKIX {
 		for (Certificate currentCert : cp.getCertificates()) {
 			JsonX509Certificate bCert = new JsonX509Certificate();
 			try {
-				bCert.x509Certificate = Base64.encodeBase64String(currentCert.getEncoded());
+				bCert.x509Certificate = Base64.getEncoder().encodeToString(currentCert.getEncoded());
 				LOG.debug("Path Cert:\n" + currentCert.toString());
 			} catch (CertificateEncodingException e) {
 				LOG.error("Error Base64 encoding certificate from ReplyWantBack", e);

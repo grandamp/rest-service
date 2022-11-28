@@ -17,7 +17,6 @@ import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.ASN1TaggedObject;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.x509.GeneralName;
-import org.jose4j.base64url.internal.apache.commons.codec.binary.Base64;
 import org.keysupport.api.pojo.vss.SANValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -207,7 +206,7 @@ public class X509Util {
 		}
 		String x5tS256 = null;
 		try {
-			x5tS256 = Base64.encodeBase64String(digest);
+			x5tS256 = java.util.Base64.getEncoder().encodeToString(digest);
 		} catch (Throwable e) {
 			LOG.error("Error decoding certificate, returning SERVICEFAIL", e);
 		}

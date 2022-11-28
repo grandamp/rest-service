@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 import java.util.Map;
 import java.util.UUID;
 
-import org.jose4j.base64url.internal.apache.commons.codec.binary.Base64;
 import org.keysupport.api.ApiError;
 import org.keysupport.api.config.ConfigurationPolicies;
 import org.keysupport.api.controller.ServiceException;
@@ -135,7 +135,7 @@ public class ValidateController {
 			}
 			byte[] certBytes = null;
 			try {
-				certBytes = Base64.decodeBase64(pemCert);
+				certBytes = Base64.getDecoder().decode(pemCert);
 			} catch (Throwable e) {
 				LOG.error("Error decoding certificate, returning SERVICEFAIL", e);
 				throw new ServiceException("Error decoding x509Certificate");
