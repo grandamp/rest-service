@@ -24,14 +24,14 @@ import org.slf4j.LoggerFactory;
 /**
  * This class uses a singleton pattern to store the configured intermediate
  * cache.
- * 
+ *
  * Since we are initially testing against the U.S. Federal PKI, we will use an
  * artifact from the Federal PKI Playbooks:
- * 
+ *
  * https://playbooks.idmanagement.gov/fpki/tools/fpkigraph/
- * 
+ *
  * (Source CMS CERTS-ONLY message containing all Federal PKI Intermediates)
- * 
+ *
  * https://github.com/GSA/ficam-playbooks/raw/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b
  */
 public class IntermediateCacheSingleton {

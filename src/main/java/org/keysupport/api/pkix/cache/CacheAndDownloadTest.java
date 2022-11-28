@@ -8,8 +8,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -29,7 +27,7 @@ public class CacheAndDownloadTest {
 	/*
 	 * TODO: Centralize our HTTP Client implementation, preferably using the AWS CRT
 	 * Client, for now Using Native JDK11
-	 * 
+	 *
 	 * Eliminated CacheAndDownloadTest.getP7Current() since it duplicates
 	 * IntermediateCacheSingleton
 	 */

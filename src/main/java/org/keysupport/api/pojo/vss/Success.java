@@ -23,7 +23,7 @@ public class Success extends ValidationResult {
 	 */
 	@JsonProperty("result")
 	public static final String result = "SUCCESS";
-	
+
 	/**
 	 * Field x509CertificatePath
 	 */
@@ -31,13 +31,15 @@ public class Success extends ValidationResult {
 	public List<JsonX509Certificate> x509CertificatePath;
 
 	@JsonIgnore
-	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	private Map<String, Object> additionalProperties = new HashMap<>();
 
+	@Override
 	@JsonAnyGetter
 	public Map<String, Object> getAdditionalProperties() {
 		return this.additionalProperties;
 	}
 
+	@Override
 	@JsonAnySetter
 	public void setAdditionalProperty(String name, Object value) {
 		this.additionalProperties.put(name, value);
