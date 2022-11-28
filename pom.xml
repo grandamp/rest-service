@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.5</version>
+		<version>3.0.0</version>
 		<relativePath />
 	</parent>
 	<groupId>org.keysupport.api</groupId>
@@ -15,7 +15,7 @@
 	<name>rest-service</name>
 	<description>Spring Boot Rest Service for api.keysupport.org</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<aws.sdk.version>2.18.24</aws.sdk.version>
 	</properties>
 	<dependencyManagement>
@@ -31,14 +31,14 @@
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
-			<groupId>org.bitbucket.b_c</groupId>
-			<artifactId>jose4j</artifactId>
-			<version>0.9.2</version>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>elasticache-java-cluster-client</artifactId>
+			<version>1.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
-			<artifactId>bc-fips</artifactId>
-			<version>1.0.2.3</version>
+			<artifactId>bcprov-jdk15to18</artifactId>
+			<version>1.72</version>
 		</dependency>
 		<dependency>
 			<groupId>org.commonmark</groupId>
@@ -54,6 +54,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+   		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.13</version>
