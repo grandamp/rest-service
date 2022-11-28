@@ -15,6 +15,7 @@ import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.ASN1TaggedObject;
+import org.bouncycastle.asn1.BERTags;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.keysupport.api.pojo.vss.SANValue;
@@ -95,7 +96,8 @@ public class X509Util {
 					 * Remove prepended "#", if it exists. Assuming it is injected by Java code
 					 * somewhere, because that character is not part of the literal encoding.
 					 */
-					String rawFascnValue = value.getObject().toString().toUpperCase();
+					
+					String rawFascnValue = value.getBaseUniversal(true, BERTags.OCTET_STRING).toString().toUpperCase();
 					if (rawFascnValue.startsWith("#")) {
 						rawFascnValue = rawFascnValue.substring(1);
 					}
@@ -109,7 +111,7 @@ public class X509Util {
 				} else if (typeId.equals(new ASN1ObjectIdentifier("1.3.6.1.4.1.311.20.2.3"))) {
 					SANValue upn = new SANValue();
 					upn.type = "otherName:userPrincipalName";
-					upn.value = value.getObject().toString();
+					upn.value = value.getBaseUniversal(true, BERTags.UTF8_STRING).toString();
 					x509SubjectAltName.add(upn);
 				} else {
 					SANValue ukOther = new SANValue();
