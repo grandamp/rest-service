@@ -1,5 +1,5 @@
 #!/bin/bash
-export BASE_URI=http://localhost:8080
+export BASE_URI=http://localhost:5000
 export MEMCACHED_CNF=127.0.0.1
 #
 # Specific to my AWS Account, with AWS SDK using AWS CLI Config locally
