@@ -42,8 +42,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
-			<artifactId>bc-fips</artifactId>
-			<version>1.0.2.3</version>
+			<artifactId>bcprov-jdk15to18</artifactId>
+			<version>1.72</version>
 		</dependency>
 		<dependency>
 			<groupId>org.commonmark</groupId>
