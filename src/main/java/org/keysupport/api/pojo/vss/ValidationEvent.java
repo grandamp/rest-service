@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /*
  * Initial class to log validation failures and successes.
- * 
+ *
  * It would be preferable to instrument as much data as we can.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -9,9 +9,9 @@ import org.commonmark.node.Text;
 
 /*<pre>
  * This implementation is specific to a markdown source that tracks CRLs we are interested in:
- * 
+ *
  * I.e.,
- * 
+ *
  * - https://raw.githubusercontent.com/GSA/ficam-playbooks/staging/_fpki/2b_pivcas.md
  * </pre>
  */

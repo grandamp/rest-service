@@ -91,12 +91,12 @@ public class ValidateController {
 		X509Certificate clientCert = null;
 		CertificateFactory cf = null;
 		ByteArrayInputStream bais = null;
-		;
+
 		String x5tS256 = null;
 
 		/*
 		 * First, lets validate the request.
-		 * 
+		 *
 		 * Ensure we have validationPolicyId and clientCertificate
 		 */
 		if (null == request || null == request.validationPolicyId || null == request.x509Certificate) {
@@ -202,7 +202,7 @@ public class ValidateController {
 	@ExceptionHandler({ Exception.class })
 	public ResponseEntity<Object> handleAll(Exception e, WebRequest request) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
-		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
 
 }

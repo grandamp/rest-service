@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 public class SwaggerRedirectController {
 
 	private final String BASE_URI = System.getenv("BASE_URI");
-	
+
 	@Operation(hidden = true)
 	@RequestMapping("/")
     public RedirectView handleRoot() {

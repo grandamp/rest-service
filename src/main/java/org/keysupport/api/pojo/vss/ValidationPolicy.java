@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -24,7 +22,7 @@ public class ValidationPolicy {
 
 	/**
 	 * Field validationPolicyId
-	 * 
+	 *
 	 * TODO: Migrate to UUID
 	 */
 	@NotBlank
@@ -33,7 +31,7 @@ public class ValidationPolicy {
 
 	/**
 	 * Field validationPolicyName
-	 * 
+	 *
 	 * TODO: Integrate and document `validationPolicyName`
 	 */
 	@JsonProperty("validationPolicyName")
@@ -41,7 +39,7 @@ public class ValidationPolicy {
 
 	/**
 	 * Field validationPolicyDescription
-	 * 
+	 *
 	 * TODO: Integrate and document `validationPolicyDescription`
 	 */
 	@JsonProperty("validationPolicyDescription")

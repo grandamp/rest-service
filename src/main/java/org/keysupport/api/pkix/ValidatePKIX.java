@@ -110,25 +110,25 @@ public class ValidatePKIX {
 		 * Set System and Security properties to make the Sun provider: - Fetch CRLs via
 		 * the CDP extension - Check OCSP via the AIA extension - Chase CA Issuers via
 		 * the AIA extension
-		 * 
+		 *
 		 * TODO: Consider writing our own provider that leverages cached objects.
-		 * 
+		 *
 		 * The AIA and CDP chases would be valuable to update a local cache.
-		 * 
+		 *
 		 * The OCSP responses would be valuable *if* the CA is not able to produce a CRL
 		 * within 24 hours within the FPKI (or any issuing CA or intermediate the
 		 * relying party is willing to trust).
-		 * 
+		 *
 		 * See:
 		 * https://docs.oracle.com/en/java/javase/11/security/java-pki-programmers-guide.html
-		 * 
+		 *
 		 * -
 		 * https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/RevocationChecker.java
-		 * 
+		 *
 		 * Debug logging for CertPath can be enabled running the code via:
-		 * 
+		 *
 		 * - java -Djava.security.debug=certpath -jar target/rest-service-eb.jar
-		 * 
+		 *
 		 * <pre>
 		 */
 		System.setProperty("java.security.debug", "certpath");
@@ -139,7 +139,7 @@ public class ValidatePKIX {
 		 */
 		// System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
 		/*
-		 * 
+		 *
 		 */
 		try {
 			cert.checkValidity();
@@ -169,10 +169,10 @@ public class ValidatePKIX {
 		selector.setCertificate(cert);
 		/*
 		 * Initialize the TrustAnchor via the ValidationPolicy.
-		 * 
+		 *
 		 * TODO: It would be more efficient if the TrustAnchor was already rendered as
 		 * an X509Certificate
-		 * 
+		 *
 		 * TODO: Address policies that indicate multiple trust anchors, for now; we will
 		 * only inject the first trust anchor defined in the validation policy.
 		 */
@@ -202,7 +202,7 @@ public class ValidatePKIX {
 		}
 		LOG.debug("Trust Anchor:\n" + ta.toString());
 		TrustAnchor anchor = new TrustAnchor(ta, null);
-		List<Certificate> cert_list = new ArrayList<Certificate>();
+		List<Certificate> cert_list = new ArrayList<>();
 		cert_list.add(ta);
 		cert_list.add(cert);
 		CertStoreParameters cparam = new CollectionCertStoreParameters(cert_list);
@@ -228,7 +228,7 @@ public class ValidatePKIX {
 		/**
 		 * <pre>
 		 * TODO:  Add FPKI Intermediate Store from our prototype IntermediateCacheSingleton
-		 * 
+		 *
 		 * - https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/cert/CertStore.html
 		 * </pre>
 		 */
@@ -248,7 +248,7 @@ public class ValidatePKIX {
 		/*
 		 * TODO: The path construction may fail if the path can not be built, which we
 		 * should immediately return a response to the client.
-		 * 
+		 *
 		 * TODO: Consider isolating the following into it's own method, or class that
 		 * accommodates multiple exception types.
 		 */
@@ -259,7 +259,7 @@ public class ValidatePKIX {
 		} catch (CertPathBuilderException e) {
 			/*
 			 * Construct and return validation response.
-			 * 
+			 *
 			 * Otherwise, we need to instrument more data from e.getCause() and make a
 			 * decision.
 			 */
@@ -268,13 +268,13 @@ public class ValidatePKIX {
 			response.validationResult = fail;
 			/*
 			 * Resolve the real reason for the failure
-			 * 
+			 *
 			 * We may want to customize the `invalidityReasonText`
-			 * 
+			 *
 			 * To be safe, we will flag `isAffirmativelyInvalid` as `true` for any
 			 * CertPathBuilderException that has an explicit
 			 * CertPathBuilderException.getCause().
-			 * 
+			 *
 			 * Otherwise, we should assume the possibility that our cache is out of date.
 			 */
 			Throwable t = e.getCause();
@@ -320,22 +320,22 @@ public class ValidatePKIX {
 		/**
 		 * <pre>
 		 * TODO: Check the certificate for revocation, return final result
-		 * 
-		 * - We can store CRLs in an CertStore implementation, or store observed serial numbers for revoked 
+		 *
+		 * - We can store CRLs in an CertStore implementation, or store observed serial numbers for revoked
 		 *   certificates in database tables
 		 *   - https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/cert/CertStore.html
 		 * </pre>
 		 */
 		/*
 		 * If we got this far, the certificate is valid.
-		 * 
+		 *
 		 * Populate the ValidationSuccessData, add it to the result, and; return the
 		 * result.
-		 * 
+		 *
 		 * TODO: For now, add the certpath even if the client didn't request it.
 		 */
 		Success success = new Success();
-		List<JsonX509Certificate> x509CertificatePath = new ArrayList<JsonX509Certificate>();
+		List<JsonX509Certificate> x509CertificatePath = new ArrayList<>();
 		for (Certificate currentCert : cp.getCertificates()) {
 			JsonX509Certificate bCert = new JsonX509Certificate();
 			try {

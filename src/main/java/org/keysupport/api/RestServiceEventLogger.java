@@ -18,7 +18,7 @@ public class RestServiceEventLogger {
 
 	/*
 	 * TODO: We should probably configure the eventType values as an Enum.
-	 * 
+	 *
 	 * At the moment, we are logging validation failures, but; the intent is to log
 	 * all major events.
 	 */

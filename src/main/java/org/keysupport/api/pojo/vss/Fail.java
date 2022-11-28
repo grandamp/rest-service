@@ -22,7 +22,7 @@ public class Fail extends ValidationResult {
 	 */
 	@JsonProperty("result")
 	public static final String result = "FAIL";
-	
+
 	/**
 	 * Field isAffirmativelyInvalid.
 	 */
@@ -36,13 +36,15 @@ public class Fail extends ValidationResult {
 	public String invalidityReasonText;
 
 	@JsonIgnore
-	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	private Map<String, Object> additionalProperties = new HashMap<>();
 
+	@Override
 	@JsonAnyGetter
 	public Map<String, Object> getAdditionalProperties() {
 		return this.additionalProperties;
 	}
 
+	@Override
 	@JsonAnySetter
 	public void setAdditionalProperty(String name, Object value) {
 		this.additionalProperties.put(name, value);

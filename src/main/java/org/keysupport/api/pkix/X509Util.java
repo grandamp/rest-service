@@ -96,7 +96,7 @@ public class X509Util {
 					 * Remove prepended "#", if it exists. Assuming it is injected by Java code
 					 * somewhere, because that character is not part of the literal encoding.
 					 */
-					
+
 					String rawFascnValue = value.getBaseUniversal(true, BERTags.OCTET_STRING).toString().toUpperCase();
 					if (rawFascnValue.startsWith("#")) {
 						rawFascnValue = rawFascnValue.substring(1);
@@ -217,7 +217,7 @@ public class X509Util {
 
 	/**
 	 * Return a UUID derived from the UTF-8 String provided
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 */

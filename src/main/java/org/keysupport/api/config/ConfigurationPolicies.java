@@ -12,9 +12,9 @@ import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 public class ConfigurationPolicies {
 
 	/**
-	 * 
+	 *
 	 * TODO: Document
-	 * 
+	 *
 	 * @return ValidationPolicies validationPolicies
 	 */
 	public static ValidationPolicies getValidationPolicies() {
@@ -23,9 +23,9 @@ public class ConfigurationPolicies {
 	}
 
 	/**
-	 * 
+	 *
 	 * TODO: Document
-	 * 
+	 *
 	 * @param policy
 	 * @return
 	 */
