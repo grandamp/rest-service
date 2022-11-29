@@ -12,10 +12,11 @@ import org.slf4j.LoggerFactory;
 /**
  * This class uses a singleton pattern to manage our HTTP client needs.
  */
-
 public class HTTPClientSingleton {
 
 	private final static Logger LOG = LoggerFactory.getLogger(HTTPClientSingleton.class);
+	
+	private final static String USER_AGENT = "https://api.keysupport.org/swagger-ui/index.html";
 
 	private HttpClient client = null;
 
@@ -39,7 +40,12 @@ public class HTTPClientSingleton {
 	}
 
 	public byte[] getData(URI uri) {
-		HttpRequest request = HttpRequest.newBuilder().uri(uri).build();
+		/*
+		 * Set a custom User-Agent to identify calls from this code
+		 * 
+		 * TODO: Eventually change to use build info
+		 */
+		HttpRequest request = HttpRequest.newBuilder().uri(uri).setHeader("User-Agent", USER_AGENT).build();
 		HttpResponse<byte[]> response = null;
 		try {
 			response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());

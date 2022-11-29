@@ -1,26 +1,21 @@
 package org.keysupport.api.pkix.cache;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
+import org.keysupport.api.singletons.ElasticacheClientSingleton;
 import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.spy.memcached.MemcachedClient;
 
 public class CacheAndDownloadTest {
 
 	private final static Logger LOG = LoggerFactory.getLogger(CacheAndDownloadTest.class);
 
 	private static final String mdUri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/staging/_fpki/2b_pivcas.md";
-
-	private static String configEndpoint = null;
 
 	public static void getCRLsFromMd() {
 		/*
@@ -56,24 +51,13 @@ public class CacheAndDownloadTest {
 		/*
 		 * Memcached Start
 		 */
-		System.setProperty("net.spy.verifyAliveOnConnect", "true");
-		Integer clusterPort = 11211;
-		configEndpoint = System.getenv("MEMCACHED_CNF");
-		if (null == configEndpoint) {
-			LOG.error("MEMCACHED_CNF Not Set!");
-		}
-		MemcachedClient mcdClient = null;
-		try {
-			mcdClient = new MemcachedClient(new InetSocketAddress(configEndpoint, clusterPort));
-		} catch (IOException e) {
-			LOG.error("Error creating memcached client", e);
-		}
+		ElasticacheClientSingleton mcClient = ElasticacheClientSingleton.getInstance();
 		LOG.info("Caching the CRL data we retrieved");
-		mcdClient.set(downloadURI.toASCIIString(), 3600, data);
-		now = System.currentTimeMillis();
-		byte[] data2 = (byte[]) mcdClient.get(downloadURI.toASCIIString());
+		mcClient.putWithTtl(downloadURI.toASCIIString(), 3600, data);
 		LOG.info("Fetching the CRL data we retrieved");
-		LOG.info("Cached Data is " + data2.length + " bytes in size");
+		now = System.currentTimeMillis();
+		byte[] cachedData = mcClient.get(downloadURI.toASCIIString());
+		LOG.info("Cached Data is " + cachedData.length + " bytes in size");
 		later = System.currentTimeMillis();
 		LOG.info("Cache fetch time: " + (later - now) + "ms");
 		/*

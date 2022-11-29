@@ -25,11 +25,12 @@ public class RestServiceApplication {
     	"software.amazon.awssdk.http.crt.AwsCrtSdkHttpService");
         SpringApplication app = new SpringApplication(RestServiceApplication.class);
         LOG.info("Service Starting");
+        app.run(args);
+
         /*
          * Test memcached/Elasticache before we start
          */
         CacheAndDownloadTest.getCRLsFromMd();
-        app.run(args);
 
         /*
          * Set our policies singleton
