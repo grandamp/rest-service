@@ -1,11 +1,7 @@
 package org.keysupport.api.pkix.cache.singletons;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -18,6 +14,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.CollectionCertStoreParameters;
 import java.util.List;
 
+import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,17 +44,9 @@ public class IntermediateCacheSingleton {
 		/*
 		 * Download the CMS object
 		 */
-		HttpClient client = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(p7Uri)).build();
-		HttpResponse<byte[]> response = null;
-		try {
-			response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
-		} catch (IOException e) {
-			LOG.error("Failed to download CMS object", e);
-		} catch (InterruptedException e) {
-			LOG.error("Failed to download CMS object", e);
-		}
-		byte[] data = response.body();
+		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
+		URI uri = URI.create(p7Uri);
+		byte[] data = client.getData(uri);
 		LOG.info("CMS object is " + data.length + " bytes in size");
 		/*
 		 * Parse the CMS object

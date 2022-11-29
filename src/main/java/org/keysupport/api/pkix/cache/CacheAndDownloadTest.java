@@ -3,14 +3,12 @@ package org.keysupport.api.pkix.cache;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
+import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,32 +22,13 @@ public class CacheAndDownloadTest {
 
 	private static String configEndpoint = null;
 
-	/*
-	 * TODO: Centralize our HTTP Client implementation, preferably using the AWS CRT
-	 * Client, for now Using Native JDK11
-	 *
-	 * Eliminated CacheAndDownloadTest.getP7Current() since it duplicates
-	 * IntermediateCacheSingleton
-	 */
-
 	public static void getCRLsFromMd() {
-		/*
-		 * Create HTTP Client
-		 */
-		HttpClient client = HttpClient.newHttpClient();
 		/*
 		 * Get and Parse FPKI Playbook markdown, looking for CRLs.
 		 */
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(mdUri)).build();
-		HttpResponse<byte[]> response = null;
-		try {
-			response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
-		} catch (IOException e) {
-			LOG.error("Error fetching CMS object", e);
-		} catch (InterruptedException e) {
-			LOG.error("Error fetching CMS object", e);
-		}
-		byte[] data = response.body();
+		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
+		URI uri = URI.create(mdUri);
+		byte[] data = client.getData(uri);
 		LOG.info("File is " + data.length + " bytes in size");
 		String md = new String(data, StandardCharsets.UTF_8);
 		Parser mdParser = Parser.builder().build();
@@ -65,22 +44,12 @@ public class CacheAndDownloadTest {
 			}
 		}
 		/*
-		 * Download 31nd CRL (http://pki.treasury.gov/DHS_CA2.crl)
+		 * Download 32nd CRL (http://pki.treasury.gov/DHS_CA2.crl)
 		 */
 		URI downloadURI = crlUris.get(31);
 		LOG.info("Downloading CRL data: " + downloadURI.toASCIIString());
 		long now = System.currentTimeMillis();
-		request = HttpRequest.newBuilder().uri(downloadURI).build();
-		response = null;
-		data = null;
-		try {
-			response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
-		} catch (IOException e) {
-			LOG.error("Error fetching CMS object", e);
-		} catch (InterruptedException e) {
-			LOG.error("Error fetching CMS object", e);
-		}
-		data = response.body();
+		data = client.getData(downloadURI);
 		LOG.info("File is " + data.length + " bytes in size");
 		long later = System.currentTimeMillis();
 		LOG.info("HTTP fetch time: " + (later - now) + "ms");
