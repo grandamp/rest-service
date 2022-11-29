@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class uses a singleton pattern to store the configured Trust Anchors.
+ * This class uses a singleton pattern to manage our HTTP client needs.
  */
 
 public class HTTPClientSingleton {
