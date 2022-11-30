@@ -55,6 +55,8 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 
 	private static int fpkiRevokedCertificates = 0;
 
+	private static int fpkiCrlBytes = 0;
+	
 	public static void main(String args[]) {
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		/*
@@ -120,6 +122,7 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 				LOG.info("Downloading CRL data: " + currentUri.toASCIIString());
 				long now = System.currentTimeMillis();
 				data = client.getData(currentUri);
+				fpkiCrlBytes = fpkiCrlBytes + data.length;
 				LOG.info("File is " + data.length + " bytes in size");
 				long later = System.currentTimeMillis();
 				LOG.info("HTTP fetch time: " + (later - now) + "ms");
@@ -200,6 +203,7 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 			}
 		}
 		LOG.info("Total number of revoked certificates: " + fpkiRevokedCertificates);
+		LOG.info("Total number of CRL Bytes: " + fpkiCrlBytes);
 	}
 
 }
