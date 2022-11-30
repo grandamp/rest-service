@@ -31,6 +31,10 @@ public class ElasticacheClientSingleton {
 		 */
 		System.setProperty("net.spy.verifyAliveOnConnect", "true");
 		configEndpoint = System.getenv("MEMCACHED_CNF");
+		/*
+		 * temp for testing
+		 */
+		//configEndpoint = "127.0.0.1";
 		if (null == configEndpoint) {
 			LOG.error("MEMCACHED_CNF Not Set!");
 		}
@@ -83,7 +87,7 @@ public class ElasticacheClientSingleton {
 	}
 
 	public void put(final String key, final byte[] value) {
-		putWithTtl(key, 0, value);
+		putWithTtl(key, 3600, value);
 	}
 
 	public void putWithTtl(final String key, final int ttl, final byte[] value) {

@@ -61,16 +61,31 @@ public class HTTPClientSingleton {
 		 *
 		 * TODO: Eventually change to use build info
 		 */
-		HttpRequest request = HttpRequest.newBuilder().uri(uri).setHeader("User-Agent", USER_AGENT).setHeader(accept, mimeType).build();
-		HttpResponse<byte[]> response = null;
-		try {
-			response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
-		} catch (IOException e) {
-			LOG.error("Error GETing data", e);
-		} catch (InterruptedException e) {
-			LOG.error("Error GETing data", e);
+		/*
+		 * Initial caching test, where we will cache all data via the call with the
+		 * default 1hr TTL.
+		 */
+		ElasticacheClientSingleton mcClient = ElasticacheClientSingleton.getInstance();
+		byte[] cacheResponse = mcClient.get(uri.toASCIIString());
+		if (null != cacheResponse) {
+			return cacheResponse;
+		} else {
+			HttpRequest request = HttpRequest.newBuilder().uri(uri).setHeader("User-Agent", USER_AGENT)
+					.setHeader(accept, mimeType).build();
+			HttpResponse<byte[]> response = null;
+			try {
+				response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+			} catch (IOException e) {
+				LOG.error("Error GETing data", e);
+			} catch (InterruptedException e) {
+				LOG.error("Error GETing data", e);
+			}
+			/*
+			 * Cache the response, and return to the client
+			 */
+			mcClient.put(uri.toASCIIString(), response.body());
+			return response.body();
 		}
-		return response.body();
 	}
 
 	public X509CRL getCrl(URI uri) {
