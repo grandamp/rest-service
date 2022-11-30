@@ -1,7 +1,8 @@
 package org.keysupport.api.pkix.cache;
 
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
+import java.security.cert.CRLException;
+import java.security.cert.X509CRL;
 import java.util.List;
 
 import org.commonmark.node.Node;
@@ -23,9 +24,8 @@ public class CacheAndDownloadTest {
 		 */
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		URI uri = URI.create(mdUri);
-		byte[] data = client.getData(uri);
-		LOG.info("File is " + data.length + " bytes in size");
-		String md = new String(data, StandardCharsets.UTF_8);
+		String md = client.getText(uri);
+		LOG.info("File is " + md.getBytes().length + " bytes in size");
 		Parser mdParser = Parser.builder().build();
 		Node fpkiPlaybookDocument = mdParser.parse(md);
 		HttpCrlParsingVisitor visitor = new HttpCrlParsingVisitor();
@@ -44,7 +44,13 @@ public class CacheAndDownloadTest {
 		URI downloadURI = crlUris.get(31);
 		LOG.info("Downloading CRL data: " + downloadURI.toASCIIString());
 		long now = System.currentTimeMillis();
-		data = client.getData(downloadURI);
+		X509CRL currentCrl = client.getCrl(downloadURI);
+		byte[] data = null;
+		try {
+			data = currentCrl.getEncoded();
+		} catch (CRLException e) {
+			LOG.error("Failed to convert CRL object to byte[]", e);
+		}
 		LOG.info("File is " + data.length + " bytes in size");
 		long later = System.currentTimeMillis();
 		LOG.info("HTTP fetch time: " + (later - now) + "ms");

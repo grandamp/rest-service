@@ -1,9 +1,7 @@
 package org.keysupport.api.pkix.cache;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -15,8 +13,7 @@ import java.security.cert.CertStore;
 import java.security.cert.CertStoreException;
 import java.security.cert.CertStoreParameters;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509CRL;
 import java.security.cert.X509CRLEntry;
@@ -39,9 +36,9 @@ import org.slf4j.LoggerFactory;
 
 /*
  * Intended for a local test, by running via command line or IDE
- * 
+ *
  * TODO: Instument https://aws-otel.github.io/docs/getting-started/java-sdk/trace-auto-instr
- * 
+ *
  */
 public class DownloadAndVerifyAllPlaybookCRLs {
 
@@ -56,31 +53,24 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 	private static int fpkiRevokedCertificates = 0;
 
 	private static int fpkiCrlBytes = 0;
-	
+
 	public static void main(String args[]) {
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		/*
 		 * Get playbook intermediates
 		 */
 		URI uri = URI.create(p7Uri);
-		byte[] data = client.getData(uri);
-		LOG.info("CMS object is " + data.length + " bytes in size");
+		CertPath cp = client.getCms(uri);
+		int lenBytes = 0;
+		try {
+			lenBytes = cp.getEncoded().length;
+		} catch (CertificateEncodingException e) {
+			LOG.error("Failed to convert CMS object to byte[]", e);
+		}
+		LOG.info("CMS object is " + lenBytes + " bytes in size");
 		/*
 		 * Parse the CMS object
 		 */
-		ByteArrayInputStream bais = new ByteArrayInputStream(data);
-		CertificateFactory cf = null;
-		try {
-			cf = CertificateFactory.getInstance("X.509");
-		} catch (CertificateException e) {
-			LOG.error("Failed to parse CMS object", e);
-		}
-		CertPath cp = null;
-		try {
-			cp = cf.generateCertPath(bais, "PKCS7");
-		} catch (CertificateException e) {
-			LOG.error("Failed to parse CMS object", e);
-		}
 		@SuppressWarnings("unchecked")
 		List<X509Certificate> certs = (List<X509Certificate>) cp.getCertificates();
 		LOG.info("CMS object contains " + certs.size() + " certificates");
@@ -107,9 +97,8 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 		 * Get and Parse FPKI Playbook markdown, looking for CRLs.
 		 */
 		uri = URI.create(mdUri);
-		data = client.getData(uri);
-		LOG.info("File is " + data.length + " bytes in size");
-		String md = new String(data, StandardCharsets.UTF_8);
+		String md = client.getText(uri);
+		LOG.info("File is " + md.getBytes().length + " bytes in size");
 		Parser mdParser = Parser.builder().build();
 		Node fpkiPlaybookDocument = mdParser.parse(md);
 		HttpCrlParsingVisitor visitor = new HttpCrlParsingVisitor();
@@ -119,25 +108,26 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 			LOG.error("Failed to parse HTTP CRLs from FPKI Playbook!");
 		} else {
 			for (URI currentUri : crlUris) {
-				LOG.info("Downloading CRL data: " + currentUri.toASCIIString());
-				long now = System.currentTimeMillis();
-				data = client.getData(currentUri);
-				fpkiCrlBytes = fpkiCrlBytes + data.length;
-				LOG.info("File is " + data.length + " bytes in size");
-				long later = System.currentTimeMillis();
-				LOG.info("HTTP fetch time: " + (later - now) + "ms");
 				/*
 				 * Render CRL and print information
 				 */
-				X509CRL currentCrl = null;
-				try {
-					currentCrl = (X509CRL) cf.generateCRL(new ByteArrayInputStream(data));
-				} catch (CRLException e) {
-					LOG.error("Failed to render CRL", e);
-				}
+				LOG.info("Downloading CRL data: " + currentUri.toASCIIString());
+				long now = System.currentTimeMillis();
+				X509CRL currentCrl = client.getCrl(currentUri);
+				long later = System.currentTimeMillis();
+				LOG.info("HTTP fetch time: " + (later - now) + "ms");
 				if (null == currentCrl) {
 					LOG.error("Failed to render CRL");
+					LOG.error("We should reject this CRL: " + currentUri.toASCIIString());
 				} else {
+					lenBytes = 0;
+					try {
+						lenBytes = currentCrl.getEncoded().length;
+					} catch (CRLException e) {
+						LOG.error("Failed to convert CRL object to byte[]", e);
+					}
+					fpkiCrlBytes = fpkiCrlBytes + lenBytes;
+					LOG.info("File is " + lenBytes + " bytes in size");
 					LOG.info("CRL Issuer: " + currentCrl.getIssuerX500Principal().getName());
 					LOG.info("CRL thisUpdate: " + currentCrl.getThisUpdate().toString());
 					LOG.info("CRL nextUpdate: " + currentCrl.getThisUpdate().toString());
