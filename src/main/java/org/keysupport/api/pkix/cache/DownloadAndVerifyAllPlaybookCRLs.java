@@ -19,6 +19,7 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509CRLEntry;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -29,9 +30,14 @@ import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
+import org.keysupport.api.pkix.X509Util;
+import org.keysupport.api.pkix.cache.pojo.CachedX509Crl;
 import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 /*
@@ -55,6 +61,7 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 	private static int fpkiCrlBytes = 0;
 
 	public static void main(String args[]) {
+		
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		/*
 		 * Get playbook intermediates
@@ -104,10 +111,13 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 		HttpCrlParsingVisitor visitor = new HttpCrlParsingVisitor();
 		fpkiPlaybookDocument.accept(visitor);
 		List<URI> crlUris = visitor.getCrlUris();
+		List<CachedX509Crl> cachedCrls = new ArrayList<CachedX509Crl>();
 		if (null == crlUris) {
 			LOG.error("Failed to parse HTTP CRLs from FPKI Playbook!");
 		} else {
 			for (URI currentUri : crlUris) {
+				CachedX509Crl cCrl = new CachedX509Crl();
+				cCrl.uri = currentUri;
 				/*
 				 * Render CRL and print information
 				 */
@@ -128,14 +138,20 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 					}
 					fpkiCrlBytes = fpkiCrlBytes + lenBytes;
 					LOG.info("File is " + lenBytes + " bytes in size");
+					cCrl.issuerName = currentCrl.getIssuerX500Principal().getEncoded();
 					LOG.info("CRL Issuer: " + currentCrl.getIssuerX500Principal().getName());
-					LOG.info("CRL thisUpdate: " + currentCrl.getThisUpdate().toString());
-					LOG.info("CRL nextUpdate: " + currentCrl.getThisUpdate().toString());
+					
+					cCrl.thisUpdate = X509Util.ISO8601DateString(currentCrl.getThisUpdate());
+					LOG.info("CRL thisUpdate: " + cCrl.thisUpdate);
+					cCrl.nextUpdate = X509Util.ISO8601DateString(currentCrl.getNextUpdate());
+					LOG.info("CRL nextUpdate: " + cCrl.nextUpdate);
 					Set<? extends X509CRLEntry> entries = currentCrl.getRevokedCertificates();
 					if (null == entries) {
 						LOG.info("CRL Entries: 0");
+						cCrl.numEntries = 0;
 					} else {
 						LOG.info("CRL Entries: " + entries.size());
+						cCrl.numEntries = entries.size();
 						fpkiRevokedCertificates = fpkiRevokedCertificates + entries.size();
 					}
 					byte[] crlAkiBytes = currentCrl.getExtensionValue(Extension.authorityKeyIdentifier.toString());
@@ -158,6 +174,7 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 					if (null == skiBytes) {
 						LOG.error("We should reject this CRL: " + currentUri.toASCIIString());
 					} else {
+						cCrl.authorityKeyIdentifier = skiBytes;
 						skiSelector.setSubjectKeyIdentifier(skiBytes);
 						Collection<? extends Certificate> certsFromSelector = null;
 						try {
@@ -170,6 +187,7 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 							LOG.info("Found issuer in our intermediate store: " + signingCA.getSubjectX500Principal().getName());
 							try {
 								currentCrl.verify(signingCA.getPublicKey());
+								cachedCrls.add(cCrl);
 								LOG.info("CRL Signature verified: " + currentUri.toASCIIString());
 							} catch (InvalidKeyException e) {
 								LOG.error("Error verifying CRL", e);
@@ -194,6 +212,14 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 		}
 		LOG.info("Total number of revoked certificates: " + fpkiRevokedCertificates);
 		LOG.info("Total number of CRL Bytes: " + fpkiCrlBytes);
+		ObjectMapper mapper = new ObjectMapper();
+		String cachedCrlsJson = null;
+		try {
+			cachedCrlsJson = mapper.writeValueAsString(cachedCrls);
+		} catch (JsonProcessingException e) {
+			LOG.error("Error converting POJO to JSON String", e);
+		}
+		LOG.info(cachedCrlsJson);
 	}
-
+	
 }

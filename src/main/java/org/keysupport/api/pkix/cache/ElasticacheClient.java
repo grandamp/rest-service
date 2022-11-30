@@ -1,4 +1,4 @@
-package org.keysupport.api.singletons;
+package org.keysupport.api.pkix.cache;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -13,29 +13,28 @@ import net.spy.memcached.MemcachedClient;
  * client needs.
  */
 
-public class ElasticacheClientSingleton {
+public class ElasticacheClient {
 
-	private final static Logger LOG = LoggerFactory.getLogger(ElasticacheClientSingleton.class);
+	private final static Logger LOG = LoggerFactory.getLogger(ElasticacheClient.class);
 
 	private MemcachedClient mcClient = null;
 
-	private static String configEndpoint = null;
+	private String configEndpoint = null;
 
 	private final static Integer clusterPort = 11211;
 
 	private String name;
 
-	private ElasticacheClientSingleton() {
+	public ElasticacheClient(String configEndpoint) {
+		this.configEndpoint = configEndpoint;
 		/*
 		 * Memcached Start
 		 */
 		System.setProperty("net.spy.verifyAliveOnConnect", "true");
-		configEndpoint = System.getenv("MEMCACHED_CNF");
 		/*
 		 * temp for testing
 		 */
-		//configEndpoint = "127.0.0.1";
-		if (null == configEndpoint) {
+		if (null == this.configEndpoint) {
 			LOG.error("MEMCACHED_CNF Not Set!");
 		}
 		try {
@@ -45,15 +44,7 @@ public class ElasticacheClientSingleton {
 		}
 	}
 
-	private static class SingletonHelper {
-		private static final ElasticacheClientSingleton INSTANCE = new ElasticacheClientSingleton();
-	}
-
-	public static ElasticacheClientSingleton getInstance() {
-		return SingletonHelper.INSTANCE;
-	}
-
-	public Object getNativeCache() {
+	public Object getClient() {
 		return mcClient;
 	}
 
@@ -95,6 +86,10 @@ public class ElasticacheClientSingleton {
 			mcClient.set(key.toString(), ttl, value);
 			LOG.info("Cache Put for key: " + key);
 		}
+	}
+
+	public void close() {
+		mcClient.shutdown();
 	}
 
 	/*

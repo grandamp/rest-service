@@ -12,7 +12,11 @@ import java.security.cert.CertPath;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
+import java.util.List;
+import java.util.Optional;
 
+import org.keysupport.api.pkix.X509Util;
+import org.keysupport.api.pkix.cache.ElasticacheClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -65,9 +69,10 @@ public class HTTPClientSingleton {
 		 * Initial caching test, where we will cache all data via the call with the
 		 * default 1hr TTL.
 		 */
-		ElasticacheClientSingleton mcClient = ElasticacheClientSingleton.getInstance();
+		ElasticacheClient mcClient = new ElasticacheClient("127.0.0.1");
 		byte[] cacheResponse = mcClient.get(uri.toASCIIString());
 		if (null != cacheResponse) {
+			mcClient.close();
 			return cacheResponse;
 		} else {
 			HttpRequest request = HttpRequest.newBuilder().uri(uri).setHeader("User-Agent", USER_AGENT)
@@ -80,10 +85,25 @@ public class HTTPClientSingleton {
 			} catch (InterruptedException e) {
 				LOG.error("Error GETing data", e);
 			}
+			java.net.http.HttpHeaders headers = response.headers();
+			List<String> cControl = headers.allValues("Cache-Control");
+			for (String curVal: cControl) {
+				LOG.info("Header:Cache-Control:value: " + curVal);
+			}
+			Optional<String> eTag = headers.firstValue("ETag");
+			if (eTag.isPresent()) {
+				LOG.info("Header:ETag:value: " + eTag.get());
+			}
+			Optional<String> lastModified = headers.firstValue("Last-Modified");
+			if (lastModified.isPresent()) {
+				LOG.info("Header:Last-Modified:value: " + X509Util.ISO8601DateStringFromHttpHeader(lastModified.get()));
+			}
+			
 			/*
 			 * Cache the response, and return to the client
 			 */
 			mcClient.put(uri.toASCIIString(), response.body());
+			mcClient.close();
 			return response.body();
 		}
 	}

@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
-import org.keysupport.api.singletons.ElasticacheClientSingleton;
 import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,12 +56,13 @@ public class CacheAndDownloadTest {
 		/*
 		 * Memcached Start
 		 */
-		ElasticacheClientSingleton mcClient = ElasticacheClientSingleton.getInstance();
+		ElasticacheClient mcClient = new ElasticacheClient(System.getenv("MEMCACHED_CNF"));
 		LOG.info("Caching the CRL data we retrieved");
 		mcClient.putWithTtl(downloadURI.toASCIIString(), 3600, data);
 		LOG.info("Fetching the CRL data we retrieved");
 		now = System.currentTimeMillis();
 		byte[] cachedData = mcClient.get(downloadURI.toASCIIString());
+		mcClient.close();
 		LOG.info("Cached Data is " + cachedData.length + " bytes in size");
 		later = System.currentTimeMillis();
 		LOG.info("Cache fetch time: " + (later - now) + "ms");
