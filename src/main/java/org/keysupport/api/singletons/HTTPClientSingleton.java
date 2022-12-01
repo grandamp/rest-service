@@ -111,6 +111,17 @@ public class HTTPClientSingleton {
 	}
 
 	public X509CRL getCrl(URI uri) {
+		/*
+		 * TODO: Migrate CRL Signature validation, tracking, and; inclusion into this method.
+		 * 
+		 * This could allow us to cache the CRLs centrally across all API workers, and offer a cache of FPKI CRL data via out Intermediate CertStore singleton.
+		 * 
+		 * The CRL data could be provided to a rest endpoint, and serve as a cache for an internal (optionally external) OCSP responder
+		 * 
+		 * - https://docs.oracle.com/en/java/javase/17/security/java-pki-programmers-guide.html#GUID-E6E737DB-4000-4005-969E-BCD0238B1566
+		 * 
+		 * This would require the implementation to use an OCSP signing key and certificate.
+		 */
 		byte[] crlBytes = getData(uri, mimeCrl);
 		X509CRL crl = null;
 		CertificateFactory cf = null;
