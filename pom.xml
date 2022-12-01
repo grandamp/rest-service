@@ -11,12 +11,18 @@
 	</parent>
 	<groupId>org.keysupport.api</groupId>
 	<artifactId>rest-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<name>rest-service</name>
 	<description>Spring Boot Rest Service for api.keysupport.org</description>
 	<properties>
 		<java.version>17</java.version>
 		<aws.sdk.version>2.18.28</aws.sdk.version>
+		<aws.sdk.crtClient.version>2.18.28-PREVIEW</aws.sdk.crtClient.version>
+		<aws.elasticacheJavaClusterClient.version>1.2.0</aws.elasticacheJavaClusterClient.version>
+		<org.bc.version>1.72</org.bc.version>
+		<org.commonmark.version>0.21.0</org.commonmark.version>
+		<springdoc.openapi.starterwebmvc.ui.version>2.0.0</springdoc.openapi.starterwebmvc.ui.version>
+		<springdoc.openapi.ui>1.6.13</springdoc.openapi.ui>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -33,17 +39,17 @@
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>elasticache-java-cluster-client</artifactId>
-			<version>1.2.0</version>
+			<version>${aws.elasticacheJavaClusterClient.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15to18</artifactId>
-			<version>1.72</version>
+			<version>${org.bc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.commonmark</groupId>
 			<artifactId>commonmark</artifactId>
-			<version>0.21.0</version>
+			<version>${org.commonmark.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -56,12 +62,12 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.0.0</version>
+			<version>${springdoc.openapi.starterwebmvc.ui.version}</version>
 		</dependency>
    		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.13</version>
+			<version>${springdoc.openapi.ui}</version>
 		</dependency>
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
@@ -76,7 +82,7 @@
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
 			<artifactId>aws-crt-client</artifactId>
-			<version>2.18.28-PREVIEW</version>
+			<version>${aws.sdk.crtClient.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -112,4 +118,5 @@
 		</plugins>
 	</build>
 
+	<url>https://api.keysupport.org/swagger-ui/index.html</url>
 </project>
