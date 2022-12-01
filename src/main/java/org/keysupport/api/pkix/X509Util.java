@@ -251,4 +251,10 @@ public class X509Util {
 	public static String ISO8601DateStringFromHttpHeader(String headerDateValue) {
 		return ISO8601DateString(dateFromHttpHeader(headerDateValue));
 	}
+
+	public static int calculateCacheTTL(Date then) {
+		Date now = new Date();
+		return (int)(then.getTime()-now.getTime())/1000;
+	}
+
 }

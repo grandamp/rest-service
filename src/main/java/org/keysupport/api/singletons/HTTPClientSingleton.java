@@ -39,6 +39,8 @@ public class HTTPClientSingleton {
 	private final static String mimeTextPlainUtf8 = "text/plain; charset=utf-8";
 
 	private HttpClient client = null;
+	
+	private ElasticacheClient mcClient = null;
 
 	private HTTPClientSingleton() {
 		/*
@@ -69,10 +71,11 @@ public class HTTPClientSingleton {
 		 * Initial caching test, where we will cache all data via the call with the
 		 * default 1hr TTL.
 		 */
-		ElasticacheClient mcClient = new ElasticacheClient("127.0.0.1");
+		if (null == mcClient) {
+			mcClient = new ElasticacheClient("127.0.0.1");
+		}
 		byte[] cacheResponse = mcClient.get(uri.toASCIIString());
 		if (null != cacheResponse) {
-			mcClient.close();
 			return cacheResponse;
 		} else {
 			HttpRequest request = HttpRequest.newBuilder().uri(uri).setHeader("User-Agent", USER_AGENT)
@@ -103,7 +106,6 @@ public class HTTPClientSingleton {
 			 * Cache the response, and return to the client
 			 */
 			mcClient.put(uri.toASCIIString(), response.body());
-			mcClient.close();
 			return response.body();
 		}
 	}
@@ -147,4 +149,11 @@ public class HTTPClientSingleton {
 		return new String(textBytes, StandardCharsets.UTF_8);
 	}
 
+	/*
+	 * Likely only a method for testing
+	 */
+	public void reset() {
+		client = null;
+		mcClient.close();
+	}
 }

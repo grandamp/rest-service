@@ -55,17 +55,12 @@ public class CacheAndDownloadTest {
 		LOG.info("HTTP fetch time: " + (later - now) + "ms");
 		/*
 		 * Memcached Start
+		 * 
+		 * Clear our cache for local testing.
 		 */
 		ElasticacheClient mcClient = new ElasticacheClient(System.getenv("MEMCACHED_CNF"));
-		LOG.info("Caching the CRL data we retrieved");
-		mcClient.putWithTtl(downloadURI.toASCIIString(), 3600, data);
-		LOG.info("Fetching the CRL data we retrieved");
-		now = System.currentTimeMillis();
-		byte[] cachedData = mcClient.get(downloadURI.toASCIIString());
+		mcClient.clear();
 		mcClient.close();
-		LOG.info("Cached Data is " + cachedData.length + " bytes in size");
-		later = System.currentTimeMillis();
-		LOG.info("Cache fetch time: " + (later - now) + "ms");
 		/*
 		 * Memcached End
 		 */

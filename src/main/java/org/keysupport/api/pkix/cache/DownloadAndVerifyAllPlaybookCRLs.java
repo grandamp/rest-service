@@ -220,6 +220,7 @@ public class DownloadAndVerifyAllPlaybookCRLs {
 			LOG.error("Error converting POJO to JSON String", e);
 		}
 		LOG.info(cachedCrlsJson);
+		client.reset();
 	}
 	
 }

@@ -1,0 +1,634 @@
+2022-11-30 21:43:52.981 INFO net.spy.memcached.MemcachedConnection:  Setting retryQueueSize to -1
+2022-11-30 21:43:52.989 INFO net.spy.memcached.MemcachedConnection:  Added {QA sa=/127.0.0.1:11211, #Rops=0, #Wops=0, #iq=0, topRop=null, topWop=null, toWrite=0, interested=0} to connect queue
+2022-11-30 21:43:52.995 WARN net.spy.memcached.MemcachedConnection:  Could not redistribute to another node, retrying primary node for https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b.
+21:43:53.001 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b
+21:43:53.042 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS object is 239569 bytes in size
+21:43:53.042 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS object contains 150 certificates
+21:43:53.043 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Boeing PCA G3,OU=certservers,O=Boeing,C=US
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Bureau of the Census Agency CA,OU=Department of Commerce,O=U.S. Government,C=US
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Carillon Federal Services PIV-I CA1,OU=Certification Authorities,O=Carillon Federal Services Inc.,C=US
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Carillon Federal Services PIV-I CA2,OU=Certification Authorities,O=Carillon Federal Services Inc.,C=US
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Carillon PKI Services G2 Root CA 2,OU=Certification Authorities,O=Carillon Information Security Inc.,C=CA
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=CertiPath Bridge CA - G3,OU=Certification Authorities,O=CertiPath,C=US
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=CertiPath Bridge CA - G3,OU=Certification Authorities,O=CertiPath,C=US
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=CertiPath Bridge CA - G3,OU=Certification Authorities,O=CertiPath,C=US
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=CertiPath Bridge CA - G3,OU=Certification Authorities,O=CertiPath,C=US
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DigiCert Class 3 SSP Intermediate CA - G4,O=DigiCert\, Inc.,C=US
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DigiCert Federal SSP Intermediate CA - G5,O=DigiCert\, Inc.,C=US
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DigiCert Federal SSP Intermediate CA - G6,O=DigiCert\, Inc.,C=US
+21:43:53.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DigiCert Federated ID CA - G2,O=DigiCert\, Inc.,C=US
+21:43:53.045 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DigiCert Federated ID L3 CA,OU=www.digicert.com,O=DigiCert Inc,C=US
+21:43:53.045 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DocuSign Root CA,OU=TSCP,O=DocuSign Inc.,C=US
+21:43:53.045 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD DERILITY CA-1,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.045 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD EMAIL CA-49,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.045 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD EMAIL CA-50,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.045 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD EMAIL CA-51,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.045 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD EMAIL CA-52,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.045 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD EMAIL CA-59,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.045 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD EMAIL CA-62,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.045 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD EMAIL CA-63,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD EMAIL CA-64,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD EMAIL CA-65,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD ID CA-49,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD ID CA-50,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD ID CA-51,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD ID CA-52,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD ID CA-59,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD ID CA-62,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD ID CA-63,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD ID CA-64,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD ID CA-65,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DoD Interoperability Root CA 2,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DoD Root CA 3,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD SW CA-53,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD SW CA-54,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD SW CA-60,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD SW CA-66,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOD SW CA-67,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=DOE SSP CA,OU=Certification Authorities,OU=Department of Energy,O=U.S. Government,C=US
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=ECA Root CA 4,OU=ECA,O=U.S. Government,C=US
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Eid Passport LRA 2 CA,OU=Eid Passport PIV-I LRA Network,O=Eid Passport\, Inc.,C=US
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Eid Passport LRA CA 3,OU=RAPIDGate PIV Interoperable LRA,O=Eid Passport\, Inc.,C=US
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Entrust Derived Credential SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Entrust Derived Credential SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Exostar Digital Certificate Service Signing CA 1,O=Exostar UK Limited,C=GB
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Exostar Federated Identity Service Root CA 2,OU=Certification Authorities,O=Exostar LLC,C=US
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Exostar Federated Identity Service Signing CA 3,DC=evincible,DC=com
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Exostar Federated Identity Service Signing CA 4,DC=evincible,DC=com
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US
+21:43:53.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US
+21:43:53.048 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US
+21:43:53.048 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US
+21:43:53.048 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US
+21:43:53.048 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US
+21:43:53.048 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US
+21:43:53.048 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=FTI Certification Authority,OU=FTI PKI Trust Infrastructure,O=Foundation for Trusted Identity,C=US
+21:43:53.048 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=HHS-FPKI-Intermediate-CA-E1,OU=Certification Authorities,OU=HHS,O=U.S. Government,C=US
+21:43:53.048 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=HHS-FPKI-Intermediate-CA-E1,OU=Certification Authorities,OU=HHS,O=U.S. Government,C=US
+21:43:53.048 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=IdenTrust ECA Component S23,OU=Certification Authorities,OU=ECA,O=U.S. Government,C=US
+21:43:53.048 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=IdenTrust ECA S22,OU=Certification Authorities,OU=ECA,O=U.S. Government,C=US
+21:43:53.048 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=IdenTrust ECA S22C,OU=Certification Authorities,OU=ECA,O=U.S. Government,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=IdenTrust ECA S23,OU=Certification Authorities,OU=ECA,O=U.S. Government,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=IdenTrust Global Common Root CA 1,O=IdenTrust,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=IGC CA 1,OU=IdenTrust Global Common,O=IdenTrust,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=IGC Device CA 1,OU=IdenTrust Global Common,O=IdenTrust,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=IGC Device CA 2,OU=IdenTrust Global Common,O=IdenTrust,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=IGC Server CA 1,OU=IdenTrust Global Common,O=IdenTrust,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Leidos FBCA Cloud PKI CA-1,O=Leidos
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Lockheed Martin Certification Authority 4 G2,OU=Certification Authorities,O=Lockheed Martin Corporation,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Lockheed Martin Root Certification Authority 2,OU=Certification Authorities,O=Lockheed Martin Corporation,L=Denver,ST=Colorado,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Ministerie van Defensie PKIoverheid Organisatie Persoon CA - G3,2.5.4.97=#0c0e4e54524e4c2d3237333730393835,O=Ministerie van Defensie,C=NL
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Naval Reactors SSP Agency CA G3,OU=U.S. Department of Energy,O=U.S. Government,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Naval Reactors SSP Device CA G3,OU=U.S. Department of Energy,O=U.S. Government,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Northrop Grumman Corporate Root CA-G2,OU=Northrop Grumman Information Technology,O=Northrop Grumman Corporation,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Northrop Grumman Corporate Signing CA-G2,OU=Northrop Grumman Information Technology,O=Northrop Grumman Corporation,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=NRC PROD G6 Fed SSP CA,OU=U.S. Nuclear Regulatory Commission,O=U.S. Government,C=US
+21:43:53.049 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=NRC SSP Agency CA G3,OU=U.S. Nuclear Regulatory Commission,O=U.S. Government,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=NRC SSP Agency CA G4,OU=U.S. Nuclear Regulatory Commission,O=U.S. Government,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=NRC SSP Device CA G3,OU=U.S. Nuclear Regulatory Commission,O=U.S. Government,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=NRC SSP Device CA G4,OU=U.S. Nuclear Regulatory Commission,O=U.S. Government,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=ORC NFI CA 3,O=ORC PKI,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=ORC SSP 4,O=ORC PKI,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Raytheon Class 3 MASCA,OU=Class3-g2,O=cas,DC=raytheon,DC=com
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Raytheon Technologies Medium Assurance CA,OU=Class3-G3,O=CAs,DC=rtx,DC=com
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=SAFE Identity Bridge CA,OU=Certification Authorities,O=SAFE Identity,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=SAIC FBCA Cloud PKI CA 1,OU=IdenTrust Global Common,O=SAIC LLC,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Senate PIV-I CA G4,OU=Office of the Sergeant at Arms,OU=U.S. Senate,O=U.S. Government,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Senate PIV-I CA G5 PROD,OU=Office of the Sergeant at Arms,OU=U.S. Senate,O=U.S. Government,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Senate PIV-I Device CA G4,OU=Office of the Sergeant at Arms,OU=U.S. Senate,O=U.S. Government,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Senate PIV-I Device CA G5 PROD,OU=Office of the Sergeant at Arms,OU=U.S. Senate,O=U.S. Government,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=STRAC Bridge Root Certification Authority,OU=STRAC PKI Trust Infrastructure,O=STRAC,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=STRAC Bridge Root Certification Authority,OU=STRAC PKI Trust Infrastructure,O=STRAC,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=SureID Inc. CA1,OU=SureID PIV-I,O=SureID\, Inc.,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=SureID Inc. Device CA2,O=SureID\, Inc.,C=US
+21:43:53.050 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Symantec Class 3 SSP Intermediate CA - G3,OU=Symantec Trust Network,O=Symantec Corporation,C=US
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Symantec SSP Intermediate CA - G4,O=Symantec Corporation,C=US
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=TSCP SHA256 Bridge CA,OU=CAs,O=TSCP Inc.,C=US
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=U.S. Department of Education Agency CA - G4,OU=U.S. Department of Education,O=U.S. Government,C=US
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=U.S. Department of Education Agency CA - G5,OU=U.S. Department of Education,O=U.S. Government,C=US
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=U.S. Department of Education Device CA - G4,OU=U.S. Department of Education,O=U.S. Government,C=US
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=U.S. Department of Education Device CA - G5,OU=U.S. Department of Education,O=U.S. Government,C=US
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=U.S. Department of State AD High Assurance CA,CN=AIA,CN=Public Key Services,CN=Services,CN=Configuration,DC=state,DC=sbu
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=U.S. Department of State AD Root CA,CN=AIA,CN=Public Key Services,CN=Services,CN=Configuration,DC=state,DC=sbu
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=U.S. Department of State AD Root CA,CN=AIA,CN=Public Key Services,CN=Services,CN=Configuration,DC=state,DC=sbu
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=U.S. Department of Transportation Agency CA G4,OU=U.S. Department of Transportation,O=U.S. Government,C=US
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=U.S. Department of Transportation Agency CA G5,OU=U.S. Department of Transportation,O=U.S. Government,C=US
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=U.S. Department of Transportation Device CA G4,OU=U.S. Department of Transportation,O=U.S. Government,C=US
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=U.S. Department of Transportation Device CA G5,OU=U.S. Department of Transportation,O=U.S. Government,C=US
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=USPTO_INTR_CA1,CN=AIA,CN=Public Key Services,CN=Services,CN=Configuration,DC=uspto,DC=gov
+21:43:53.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=USPTO_INTR_CA1,CN=AIA,CN=Public Key Services,CN=Services,CN=Configuration,DC=uspto,DC=gov
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=USPTO_INTR_CA1,CN=AIA,CN=Public Key Services,CN=Services,CN=Configuration,DC=uspto,DC=gov
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Verizon SSP CA A2,OU=SSP,O=Verizon,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Veterans Affairs CA B3,OU=PKI,OU=Services,DC=va,DC=gov
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=Veterans Affairs User CA B1,OU=PKI,OU=Services,DC=va,DC=gov
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=WidePoint ECA 8,OU=Certification Authorities,OU=ECA,O=U.S. Government,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=WidePoint NFI CA 5,O=ORC PKI,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=WidePoint NFI CA 6,O=ORC PKI,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=WidePoint NFI Root 2,OU=Certification Authorities,O=WidePoint,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=WidePoint ORC ECA 7,OU=Certification Authorities,OU=ECA,O=U.S. Government,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=WidePoint ORC NFI 4,OU=Certification Authorities,O=WidePoint,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: CN=WidePoint ORC SSP 5,O=ORC PKI,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Department of Veterans Affairs CA,OU=Certification Authorities,OU=Department of Veterans Affairs,O=U.S. Government,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Department of Veterans Affairs CA,OU=Certification Authorities,OU=Department of Veterans Affairs,O=U.S. Government,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=DHS CA4,OU=Certification Authorities,OU=Department of Homeland Security,O=U.S. Government,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=DHS CA4,OU=Certification Authorities,OU=Department of Homeland Security,O=U.S. Government,C=US
+21:43:53.052 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Entrust Managed Services NFI Root CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Entrust Managed Services NFI Root CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Entrust Managed Services Root CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Entrust Managed Services Root CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Entrust Managed Services SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Entrust Managed Services SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Entrust NFI Medium Assurance SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Entrust NFI Medium Assurance SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Fiscal Service,OU=Department of the Treasury,O=U.S. Government,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=GPO PCA,OU=Certification Authorities,OU=Government Printing Office,O=U.S. Government,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=GPO SCA,OU=Certification Authorities,OU=Government Printing Office,O=U.S. Government,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=NASA Operational CA,OU=Certification Authorities,OU=NASA,O=U.S. Government,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=NASA Operational CA,OU=Certification Authorities,OU=NASA,O=U.S. Government,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=OCIO CA,OU=Certification Authorities,OU=Department of the Treasury,O=U.S. Government,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=OCIO CA,OU=Certification Authorities,OU=Department of the Treasury,O=U.S. Government,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Social Security Administration Certification Authority,OU=SSA,O=U.S. Government,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=Social Security Administration Certification Authority,OU=SSA,O=U.S. Government,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=U.S. Department of State PIV CA2,OU=Certification Authorities,OU=PIV,OU=Department of State,O=U.S. Government,C=US
+21:43:53.053 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=U.S. Department of State PIV CA2,OU=Certification Authorities,OU=PIV,OU=Department of State,O=U.S. Government,C=US
+21:43:53.054 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=US Treasury Root CA,OU=Certification Authorities,OU=Department of the Treasury,O=U.S. Government,C=US
+21:43:53.054 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CMS Cert: OU=US Treasury Root CA,OU=Certification Authorities,OU=Department of the Treasury,O=U.S. Government,C=US
+21:43:53.055 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: https://raw.githubusercontent.com/GSA/ficam-playbooks/staging/_fpki/2b_pivcas.md
+21:43:53.055 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 29546 bytes in size
+21:43:53.097 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pub.carillonfedserv.com/CRL/CFSCA1.crl
+21:43:53.098 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pub.carillonfedserv.com/CRL/CFSCA1.crl
+21:43:53.110 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 13ms
+21:43:53.110 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 65571 bytes in size
+21:43:53.110 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=Carillon Federal Services PIV-I CA1,OU=Certification Authorities,O=Carillon Federal Services Inc.,C=US
+21:43:53.250 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T23:00:02.000+0000
+21:43:53.250 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-02T23:00:02.000+0000
+21:43:53.252 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 1630
+21:43:53.279 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=Carillon Federal Services PIV-I CA1,OU=Certification Authorities,O=Carillon Federal Services Inc.,C=US
+21:43:53.281 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pub.carillonfedserv.com/CRL/CFSCA1.crl
+21:43:53.281 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pub.carillonfedserv.com/CRL/CFSCA2.crl
+21:43:53.282 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pub.carillonfedserv.com/CRL/CFSCA2.crl
+21:43:53.282 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 1ms
+21:43:53.282 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 1264 bytes in size
+21:43:53.282 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=Carillon Federal Services PIV-I CA2,OU=Certification Authorities,O=Carillon Federal Services Inc.,C=US
+21:43:53.282 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T23:00:02.000+0000
+21:43:53.283 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-02T23:00:02.000+0000
+21:43:53.283 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 12
+21:43:53.284 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=Carillon Federal Services PIV-I CA2,OU=Certification Authorities,O=Carillon Federal Services Inc.,C=US
+21:43:53.285 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pub.carillonfedserv.com/CRL/CFSCA2.crl
+21:43:53.285 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki.treas.gov/VA_CA2.crl
+21:43:53.311 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki.treas.gov/VA_CA2.crl
+21:43:53.592 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 307ms
+21:43:53.604 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 5368499 bytes in size
+21:43:53.604 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=Department of Veterans Affairs CA,OU=Certification Authorities,OU=Department of Veterans Affairs,O=U.S. Government,C=US
+21:43:53.604 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T01:59:47.000+0000
+21:43:53.605 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T19:59:47.000+0000
+21:43:53.676 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 232765
+21:43:53.677 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=Department of Veterans Affairs CA,OU=Certification Authorities,OU=Department of Veterans Affairs,O=U.S. Government,C=US
+21:43:53.684 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki.treas.gov/VA_CA2.crl
+21:43:53.684 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki.treas.gov/DHS_CA3.crl
+21:43:53.751 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki.treas.gov/DHS_CA3.crl
+21:43:54.522 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 838ms
+21:43:54.528 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 16627858 bytes in size
+21:43:54.528 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=DHS CA4,OU=Certification Authorities,OU=Department of Homeland Security,O=U.S. Government,C=US
+21:43:54.528 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:09:02.000+0000
+21:43:54.529 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T22:09:02.000+0000
+21:43:54.693 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 440619
+21:43:54.693 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=DHS CA4,OU=Certification Authorities,OU=Department of Homeland Security,O=U.S. Government,C=US
+21:43:54.708 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki.treas.gov/DHS_CA3.crl
+21:43:54.708 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl.disa.mil/crl/DODIDCA_65.crl
+21:43:54.718 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl.disa.mil/crl/DODIDCA_65.crl
+21:43:54.784 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 76ms
+21:43:54.785 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 2488845 bytes in size
+21:43:54.785 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=DOD ID CA-65,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:54.785 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:00:00.000+0000
+21:43:54.785 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-08T01:00:00.000+0000
+21:43:54.814 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 60585
+21:43:54.815 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=DOD ID CA-65,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:54.818 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl.disa.mil/crl/DODIDCA_65.crl
+21:43:54.818 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl.disa.mil/crl/DODIDCA_64.crl
+21:43:54.861 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl.disa.mil/crl/DODIDCA_64.crl
+21:43:54.987 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 169ms
+21:43:54.987 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 2746992 bytes in size
+21:43:54.988 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=DOD ID CA-64,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:54.988 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:00:00.000+0000
+21:43:54.988 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-08T01:00:00.000+0000
+21:43:55.019 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 65553
+21:43:55.019 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=DOD ID CA-64,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:55.022 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl.disa.mil/crl/DODIDCA_64.crl
+21:43:55.022 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl.disa.mil/crl/DODIDCA_63.crl
+21:43:55.033 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl.disa.mil/crl/DODIDCA_63.crl
+21:43:55.131 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 109ms
+21:43:55.132 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 2449577 bytes in size
+21:43:55.133 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=DOD ID CA-63,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:55.133 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T08:00:00.000+0000
+21:43:55.133 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-07T17:00:00.000+0000
+21:43:55.162 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 60767
+21:43:55.163 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=DOD ID CA-63,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:55.166 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl.disa.mil/crl/DODIDCA_63.crl
+21:43:55.167 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl.disa.mil/crl/DODIDCA_59.crl
+21:43:55.458 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl.disa.mil/crl/DODIDCA_59.crl
+21:43:57.665 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 2498ms
+21:43:57.688 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 50381729 bytes in size
+21:43:57.689 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=DOD ID CA-59,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:57.689 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:00:00.000+0000
+21:43:57.689 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-08T01:00:00.000+0000
+21:43:58.613 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 2221958
+21:43:58.613 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=DOD ID CA-59,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:43:58.657 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl.disa.mil/crl/DODIDCA_59.crl
+21:43:58.657 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://nfimediumsspweb.managed.entrust.com/CRLs/NFIMEDIUMSSPCA2.crl
+21:43:58.667 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://nfimediumsspweb.managed.entrust.com/CRLs/NFIMEDIUMSSPCA2.crl
+21:43:58.754 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 97ms
+21:43:58.756 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 2379320 bytes in size
+21:43:58.756 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=Entrust NFI Medium Assurance SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:58.756 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:16:26.000+0000
+21:43:58.756 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-03T00:16:26.000+0000
+21:43:58.785 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 94024
+21:43:58.786 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=Entrust NFI Medium Assurance SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:58.788 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://nfimediumsspweb.managed.entrust.com/CRLs/NFIMEDIUMSSPCA2.crl
+21:43:58.788 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://nfimediumsspweb.managed.entrust.com/CRLs/NFIMEDIUMSSPCA1.crl
+21:43:58.847 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://nfimediumsspweb.managed.entrust.com/CRLs/NFIMEDIUMSSPCA1.crl
+21:43:58.911 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 123ms
+21:43:58.912 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 2379321 bytes in size
+21:43:58.912 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=Entrust NFI Medium Assurance SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:58.913 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:16:26.000+0000
+21:43:58.913 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-03T00:16:26.000+0000
+21:43:58.941 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 94024
+21:43:58.941 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=Entrust NFI Medium Assurance SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:43:58.944 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://nfimediumsspweb.managed.entrust.com/CRLs/NFIMEDIUMSSPCA1.crl
+21:43:58.944 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://sspweb.managed.entrust.com/CRLs/EMSSSPCA3.crl
+21:43:59.112 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://sspweb.managed.entrust.com/CRLs/EMSSSPCA3.crl
+21:44:00.193 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 1249ms
+21:44:00.199 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 24718489 bytes in size
+21:44:00.199 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=Entrust Managed Services SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:44:00.199 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:00:08.000+0000
+21:44:00.199 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-03T00:00:08.000+0000
+21:44:00.612 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 1056912
+21:44:00.612 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=Entrust Managed Services SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:44:00.633 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://sspweb.managed.entrust.com/CRLs/EMSSSPCA3.crl
+21:44:00.633 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://feddcsweb.managed.entrust.com/CRLs/FedDCSCA1.crl
+21:44:00.659 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://feddcsweb.managed.entrust.com/CRLs/FedDCSCA1.crl
+21:44:00.980 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 347ms
+21:44:00.982 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 8120565 bytes in size
+21:44:00.982 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=Entrust Derived Credential SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:44:00.982 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T20:30:06.000+0000
+21:44:00.982 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-02T20:30:06.000+0000
+21:44:01.062 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 219471
+21:44:01.062 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=Entrust Derived Credential SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:44:01.069 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://feddcsweb.managed.entrust.com/CRLs/FedDCSCA1.crl
+21:44:01.069 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki.fti.org/fti_ca/crl/FTICA.crl
+21:44:01.070 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki.fti.org/fti_ca/crl/FTICA.crl
+21:44:01.075 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 6ms
+21:44:01.075 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 160608 bytes in size
+21:44:01.075 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=FTI Certification Authority,OU=FTI PKI Trust Infrastructure,O=Foundation for Trusted Identity,C=US
+21:44:01.075 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T02:00:01.000+0000
+21:44:01.075 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-02T02:00:01.000+0000
+21:44:01.077 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 4568
+21:44:01.077 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=FTI Certification Authority,OU=FTI PKI Trust Infrastructure,O=Foundation for Trusted Identity,C=US
+21:44:01.078 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki.fti.org/fti_ca/crl/FTICA.crl
+21:44:01.078 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://hhspkicrl.managed.entrust.com/CRLs/HHSEntrustCA2.crl
+21:44:01.105 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://hhspkicrl.managed.entrust.com/CRLs/HHSEntrustCA2.crl
+21:44:01.356 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 277ms
+21:44:01.357 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 7100432 bytes in size
+21:44:01.357 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=HHS-FPKI-Intermediate-CA-E1,OU=Certification Authorities,OU=HHS,O=U.S. Government,C=US
+21:44:01.358 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T22:13:37.000+0000
+21:44:01.358 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-02T22:13:37.000+0000
+21:44:01.444 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 245264
+21:44:01.444 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=HHS-FPKI-Intermediate-CA-E1,OU=Certification Authorities,OU=HHS,O=U.S. Government,C=US
+21:44:01.451 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://hhspkicrl.managed.entrust.com/CRLs/HHSEntrustCA2.crl
+21:44:01.451 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://onsite-crl.pki.digicert.com/USDepartmentofEnergyNavalReactorsPIVG3/LatestCRL.crl
+21:44:01.451 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://onsite-crl.pki.digicert.com/USDepartmentofEnergyNavalReactorsPIVG3/LatestCRL.crl
+21:44:01.451 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 0ms
+21:44:01.451 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 500 bytes in size
+21:44:01.451 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=Naval Reactors SSP Agency CA G3,OU=U.S. Department of Energy,O=U.S. Government,C=US
+21:44:01.452 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:52:36.000+0000
+21:44:01.452 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T18:52:36.000+0000
+21:44:01.452 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 0
+21:44:01.452 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=Naval Reactors SSP Agency CA G3,OU=U.S. Department of Energy,O=U.S. Government,C=US
+21:44:01.453 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://onsite-crl.pki.digicert.com/USDepartmentofEnergyNavalReactorsPIVG3/LatestCRL.crl
+21:44:01.453 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki-crl.symauth.com/ca_23580f2ce24946eab1793386d8e1b510/LatestCRL.crl
+21:44:01.454 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki-crl.symauth.com/ca_23580f2ce24946eab1793386d8e1b510/LatestCRL.crl
+21:44:01.457 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 4ms
+21:44:01.457 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 142003 bytes in size
+21:44:01.457 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=NRC SSP Agency CA G4,OU=U.S. Nuclear Regulatory Commission,O=U.S. Government,C=US
+21:44:01.458 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:53:26.000+0000
+21:44:01.458 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-08T00:53:26.000+0000
+21:44:01.459 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 2888
+21:44:01.459 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=NRC SSP Agency CA G4,OU=U.S. Nuclear Regulatory Commission,O=U.S. Government,C=US
+21:44:01.459 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki-crl.symauth.com/ca_23580f2ce24946eab1793386d8e1b510/LatestCRL.crl
+21:44:01.460 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki-crl.symauth.com/ca_ce00affea217ea042db01becf36671a4/LatestCRL.crl
+21:44:01.460 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki-crl.symauth.com/ca_ce00affea217ea042db01becf36671a4/LatestCRL.crl
+21:44:01.460 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 0ms
+21:44:01.460 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 756 bytes in size
+21:44:01.460 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=NRC PROD G6 Fed SSP CA,OU=U.S. Nuclear Regulatory Commission,O=U.S. Government,C=US
+21:44:01.460 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:49:59.000+0000
+21:44:01.460 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-02T00:49:59.000+0000
+21:44:01.460 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 0
+21:44:01.461 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=NRC PROD G6 Fed SSP CA,OU=U.S. Nuclear Regulatory Commission,O=U.S. Government,C=US
+21:44:01.462 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki-crl.symauth.com/ca_ce00affea217ea042db01becf36671a4/LatestCRL.crl
+21:44:01.462 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl-server.orc.com/CRLs/ORCSSP4.crl
+21:44:01.462 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl-server.orc.com/CRLs/ORCSSP4.crl
+21:44:01.463 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 1ms
+21:44:01.463 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 10164 bytes in size
+21:44:01.463 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=ORC SSP 4,O=ORC PKI,C=US
+21:44:01.463 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T01:28:53.000+0000
+21:44:01.463 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-03T01:28:52.000+0000
+21:44:01.463 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 232
+21:44:01.463 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=ORC SSP 4,O=ORC PKI,C=US
+21:44:01.464 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl-server.orc.com/CRLs/ORCSSP4.crl
+21:44:01.464 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki-crl.symauth.com/ca_fc26996dc726cf860f12aa77d4270098/LatestCRL.crl
+21:44:01.464 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki-crl.symauth.com/ca_fc26996dc726cf860f12aa77d4270098/LatestCRL.crl
+21:44:01.464 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 0ms
+21:44:01.464 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 13067 bytes in size
+21:44:01.465 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=Senate PIV-I CA G5 PROD,OU=Office of the Sergeant at Arms,OU=U.S. Senate,O=U.S. Government,C=US
+21:44:01.465 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:50:14.000+0000
+21:44:01.465 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-08T00:50:14.000+0000
+21:44:01.465 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 256
+21:44:01.465 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=Senate PIV-I CA G5 PROD,OU=Office of the Sergeant at Arms,OU=U.S. Senate,O=U.S. Government,C=US
+21:44:01.465 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki-crl.symauth.com/ca_fc26996dc726cf860f12aa77d4270098/LatestCRL.crl
+21:44:01.465 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki-crl.symauth.com/ca_db1ff205d5a9b79af46c7896d15cb2a9/LatestCRL.crl
+21:44:01.466 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki-crl.symauth.com/ca_db1ff205d5a9b79af46c7896d15cb2a9/LatestCRL.crl
+21:44:01.468 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 3ms
+21:44:01.468 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 65492 bytes in size
+21:44:01.468 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=U.S. Department of Education Agency CA - G5,OU=U.S. Department of Education,O=U.S. Government,C=US
+21:44:01.468 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:50:04.000+0000
+21:44:01.468 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-08T00:50:04.000+0000
+21:44:01.468 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 1326
+21:44:01.469 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=U.S. Department of Education Agency CA - G5,OU=U.S. Department of Education,O=U.S. Government,C=US
+21:44:01.469 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki-crl.symauth.com/ca_db1ff205d5a9b79af46c7896d15cb2a9/LatestCRL.crl
+21:44:01.469 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crls.pki.state.gov/crls/DoSADPKIPIVCA2-1.crl
+21:44:01.481 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crls.pki.state.gov/crls/DoSADPKIPIVCA2-1.crl
+21:44:01.607 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 138ms
+21:44:01.608 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 3907326 bytes in size
+21:44:01.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=U.S. Department of State PIV CA2,OU=Certification Authorities,OU=PIV,OU=Department of State,O=U.S. Government,C=US
+21:44:01.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T23:58:21.000+0000
+21:44:01.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-08T11:58:21.000+0000
+21:44:01.648 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 104188
+21:44:01.648 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=U.S. Department of State PIV CA2,OU=Certification Authorities,OU=PIV,OU=Department of State,O=U.S. Government,C=US
+21:44:01.652 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crls.pki.state.gov/crls/DoSADPKIPIVCA2-1.crl
+21:44:01.652 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://onsite-crl.pki.digicert.com/USDepartmentofTransportationFAAPIVG5/LatestCRL.crl
+21:44:01.672 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://onsite-crl.pki.digicert.com/USDepartmentofTransportationFAAPIVG5/LatestCRL.crl
+21:44:01.895 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 243ms
+21:44:01.896 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 4153113 bytes in size
+21:44:01.896 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=U.S. Department of Transportation Agency CA G5,OU=U.S. Department of Transportation,O=U.S. Government,C=US
+21:44:01.897 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:52:41.000+0000
+21:44:01.897 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-08T00:52:41.000+0000
+21:44:01.928 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 84770
+21:44:01.929 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=U.S. Department of Transportation Agency CA G5,OU=U.S. Department of Transportation,O=U.S. Government,C=US
+21:44:01.933 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://onsite-crl.pki.digicert.com/USDepartmentofTransportationFAAPIVG5/LatestCRL.crl
+21:44:01.933 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://ipki.uspto.gov/IPKI/CRLs/CombinedCRL3.crl
+21:44:01.936 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://ipki.uspto.gov/IPKI/CRLs/CombinedCRL3.crl
+21:44:01.969 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 36ms
+21:44:01.969 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 741991 bytes in size
+21:44:01.969 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=USPTO_INTR_CA1,CN=AIA,CN=Public Key Services,CN=Services,CN=Configuration,DC=uspto,DC=gov
+21:44:01.969 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:23:42.000+0000
+21:44:01.969 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T18:23:42.000+0000
+21:44:01.976 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 20039
+21:44:01.976 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=USPTO_INTR_CA1,CN=AIA,CN=Public Key Services,CN=Services,CN=Configuration,DC=uspto,DC=gov
+21:44:01.978 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://ipki.uspto.gov/IPKI/CRLs/CombinedCRL3.crl
+21:44:01.978 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl.pki.va.gov/PKI/CRL/VET-SSP-CA-B1.crl
+21:44:01.978 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl.pki.va.gov/PKI/CRL/VET-SSP-CA-B1.crl
+21:44:01.978 [main] ERROR org.keysupport.api.singletons.HTTPClientSingleton - Failed to render CRL
+java.security.cert.CRLException: Empty input
+	at java.base/sun.security.provider.X509Factory.engineGenerateCRL(X509Factory.java:402)
+	at java.base/java.security.cert.CertificateFactory.generateCRL(CertificateFactory.java:513)
+	at org.keysupport.api.singletons.HTTPClientSingleton.getCrl(HTTPClientSingleton.java:123)
+	at org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs.main(DownloadAndVerifyAllPlaybookCRLs.java:126)
+21:44:01.980 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 2ms
+21:44:01.980 [main] ERROR org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Failed to render CRL
+21:44:01.980 [main] ERROR org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - We should reject this CRL: http://crl.pki.va.gov/PKI/CRL/VET-SSP-CA-B1.crl
+21:44:01.980 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl.pki.va.gov/PKI/CRL/VACAB3.crl
+21:44:01.981 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl.pki.va.gov/PKI/CRL/VACAB3.crl
+21:44:01.981 [main] ERROR org.keysupport.api.singletons.HTTPClientSingleton - Failed to render CRL
+java.security.cert.CRLException: Empty input
+	at java.base/sun.security.provider.X509Factory.engineGenerateCRL(X509Factory.java:402)
+	at java.base/java.security.cert.CertificateFactory.generateCRL(CertificateFactory.java:513)
+	at org.keysupport.api.singletons.HTTPClientSingleton.getCrl(HTTPClientSingleton.java:123)
+	at org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs.main(DownloadAndVerifyAllPlaybookCRLs.java:126)
+21:44:01.981 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 1ms
+21:44:01.981 [main] ERROR org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Failed to render CRL
+21:44:01.981 [main] ERROR org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - We should reject this CRL: http://crl.pki.va.gov/PKI/CRL/VACAB3.crl
+21:44:01.981 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl.xca.xpki.com/CRLs/XTec_PIVI_CA1.crl
+21:44:01.984 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl.xca.xpki.com/CRLs/XTec_PIVI_CA1.crl
+21:44:02.031 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 50ms
+21:44:02.031 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 1253643 bytes in size
+21:44:02.031 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=WidePoint ORC NFI 4,OU=Certification Authorities,O=WidePoint,C=US
+21:44:02.031 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:57:47.000+0000
+21:44:02.031 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-02T00:57:47.000+0000
+21:44:02.042 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 29137
+21:44:02.042 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=WidePoint ORC NFI 4,OU=Certification Authorities,O=WidePoint,C=US
+21:44:02.044 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl.xca.xpki.com/CRLs/XTec_PIVI_CA1.crl
+21:44:02.045 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl-server.orc.com/CRLs/WIDEPOINTORCSSP5.crl
+21:44:02.045 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl-server.orc.com/CRLs/WIDEPOINTORCSSP5.crl
+21:44:02.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 1ms
+21:44:02.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 21964 bytes in size
+21:44:02.046 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=WidePoint ORC SSP 5,O=ORC PKI,C=US
+21:44:02.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T01:28:54.000+0000
+21:44:02.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-03T01:28:53.000+0000
+21:44:02.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 407
+21:44:02.047 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=WidePoint ORC SSP 5,O=ORC PKI,C=US
+21:44:02.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl-server.orc.com/CRLs/WIDEPOINTORCSSP5.crl
+21:44:02.051 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl-server.orc.com/CRLs/WIDEPOINTNFI5.crl
+21:44:02.052 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl-server.orc.com/CRLs/WIDEPOINTNFI5.crl
+21:44:02.054 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 3ms
+21:44:02.054 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 54126 bytes in size
+21:44:02.054 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=WidePoint NFI CA 5,O=ORC PKI,C=US
+21:44:02.054 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T02:10:00.000+0000
+21:44:02.054 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-03T02:10:01.000+0000
+21:44:02.054 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 775
+21:44:02.054 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=WidePoint NFI CA 5,O=ORC PKI,C=US
+21:44:02.055 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl-server.orc.com/CRLs/WIDEPOINTNFI5.crl
+21:44:02.055 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl-server.orc.com/CRLs/WIDEPOINTNFI6.crl
+21:44:02.056 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl-server.orc.com/CRLs/WIDEPOINTNFI6.crl
+21:44:02.057 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 2ms
+21:44:02.057 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 40593 bytes in size
+21:44:02.057 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=WidePoint NFI CA 6,O=ORC PKI,C=US
+21:44:02.057 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T01:28:53.000+0000
+21:44:02.057 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-03T01:28:52.000+0000
+21:44:02.057 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 1015
+21:44:02.058 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=WidePoint NFI CA 6,O=ORC PKI,C=US
+21:44:02.058 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl-server.orc.com/CRLs/WIDEPOINTNFI6.crl
+21:44:02.058 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki.treasury.gov/VA_CA1.crl
+21:44:02.081 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki.treasury.gov/VA_CA1.crl
+21:44:02.276 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 218ms
+21:44:02.277 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 5368499 bytes in size
+21:44:02.277 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=Department of Veterans Affairs CA,OU=Certification Authorities,OU=Department of Veterans Affairs,O=U.S. Government,C=US
+21:44:02.277 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T01:59:47.000+0000
+21:44:02.278 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T19:59:47.000+0000
+21:44:02.352 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 232765
+21:44:02.353 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=Department of Veterans Affairs CA,OU=Certification Authorities,OU=Department of Veterans Affairs,O=U.S. Government,C=US
+21:44:02.358 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki.treasury.gov/VA_CA1.crl
+21:44:02.358 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki.treasury.gov/VA_CA.crl
+21:44:02.379 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki.treasury.gov/VA_CA.crl
+21:44:02.602 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 244ms
+21:44:02.603 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 5368499 bytes in size
+21:44:02.603 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=Department of Veterans Affairs CA,OU=Certification Authorities,OU=Department of Veterans Affairs,O=U.S. Government,C=US
+21:44:02.603 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T01:59:47.000+0000
+21:44:02.603 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T19:59:47.000+0000
+21:44:02.676 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 232765
+21:44:02.676 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=Department of Veterans Affairs CA,OU=Certification Authorities,OU=Department of Veterans Affairs,O=U.S. Government,C=US
+21:44:02.681 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki.treasury.gov/VA_CA.crl
+21:44:02.681 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki.treasury.gov/DHS_CA2.crl
+21:44:02.734 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki.treasury.gov/DHS_CA2.crl
+21:44:03.329 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 648ms
+21:44:03.334 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 16627858 bytes in size
+21:44:03.334 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=DHS CA4,OU=Certification Authorities,OU=Department of Homeland Security,O=U.S. Government,C=US
+21:44:03.334 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:09:01.000+0000
+21:44:03.335 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T22:09:01.000+0000
+21:44:03.590 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 440619
+21:44:03.590 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=DHS CA4,OU=Certification Authorities,OU=Department of Homeland Security,O=U.S. Government,C=US
+21:44:03.605 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki.treasury.gov/DHS_CA2.crl
+21:44:03.605 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl.disa.mil/crl/DODIDCA_52.crl
+21:44:03.605 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl.disa.mil/crl/DODIDCA_52.crl
+21:44:03.605 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 0ms
+21:44:03.605 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 473 bytes in size
+21:44:03.605 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=DOD ID CA-52,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:44:03.605 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-29T09:00:00.000+0000
+21:44:03.605 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-06T18:00:00.000+0000
+21:44:03.605 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 0
+21:44:03.606 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=DOD ID CA-52,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:44:03.606 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl.disa.mil/crl/DODIDCA_52.crl
+21:44:03.606 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl.disa.mil/crl/DODIDCA_51.crl
+21:44:03.606 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl.disa.mil/crl/DODIDCA_51.crl
+21:44:03.606 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 0ms
+21:44:03.606 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 473 bytes in size
+21:44:03.606 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=DOD ID CA-51,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:44:03.607 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T10:00:00.000+0000
+21:44:03.607 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-07T19:00:00.000+0000
+21:44:03.607 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 0
+21:44:03.607 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=DOD ID CA-51,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:44:03.607 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl.disa.mil/crl/DODIDCA_51.crl
+21:44:03.607 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl.disa.mil/crl/DODIDCA_50.crl
+21:44:03.607 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl.disa.mil/crl/DODIDCA_50.crl
+21:44:03.608 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 1ms
+21:44:03.608 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 473 bytes in size
+21:44:03.608 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=DOD ID CA-50,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:44:03.608 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-29T11:00:00.000+0000
+21:44:03.608 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-06T20:00:00.000+0000
+21:44:03.608 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 0
+21:44:03.608 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=DOD ID CA-50,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:44:03.608 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl.disa.mil/crl/DODIDCA_50.crl
+21:44:03.608 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crl.disa.mil/crl/DODIDCA_49.crl
+21:44:03.609 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crl.disa.mil/crl/DODIDCA_49.crl
+21:44:03.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 1ms
+21:44:03.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 473 bytes in size
+21:44:03.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=DOD ID CA-49,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:44:03.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T12:00:00.000+0000
+21:44:03.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-07T21:00:00.000+0000
+21:44:03.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 0
+21:44:03.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=DOD ID CA-49,OU=PKI,OU=DoD,O=U.S. Government,C=US
+21:44:03.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crl.disa.mil/crl/DODIDCA_49.crl
+21:44:03.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://sspweb.managed.entrust.com/CRLs/EMSSSPCA2.crl
+21:44:03.707 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://sspweb.managed.entrust.com/CRLs/EMSSSPCA2.crl
+21:44:04.710 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 1101ms
+21:44:04.716 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 24718489 bytes in size
+21:44:04.716 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=Entrust Managed Services SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:44:04.716 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:00:07.000+0000
+21:44:04.716 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-03T00:00:07.000+0000
+21:44:05.232 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 1056912
+21:44:05.232 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=Entrust Managed Services SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:44:05.253 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://sspweb.managed.entrust.com/CRLs/EMSSSPCA2.crl
+21:44:05.253 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://feddcsweb.managed.entrust.com/CRLs/FedDCSCA.crl
+21:44:05.277 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://feddcsweb.managed.entrust.com/CRLs/FedDCSCA.crl
+21:44:05.508 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 255ms
+21:44:05.510 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 8120565 bytes in size
+21:44:05.510 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=Entrust Derived Credential SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:44:05.510 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T20:30:06.000+0000
+21:44:05.510 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-02T20:30:06.000+0000
+21:44:05.668 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 219471
+21:44:05.669 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=Entrust Derived Credential SSP CA,OU=Certification Authorities,O=Entrust,C=US
+21:44:05.676 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://feddcsweb.managed.entrust.com/CRLs/FedDCSCA.crl
+21:44:05.676 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://hhspkicrl.managed.entrust.com/CRLs/HHSEntrustCA1.crl
+21:44:05.705 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://hhspkicrl.managed.entrust.com/CRLs/HHSEntrustCA1.crl
+21:44:05.904 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 228ms
+21:44:05.905 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 7100432 bytes in size
+21:44:05.905 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=HHS-FPKI-Intermediate-CA-E1,OU=Certification Authorities,OU=HHS,O=U.S. Government,C=US
+21:44:05.906 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T22:13:37.000+0000
+21:44:05.906 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-02T22:13:37.000+0000
+21:44:05.996 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 245264
+21:44:05.996 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=HHS-FPKI-Intermediate-CA-E1,OU=Certification Authorities,OU=HHS,O=U.S. Government,C=US
+21:44:06.005 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://hhspkicrl.managed.entrust.com/CRLs/HHSEntrustCA1.crl
+21:44:06.005 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki.treasury.gov/NASA_Operational_CA3.crl
+21:44:06.017 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki.treasury.gov/NASA_Operational_CA3.crl
+21:44:06.166 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 161ms
+21:44:06.167 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 3986422 bytes in size
+21:44:06.167 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=NASA Operational CA,OU=Certification Authorities,OU=NASA,O=U.S. Government,C=US
+21:44:06.167 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:28:09.000+0000
+21:44:06.167 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T18:28:09.000+0000
+21:44:06.209 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 107695
+21:44:06.209 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=NASA Operational CA,OU=Certification Authorities,OU=NASA,O=U.S. Government,C=US
+21:44:06.214 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki.treasury.gov/NASA_Operational_CA3.crl
+21:44:06.214 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://onsite-crl.pki.digicert.com/USNuclearRegulatoryCommissionSSPPIVG3/LatestCRL.crl
+21:44:06.216 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://onsite-crl.pki.digicert.com/USNuclearRegulatoryCommissionSSPPIVG3/LatestCRL.crl
+21:44:06.219 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 5ms
+21:44:06.219 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 161451 bytes in size
+21:44:06.220 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=NRC SSP Agency CA G3,OU=U.S. Nuclear Regulatory Commission,O=U.S. Government,C=US
+21:44:06.220 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:52:46.000+0000
+21:44:06.220 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T18:52:46.000+0000
+21:44:06.221 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 3840
+21:44:06.221 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=NRC SSP Agency CA G3,OU=U.S. Nuclear Regulatory Commission,O=U.S. Government,C=US
+21:44:06.222 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://onsite-crl.pki.digicert.com/USNuclearRegulatoryCommissionSSPPIVG3/LatestCRL.crl
+21:44:06.222 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://onsite-crl.pki.digicert.com/USSenateSSPPIVIG4PROD/LatestCRL.crl
+21:44:06.222 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://onsite-crl.pki.digicert.com/USSenateSSPPIVIG4PROD/LatestCRL.crl
+21:44:06.223 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 1ms
+21:44:06.223 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 20566 bytes in size
+21:44:06.223 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=Senate PIV-I CA G4,OU=Office of the Sergeant at Arms,OU=U.S. Senate,O=U.S. Government,C=US
+21:44:06.223 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:52:46.000+0000
+21:44:06.223 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-02T00:52:46.000+0000
+21:44:06.223 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 486
+21:44:06.224 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=Senate PIV-I CA G4,OU=Office of the Sergeant at Arms,OU=U.S. Senate,O=U.S. Government,C=US
+21:44:06.224 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://onsite-crl.pki.digicert.com/USSenateSSPPIVIG4PROD/LatestCRL.crl
+21:44:06.224 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki.treasury.gov/SSA_CA2.crl
+21:44:06.233 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki.treasury.gov/SSA_CA2.crl
+21:44:06.295 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 71ms
+21:44:06.295 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 2251862 bytes in size
+21:44:06.296 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=Social Security Administration Certification Authority,OU=SSA,O=U.S. Government,C=US
+21:44:06.296 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:23:27.000+0000
+21:44:06.296 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T18:23:27.000+0000
+21:44:06.319 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 60749
+21:44:06.319 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=Social Security Administration Certification Authority,OU=SSA,O=U.S. Government,C=US
+21:44:06.322 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki.treasury.gov/SSA_CA2.crl
+21:44:06.322 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://pki.treasury.gov/OCIO_CA4.crl
+21:44:06.339 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://pki.treasury.gov/OCIO_CA4.crl
+21:44:06.545 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 223ms
+21:44:06.546 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 5466310 bytes in size
+21:44:06.546 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=OCIO CA,OU=Certification Authorities,OU=Department of the Treasury,O=U.S. Government,C=US
+21:44:06.546 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T22:22:56.000+0000
+21:44:06.546 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T16:22:56.000+0000
+21:44:06.604 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 147724
+21:44:06.604 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=OCIO CA,OU=Certification Authorities,OU=Department of the Treasury,O=U.S. Government,C=US
+21:44:06.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://pki.treasury.gov/OCIO_CA4.crl
+21:44:06.609 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://onsite-crl.pki.digicert.com/USDepartmentofEducationDoEDG4PIV/LatestCRL.crl
+21:44:06.611 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://onsite-crl.pki.digicert.com/USDepartmentofEducationDoEDG4PIV/LatestCRL.crl
+21:44:06.617 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 8ms
+21:44:06.617 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 253860 bytes in size
+21:44:06.617 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=U.S. Department of Education Agency CA - G4,OU=U.S. Department of Education,O=U.S. Government,C=US
+21:44:06.617 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:52:36.000+0000
+21:44:06.618 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T18:52:36.000+0000
+21:44:06.620 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 5782
+21:44:06.620 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=U.S. Department of Education Agency CA - G4,OU=U.S. Department of Education,O=U.S. Government,C=US
+21:44:06.621 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://onsite-crl.pki.digicert.com/USDepartmentofEducationDoEDG4PIV/LatestCRL.crl
+21:44:06.621 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://crls.pki.state.gov/crls/DoSADPKIPIVCA2.crl
+21:44:06.633 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://crls.pki.state.gov/crls/DoSADPKIPIVCA2.crl
+21:44:06.823 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 202ms
+21:44:06.824 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 3907198 bytes in size
+21:44:06.824 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: OU=U.S. Department of State PIV CA2,OU=Certification Authorities,OU=PIV,OU=Department of State,O=U.S. Government,C=US
+21:44:06.824 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-11-30T23:58:21.000+0000
+21:44:06.824 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-08T11:58:21.000+0000
+21:44:06.863 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 104188
+21:44:06.864 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: OU=U.S. Department of State PIV CA2,OU=Certification Authorities,OU=PIV,OU=Department of State,O=U.S. Government,C=US
+21:44:06.867 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://crls.pki.state.gov/crls/DoSADPKIPIVCA2.crl
+21:44:06.867 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Downloading CRL data: http://onsite-crl.pki.digicert.com/USDepartmentofTransportationFAAPIVG4/LatestCRL.crl
+21:44:06.889 [main] INFO org.keysupport.api.pkix.cache.ElasticacheClient - Cache Hit for key: http://onsite-crl.pki.digicert.com/USDepartmentofTransportationFAAPIVG4/LatestCRL.crl
+21:44:06.967 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - HTTP fetch time: 100ms
+21:44:06.967 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - File is 3735584 bytes in size
+21:44:06.968 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Issuer: CN=U.S. Department of Transportation Agency CA G4,OU=U.S. Department of Transportation,O=U.S. Government,C=US
+21:44:06.968 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL thisUpdate: 2022-12-01T00:52:39.000+0000
+21:44:06.968 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL nextUpdate: 2022-12-01T18:52:39.000+0000
+21:44:07.001 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Entries: 93801
+21:44:07.001 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Found issuer in our intermediate store: CN=U.S. Department of Transportation Agency CA G4,OU=U.S. Department of Transportation,O=U.S. Government,C=US
+21:44:07.005 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - CRL Signature verified: http://onsite-crl.pki.digicert.com/USDepartmentofTransportationFAAPIVG4/LatestCRL.crl
+21:44:07.005 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Total number of revoked certificates: 7995246
+21:44:07.005 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - Total number of CRL Bytes: 222483295
+21:44:07.145 [main] INFO org.keysupport.api.pkix.cache.DownloadAndVerifyAllPlaybookCRLs - [{"uri":"http://pub.carillonfedserv.com/CRL/CFSCA1.crl","thisUpdate":"2022-11-30T23:00:02.000+0000","nextUpdate":"2022-12-02T23:00:02.000+0000","authorityKeyIdentifier":"BBTpumdDQK1BIpr++glDiPNiuGuvKg==","issuerName":"MIGIMQswCQYDVQQGEwJVUzEnMCUGA1UEChMeQ2FyaWxsb24gRmVkZXJhbCBTZXJ2aWNlcyBJbmMuMSIwIAYDVQQLExlDZXJ0aWZpY2F0aW9uIEF1dGhvcml0aWVzMSwwKgYDVQQDEyNDYXJpbGxvbiBGZWRlcmFsIFNlcnZpY2VzIFBJVi1JIENBMQ==","numEntries":1630},{"uri":"http://pub.carillonfedserv.com/CRL/CFSCA2.crl","thisUpdate":"2022-11-30T23:00:02.000+0000","nextUpdate":"2022-12-02T23:00:02.000+0000","authorityKeyIdentifier":"BBQJ5HhWQQKkayDak+hF9jHhTMTE/A==","issuerName":"MIGIMQswCQYDVQQGEwJVUzEnMCUGA1UEChMeQ2FyaWxsb24gRmVkZXJhbCBTZXJ2aWNlcyBJbmMuMSIwIAYDVQQLExlDZXJ0aWZpY2F0aW9uIEF1dGhvcml0aWVzMSwwKgYDVQQDEyNDYXJpbGxvbiBGZWRlcmFsIFNlcnZpY2VzIFBJVi1JIENBMg==","numEntries":12},{"uri":"http://pki.treas.gov/VA_CA2.crl","thisUpdate":"2022-12-01T01:59:47.000+0000","nextUpdate":"2022-12-01T19:59:47.000+0000","authorityKeyIdentifier":"BBTanLYf/2edR5ENJucpZhRll+aAWA==","issuerName":"MIGgMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MScwJQYDVQQLEx5EZXBhcnRtZW50IG9mIFZldGVyYW5zIEFmZmFpcnMxIjAgBgNVBAsTGUNlcnRpZmljYXRpb24gQXV0aG9yaXRpZXMxKjAoBgNVBAsTIURlcGFydG1lbnQgb2YgVmV0ZXJhbnMgQWZmYWlycyBDQQ==","numEntries":232765},{"uri":"http://pki.treas.gov/DHS_CA3.crl","thisUpdate":"2022-12-01T00:09:02.000+0000","nextUpdate":"2022-12-01T22:09:02.000+0000","authorityKeyIdentifier":"BBReUZ2Z64Jzf4YQTFz40DbGlvQulw==","issuerName":"MIGHMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MSgwJgYDVQQLEx9EZXBhcnRtZW50IG9mIEhvbWVsYW5kIFNlY3VyaXR5MSIwIAYDVQQLExlDZXJ0aWZpY2F0aW9uIEF1dGhvcml0aWVzMRAwDgYDVQQLEwdESFMgQ0E0","numEntries":440619},{"uri":"http://crl.disa.mil/crl/DODIDCA_65.crl","thisUpdate":"2022-12-01T00:00:00.000+0000","nextUpdate":"2022-12-08T01:00:00.000+0000","authorityKeyIdentifier":"BBRi4Eg4Vm1vayW+u8OIWLGsnEPJWw==","issuerName":"MFoxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxDDAKBgNVBAsTA0RvRDEMMAoGA1UECxMDUEtJMRUwEwYDVQQDEwxET0QgSUQgQ0EtNjU=","numEntries":60585},{"uri":"http://crl.disa.mil/crl/DODIDCA_64.crl","thisUpdate":"2022-12-01T00:00:00.000+0000","nextUpdate":"2022-12-08T01:00:00.000+0000","authorityKeyIdentifier":"BBRXvMBe24mrO91HqXIerstCGWseeg==","issuerName":"MFoxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxDDAKBgNVBAsTA0RvRDEMMAoGA1UECxMDUEtJMRUwEwYDVQQDEwxET0QgSUQgQ0EtNjQ=","numEntries":65553},{"uri":"http://crl.disa.mil/crl/DODIDCA_63.crl","thisUpdate":"2022-11-30T08:00:00.000+0000","nextUpdate":"2022-12-07T17:00:00.000+0000","authorityKeyIdentifier":"BBQX5kvIGkvJp6ZwtExNXsj2NtQwmA==","issuerName":"MFoxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxDDAKBgNVBAsTA0RvRDEMMAoGA1UECxMDUEtJMRUwEwYDVQQDEwxET0QgSUQgQ0EtNjM=","numEntries":60767},{"uri":"http://crl.disa.mil/crl/DODIDCA_59.crl","thisUpdate":"2022-12-01T00:00:00.000+0000","nextUpdate":"2022-12-08T01:00:00.000+0000","authorityKeyIdentifier":"BBR1CaYVE66HPPpzlADy8PV5ubJyFA==","issuerName":"MFoxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxDDAKBgNVBAsTA0RvRDEMMAoGA1UECxMDUEtJMRUwEwYDVQQDEwxET0QgSUQgQ0EtNTk=","numEntries":2221958},{"uri":"http://nfimediumsspweb.managed.entrust.com/CRLs/NFIMEDIUMSSPCA2.crl","thisUpdate":"2022-12-01T00:16:26.000+0000","nextUpdate":"2022-12-03T00:16:26.000+0000","authorityKeyIdentifier":"BBR71tD+4blJt1/Rz3NKLtN9SCoMhQ==","issuerName":"MHExCzAJBgNVBAYTAlVTMRAwDgYDVQQKEwdFbnRydXN0MSIwIAYDVQQLExlDZXJ0aWZpY2F0aW9uIEF1dGhvcml0aWVzMSwwKgYDVQQLEyNFbnRydXN0IE5GSSBNZWRpdW0gQXNzdXJhbmNlIFNTUCBDQQ==","numEntries":94024},{"uri":"http://nfimediumsspweb.managed.entrust.com/CRLs/NFIMEDIUMSSPCA1.crl","thisUpdate":"2022-12-01T00:16:26.000+0000","nextUpdate":"2022-12-03T00:16:26.000+0000","authorityKeyIdentifier":"BBRm+SWYrsv74YwAhBnUhf+TVurWpg==","issuerName":"MHExCzAJBgNVBAYTAlVTMRAwDgYDVQQKEwdFbnRydXN0MSIwIAYDVQQLExlDZXJ0aWZpY2F0aW9uIEF1dGhvcml0aWVzMSwwKgYDVQQLEyNFbnRydXN0IE5GSSBNZWRpdW0gQXNzdXJhbmNlIFNTUCBDQQ==","numEntries":94024},{"uri":"http://sspweb.managed.entrust.com/CRLs/EMSSSPCA3.crl","thisUpdate":"2022-12-01T00:00:08.000+0000","nextUpdate":"2022-12-03T00:00:08.000+0000","authorityKeyIdentifier":"BBTm3RoHGstruiC5ljmT+BTcmAM3Jw==","issuerName":"MG0xCzAJBgNVBAYTAlVTMRAwDgYDVQQKEwdFbnRydXN0MSIwIAYDVQQLExlDZXJ0aWZpY2F0aW9uIEF1dGhvcml0aWVzMSgwJgYDVQQLEx9FbnRydXN0IE1hbmFnZWQgU2VydmljZXMgU1NQIENB","numEntries":1056912},{"uri":"http://feddcsweb.managed.entrust.com/CRLs/FedDCSCA1.crl","thisUpdate":"2022-11-30T20:30:06.000+0000","nextUpdate":"2022-12-02T20:30:06.000+0000","authorityKeyIdentifier":"BBRLGAG7WvqK6970Fh5E6kQFAqBa8w==","issuerName":"MG8xCzAJBgNVBAYTAlVTMRAwDgYDVQQKEwdFbnRydXN0MSIwIAYDVQQLExlDZXJ0aWZpY2F0aW9uIEF1dGhvcml0aWVzMSowKAYDVQQDEyFFbnRydXN0IERlcml2ZWQgQ3JlZGVudGlhbCBTU1AgQ0E=","numEntries":219471},{"uri":"http://pki.fti.org/fti_ca/crl/FTICA.crl","thisUpdate":"2022-12-01T02:00:01.000+0000","nextUpdate":"2022-12-02T02:00:01.000+0000","authorityKeyIdentifier":"BBTSON2170tZVzZ/v7+cpn0MGTEFrQ==","issuerName":"MIGEMQswCQYDVQQGEwJVUzEoMCYGA1UEChMfRm91bmRhdGlvbiBmb3IgVHJ1c3RlZCBJZGVudGl0eTElMCMGA1UECxMcRlRJIFBLSSBUcnVzdCBJbmZyYXN0cnVjdHVyZTEkMCIGA1UEAxMbRlRJIENlcnRpZmljYXRpb24gQXV0aG9yaXR5","numEntries":4568},{"uri":"http://hhspkicrl.managed.entrust.com/CRLs/HHSEntrustCA2.crl","thisUpdate":"2022-11-30T22:13:37.000+0000","nextUpdate":"2022-12-02T22:13:37.000+0000","authorityKeyIdentifier":"BBQv7J5mCmdl8yNzRLEp/DuukBesww==","issuerName":"MH8xCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxDDAKBgNVBAsTA0hIUzEiMCAGA1UECxMZQ2VydGlmaWNhdGlvbiBBdXRob3JpdGllczEkMCIGA1UEAxMbSEhTLUZQS0ktSW50ZXJtZWRpYXRlLUNBLUUx","numEntries":245264},{"uri":"http://onsite-crl.pki.digicert.com/USDepartmentofEnergyNavalReactorsPIVG3/LatestCRL.crl","thisUpdate":"2022-12-01T00:52:36.000+0000","nextUpdate":"2022-12-01T18:52:36.000+0000","authorityKeyIdentifier":"BBQNXwEfD6woaQfut1Kw3ogxyV0koQ==","issuerName":"MHUxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxIjAgBgNVBAsTGVUuUy4gRGVwYXJ0bWVudCBvZiBFbmVyZ3kxKDAmBgNVBAMTH05hdmFsIFJlYWN0b3JzIFNTUCBBZ2VuY3kgQ0EgRzM=","numEntries":0},{"uri":"http://pki-crl.symauth.com/ca_23580f2ce24946eab1793386d8e1b510/LatestCRL.crl","thisUpdate":"2022-12-01T00:53:26.000+0000","nextUpdate":"2022-12-08T00:53:26.000+0000","authorityKeyIdentifier":"BBRJ2sMzC8cPfUijtx8IljeJhMz+qg==","issuerName":"MHMxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxKzApBgNVBAsTIlUuUy4gTnVjbGVhciBSZWd1bGF0b3J5IENvbW1pc3Npb24xHTAbBgNVBAMTFE5SQyBTU1AgQWdlbmN5IENBIEc0","numEntries":2888},{"uri":"http://pki-crl.symauth.com/ca_ce00affea217ea042db01becf36671a4/LatestCRL.crl","thisUpdate":"2022-12-01T00:49:59.000+0000","nextUpdate":"2022-12-02T00:49:59.000+0000","authorityKeyIdentifier":"BBQ3Zr6EVpfOxoQU/jt3LeeR3GrN9Q==","issuerName":"MHUxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxKzApBgNVBAsTIlUuUy4gTnVjbGVhciBSZWd1bGF0b3J5IENvbW1pc3Npb24xHzAdBgNVBAMTFk5SQyBQUk9EIEc2IEZlZCBTU1AgQ0E=","numEntries":0},{"uri":"http://crl-server.orc.com/CRLs/ORCSSP4.crl","thisUpdate":"2022-12-01T01:28:53.000+0000","nextUpdate":"2022-12-03T01:28:52.000+0000","authorityKeyIdentifier":"BBQUC5kfmB9kjG/D/3rV//X4TkmcIQ==","issuerName":"MDMxCzAJBgNVBAYTAlVTMRAwDgYDVQQKEwdPUkMgUEtJMRIwEAYDVQQDEwlPUkMgU1NQIDQ=","numEntries":232},{"uri":"http://pki-crl.symauth.com/ca_fc26996dc726cf860f12aa77d4270098/LatestCRL.crl","thisUpdate":"2022-12-01T00:50:14.000+0000","nextUpdate":"2022-12-08T00:50:14.000+0000","authorityKeyIdentifier":"BBQu+8CMq19X4Inw6v6nZD0UkCfwxg==","issuerName":"MIGIMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MRQwEgYDVQQLEwtVLlMuIFNlbmF0ZTEnMCUGA1UECxMeT2ZmaWNlIG9mIHRoZSBTZXJnZWFudCBhdCBBcm1zMSAwHgYDVQQDExdTZW5hdGUgUElWLUkgQ0EgRzUgUFJPRA==","numEntries":256},{"uri":"http://pki-crl.symauth.com/ca_db1ff205d5a9b79af46c7896d15cb2a9/LatestCRL.crl","thisUpdate":"2022-12-01T00:50:04.000+0000","nextUpdate":"2022-12-08T00:50:04.000+0000","authorityKeyIdentifier":"BBS0Tr9npRL3EIRz/jeHMsa3uRxIPA==","issuerName":"MIGEMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MSUwIwYDVQQLExxVLlMuIERlcGFydG1lbnQgb2YgRWR1Y2F0aW9uMTQwMgYDVQQDEytVLlMuIERlcGFydG1lbnQgb2YgRWR1Y2F0aW9uIEFnZW5jeSBDQSAtIEc1","numEntries":1326},{"uri":"http://crls.pki.state.gov/crls/DoSADPKIPIVCA2-1.crl","thisUpdate":"2022-11-30T23:58:21.000+0000","nextUpdate":"2022-12-08T11:58:21.000+0000","authorityKeyIdentifier":"BBSM1tRpqeSFQTpqpl7aURoXjZKLbA==","issuerName":"MIGiMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MRwwGgYDVQQLExNEZXBhcnRtZW50IG9mIFN0YXRlMQwwCgYDVQQLEwNQSVYxIjAgBgNVBAsTGUNlcnRpZmljYXRpb24gQXV0aG9yaXRpZXMxKTAnBgNVBAsTIFUuUy4gRGVwYXJ0bWVudCBvZiBTdGF0ZSBQSVYgQ0Ey","numEntries":104188},{"uri":"http://onsite-crl.pki.digicert.com/USDepartmentofTransportationFAAPIVG5/LatestCRL.crl","thisUpdate":"2022-12-01T00:52:41.000+0000","nextUpdate":"2022-12-08T00:52:41.000+0000","authorityKeyIdentifier":"BBSiaT81GO2eIcATCYD0EAwEhgxW6A==","issuerName":"MIGMMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MSowKAYDVQQLEyFVLlMuIERlcGFydG1lbnQgb2YgVHJhbnNwb3J0YXRpb24xNzA1BgNVBAMTLlUuUy4gRGVwYXJ0bWVudCBvZiBUcmFuc3BvcnRhdGlvbiBBZ2VuY3kgQ0EgRzU=","numEntries":84770},{"uri":"http://ipki.uspto.gov/IPKI/CRLs/CombinedCRL3.crl","thisUpdate":"2022-12-01T00:23:42.000+0000","nextUpdate":"2022-12-01T18:23:42.000+0000","authorityKeyIdentifier":"BBSNR0rRXkXq7i9RWEchTxLrynqhXw==","issuerName":"MIGcMRMwEQYKCZImiZPyLGQBGRYDZ292MRUwEwYKCZImiZPyLGQBGRYFdXNwdG8xFjAUBgNVBAMTDUNvbmZpZ3VyYXRpb24xETAPBgNVBAMTCFNlcnZpY2VzMRwwGgYDVQQDExNQdWJsaWMgS2V5IFNlcnZpY2VzMQwwCgYDVQQDEwNBSUExFzAVBgNVBAMUDlVTUFRPX0lOVFJfQ0Ex","numEntries":20039},{"uri":"http://crl.xca.xpki.com/CRLs/XTec_PIVI_CA1.crl","thisUpdate":"2022-12-01T00:57:47.000+0000","nextUpdate":"2022-12-02T00:57:47.000+0000","authorityKeyIdentifier":"BBQS4qvkM2swfz7qbz4C1h68YCvx9Q==","issuerName":"MGMxCzAJBgNVBAYTAlVTMRIwEAYDVQQKEwlXaWRlUG9pbnQxIjAgBgNVBAsTGUNlcnRpZmljYXRpb24gQXV0aG9yaXRpZXMxHDAaBgNVBAMTE1dpZGVQb2ludCBPUkMgTkZJIDQ=","numEntries":29137},{"uri":"http://crl-server.orc.com/CRLs/WIDEPOINTORCSSP5.crl","thisUpdate":"2022-12-01T01:28:54.000+0000","nextUpdate":"2022-12-03T01:28:53.000+0000","authorityKeyIdentifier":"BBQjuE6xTm0kRItEZ6dlz6E7OZRm3A==","issuerName":"MD0xCzAJBgNVBAYTAlVTMRAwDgYDVQQKDAdPUkMgUEtJMRwwGgYDVQQDDBNXaWRlUG9pbnQgT1JDIFNTUCA1","numEntries":407},{"uri":"http://crl-server.orc.com/CRLs/WIDEPOINTNFI5.crl","thisUpdate":"2022-12-01T02:10:00.000+0000","nextUpdate":"2022-12-03T02:10:01.000+0000","authorityKeyIdentifier":"BBQF+1I4grQ/AMQZDsEq/8RPbg6+ZA==","issuerName":"MDwxCzAJBgNVBAYTAlVTMRAwDgYDVQQKEwdPUkMgUEtJMRswGQYDVQQDExJXaWRlUG9pbnQgTkZJIENBIDU=","numEntries":775},{"uri":"http://crl-server.orc.com/CRLs/WIDEPOINTNFI6.crl","thisUpdate":"2022-12-01T01:28:53.000+0000","nextUpdate":"2022-12-03T01:28:52.000+0000","authorityKeyIdentifier":"BBSFteeYoLcShvfCvdJzFzXIcYtsCg==","issuerName":"MDwxCzAJBgNVBAYTAlVTMRAwDgYDVQQKEwdPUkMgUEtJMRswGQYDVQQDExJXaWRlUG9pbnQgTkZJIENBIDY=","numEntries":1015},{"uri":"http://pki.treasury.gov/VA_CA1.crl","thisUpdate":"2022-12-01T01:59:47.000+0000","nextUpdate":"2022-12-01T19:59:47.000+0000","authorityKeyIdentifier":"BBR1YdofMZJuLipkXqNlGYVlgOjHKw==","issuerName":"MIGgMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MScwJQYDVQQLEx5EZXBhcnRtZW50IG9mIFZldGVyYW5zIEFmZmFpcnMxIjAgBgNVBAsTGUNlcnRpZmljYXRpb24gQXV0aG9yaXRpZXMxKjAoBgNVBAsTIURlcGFydG1lbnQgb2YgVmV0ZXJhbnMgQWZmYWlycyBDQQ==","numEntries":232765},{"uri":"http://pki.treasury.gov/VA_CA.crl","thisUpdate":"2022-12-01T01:59:47.000+0000","nextUpdate":"2022-12-01T19:59:47.000+0000","authorityKeyIdentifier":"BBTanLYf/2edR5ENJucpZhRll+aAWA==","issuerName":"MIGgMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MScwJQYDVQQLEx5EZXBhcnRtZW50IG9mIFZldGVyYW5zIEFmZmFpcnMxIjAgBgNVBAsTGUNlcnRpZmljYXRpb24gQXV0aG9yaXRpZXMxKjAoBgNVBAsTIURlcGFydG1lbnQgb2YgVmV0ZXJhbnMgQWZmYWlycyBDQQ==","numEntries":232765},{"uri":"http://pki.treasury.gov/DHS_CA2.crl","thisUpdate":"2022-12-01T00:09:01.000+0000","nextUpdate":"2022-12-01T22:09:01.000+0000","authorityKeyIdentifier":"BBR8w0pcuh82q4NRffTg5Q6QfxwTQQ==","issuerName":"MIGHMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MSgwJgYDVQQLEx9EZXBhcnRtZW50IG9mIEhvbWVsYW5kIFNlY3VyaXR5MSIwIAYDVQQLExlDZXJ0aWZpY2F0aW9uIEF1dGhvcml0aWVzMRAwDgYDVQQLEwdESFMgQ0E0","numEntries":440619},{"uri":"http://crl.disa.mil/crl/DODIDCA_52.crl","thisUpdate":"2022-11-29T09:00:00.000+0000","nextUpdate":"2022-12-06T18:00:00.000+0000","authorityKeyIdentifier":"BBSa6FGskVTXlJoESPoief/G1e6GKw==","issuerName":"MFoxCzAJBgNVBAYTAlVTMRgwFgYDVQQKDA9VLlMuIEdvdmVybm1lbnQxDDAKBgNVBAsMA0RvRDEMMAoGA1UECwwDUEtJMRUwEwYDVQQDDAxET0QgSUQgQ0EtNTI=","numEntries":0},{"uri":"http://crl.disa.mil/crl/DODIDCA_51.crl","thisUpdate":"2022-11-30T10:00:00.000+0000","nextUpdate":"2022-12-07T19:00:00.000+0000","authorityKeyIdentifier":"BBSdpMFc0/lmcUmohCMDtuGvKXctrg==","issuerName":"MFoxCzAJBgNVBAYTAlVTMRgwFgYDVQQKDA9VLlMuIEdvdmVybm1lbnQxDDAKBgNVBAsMA0RvRDEMMAoGA1UECwwDUEtJMRUwEwYDVQQDDAxET0QgSUQgQ0EtNTE=","numEntries":0},{"uri":"http://crl.disa.mil/crl/DODIDCA_50.crl","thisUpdate":"2022-11-29T11:00:00.000+0000","nextUpdate":"2022-12-06T20:00:00.000+0000","authorityKeyIdentifier":"BBQ2LlLedKqe7Lsfk9G+tlC1xmkL+Q==","issuerName":"MFoxCzAJBgNVBAYTAlVTMRgwFgYDVQQKDA9VLlMuIEdvdmVybm1lbnQxDDAKBgNVBAsMA0RvRDEMMAoGA1UECwwDUEtJMRUwEwYDVQQDDAxET0QgSUQgQ0EtNTA=","numEntries":0},{"uri":"http://crl.disa.mil/crl/DODIDCA_49.crl","thisUpdate":"2022-11-30T12:00:00.000+0000","nextUpdate":"2022-12-07T21:00:00.000+0000","authorityKeyIdentifier":"BBTYZ5PKRtzJlaaUswQYnM4lOpYcTQ==","issuerName":"MFoxCzAJBgNVBAYTAlVTMRgwFgYDVQQKDA9VLlMuIEdvdmVybm1lbnQxDDAKBgNVBAsMA0RvRDEMMAoGA1UECwwDUEtJMRUwEwYDVQQDDAxET0QgSUQgQ0EtNDk=","numEntries":0},{"uri":"http://sspweb.managed.entrust.com/CRLs/EMSSSPCA2.crl","thisUpdate":"2022-12-01T00:00:07.000+0000","nextUpdate":"2022-12-03T00:00:07.000+0000","authorityKeyIdentifier":"BBRVtGwzP+NgGqf/w+209+QE2inQYw==","issuerName":"MG0xCzAJBgNVBAYTAlVTMRAwDgYDVQQKEwdFbnRydXN0MSIwIAYDVQQLExlDZXJ0aWZpY2F0aW9uIEF1dGhvcml0aWVzMSgwJgYDVQQLEx9FbnRydXN0IE1hbmFnZWQgU2VydmljZXMgU1NQIENB","numEntries":1056912},{"uri":"http://feddcsweb.managed.entrust.com/CRLs/FedDCSCA.crl","thisUpdate":"2022-11-30T20:30:06.000+0000","nextUpdate":"2022-12-02T20:30:06.000+0000","authorityKeyIdentifier":"BBSWvXoo8g6DipBA7tKkUNd/daGWXA==","issuerName":"MG8xCzAJBgNVBAYTAlVTMRAwDgYDVQQKEwdFbnRydXN0MSIwIAYDVQQLExlDZXJ0aWZpY2F0aW9uIEF1dGhvcml0aWVzMSowKAYDVQQDEyFFbnRydXN0IERlcml2ZWQgQ3JlZGVudGlhbCBTU1AgQ0E=","numEntries":219471},{"uri":"http://hhspkicrl.managed.entrust.com/CRLs/HHSEntrustCA1.crl","thisUpdate":"2022-11-30T22:13:37.000+0000","nextUpdate":"2022-12-02T22:13:37.000+0000","authorityKeyIdentifier":"BBTliRnk+aK86E2hKVQWUYHH1cKOnA==","issuerName":"MH8xCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxDDAKBgNVBAsTA0hIUzEiMCAGA1UECxMZQ2VydGlmaWNhdGlvbiBBdXRob3JpdGllczEkMCIGA1UEAxMbSEhTLUZQS0ktSW50ZXJtZWRpYXRlLUNBLUUx","numEntries":245264},{"uri":"http://pki.treasury.gov/NASA_Operational_CA3.crl","thisUpdate":"2022-12-01T00:28:09.000+0000","nextUpdate":"2022-12-01T18:28:09.000+0000","authorityKeyIdentifier":"BBSFP3fk0npR6VZOjU3Enche1dhEdQ==","issuerName":"MHgxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxDTALBgNVBAsTBE5BU0ExIjAgBgNVBAsTGUNlcnRpZmljYXRpb24gQXV0aG9yaXRpZXMxHDAaBgNVBAsTE05BU0EgT3BlcmF0aW9uYWwgQ0E=","numEntries":107695},{"uri":"http://onsite-crl.pki.digicert.com/USNuclearRegulatoryCommissionSSPPIVG3/LatestCRL.crl","thisUpdate":"2022-12-01T00:52:46.000+0000","nextUpdate":"2022-12-01T18:52:46.000+0000","authorityKeyIdentifier":"BBScl393cniiTdeeO62fXpwGCTA8gg==","issuerName":"MHMxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxKzApBgNVBAsTIlUuUy4gTnVjbGVhciBSZWd1bGF0b3J5IENvbW1pc3Npb24xHTAbBgNVBAMTFE5SQyBTU1AgQWdlbmN5IENBIEcz","numEntries":3840},{"uri":"http://onsite-crl.pki.digicert.com/USSenateSSPPIVIG4PROD/LatestCRL.crl","thisUpdate":"2022-12-01T00:52:46.000+0000","nextUpdate":"2022-12-02T00:52:46.000+0000","authorityKeyIdentifier":"BBTbKmuE2pVfMlavVsWCCyUqabwIeg==","issuerName":"MIGDMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MRQwEgYDVQQLEwtVLlMuIFNlbmF0ZTEnMCUGA1UECxMeT2ZmaWNlIG9mIHRoZSBTZXJnZWFudCBhdCBBcm1zMRswGQYDVQQDExJTZW5hdGUgUElWLUkgQ0EgRzQ=","numEntries":486},{"uri":"http://pki.treasury.gov/SSA_CA2.crl","thisUpdate":"2022-12-01T00:23:27.000+0000","nextUpdate":"2022-12-01T18:23:27.000+0000","authorityKeyIdentifier":"BBQWzdbOf88X+X4hhfSx5ywz/xBFCQ==","issuerName":"MHYxCzAJBgNVBAYTAlVTMRgwFgYDVQQKEw9VLlMuIEdvdmVybm1lbnQxDDAKBgNVBAsTA1NTQTE/MD0GA1UECxM2U29jaWFsIFNlY3VyaXR5IEFkbWluaXN0cmF0aW9uIENlcnRpZmljYXRpb24gQXV0aG9yaXR5","numEntries":60749},{"uri":"http://pki.treasury.gov/OCIO_CA4.crl","thisUpdate":"2022-11-30T22:22:56.000+0000","nextUpdate":"2022-12-01T16:22:56.000+0000","authorityKeyIdentifier":"BBTXzihMyCRqVkZbdWWLZ8T6yOCIpQ==","issuerName":"MIGCMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MSMwIQYDVQQLExpEZXBhcnRtZW50IG9mIHRoZSBUcmVhc3VyeTEiMCAGA1UECxMZQ2VydGlmaWNhdGlvbiBBdXRob3JpdGllczEQMA4GA1UECxMHT0NJTyBDQQ==","numEntries":147724},{"uri":"http://onsite-crl.pki.digicert.com/USDepartmentofEducationDoEDG4PIV/LatestCRL.crl","thisUpdate":"2022-12-01T00:52:36.000+0000","nextUpdate":"2022-12-01T18:52:36.000+0000","authorityKeyIdentifier":"BBRYL3v3excMommp/1JAaAUEQ+1C8w==","issuerName":"MIGEMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MSUwIwYDVQQLExxVLlMuIERlcGFydG1lbnQgb2YgRWR1Y2F0aW9uMTQwMgYDVQQDEytVLlMuIERlcGFydG1lbnQgb2YgRWR1Y2F0aW9uIEFnZW5jeSBDQSAtIEc0","numEntries":5782},{"uri":"http://crls.pki.state.gov/crls/DoSADPKIPIVCA2.crl","thisUpdate":"2022-11-30T23:58:21.000+0000","nextUpdate":"2022-12-08T11:58:21.000+0000","authorityKeyIdentifier":"BBSKzGxDVsNFpXPF/bP0HGiCyetJIA==","issuerName":"MIGiMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MRwwGgYDVQQLExNEZXBhcnRtZW50IG9mIFN0YXRlMQwwCgYDVQQLEwNQSVYxIjAgBgNVBAsTGUNlcnRpZmljYXRpb24gQXV0aG9yaXRpZXMxKTAnBgNVBAsTIFUuUy4gRGVwYXJ0bWVudCBvZiBTdGF0ZSBQSVYgQ0Ey","numEntries":104188},{"uri":"http://onsite-crl.pki.digicert.com/USDepartmentofTransportationFAAPIVG4/LatestCRL.crl","thisUpdate":"2022-12-01T00:52:39.000+0000","nextUpdate":"2022-12-01T18:52:39.000+0000","authorityKeyIdentifier":"BBRnww++PpoXLlosifBqH9Y+G8sOVQ==","issuerName":"MIGMMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MSowKAYDVQQLEyFVLlMuIERlcGFydG1lbnQgb2YgVHJhbnNwb3J0YXRpb24xNzA1BgNVBAMTLlUuUy4gRGVwYXJ0bWVudCBvZiBUcmFuc3BvcnRhdGlvbiBBZ2VuY3kgQ0EgRzQ=","numEntries":93801}]
+2022-11-30 21:44:07.146 INFO net.spy.memcached.MemcachedConnection:  Shut down memcached client
