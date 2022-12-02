@@ -8,13 +8,14 @@ import java.security.NoSuchProviderException;
 import java.security.cert.CertPath;
 import java.security.cert.CertStore;
 import java.security.cert.CertStoreParameters;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.security.auth.x500.X500Principal;
 
 import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
@@ -74,27 +75,28 @@ public class IntermediateCacheSingleton {
 		 * Filter the Intermediates we received
 		 */
 		for (X509Certificate cert : certs) {
-			String subject = cert.getSubjectX500Principal().getName();
-			String issuer = cert.getIssuerX500Principal().getName();
-			LOG.info("CMS Cert: " + subject + " signed by " + issuer);
+			X500Principal fbcag4 = new X500Principal("CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US");
+			X500Principal fcpcag2 = new X500Principal("CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US");
+			X500Principal subject = cert.getSubjectX500Principal();
+			X500Principal issuer = cert.getIssuerX500Principal();
+			LOG.info("CMS Cert: " + subject.getName() + " signed by " + issuer.getName());
 			/*
-			 * Filter out any certificate issued to FCPCAG2, including the FCPCAG2
-			 * 
-			 * TODO: Match Names using Name objects, not Strings!
+			 * Filter out any certificate issued to FCPCAG2, including the FCPCAG2, and;
+			 * Filter out any FBCAG4 issued by any other issue except FCPCAG2.
 			 */
-			if (subject.equals("CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US")) {
-				LOG.info("Filtering out " + cert.getSubjectX500Principal().getName() + " signed by "
-						+ cert.getIssuerX500Principal().getName());
-			} else if (subject.equals("CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US")) {
-				if (issuer.equals("CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US")) {
+			if (subject.equals(fcpcag2)) {
+				LOG.info("Filtering out " + subject.getName() + " signed by " + issuer.getName());
+			} else if (subject.equals(fbcag4)) {
+				if (issuer.equals(fcpcag2)) {
 					filteredCerts.add(cert);
 				} else {
-					LOG.info("Filtering out: " + subject + " signed by " + issuer);
+					LOG.info("Filtering out " + subject.getName() + " signed by " + issuer.getName());
 				}
 			} else {
 				filteredCerts.add(cert);
 			}
-		}		/*
+		}
+		/*
 		 * Place certificates into a Collection CertStore
 		 */
 		CertStoreParameters cparam = new CollectionCertStoreParameters(filteredCerts);
