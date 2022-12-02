@@ -60,7 +60,64 @@ public class ValidatePKIX {
 
 	private final static int MAX_PATH_LENGTH = 7;
 
+	/*
+	 * TODO:  For now, we will stick with the SUN provider since it can fetch CRL and OCSP data.
+	 * 
+	 * https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/URICertStore.java
+	 * 
+	 * If we were to create an internal variant of the SUN URICertStore, then we could use it with the BC Certpath provider.
+	 */
+	private final static String CERTPATH_PROVIDER = "SUN";
+
+	private final static String CERTPATH_ALGORITHM = "PKIX";
+
+	/*
+	 * TODO: For now, use the BC signature provider until BCFIPS is avail for OpenJDK/Corretto 17
+	 */
+	private final static String JCE_PROVIDER = "BC";
+
 	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol) {
+		/*
+		 * Begin Set JCE Signature Provider and System/Security variables
+		 *
+		 * <pre>
+		 * Set System and Security properties to make the Sun provider: - Fetch CRLs via
+		 * the CDP extension - Check OCSP via the AIA extension - Chase CA Issuers via
+		 * the AIA extension
+		 *
+		 * TODO: Consider writing our own provider that leverages cached objects.
+		 *
+		 * The AIA and CDP chases would be valuable to update a local cache.
+		 *
+		 * The OCSP responses would be valuable *if* the CA is not able to produce a CRL
+		 * within 24 hours within the FPKI (or any issuing CA or intermediate the
+		 * relying party is willing to trust).
+		 *
+		 * See:
+		 * https://docs.oracle.com/en/java/javase/11/security/java-pki-programmers-guide.html
+		 *
+		 * -
+		 * https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/RevocationChecker.java
+		 *
+		 * Debug logging for CertPath can be enabled running the code via:
+		 *
+		 * - java -Djava.security.debug=certpath -jar target/rest-service-eb.jar
+		 *
+		 * <pre>
+		 */
+		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+		System.setProperty("com.sun.security.enableCRLDP", "true");
+		Security.setProperty("ocsp.enable", "true");
+		/*
+		 * Disable AIA fetch to restrict our intermediate store
+		 */
+		System.setProperty("com.sun.security.enableAIAcaIssuers", "false");
+		/*
+		 * End Set JCE Signature Provider and System/Security variables
+		 */
+		/*
+		 * Process the request
+		 */
 		VssResponse response = new VssResponse();
 		/*
 		 * When decoding the certificate contents, don't always assume that the fields
@@ -107,39 +164,6 @@ public class ValidatePKIX {
 		 * Add x5t#S256
 		 */
 		response.x5tS256 = x5tS256;
-		/*
-		 * <pre>
-		 * Set System and Security properties to make the Sun provider: - Fetch CRLs via
-		 * the CDP extension - Check OCSP via the AIA extension - Chase CA Issuers via
-		 * the AIA extension
-		 *
-		 * TODO: Consider writing our own provider that leverages cached objects.
-		 *
-		 * The AIA and CDP chases would be valuable to update a local cache.
-		 *
-		 * The OCSP responses would be valuable *if* the CA is not able to produce a CRL
-		 * within 24 hours within the FPKI (or any issuing CA or intermediate the
-		 * relying party is willing to trust).
-		 *
-		 * See:
-		 * https://docs.oracle.com/en/java/javase/11/security/java-pki-programmers-guide.html
-		 *
-		 * -
-		 * https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/RevocationChecker.java
-		 *
-		 * Debug logging for CertPath can be enabled running the code via:
-		 *
-		 * - java -Djava.security.debug=certpath -jar target/rest-service-eb.jar
-		 *
-		 * <pre>
-		 */
-		System.setProperty("java.security.debug", "certpath");
-		System.setProperty("com.sun.security.enableCRLDP", "true");
-		Security.setProperty("ocsp.enable", "true");
-		/*
-		 * Disable AIA fetch to restrict our intermediate store
-		 */
-		System.setProperty("com.sun.security.enableAIAcaIssuers", "false");
 		try {
 			cert.checkValidity();
 		} catch (CertificateExpiredException e) {
@@ -203,7 +227,7 @@ public class ValidatePKIX {
 		CertStoreParameters cparam = new CollectionCertStoreParameters(cert_list);
 		CertStore cstore = null;
 		try {
-			cstore = CertStore.getInstance("Collection", cparam, "SUN");
+			cstore = CertStore.getInstance("Collection", cparam, CERTPATH_PROVIDER);
 		} catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchProviderException e) {
 			LOG.error("Internal Validation Error", e);
 			throw new ServiceException("Internal Validation Error");
@@ -215,6 +239,7 @@ public class ValidatePKIX {
 			LOG.error("Internal Validation Error", e);
 			throw new ServiceException("Internal Validation Error");
 		}
+		params.setSigProvider(JCE_PROVIDER);
 		params.setDate(now);
 		params.setInitialPolicies(new HashSet<>(valPol.userPolicySet));
 		params.setPolicyMappingInhibited(valPol.inhibitPolicyMapping);
@@ -236,7 +261,7 @@ public class ValidatePKIX {
 		 */
 		CertPathBuilder cpb = null;
 		try {
-			cpb = CertPathBuilder.getInstance("PKIX", "SUN");
+			cpb = CertPathBuilder.getInstance(CERTPATH_ALGORITHM, CERTPATH_PROVIDER);
 		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
 			LOG.error("Internal Validation Error", e);
 			throw new ServiceException("Internal Validation Error");
@@ -291,7 +316,7 @@ public class ValidatePKIX {
 		 */
 		CertPathValidator cpv = null;
 		try {
-			cpv = CertPathValidator.getInstance("PKIX");
+			cpv = CertPathValidator.getInstance(CERTPATH_ALGORITHM);
 		} catch (NoSuchAlgorithmException e) {
 			LOG.error("Internal Validation Error", e);
 			throw new ServiceException("Internal Validation Error");
@@ -325,7 +350,7 @@ public class ValidatePKIX {
 				bCert.x509Certificate = Base64.getEncoder().encodeToString(currentCert.getEncoded());
 				LOG.debug("Path Cert:\n" + currentCert.toString());
 			} catch (CertificateEncodingException e) {
-				LOG.error("Error Base64 encoding certificate from ReplyWantBack", e);
+				LOG.error("Error Base64 encoding certificate from CertPath", e);
 			}
 			x509CertificatePath.add(bCert);
 		}

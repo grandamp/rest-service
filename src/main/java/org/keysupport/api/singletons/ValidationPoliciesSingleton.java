@@ -23,6 +23,9 @@ public class ValidationPoliciesSingleton {
 	private ValidationPolicies validationPolicies = null;
 
 	private ValidationPoliciesSingleton() {
+	}
+
+	public void updateValidationPolicies() {
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		URI uri = URI.create(polUri);
 		byte[] data = client.getData(uri);
@@ -37,7 +40,7 @@ public class ValidationPoliciesSingleton {
 		}
 		LOG.info("ValidationPolicies: " + validationPoliciesJson);
 	}
-
+	
 	private static class SingletonHelper {
 		private static final ValidationPoliciesSingleton INSTANCE = new ValidationPoliciesSingleton();
 	}

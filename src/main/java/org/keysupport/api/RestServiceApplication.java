@@ -1,7 +1,5 @@
 package org.keysupport.api;
 
-import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
-import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -25,18 +23,6 @@ public class RestServiceApplication {
         SpringApplication app = new SpringApplication(RestServiceApplication.class);
         LOG.info("Service Starting");
         app.run(args);
-
-        /*
-         * Set our policies singleton
-         */
-        @SuppressWarnings("unused")
-		ValidationPoliciesSingleton validationPoliciesSingleton = ValidationPoliciesSingleton.getInstance();
-
-        /*
-         * Set our prototype cached Intermediate CertStore singleton
-         */
-        @SuppressWarnings("unused")
-		IntermediateCacheSingleton intermediateCacheSingleton = IntermediateCacheSingleton.getInstance();
    }
 
 }

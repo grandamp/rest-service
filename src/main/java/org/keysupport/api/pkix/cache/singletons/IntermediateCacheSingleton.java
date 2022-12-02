@@ -35,14 +35,20 @@ import org.slf4j.LoggerFactory;
  * https://github.com/GSA/ficam-playbooks/raw/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b
  */
 public class IntermediateCacheSingleton {
+	private final Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
 
-	private Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
+	private final String mdUri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/staging/_fpki/2b_pivcas.md";
 
 	private final String p7Uri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b";
 
 	private CertStore intermediates = null;
 
+	private CertStore intermediatecrls = null;
+
 	private IntermediateCacheSingleton() {
+	}
+
+	public void updateIntermediates() {
 		/*
 		 * Download the CMS object
 		 */
