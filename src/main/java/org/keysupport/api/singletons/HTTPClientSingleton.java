@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class HTTPClientSingleton {
 
-	private final static Logger LOG = LoggerFactory.getLogger(HTTPClientSingleton.class);
+	private final Logger LOG = LoggerFactory.getLogger(HTTPClientSingleton.class);
 
 	private HttpClient client = null;
 
@@ -26,7 +26,7 @@ public class HTTPClientSingleton {
 		client = HttpClient.newHttpClient();
 	}
 
-	private static class SingletonHelper {
+	private class SingletonHelper {
 		private static final HTTPClientSingleton INSTANCE = new HTTPClientSingleton();
 	}
 

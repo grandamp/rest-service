@@ -8,11 +8,14 @@ import java.security.NoSuchProviderException;
 import java.security.cert.CertPath;
 import java.security.cert.CertStore;
 import java.security.cert.CertStoreParameters;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CollectionCertStoreParameters;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.security.auth.x500.X500Principal;
 
 import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
@@ -33,14 +36,13 @@ import org.slf4j.LoggerFactory;
  */
 public class IntermediateCacheSingleton {
 
-	private final static Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
+	private Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
 
-	private static final String p7Uri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b";
+	private final String p7Uri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b";
 
-	private static CertStore intermediates = null;
+	private CertStore intermediates = null;
 
 	private IntermediateCacheSingleton() {
-
 		/*
 		 * Download the CMS object
 		 */
@@ -64,19 +66,39 @@ public class IntermediateCacheSingleton {
 		} catch (CertificateException e) {
 			LOG.error("Failed to parse CMS object", e);
 		}
-		List<? extends Certificate> certs = cp.getCertificates();
+		@SuppressWarnings("unchecked")
+		List<X509Certificate> certs = (List<X509Certificate>) cp.getCertificates();
 		LOG.info("CMS object contains " + certs.size() + " certificates");
+		List<X509Certificate> filteredCerts = new ArrayList<X509Certificate>();
 		/*
-		 * List the Intermediates we received
+		 * Filter the Intermediates we received
 		 */
-		for (Certificate cert : certs) {
-			LOG.info("CMS Cert:");
-			LOG.info(cert.toString());
+		for (X509Certificate cert : certs) {
+			X500Principal fbcag4 = new X500Principal("CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US");
+			X500Principal fcpcag2 = new X500Principal("CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US");
+			X500Principal subject = cert.getSubjectX500Principal();
+			X500Principal issuer = cert.getIssuerX500Principal();
+			LOG.info("CMS Cert: " + subject.getName() + " signed by " + issuer.getName());
+			/*
+			 * Filter out any certificate issued to FCPCAG2, including the FCPCAG2, and;
+			 * Filter out any FBCAG4 issued by any other issue except FCPCAG2.
+			 */
+			if (subject.equals(fcpcag2)) {
+				LOG.info("Filtering out " + subject.getName() + " signed by " + issuer.getName());
+			} else if (subject.equals(fbcag4)) {
+				if (issuer.equals(fcpcag2)) {
+					filteredCerts.add(cert);
+				} else {
+					LOG.info("Filtering out " + subject.getName() + " signed by " + issuer.getName());
+				}
+			} else {
+				filteredCerts.add(cert);
+			}
 		}
 		/*
 		 * Place certificates into a Collection CertStore
 		 */
-		CertStoreParameters cparam = new CollectionCertStoreParameters(certs);
+		CertStoreParameters cparam = new CollectionCertStoreParameters(filteredCerts);
 		try {
 			intermediates = CertStore.getInstance("Collection", cparam, "SUN");
 		} catch (InvalidAlgorithmParameterException e) {
@@ -86,10 +108,9 @@ public class IntermediateCacheSingleton {
 		} catch (NoSuchProviderException e) {
 			LOG.error("Failed to create CertStore from CMS object", e);
 		}
-
 	}
 
-	private static class SingletonHelper {
+	private class SingletonHelper {
 		private static final IntermediateCacheSingleton INSTANCE = new IntermediateCacheSingleton();
 	}
 

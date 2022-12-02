@@ -4,10 +4,7 @@
 
 - Enter into project directory, and initialize and deploy to your AWS account
 
-- Make note of S3 bucket supporting the code deploy, or create in advance
-
 - Elasticache cluster must be added in advance, and make sure the EBS hosts can talk to your cluster using an appropriate security group
-
 
 ```
 eb init
@@ -21,19 +18,14 @@ eb list
 eb create --single
 ```
 
-Deploy the configuration directory to the bucket
-
-```
-aws s3 sync configuration s3://elasticbeanstalk-us-east-1-216896468348/configuration
-```
-
-Deploy the application
+- Deploy the application
 
 ```
 mvn clean package spring-boot:repackage
 eb deploy
 eb status
 ```
+
 - Scale the number of nodes to 2
 
 ```
