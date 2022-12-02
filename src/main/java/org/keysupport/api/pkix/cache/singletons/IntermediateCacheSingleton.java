@@ -36,11 +36,11 @@ import org.slf4j.LoggerFactory;
  */
 public class IntermediateCacheSingleton {
 
-	private final static Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
+	private static Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
 
-	private static final String p7Uri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b";
+	private final String p7Uri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b";
 
-	private static CertStore intermediates = null;
+	private CertStore intermediates = null;
 
 	private IntermediateCacheSingleton() {
 
@@ -112,7 +112,7 @@ public class IntermediateCacheSingleton {
 
 	}
 
-	private static class SingletonHelper {
+	private class SingletonHelper {
 		private static final IntermediateCacheSingleton INSTANCE = new IntermediateCacheSingleton();
 	}
 
