@@ -1,7 +1,6 @@
 package org.keysupport.api.singletons;
 
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 
 import org.keysupport.api.pojo.vss.ValidationPolicies;
 import org.slf4j.Logger;
@@ -23,10 +22,12 @@ public class ValidationPoliciesSingleton {
 	private ValidationPolicies validationPolicies = null;
 
 	private ValidationPoliciesSingleton() {
+	}
+
+	public void updateValidationPolicies() {
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		URI uri = URI.create(polUri);
-		byte[] data = client.getData(uri);
-		String validationPoliciesJson = new String(data, StandardCharsets.UTF_8);
+		String validationPoliciesJson = client.getText(uri);
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			validationPolicies = mapper.readValue(validationPoliciesJson, ValidationPolicies.class);

@@ -6,9 +6,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
@@ -223,6 +227,34 @@ public class X509Util {
 	 */
 	public static UUID uuidFromName(String name) {
 		return UUID.nameUUIDFromBytes(name.getBytes(StandardCharsets.UTF_8));
+	}
+
+	public static String ISO8601DateString(Date date) {
+		String dateString = null;
+		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		dFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		dateString = dFormat.format(date);
+		return dateString;
+	}
+
+	public static Date dateFromHttpHeader(String headerDateValue) {
+		SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+		Date d = null;
+		try {
+			d = format.parse(headerDateValue);
+		} catch (ParseException e) {
+			LOG.error("Unable to parse date", e);
+		}
+		return d;
+	}
+
+	public static String ISO8601DateStringFromHttpHeader(String headerDateValue) {
+		return ISO8601DateString(dateFromHttpHeader(headerDateValue));
+	}
+
+	public static int calculateCacheTTL(Date then) {
+		Date now = new Date();
+		return (int)(then.getTime()-now.getTime())/1000;
 	}
 
 }

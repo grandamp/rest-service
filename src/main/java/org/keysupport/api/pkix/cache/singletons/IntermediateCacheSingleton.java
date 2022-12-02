@@ -1,6 +1,5 @@
 package org.keysupport.api.pkix.cache.singletons;
 
-import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -8,8 +7,6 @@ import java.security.NoSuchProviderException;
 import java.security.cert.CertPath;
 import java.security.cert.CertStore;
 import java.security.cert.CertStoreParameters;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
 import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -35,41 +32,30 @@ import org.slf4j.LoggerFactory;
  * https://github.com/GSA/ficam-playbooks/raw/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b
  */
 public class IntermediateCacheSingleton {
+	private final Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
 
-	private Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
+	private final String mdUri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/staging/_fpki/2b_pivcas.md";
 
 	private final String p7Uri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b";
 
 	private CertStore intermediates = null;
 
+	private CertStore intermediatecrls = null;
+
 	private IntermediateCacheSingleton() {
+	}
+
+	public void updateIntermediates() {
 		/*
 		 * Download the CMS object
 		 */
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		URI uri = URI.create(p7Uri);
-		byte[] data = client.getData(uri);
-		LOG.info("CMS object is " + data.length + " bytes in size");
-		/*
-		 * Parse the CMS object
-		 */
-		ByteArrayInputStream bais = new ByteArrayInputStream(data);
-		CertificateFactory cf = null;
-		try {
-			cf = CertificateFactory.getInstance("X.509");
-		} catch (CertificateException e) {
-			LOG.error("Failed to parse CMS object", e);
-		}
-		CertPath cp = null;
-		try {
-			cp = cf.generateCertPath(bais, "PKCS7");
-		} catch (CertificateException e) {
-			LOG.error("Failed to parse CMS object", e);
-		}
+		CertPath cp = client.getCms(uri);
 		@SuppressWarnings("unchecked")
 		List<X509Certificate> certs = (List<X509Certificate>) cp.getCertificates();
 		LOG.info("CMS object contains " + certs.size() + " certificates");
-		List<X509Certificate> filteredCerts = new ArrayList<X509Certificate>();
+		List<X509Certificate> filteredCerts = new ArrayList<>();
 		/*
 		 * Filter the Intermediates we received
 		 */
