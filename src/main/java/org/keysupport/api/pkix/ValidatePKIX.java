@@ -58,6 +58,8 @@ public class ValidatePKIX {
 
 	private final static Logger LOG = LoggerFactory.getLogger(ValidatePKIX.class);
 
+	private final static int MAX_PATH_LENGTH = 7;
+	
 	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol) {
 		VssResponse response = new VssResponse();
 		/*
@@ -220,10 +222,12 @@ public class ValidatePKIX {
 			LOG.error("Internal Validation Error", e);
 			throw new ServiceException("Internal Validation Error");
 		}
+		params.setDate(now);
 		params.setInitialPolicies(new HashSet<>(valPol.userPolicySet));
 		params.setPolicyMappingInhibited(valPol.inhibitPolicyMapping);
 		params.setExplicitPolicyRequired(valPol.requireExplicitPolicy);
 		params.setAnyPolicyInhibited(valPol.inhibitAnyPolicy);
+		params.setMaxPathLength(MAX_PATH_LENGTH);
 		params.addCertStore(cstore);
 		/**
 		 * <pre>

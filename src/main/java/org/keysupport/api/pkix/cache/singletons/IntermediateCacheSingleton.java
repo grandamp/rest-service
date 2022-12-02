@@ -36,14 +36,13 @@ import org.slf4j.LoggerFactory;
  */
 public class IntermediateCacheSingleton {
 
-	private static Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
+	private Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
 
 	private final String p7Uri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b";
 
 	private CertStore intermediates = null;
 
 	private IntermediateCacheSingleton() {
-
 		/*
 		 * Download the CMS object
 		 */
@@ -109,7 +108,6 @@ public class IntermediateCacheSingleton {
 		} catch (NoSuchProviderException e) {
 			LOG.error("Failed to create CertStore from CMS object", e);
 		}
-
 	}
 
 	private class SingletonHelper {
