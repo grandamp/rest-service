@@ -62,9 +62,9 @@ public class ValidatePKIX {
 
 	/*
 	 * TODO:  For now, we will stick with the SUN provider since it can fetch CRL and OCSP data.
-	 * 
+	 *
 	 * https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/URICertStore.java
-	 * 
+	 *
 	 * If we were to create an internal variant of the SUN URICertStore, then we could use it with the BC Certpath provider.
 	 */
 	private final static String CERTPATH_PROVIDER = "SUN";
