@@ -1,6 +1,5 @@
 package org.keysupport.api;
 
-import org.keysupport.api.pkix.cache.CacheAndDownloadTest;
 import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
@@ -25,10 +24,6 @@ public class RestServiceApplication {
     	"software.amazon.awssdk.http.crt.AwsCrtSdkHttpService");
         SpringApplication app = new SpringApplication(RestServiceApplication.class);
         LOG.info("Service Starting");
-        /*
-         * Test memcached/Elasticache before we start
-         */
-        CacheAndDownloadTest.getCRLsFromMd();
         app.run(args);
 
         /*

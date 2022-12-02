@@ -59,7 +59,7 @@ public class ValidatePKIX {
 	private final static Logger LOG = LoggerFactory.getLogger(ValidatePKIX.class);
 
 	private final static int MAX_PATH_LENGTH = 7;
-	
+
 	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol) {
 		VssResponse response = new VssResponse();
 		/*
@@ -107,7 +107,7 @@ public class ValidatePKIX {
 		 * Add x5t#S256
 		 */
 		response.x5tS256 = x5tS256;
-		/**
+		/*
 		 * <pre>
 		 * Set System and Security properties to make the Sun provider: - Fetch CRLs via
 		 * the CDP extension - Check OCSP via the AIA extension - Chase CA Issuers via
@@ -137,12 +137,9 @@ public class ValidatePKIX {
 		System.setProperty("com.sun.security.enableCRLDP", "true");
 		Security.setProperty("ocsp.enable", "true");
 		/*
-		 * Temporary disable AIA fetch to test our intermediate store
+		 * Disable AIA fetch to restrict our intermediate store
 		 */
-		// System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
-		/*
-		 *
-		 */
+		System.setProperty("com.sun.security.enableAIAcaIssuers", "false");
 		try {
 			cert.checkValidity();
 		} catch (CertificateExpiredException e) {
@@ -161,19 +158,15 @@ public class ValidatePKIX {
 			return response;
 		}
 		/*
-		 * Before we dive into RFC5280, we should perform a minimum algorithm/keySize
+		 * TODO: Before we dive into RFC5280, we should perform a minimum algorithm/keySize
 		 * check.
-		 */
-		/*
+		 *
 		 * Set RFC 5280 Inputs based on the selected certificate and validation policy
 		 */
 		X509CertSelector selector = new X509CertSelector();
 		selector.setCertificate(cert);
 		/*
 		 * Initialize the TrustAnchor via the ValidationPolicy.
-		 *
-		 * TODO: It would be more efficient if the TrustAnchor was already rendered as
-		 * an X509Certificate
 		 *
 		 * TODO: Address policies that indicate multiple trust anchors, for now; we will
 		 * only inject the first trust anchor defined in the validation policy.
@@ -229,9 +222,9 @@ public class ValidatePKIX {
 		params.setAnyPolicyInhibited(valPol.inhibitAnyPolicy);
 		params.setMaxPathLength(MAX_PATH_LENGTH);
 		params.addCertStore(cstore);
-		/**
+		/*
 		 * <pre>
-		 * TODO:  Add FPKI Intermediate Store from our prototype IntermediateCacheSingleton
+		 * Add FPKI Intermediate Store from our IntermediateCacheSingleton
 		 *
 		 * - https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/cert/CertStore.html
 		 * </pre>
@@ -250,9 +243,6 @@ public class ValidatePKIX {
 		}
 		PKIXCertPathBuilderResult result = null;
 		/*
-		 * TODO: The path construction may fail if the path can not be built, which we
-		 * should immediately return a response to the client.
-		 *
 		 * TODO: Consider isolating the following into it's own method, or class that
 		 * accommodates multiple exception types.
 		 */
@@ -321,22 +311,11 @@ public class ValidatePKIX {
 			throw new ServiceException("Internal Validation Error");
 		}
 		LOG.debug(pvr.getPolicyTree().toString());
-		/**
-		 * <pre>
-		 * TODO: Check the certificate for revocation, return final result
-		 *
-		 * - We can store CRLs in an CertStore implementation, or store observed serial numbers for revoked
-		 *   certificates in database tables
-		 *   - https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/cert/CertStore.html
-		 * </pre>
-		 */
 		/*
 		 * If we got this far, the certificate is valid.
 		 *
 		 * Populate the ValidationSuccessData, add it to the result, and; return the
 		 * result.
-		 *
-		 * TODO: For now, add the certpath even if the client didn't request it.
 		 */
 		Success success = new Success();
 		List<JsonX509Certificate> x509CertificatePath = new ArrayList<>();
