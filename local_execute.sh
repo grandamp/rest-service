@@ -8,4 +8,4 @@ export S3_BUCKET=elasticbeanstalk-us-east-1-216896468348
 #
 # For additional debugging info, add: -Djava.security.debug=certpath -D-Djavax.net.debug=all
 #
-mvn clean package spring-boot:repackage; java -jar target/rest-service-eb.jar >out 2>&1
+mvn clean package spring-boot:repackage; java -Djava.security.debug=certpath -jar target/rest-service-eb.jar >out 2>&1
