@@ -2,6 +2,7 @@ package org.keysupport.api.singletons;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -20,6 +21,8 @@ import org.keysupport.api.pkix.cache.ElasticacheClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+
+import net.spy.memcached.MemcachedClient;
 
 /**
  * This class uses a singleton pattern to manage our HTTP client needs.
@@ -42,21 +45,11 @@ public class HTTPClientSingleton {
 
 	private ElasticacheClient mcClient = null;
 
-	private String configEndpoint = null;
-
 	private HTTPClientSingleton() {
 		/*
 		 * Create HTTP Client
 		 */
 		client = HttpClient.newHttpClient();
-		/*
-		 * Initialize memcached/Elasticache Config Address
-		 */
-		configEndpoint = System.getenv("MEMCACHED_CNF");
-		if (null == configEndpoint) {
-			LOG.error("MEMCACHED_CNF Not Set!");
-		}
-
 	}
 
 	private class SingletonHelper {
@@ -82,8 +75,7 @@ public class HTTPClientSingleton {
 		 * default 1hr TTL.
 		 */
 		if (null == mcClient) {
-
-			mcClient = new ElasticacheClient("127.0.0.1");
+			this.mcClient = new ElasticacheClient();
 		}
 		byte[] cacheResponse = mcClient.get(uri.toASCIIString());
 		if (null != cacheResponse) {
