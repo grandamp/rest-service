@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -195,6 +196,26 @@ public class X509Util {
 	}
 
 	/**
+	 * Return Hex String of SHA-256 digest of the input string
+	 *
+	 * @param str
+	 * @return
+	 */
+	public static String strS256HexString(String str) {
+		byte[] digest = null;
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+			md.update(str.getBytes(StandardCharsets.UTF_8));
+			digest = md.digest();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		String strS256 = byteArrayToHexString(digest);
+		return strS256;
+	}
+
+	/**
 	 * Return Base64 String of SHA-256 digest of the certificate
 	 *
 	 * @param cert
@@ -214,11 +235,12 @@ public class X509Util {
 		try {
 			x5tS256 = java.util.Base64.getEncoder().encodeToString(digest);
 		} catch (Throwable e) {
-			LOG.error("Error decoding certificate, returning SERVICEFAIL", e);
+			LOG.error("Error base64 encoding digest result", e);
 		}
 		return x5tS256;
 	}
 
+	
 	/**
 	 * Return a UUID derived from the UTF-8 String provided
 	 *
@@ -235,6 +257,29 @@ public class X509Util {
 		dFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		dateString = dFormat.format(date);
 		return dateString;
+	}
+
+	/**
+	 * Convert a byte array to a Hex String
+	 * 
+	 * The following method converts a byte[] object to a String object, where
+	 * the only output characters are "0123456789ABCDEF".
+	 * 
+	 * @param ba
+	 *            A byte array
+	
+	 * @return String Hexidecimal String object which represents the contents of
+	 *         the byte array */
+	public static String byteArrayToHexString(byte[] ba) {
+		if (ba == null) {
+			return "";
+		}
+		StringBuffer hex = new StringBuffer(ba.length * 2);
+		for (int i = 0; i < ba.length; i++) {
+			hex.append(Integer.toString((ba[i] & 0xff) + 0x100, 16)
+					.substring(1));
+		}
+		return hex.toString().toUpperCase(Locale.US);
 	}
 
 	public static Date dateFromHttpHeader(String headerDateValue) {

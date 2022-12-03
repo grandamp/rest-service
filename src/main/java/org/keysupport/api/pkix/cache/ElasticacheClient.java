@@ -11,6 +11,8 @@ import net.spy.memcached.MemcachedClient;
 /**
  * This class uses a singleton pattern to manage our memcached/ElastiCache
  * client needs.
+ * 
+ * https://github.com/awslabs/aws-elasticache-cluster-client-memcached-for-java/blob/master/src/main/java/net/spy/memcached/MemcachedClient.java
  */
 
 public class ElasticacheClient {

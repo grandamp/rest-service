@@ -178,6 +178,10 @@ public class HTTPClientSingleton {
 		return new String(textBytes, StandardCharsets.UTF_8);
 	}
 
+	public ElasticacheClient getCacheClient() {
+		return mcClient;
+	}
+
 	/*
 	 * Likely only a method for testing
 	 */

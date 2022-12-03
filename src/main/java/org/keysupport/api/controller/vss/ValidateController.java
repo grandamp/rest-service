@@ -2,6 +2,7 @@ package org.keysupport.api.controller.vss;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -14,9 +15,12 @@ import org.keysupport.api.config.ConfigurationPolicies;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.ValidatePKIX;
 import org.keysupport.api.pkix.X509Util;
+import org.keysupport.api.pkix.cache.ElasticacheClient;
+import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssRequest;
 import org.keysupport.api.pojo.vss.VssResponse;
+import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -93,6 +98,7 @@ public class ValidateController {
 		ByteArrayInputStream bais = null;
 
 		String x5tS256 = null;
+		String requestId = null;
 
 		/*
 		 * First, lets validate the request.
@@ -157,13 +163,17 @@ public class ValidateController {
 		 * Derive x5t#S256
 		 */
 		x5tS256 = X509Util.x5tS256(clientCert);
+		/*
+		 * Derive requestId
+		 */
+		requestId = X509Util.strS256HexString(x5tS256 + ":" + valPol.validationPolicyId);
 
 		/*
 		 * Add metadata to the request via `additionalProperties` so we can log it.
 		 */
 		request.setAdditionalProperty("x5t#S256", x5tS256);
 		request.setAdditionalProperty("requestHeaders", headers);
-
+		request.setAdditionalProperty("requestId", requestId);
 		/*
 		 * Log the request in JSON
 		 */
@@ -177,13 +187,36 @@ public class ValidateController {
 		} catch (IOException e) {
 			LOG.error("Error converting POJO to JSON", e);
 		}
-
+		/*
+		 * Check our cache for a response first, if cached, return
+		 *
+		 * TODO:  Response failures may be returned directly from ValidatePKIX.
+		 *
+		 * Consider setting a longer cache time for response failures, where we know the certificates are invalid.
+		 */
+		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
+		ElasticacheClient mcClient = client.getCacheClient();
+		byte[] cachedResponse = mcClient.get(requestId);
+		if (null != cachedResponse) {
+			String strResponse = new String(cachedResponse, StandardCharsets.UTF_8);
+			try {
+				response = mapper.readValue(strResponse, VssResponse.class);
+			} catch (JsonMappingException e) {
+				LOG.error("Error converting JSON to POJO", e);
+			} catch (JsonProcessingException e) {
+				LOG.error("Error converting JSON to POJO", e);
+			}
+			if (null != response) {
+				return new ResponseEntity<>(response, HttpStatus.OK);
+			}
+		}
 		/*
 		 * Validate, log, and; return the result
 		 */
 		response = ValidatePKIX.validate(clientCert, x5tS256, valPol);
+		String output = null;
 		try {
-			String output = mapper.writeValueAsString(response);
+			output = mapper.writeValueAsString(response);
 			LOG.info("{\"ValidationResponse\":" + output + "}");
 		} catch (JsonGenerationException e) {
 			LOG.error("Error converting POJO to JSON", e);
@@ -191,6 +224,22 @@ public class ValidateController {
 			LOG.error("Error converting POJO to JSON", e);
 		} catch (IOException e) {
 			LOG.error("Error converting POJO to JSON", e);
+		}
+		/*
+		 * Cache the response:
+		 * 
+		 * - CREATED for valid certificates, for 1 hour
+		 * - OK for invalid certificates, for 8 hours
+		 * 
+		 * TODO:  Address invalidity reasons that may arise due to lack of intermediate or revocation data.
+		 */
+		if (response.validationResult.result.equals(Success.SUCCESS_VALUE)) {
+			LOG.info("Caching valid response with 1hr TTL, with Key: " + requestId);
+			mcClient.putWithTtl(requestId, 3600, output.getBytes(StandardCharsets.UTF_8));
+			return new ResponseEntity<>(response, HttpStatus.CREATED);
+		} else {
+			LOG.info("Caching invalid response with 8hr TTL, with Key: " + requestId);
+			mcClient.putWithTtl(requestId, 28800, output.getBytes(StandardCharsets.UTF_8));
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 
