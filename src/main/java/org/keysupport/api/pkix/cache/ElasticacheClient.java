@@ -27,16 +27,16 @@ public class ElasticacheClient {
 
 	private String name;
 
-	public ElasticacheClient(String configEndpoint) {
-		this.configEndpoint = configEndpoint;
+	public ElasticacheClient() {
 		/*
 		 * Memcached Start
 		 */
 		System.setProperty("net.spy.verifyAliveOnConnect", "true");
 		/*
-		 * temp for testing
+		 * Initialize memcached/Elasticache Config Address
 		 */
-		if (null == this.configEndpoint) {
+		configEndpoint = System.getenv("MEMCACHED_CNF");
+		if (null == configEndpoint) {
 			LOG.error("MEMCACHED_CNF Not Set!");
 		}
 		try {
@@ -44,6 +44,7 @@ public class ElasticacheClient {
 		} catch (IOException e) {
 			LOG.error("Error creating memcached client", e);
 		}
+
 	}
 
 	public Object getClient() {
