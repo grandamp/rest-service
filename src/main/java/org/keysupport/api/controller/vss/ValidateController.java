@@ -18,6 +18,7 @@ import org.keysupport.api.pkix.X509Util;
 import org.keysupport.api.pkix.cache.ElasticacheClient;
 import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
+import org.keysupport.api.pojo.vss.ValidationResult;
 import org.keysupport.api.pojo.vss.VssRequest;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.keysupport.api.singletons.HTTPClientSingleton;
@@ -86,8 +87,7 @@ public class ValidateController {
 			@ExampleObject(name = "A validation request using a public trust certificate", value = "{\n"
 					+ "  \"validationPolicyId\": \"c21f969b-5f03-333d-83e0-4f8f136e7682\",\n"
 					+ "  \"x509Certificate\": \"MIIFYjCCBEqgAwIBAgIRAOgIWMWQtieIECed/Q2JONIwDQYJKoZIhvcNAQELBQAwRjELMAkGA1UEBhMCVVMxIjAgBgNVBAoTGUdvb2dsZSBUcnVzdCBTZXJ2aWNlcyBMTEMxEzARBgNVBAMTCkdUUyBDQSAxRDQwHhcNMjIxMDEwMjAwMDU2WhcNMjMwMTA4MjAwMDU1WjAZMRcwFQYDVQQDEw5rZXlzdXBwb3J0Lm9yZzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALftackigK3dmFReOqr4txPVJrdTPRMbsz3+4ueBGtBd2OIKcFXDi8apCf76Fh8WBheDVOyDzUhkag+mTnPw0BXqYNyFntPcwosDkv7kviJgF4KmSWf3myTYmHoc0CAqoRqYsfTFkB7fK83OBnevqSZ8pgc2X7h6qSgx9Z/0dprl+2mWndIB82SZSCzpuaGXs5SPFDZVrB8Y7fUWqu1nPaTLfOzIlAIf8SHf1+f81D0Mg1rm/rAAi9HFwx+fLPnFvZUUWeErPEi9JmBJzU+TJdF3dDRldtJVgFdQXcvMMwgSjmlL+ToOwf/VRU/usIVGxLI/qoxLj+Y97ht5tzMILXMCAwEAAaOCAnYwggJyMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBQHEqvLbOftuY4bf2Ojy3InQEZctzAfBgNVHSMEGDAWgBQl4hgOsleRlCrl1F2GkIPeU7O4kjB4BggrBgEFBQcBAQRsMGowNQYIKwYBBQUHMAGGKWh0dHA6Ly9vY3NwLnBraS5nb29nL3MvZ3RzMWQ0L1NRMUZ6enViUFlNMDEGCCsGAQUFBzAChiVodHRwOi8vcGtpLmdvb2cvcmVwby9jZXJ0cy9ndHMxZDQuZGVyMBkGA1UdEQQSMBCCDmtleXN1cHBvcnQub3JnMCEGA1UdIAQaMBgwCAYGZ4EMAQIBMAwGCisGAQQB1nkCBQMwPAYDVR0fBDUwMzAxoC+gLYYraHR0cDovL2NybHMucGtpLmdvb2cvZ3RzMWQ0L0oyajNSQ2lFeTA0LmNybDCCAQUGCisGAQQB1nkCBAIEgfYEgfMA8QB3AHoyjFTYty22IOo44FIe6YQWcDIThU070ivBOlejUutSAAABg8PAFU0AAAQDAEgwRgIhAInKXSrciK8OHtFWvQienDeIwBGCfDojh62EeoD62ngyAiEA6HO5HRCE00qCIKNCx6CuS9gDkvgrNm4xIS+gPc5Z8i8AdgCt9776fP8QyIudPZwePhhqtGcpXc+xDCTKhYY069yCigAAAYPDwBVHAAAEAwBHMEUCIQDOGktHy094r8OdqDhS7IPj44qJ1V9RRdR2ZEq4Sz5WOwIgcAlszeHnUNnp/jlDJPk1vIBJxh8/lokFwDBFiUU1EhAwDQYJKoZIhvcNAQELBQADggEBAGiaDoyFu4aLlLvsYnIVlTvf6bfUZ0xf3F9gSyjJBxFxFMF4BTiWWbCXGCpBT7+hHLSvq2fKKzKn2bR17XnDJkcVNBA5kxc9MQu6YE26+QkV4nk23hNidmaRimuiq4FLivsp/9gDrU+q5lutXP6n7EYI0ibXtuGk+Tx/qW9xvT4V9snhhw+4ks0Yw0B3AcdwNqRgmKYOftOLDPivLe5+lTmxbiMIPXSvkXzGVDFwj8/D8APp173Jg6XmHPHC9DSYF33e0q3nmmKQOV3PjR4mlFkY5Ewv9pKLJRnbwp01CArMs2YYdSqERZnLCH69lcHM/kuEKgMmdgLnEky2Xa03c84=\"\n"
-					+ "}")
-			}))
+					+ "}") }))
 	@CrossOrigin(origins = "*")
 	ResponseEntity<VssResponse> validate(@RequestBody VssRequest request, @RequestHeader Map<String, String> headers) {
 
@@ -190,14 +190,16 @@ public class ValidateController {
 		/*
 		 * Check our cache for a response first, if cached, return
 		 *
-		 * TODO:  Response failures may be returned directly from ValidatePKIX.
+		 * TODO: Response failures may be returned directly from ValidatePKIX.
 		 *
-		 * Consider setting a longer cache time for response failures, where we know the certificates are invalid.
+		 * Consider setting a longer cache time for response failures, where we know the
+		 * certificates are invalid.
 		 */
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		ElasticacheClient mcClient = client.getCacheClient();
 		byte[] cachedResponse = mcClient.get(requestId);
 		if (null != cachedResponse) {
+			LOG.info("We found a cached response, attempting to return to client");
 			String strResponse = new String(cachedResponse, StandardCharsets.UTF_8);
 			try {
 				response = mapper.readValue(strResponse, VssResponse.class);
@@ -210,6 +212,7 @@ public class ValidateController {
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			}
 		}
+		LOG.info("No cached response found, validating certificate per clients request");
 		/*
 		 * Validate, log, and; return the result
 		 */
@@ -218,6 +221,26 @@ public class ValidateController {
 		try {
 			output = mapper.writeValueAsString(response);
 			LOG.info("{\"ValidationResponse\":" + output + "}");
+			/*
+			 * Cache the response:
+			 * 
+			 * - CREATED for valid certificates, for 1 hour - OK for invalid certificates,
+			 * for 8 hours
+			 * 
+			 * TODO: Address invalidity reasons that may arise due to lack of intermediate
+			 * or revocation data.
+			 */
+			ValidationResult respResult = response.validationResult;
+			if (respResult != null) {
+				if (respResult instanceof Success) {
+					LOG.info("Caching valid response with 1hr TTL, with Key: " + requestId);
+					mcClient.putWithTtl(requestId, 3600, output.getBytes(StandardCharsets.UTF_8));
+					return new ResponseEntity<>(response, HttpStatus.CREATED);
+				} else {
+					LOG.info("Caching invalid response with 8hr TTL, with Key: " + requestId);
+					mcClient.putWithTtl(requestId, 28800, output.getBytes(StandardCharsets.UTF_8));
+				}
+			}
 		} catch (JsonGenerationException e) {
 			LOG.error("Error converting POJO to JSON", e);
 		} catch (JsonMappingException e) {
@@ -225,28 +248,12 @@ public class ValidateController {
 		} catch (IOException e) {
 			LOG.error("Error converting POJO to JSON", e);
 		}
-		/*
-		 * Cache the response:
-		 * 
-		 * - CREATED for valid certificates, for 1 hour
-		 * - OK for invalid certificates, for 8 hours
-		 * 
-		 * TODO:  Address invalidity reasons that may arise due to lack of intermediate or revocation data.
-		 */
-		if (response.validationResult.result.equals(Success.SUCCESS_VALUE)) {
-			LOG.info("Caching valid response with 1hr TTL, with Key: " + requestId);
-			mcClient.putWithTtl(requestId, 3600, output.getBytes(StandardCharsets.UTF_8));
-			return new ResponseEntity<>(response, HttpStatus.CREATED);
-		} else {
-			LOG.info("Caching invalid response with 8hr TTL, with Key: " + requestId);
-			mcClient.putWithTtl(requestId, 28800, output.getBytes(StandardCharsets.UTF_8));
-		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}
 
 	/*
-	 * TODO:  Expand on error handling based on the exception or logic error
+	 * TODO: Expand on error handling based on the exception or logic error
 	 */
 	@ExceptionHandler({ Exception.class })
 	public ResponseEntity<Object> handleAll(Exception e, WebRequest request) {
