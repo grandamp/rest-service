@@ -2,7 +2,6 @@ package org.keysupport.api.singletons;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -21,8 +20,6 @@ import org.keysupport.api.pkix.cache.ElasticacheClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
-
-import net.spy.memcached.MemcachedClient;
 
 /**
  * This class uses a singleton pattern to manage our HTTP client needs.
@@ -74,7 +71,7 @@ public class HTTPClientSingleton {
 		 * Initial caching test, where we will cache all data via the call with the
 		 * default 1hr TTL.
 		 */
-		if (null == mcClient) {
+		if (null == this.mcClient) {
 			this.mcClient = new ElasticacheClient();
 		}
 		byte[] cacheResponse = mcClient.get(uri.toASCIIString());
@@ -104,7 +101,6 @@ public class HTTPClientSingleton {
 			if (lastModified.isPresent()) {
 				LOG.info("Header:Last-Modified:value: " + X509Util.ISO8601DateStringFromHttpHeader(lastModified.get()));
 			}
-
 			/*
 			 * Cache the response, and return to the client
 			 */
@@ -144,7 +140,6 @@ public class HTTPClientSingleton {
 		} catch (CRLException e) {
 			LOG.error("Failed to render CRL", e);
 		}
-
 		return crl;
 	}
 
