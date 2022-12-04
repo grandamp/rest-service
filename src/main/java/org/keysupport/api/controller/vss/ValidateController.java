@@ -224,7 +224,8 @@ public class ValidateController {
 				response.requestId = requestId;
 			} else {
 				/*
-				 * Set nextUpdate to null to inform the client that we will *not* perform any more operations on this requestId
+				 * Set nextUpdate to null to inform the client that we will *not* perform any
+				 * more operations on this requestId
 				 */
 				response.nextUpdate = null;
 			}
@@ -271,40 +272,48 @@ public class ValidateController {
 
 	@GetMapping(path = "/vss/v2/validate/getByRequestId/{requestId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin(origins = "*")
-	ResponseEntity<VssResponse> validate(@PathVariable String requestId,
-			@RequestHeader Map<String, String> headers) {
+	ResponseEntity<VssResponse> validate(@PathVariable String requestId, @RequestHeader Map<String, String> headers) {
 		ObjectMapper mapper = new ObjectMapper();
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		ElasticacheClient mcClient = client.getCacheClient();
 		/*
-		 * TODO:  Make sure this endpoint can't be used to harvest non-VssResponse data from our cache.
+		 * TODO: Make sure this endpoint can't be used to harvest non-VssResponse data
+		 * from our cache.
+		 * 
+		 * For now, we will check to ensure the requestId is limited to a Hex SHA-256
+		 * value @
 		 */
-		byte[] cachedResponse = mcClient.get(requestId);
-		if (null != cachedResponse) {
-			String headerJson = null;
-			try {
-				mapper.writeValueAsString(headers);
-			} catch (JsonProcessingException e) {
-				LOG.error("Error converting POJO to JSON", e);
-			}
-			LOG.info("{\"getByRequestId\":\"" + requestId + "\",\"headers\":" + headerJson + "}");
-			LOG.info("We found a cached response, attempting to return to client");
-			String strResponse = new String(cachedResponse, StandardCharsets.UTF_8);
-			try {
-				response = mapper.readValue(strResponse, VssResponse.class);
-			} catch (JsonMappingException e) {
-				LOG.error("Error converting JSON to POJO", e);
-			} catch (JsonProcessingException e) {
-				LOG.error("Error converting JSON to POJO", e);
-			}
-			if (null != response) {
-				return ResponseEntity.ok().cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS)).eTag(requestId)
-						.body(response);
+		String headerJson = null;
+		try {
+			headerJson = mapper.writeValueAsString(headers);
+		} catch (JsonProcessingException e) {
+			LOG.error("Error converting POJO to JSON", e);
+		}
+		LOG.info("{\"getByRequestId\":\"" + requestId + "\",\"headers\":" + headerJson + "}");
+		if (requestId.length() != 64) {
+			LOG.error("Client request does not appear to be a legitimate requestId: \"" + requestId + "\": {\"headers\":" + headerJson + "}");
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		} else {
+			byte[] cachedResponse = mcClient.get(requestId);
+			if (null != cachedResponse) {
+				LOG.info("We found a cached response, attempting to return to client");
+				String strResponse = new String(cachedResponse, StandardCharsets.UTF_8);
+				try {
+					response = mapper.readValue(strResponse, VssResponse.class);
+				} catch (JsonMappingException e) {
+					LOG.error("Error converting JSON to POJO", e);
+				} catch (JsonProcessingException e) {
+					LOG.error("Error converting JSON to POJO", e);
+				}
+				if (null != response) {
+					return ResponseEntity.ok().cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS)).eTag(requestId)
+							.body(response);
+				} else {
+					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+				}
 			} else {
 				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 			}
-		} else {
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
 	}
 
