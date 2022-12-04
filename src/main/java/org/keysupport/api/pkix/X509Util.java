@@ -259,6 +259,17 @@ public class X509Util {
 		return dateString;
 	}
 
+	public static Date ISO8601DateFromString(String dateString) {
+		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		Date d = null;
+		try {
+			d = dFormat.parse(dateString);
+		} catch (ParseException e) {
+			LOG.error("Unable to parse date", e);
+		}
+		return d;
+	}
+
 	/**
 	 * Convert a byte array to a Hex String
 	 * 

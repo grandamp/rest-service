@@ -27,15 +27,12 @@ import java.security.cert.PKIXCertPathValidatorResult;
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.keysupport.api.RestServiceEventLogger;
 import org.keysupport.api.controller.ServiceException;
@@ -76,7 +73,7 @@ public class ValidatePKIX {
 	 */
 	private final static String JCE_PROVIDER = "BC";
 
-	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol) {
+	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, Date now) {
 		/*
 		 * Begin Set JCE Signature Provider and System/Security variables
 		 *
@@ -141,25 +138,6 @@ public class ValidatePKIX {
 		} catch (IOException e) {
 			LOG.error("Error parsing Certificate SAN.", e);
 		}
-		/*
-		 * Set validationTime and nextUpdate in the response
-		 *
-		 * Date Format now conforms to ISO 8601:
-		 *
-		 * http://xkcd.com/1179/
-		 */
-		Date now = new Date();
-		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-		dFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-		response.validationTime = dFormat.format(now);
-		/*
-		 * TODO: nextUpdate will be based on CRL, for now we will calculate a date that
-		 * is one hour from now.
-		 */
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(now);
-		calendar.add(Calendar.HOUR_OF_DAY, 1);
-		response.nextUpdate = dFormat.format(calendar.getTime());
 		/*
 		 * Add x5t#S256
 		 */

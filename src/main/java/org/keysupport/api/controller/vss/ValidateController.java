@@ -7,8 +7,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -217,11 +222,37 @@ public class ValidateController {
 		/*
 		 * Validate, log, and; return the result
 		 */
-		response = ValidatePKIX.validate(clientCert, x5tS256, valPol);
+		Instant vNow = Instant.now();
+		long lNow = vNow.toEpochMilli();
+		Date dNow = new Date(lNow);
+		response = ValidatePKIX.validate(clientCert, x5tS256, valPol, dNow);
 		ValidationResult respResult = response.validationResult;
+		/*
+		 * Set validationTime and nextUpdate in the response
+		 *
+		 * Date Format now conforms to ISO 8601:
+		 *
+		 * http://xkcd.com/1179/
+		 */
+		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		dFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		response.validationTime = dFormat.format(dNow);
+		/*
+		 * TODO: nextUpdate will be based on CRL, for now we will calculate a date that
+		 * is one hour from now.
+		 */
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dNow);
+		calendar.add(Calendar.HOUR_OF_DAY, 1);
+		response.nextUpdate = dFormat.format(calendar.getTime());
+		String validationNow = X509Util.ISO8601DateString(dNow);
 		if (respResult != null) {
 			if (respResult instanceof Success) {
+				/*
+				 * validationTime should be used as Last-Modified
+				 */
 				response.requestId = requestId;
+				response.validationTime = validationNow;
 			} else {
 				/*
 				 * Set nextUpdate to null to inform the client that we will *not* perform any
@@ -252,7 +283,7 @@ public class ValidateController {
 					 */
 					String getUri = BASE_URI + "/vss/v2/validate/getByRequestId/" + requestId;
 					return ResponseEntity.created(URI.create(getUri))
-							.cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS)).eTag(requestId).body(response);
+							.cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS)).eTag(requestId).lastModified(vNow).body(response);
 				} else {
 					LOG.info("Caching invalid response with 8hr TTL, with Key: " + requestId);
 					mcClient.putWithTtl(requestId, 28800, output.getBytes(StandardCharsets.UTF_8));
@@ -281,7 +312,7 @@ public class ValidateController {
 		 * from our cache.
 		 * 
 		 * For now, we will check to ensure the requestId is limited to a Hex SHA-256
-		 * value @
+		 * value @ 64 characters
 		 */
 		String headerJson = null;
 		try {
@@ -291,7 +322,8 @@ public class ValidateController {
 		}
 		LOG.info("{\"getByRequestId\":\"" + requestId + "\",\"headers\":" + headerJson + "}");
 		if (requestId.length() != 64) {
-			LOG.error("Client request does not appear to be a legitimate requestId: \"" + requestId + "\": {\"headers\":" + headerJson + "}");
+			LOG.error("Returning 404: Client request does not appear to be a legitimate requestId: \"" + requestId
+					+ "\": {\"headers\":" + headerJson + "}");
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		} else {
 			byte[] cachedResponse = mcClient.get(requestId);
@@ -306,8 +338,12 @@ public class ValidateController {
 					LOG.error("Error converting JSON to POJO", e);
 				}
 				if (null != response) {
+					Date lmDate = X509Util.ISO8601DateFromString(response.validationTime);
 					return ResponseEntity.ok().cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS)).eTag(requestId)
-							.body(response);
+							/*
+							 * Serialize validationTime within the Cached response into the Last-Modified header.
+							 */
+							.lastModified(Instant.ofEpochMilli(lmDate.getTime())).body(response);
 				} else {
 					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 				}
