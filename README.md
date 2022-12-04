@@ -8,6 +8,8 @@ Why?  Many mTLS use-cases involve complex certificate validation in the applicat
 
 This implementation is intended to allow a relying party/team to centralize that validation using a simple API, easily hosted by the relying party/team locally, or via [AWS Elastic Beanstalk](/AWS-EBS.md).
 
+Here is some [basic performance information](./locust/README.md).
+
 ## Example use/business-case (mTLS Client Certificate Validation)
 
 After authenticating a user via mTLS [(preferably v1.3)](https://www.rfc-editor.org/rfc/rfc8446), a relying party can request validation from the service to determine if the certificate that is bound to the private key meets a given organization/team derived validation policy.

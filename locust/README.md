@@ -1,10 +1,10 @@
 # Performance Testing
 
-- See (Example Locust Test)[./agent.py]
+- See [Example Locust Test](./agent.py)
 
 ## Basic Performance Test
 
-- See (Example baseline Locust test against api.keysupport.org)[(./api-keysupport-org-example-from-local)]
+- See [Example baseline Locust test against api.keysupport.org](./api-keysupport-org-example-from-local/total_requests_per_second_1670110955.png)
 
 ```
 $ locust -f agent.py 
