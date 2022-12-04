@@ -16,7 +16,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "validationPolicyId", "x509Certificate" })
+@JsonPropertyOrder({ "validationPolicyId", "x509Certificate", "requestId" })
 public class VssRequest {
 
 	/**
@@ -32,6 +32,12 @@ public class VssRequest {
 	@NotBlank
 	@JsonProperty("x509Certificate")
 	public String x509Certificate;
+
+	/**
+	 * Field requestId.
+	 */
+	@JsonProperty("requestId")
+	public String requestId;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or
