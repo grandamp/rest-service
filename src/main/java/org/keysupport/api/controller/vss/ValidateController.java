@@ -218,7 +218,17 @@ public class ValidateController {
 		 * Validate, log, and; return the result
 		 */
 		response = ValidatePKIX.validate(clientCert, x5tS256, valPol);
-		response.requestId = requestId;
+		ValidationResult respResult = response.validationResult;
+		if (respResult != null) {
+			if (respResult instanceof Success) {
+				response.requestId = requestId;
+			} else {
+				/*
+				 * Set nextUpdate to null to inform the client that we will *not* perform any more operations on this requestId
+				 */
+				response.nextUpdate = null;
+			}
+		}
 		String output = null;
 		try {
 			output = mapper.writeValueAsString(response);
@@ -232,7 +242,6 @@ public class ValidateController {
 			 * TODO: Address invalidity reasons that may arise due to lack of intermediate
 			 * or revocation data.
 			 */
-			ValidationResult respResult = response.validationResult;
 			if (respResult != null) {
 				if (respResult instanceof Success) {
 					LOG.info("Caching valid response with 1hr TTL, with Key: " + requestId);
@@ -246,6 +255,7 @@ public class ValidateController {
 				} else {
 					LOG.info("Caching invalid response with 8hr TTL, with Key: " + requestId);
 					mcClient.putWithTtl(requestId, 28800, output.getBytes(StandardCharsets.UTF_8));
+					return new ResponseEntity<>(response, HttpStatus.OK);
 				}
 			}
 		} catch (JsonGenerationException e) {
@@ -266,6 +276,9 @@ public class ValidateController {
 		ObjectMapper mapper = new ObjectMapper();
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		ElasticacheClient mcClient = client.getCacheClient();
+		/*
+		 * TODO:  Make sure this endpoint can't be used to harvest non-VssResponse data from our cache.
+		 */
 		byte[] cachedResponse = mcClient.get(requestId);
 		if (null != cachedResponse) {
 			String headerJson = null;
