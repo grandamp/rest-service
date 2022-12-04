@@ -69,7 +69,6 @@ public class VssResponse {
 	/**
 	 * Field nextUpdate.
 	 */
-	@NotBlank
 	@JsonProperty("nextUpdate")
 	public String nextUpdate;
 
