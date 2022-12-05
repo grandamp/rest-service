@@ -41,8 +41,6 @@ RUN yum install -y git \
     && git clone https://github.com/grandamp/rest-service.git
 
 CMD cd /usr/local/src/rest-service \
-    && git switch getEnpointCacheControl \
-    && git pull \
     && /usr/local/src/apache-maven-3.8.6/bin/mvn clean package \
     && ulimit -c unlimited \
     && export BASE_URI=http://server.lan:5000 \
