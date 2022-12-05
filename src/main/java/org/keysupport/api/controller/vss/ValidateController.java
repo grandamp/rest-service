@@ -283,7 +283,7 @@ public class ValidateController {
 					 */
 					String getUri = BASE_URI + "/vss/v2/validate/getByRequestId/" + requestId;
 					return ResponseEntity.created(URI.create(getUri))
-							.cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS)).eTag(requestId).lastModified(vNow).body(response);
+							.cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
 				} else {
 					LOG.info("Caching invalid response with 8hr TTL, with Key: " + requestId);
 					mcClient.putWithTtl(requestId, 28800, output.getBytes(StandardCharsets.UTF_8));
@@ -339,7 +339,7 @@ public class ValidateController {
 				}
 				if (null != response) {
 					Date lmDate = X509Util.ISO8601DateFromString(response.validationTime);
-					return ResponseEntity.ok().cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS)).eTag(requestId)
+					return ResponseEntity.ok().cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePublic()).eTag(requestId)
 							/*
 							 * Serialize validationTime within the Cached response into the Last-Modified header.
 							 */
