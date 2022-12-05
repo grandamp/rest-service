@@ -2,7 +2,7 @@
 
 - See [Example Locust Test](./agent.py)
 
-## Basic Performance Test (AWS ElasticBeanstal Hosted Service with 2 t2.micro instances)
+## Basic Performance Test (AWS ElasticBeanstalk Hosted Service [2 - t2.micro instances])
 
 - See [Example baseline Locust test against api.keysupport.org](./api-keysupport-org-example-from-local/total_requests_per_second_1670110955.png)
 
@@ -32,6 +32,8 @@ POST     /vss/v2/validate                                                       
 ## Basic Performance Test ([Locally hosted Docker image](../docker/README.md) on a local server named `server.lan`)
 
 - See [Example baseline Locust test against server.lan](./api-keysupport-org-example-from-local/total_requests_per_second_1670110955.png)
+
+Note/TODO: Test accuracy is questionable due to the Warnings below. Should scale test with more workers via a test *not via my laptop*
 
 ```
 $ locust -f agent.py 
