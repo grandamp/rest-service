@@ -27,6 +27,6 @@ public class ConfigurationSwagger {
 								.url("https://app.ens.domains/name/cryptomeanscryptography.eth/details"))
 						.license(new License().name("CC0 1.0 Universal")
 								.url("https://creativecommons.org/publicdomain/zero/1.0/"))
-						.version("https://github.com/grandamp/rest-service/tree/getEnpointCacheControl"));
+						.version("https://github.com/grandamp/rest-service/"));
 	}
 }
