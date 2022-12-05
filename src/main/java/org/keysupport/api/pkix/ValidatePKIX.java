@@ -72,7 +72,7 @@ public class ValidatePKIX {
 	 * TODO: For now, use the BC signature provider until BCFIPS is avail for OpenJDK/Corretto 17
 	 */
 	private final static String JCE_PROVIDER = "BC";
-
+	
 	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, Date now) {
 		/*
 		 * Begin Set JCE Signature Provider and System/Security variables
@@ -105,6 +105,19 @@ public class ValidatePKIX {
 		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		System.setProperty("com.sun.security.enableCRLDP", "true");
 		Security.setProperty("ocsp.enable", "true");
+		/*
+		 * Draft Local OCSP Service providing responses for all FPKI Intermediates.
+		 * 
+		 * See: https://docs.oracle.com/en/java/javase/17/security/java-pki-programmers-guide.html#GUID-E6E737DB-4000-4005-969E-BCD0238B1566
+		 * 
+		 * If enabled, we should not rely on the following property:
+		 * 
+		 * System.setProperty("com.sun.security.enableCRLDP", "true");
+		 */
+		//Security.setProperty("ocsp.responderURL", "http://{host}/");
+		//Security.setProperty("ocsp.responderCertIssuerName", "{issuer}");
+		//Security.setProperty("ocsp.responderCertSerialNumber", "{signing-cert-serial}");
+		
 		/*
 		 * Disable AIA fetch to restrict our intermediate store
 		 */
