@@ -2,13 +2,20 @@ package org.keysupport.api.controller.vss;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.keysupport.api.ApiError;
 import org.keysupport.api.config.ConfigurationPolicies;
@@ -25,12 +32,15 @@ import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -52,6 +62,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class ValidateController {
 
 	private final static Logger LOG = LoggerFactory.getLogger(ValidateController.class);
+
+	private final String BASE_URI = System.getenv("BASE_URI");
 
 	/**
 	 * Field POL_SIZE_LIMIT
@@ -90,16 +102,13 @@ public class ValidateController {
 					+ "}") }))
 	@CrossOrigin(origins = "*")
 	ResponseEntity<VssResponse> validate(@RequestBody VssRequest request, @RequestHeader Map<String, String> headers) {
-
 		ObjectMapper mapper = new ObjectMapper();
 		UUID validationPolicyId = null;
 		X509Certificate clientCert = null;
 		CertificateFactory cf = null;
 		ByteArrayInputStream bais = null;
-
 		String x5tS256 = null;
 		String requestId = null;
-
 		/*
 		 * First, lets validate the request.
 		 *
@@ -108,7 +117,6 @@ public class ValidateController {
 		if (null == request || null == request.validationPolicyId || null == request.x509Certificate) {
 			throw new ServiceException("Request must include validationPolicyId and x509Certificate");
 		}
-
 		/*
 		 * Check the validationPolicyId
 		 */
@@ -121,7 +129,6 @@ public class ValidateController {
 				throw new ServiceException("validationPolicyId must be an Object Identifier");
 			}
 		}
-
 		/*
 		 * Check to see if we have the policy, otherwise throw an error
 		 */
@@ -171,9 +178,8 @@ public class ValidateController {
 		/*
 		 * Add metadata to the request via `additionalProperties` so we can log it.
 		 */
-		request.setAdditionalProperty("x5t#S256", x5tS256);
 		request.setAdditionalProperty("requestHeaders", headers);
-		request.setAdditionalProperty("requestId", requestId);
+		request.requestId = requestId;
 		/*
 		 * Log the request in JSON
 		 */
@@ -216,7 +222,45 @@ public class ValidateController {
 		/*
 		 * Validate, log, and; return the result
 		 */
-		response = ValidatePKIX.validate(clientCert, x5tS256, valPol);
+		Instant vNow = Instant.now();
+		long lNow = vNow.toEpochMilli();
+		Date dNow = new Date(lNow);
+		response = ValidatePKIX.validate(clientCert, x5tS256, valPol, dNow);
+		ValidationResult respResult = response.validationResult;
+		/*
+		 * Set validationTime and nextUpdate in the response
+		 *
+		 * Date Format now conforms to ISO 8601:
+		 *
+		 * http://xkcd.com/1179/
+		 */
+		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		dFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		response.validationTime = dFormat.format(dNow);
+		/*
+		 * TODO: nextUpdate will be based on CRL, for now we will calculate a date that
+		 * is one hour from now.
+		 */
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dNow);
+		calendar.add(Calendar.HOUR_OF_DAY, 1);
+		response.nextUpdate = dFormat.format(calendar.getTime());
+		String validationNow = X509Util.ISO8601DateString(dNow);
+		if (respResult != null) {
+			if (respResult instanceof Success) {
+				/*
+				 * validationTime should be used as Last-Modified
+				 */
+				response.requestId = requestId;
+				response.validationTime = validationNow;
+			} else {
+				/*
+				 * Set nextUpdate to null to inform the client that we will *not* perform any
+				 * more operations on this requestId
+				 */
+				response.nextUpdate = null;
+			}
+		}
 		String output = null;
 		try {
 			output = mapper.writeValueAsString(response);
@@ -230,15 +274,20 @@ public class ValidateController {
 			 * TODO: Address invalidity reasons that may arise due to lack of intermediate
 			 * or revocation data.
 			 */
-			ValidationResult respResult = response.validationResult;
 			if (respResult != null) {
 				if (respResult instanceof Success) {
 					LOG.info("Caching valid response with 1hr TTL, with Key: " + requestId);
 					mcClient.putWithTtl(requestId, 3600, output.getBytes(StandardCharsets.UTF_8));
-					return new ResponseEntity<>(response, HttpStatus.CREATED);
+					/*
+					 * .created requires a URI to GET the entity, by requestId
+					 */
+					String getUri = BASE_URI + "/vss/v2/validate/getByRequestId/" + requestId;
+					return ResponseEntity.created(URI.create(getUri))
+							.cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS)).eTag(requestId).lastModified(vNow).body(response);
 				} else {
 					LOG.info("Caching invalid response with 8hr TTL, with Key: " + requestId);
 					mcClient.putWithTtl(requestId, 28800, output.getBytes(StandardCharsets.UTF_8));
+					return new ResponseEntity<>(response, HttpStatus.OK);
 				}
 			}
 		} catch (JsonGenerationException e) {
@@ -250,6 +299,58 @@ public class ValidateController {
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 
+	}
+
+	@GetMapping(path = "/vss/v2/validate/getByRequestId/{requestId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@CrossOrigin(origins = "*")
+	ResponseEntity<VssResponse> validate(@PathVariable String requestId, @RequestHeader Map<String, String> headers) {
+		ObjectMapper mapper = new ObjectMapper();
+		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
+		ElasticacheClient mcClient = client.getCacheClient();
+		/*
+		 * TODO: Make sure this endpoint can't be used to harvest non-VssResponse data
+		 * from our cache.
+		 * 
+		 * For now, we will check to ensure the requestId is limited to a Hex SHA-256
+		 * value @ 64 characters
+		 */
+		String headerJson = null;
+		try {
+			headerJson = mapper.writeValueAsString(headers);
+		} catch (JsonProcessingException e) {
+			LOG.error("Error converting POJO to JSON", e);
+		}
+		LOG.info("{\"getByRequestId\":\"" + requestId + "\",\"headers\":" + headerJson + "}");
+		if (requestId.length() != 64) {
+			LOG.error("Returning 404: Client request does not appear to be a legitimate requestId: \"" + requestId
+					+ "\": {\"headers\":" + headerJson + "}");
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		} else {
+			byte[] cachedResponse = mcClient.get(requestId);
+			if (null != cachedResponse) {
+				LOG.info("We found a cached response, attempting to return to client");
+				String strResponse = new String(cachedResponse, StandardCharsets.UTF_8);
+				try {
+					response = mapper.readValue(strResponse, VssResponse.class);
+				} catch (JsonMappingException e) {
+					LOG.error("Error converting JSON to POJO", e);
+				} catch (JsonProcessingException e) {
+					LOG.error("Error converting JSON to POJO", e);
+				}
+				if (null != response) {
+					Date lmDate = X509Util.ISO8601DateFromString(response.validationTime);
+					return ResponseEntity.ok().cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS)).eTag(requestId)
+							/*
+							 * Serialize validationTime within the Cached response into the Last-Modified header.
+							 */
+							.lastModified(Instant.ofEpochMilli(lmDate.getTime())).body(response);
+				} else {
+					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+				}
+			} else {
+				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+			}
+		}
 	}
 
 	/*

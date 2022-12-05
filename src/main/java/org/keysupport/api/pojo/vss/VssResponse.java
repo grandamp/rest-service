@@ -17,9 +17,15 @@ import jakarta.validation.constraints.NotBlank;
 
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "x5t#S256", "x509SubjectName", "x509IssuerName", "x509SerialNumber", "x509SubjectAltName",
+@JsonPropertyOrder({ "requestId", "x5t#S256", "x509SubjectName", "x509IssuerName", "x509SerialNumber", "x509SubjectAltName",
 		"validationTime", "nextUpdate", "validationResultToken", "validationFailureData", "validationSuccessData" })
 public class VssResponse {
+
+	/**
+	 * Field requestId.
+	 */
+	@JsonProperty("requestId")
+	public String requestId;
 
 	/**
 	 * Field x5t#S256.
@@ -63,7 +69,6 @@ public class VssResponse {
 	/**
 	 * Field nextUpdate.
 	 */
-	@NotBlank
 	@JsonProperty("nextUpdate")
 	public String nextUpdate;
 
