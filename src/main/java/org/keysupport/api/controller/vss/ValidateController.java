@@ -274,12 +274,20 @@ public class ValidateController {
 					LOG.info("Caching valid response with 15min TTL, with Key: " + requestId);
 					mcClient.putWithTtl(requestId, 900, output.getBytes(StandardCharsets.UTF_8));
 					/*
-					 * .created requires a URI to GET the entity, by requestId
+					 * Created response requires a URI to GET the entity, by requestId
 					 */
 					String getUri = BASE_URI + "/vss/v2/validate/getByRequestId/" + requestId;
 					return ResponseEntity.created(URI.create(getUri))
 							.cacheControl(CacheControl.maxAge(15, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
 				} else {
+					/*
+					 * We won't perform a validation operation on a certificate we've deemed invalid for a period of time:
+					 * 
+					 * - 24 Hours is the current default
+					 * - The notAfter date *could* be used, but also abused via certificates that have no valid path
+					 * 
+					 * TODO: We should consider caching revoked certificate validations based on the certificate Expiration date.
+					 */
 					LOG.info("Caching invalid response with 24hr TTL, with Key: " + requestId);
 					mcClient.putWithTtl(requestId, 86400, output.getBytes(StandardCharsets.UTF_8));
 					return ResponseEntity.ok()
