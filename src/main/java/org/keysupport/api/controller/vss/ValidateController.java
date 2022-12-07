@@ -194,12 +194,7 @@ public class ValidateController {
 			LOG.error("Error converting POJO to JSON", e);
 		}
 		/*
-		 * Check our cache for a response first, if cached, return
-		 *
-		 * TODO: Response failures may be returned directly from ValidatePKIX.
-		 *
-		 * Consider setting a longer cache time for response failures, where we know the
-		 * certificates are invalid.
+		 * Check our cache for a response first, if cached, return immediately
 		 */
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		ElasticacheClient mcClient = client.getCacheClient();
@@ -268,26 +263,27 @@ public class ValidateController {
 			/*
 			 * Cache the response:
 			 * 
-			 * - CREATED for valid certificates, for 1 hour - OK for invalid certificates,
-			 * for 8 hours
+			 * - CREATED for valid certificates, for 15 minutes
+			 * - OK for invalid certificates, for 24 hours
 			 * 
 			 * TODO: Address invalidity reasons that may arise due to lack of intermediate
 			 * or revocation data.
 			 */
 			if (respResult != null) {
 				if (respResult instanceof Success) {
-					LOG.info("Caching valid response with 1hr TTL, with Key: " + requestId);
-					mcClient.putWithTtl(requestId, 3600, output.getBytes(StandardCharsets.UTF_8));
+					LOG.info("Caching valid response with 15min TTL, with Key: " + requestId);
+					mcClient.putWithTtl(requestId, 900, output.getBytes(StandardCharsets.UTF_8));
 					/*
 					 * .created requires a URI to GET the entity, by requestId
 					 */
 					String getUri = BASE_URI + "/vss/v2/validate/getByRequestId/" + requestId;
 					return ResponseEntity.created(URI.create(getUri))
-							.cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
+							.cacheControl(CacheControl.maxAge(15, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
 				} else {
-					LOG.info("Caching invalid response with 8hr TTL, with Key: " + requestId);
-					mcClient.putWithTtl(requestId, 28800, output.getBytes(StandardCharsets.UTF_8));
-					return new ResponseEntity<>(response, HttpStatus.OK);
+					LOG.info("Caching invalid response with 24hr TTL, with Key: " + requestId);
+					mcClient.putWithTtl(requestId, 86400, output.getBytes(StandardCharsets.UTF_8));
+					return ResponseEntity.ok()
+							.cacheControl(CacheControl.maxAge(24, TimeUnit.HOURS).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
 				}
 			}
 		} catch (JsonGenerationException e) {
