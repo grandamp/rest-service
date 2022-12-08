@@ -23,6 +23,7 @@ import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.ValidatePKIX;
 import org.keysupport.api.pkix.X509Util;
 import org.keysupport.api.pkix.cache.ElasticacheClient;
+import org.keysupport.api.pojo.vss.Fail;
 import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.ValidationResult;
@@ -279,7 +280,7 @@ public class ValidateController {
 					String getUri = BASE_URI + "/vss/v2/validate/getByRequestId/" + requestId;
 					return ResponseEntity.created(URI.create(getUri))
 							.cacheControl(CacheControl.maxAge(15, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
-				} else {
+				} else if (respResult instanceof Fail) {
 					/*
 					 * We won't perform a validation operation on a certificate we've deemed invalid for a period of time:
 					 * 
@@ -292,6 +293,8 @@ public class ValidateController {
 					mcClient.putWithTtl(requestId, 86400, output.getBytes(StandardCharsets.UTF_8));
 					return ResponseEntity.ok()
 							.cacheControl(CacheControl.maxAge(24, TimeUnit.HOURS).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
+				} else {
+					ResponseEntity.badRequest();
 				}
 			}
 		} catch (JsonGenerationException e) {
