@@ -23,12 +23,13 @@ Consider the [U.S. Federal PKI](https://playbooks.idmanagement.gov/fpki/), and; 
 (a)  a prospective certification path of length n == {all FPKI Intermediates that have a relationship with FCPCAG2}
 (b)  the current date/time
 (c)  user-initial-policy-set ==
- { 2.16.840.1.101.3.2.1.3.7,
- 2.16.840.1.101.3.2.1.3.13,
- 2.16.840.1.101.3.2.1.3.15,
- 2.16.840.1.101.3.2.1.3.16,
- 2.16.840.1.101.3.2.1.3.18,
- 2.16.840.1.101.3.2.1.3.41 }
+  {  2.16.840.1.101.3.2.1.3.7,
+     2.16.840.1.101.3.2.1.3.13,
+     2.16.840.1.101.3.2.1.3.15,
+     2.16.840.1.101.3.2.1.3.16,
+     2.16.840.1.101.3.2.1.3.18,
+     2.16.840.1.101.3.2.1.3.41 
+  }
 (d)  trust anchor information == {FCPCAG2}
 (e)  initial-policy-mapping-inhibit == false
 (f)  initial-explicit-policy == true
