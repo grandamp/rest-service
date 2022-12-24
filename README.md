@@ -1,5 +1,6 @@
-[![Build Status](https://github.com/grandamp/rest-service/actions/workflows/build.yml/badge.svg)](https://github.com/grandamp/rest-service/actions)]
-[![OpenAPI v3 Compliance](https://validator.swagger.io/validator?url=https://api.keysupport.org/v3/api-docs)](https://api.keysupport.org/v3/api-docs)]
+[![Build Status](https://github.com/grandamp/rest-service/actions/workflows/build.yml/badge.svg)](https://github.com/grandamp/rest-service/actions)
+
+[![OpenAPI v3 Compliance](https://validator.swagger.io/validator?url=https://api.keysupport.org/v3/api-docs)](https://api.keysupport.org/v3/api-docs)
 
 
 # rest-service
