@@ -19,16 +19,16 @@ After authenticating a user via mTLS [(preferably v1.3)](https://www.rfc-editor.
 
 Consider the [U.S. Federal PKI](https://playbooks.idmanagement.gov/fpki/), and; [NIST SP 800-63-3](https://pages.nist.gov/800-63-3/sp800-63b.html#43-authenticator-assurance-level-3).  If you would like to determine if a given mTLS user is leveraging IAL3/AAL3 credentials, a suitable validation policy [from an RFC 5280 perspective](https://www.rfc-editor.org/rfc/rfc5280#section-6.1.1) *may* be:
 
-```
+```text
 (a)  a prospective certification path of length n == {all FPKI Intermediates that have a relationship with FCPCAG2}
 (b)  the current date/time
 (c)  user-initial-policy-set ==
-		{ 2.16.840.1.101.3.2.1.3.7,
-		  2.16.840.1.101.3.2.1.3.13,
-		  2.16.840.1.101.3.2.1.3.15,
-		  2.16.840.1.101.3.2.1.3.16,
-		  2.16.840.1.101.3.2.1.3.18,
-		  2.16.840.1.101.3.2.1.3.41 }
+ { 2.16.840.1.101.3.2.1.3.7,
+ 2.16.840.1.101.3.2.1.3.13,
+ 2.16.840.1.101.3.2.1.3.15,
+ 2.16.840.1.101.3.2.1.3.16,
+ 2.16.840.1.101.3.2.1.3.18,
+ 2.16.840.1.101.3.2.1.3.41 }
 (d)  trust anchor information == {FCPCAG2}
 (e)  initial-policy-mapping-inhibit == false
 (f)  initial-explicit-policy == true
@@ -39,33 +39,33 @@ Consider the [U.S. Federal PKI](https://playbooks.idmanagement.gov/fpki/), and; 
 
 This service can implement such a policy using the service's following `validationPolicy` definition:
 
-```
+```text
 {
-	"validationPolicyId": "cc54e0ec-49da-333a-8150-2dd00b758b17",
-	"validationPolicyName": "aal3",
-	"validationPolicyDescription": "Derived from legacy LOA4 validation policy (2.16.840.1.101.10.2.18.2.1.4)",
-	"trustAnchors": [{
-		"trustAnchorId": "5F9AECC24616B2191372600DD80F6DD320C8CA5A0CEB7F09C985EBF0696934FC",
-		"trustAnchorSubject": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
-		"x509Certificate": "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"
-	}],
-	"userPolicySet": [
-		"2.16.840.1.101.3.2.1.3.7",
-		"2.16.840.1.101.3.2.1.3.13",
-		"2.16.840.1.101.3.2.1.3.15",
-		"2.16.840.1.101.3.2.1.3.16",
-		"2.16.840.1.101.3.2.1.3.18",
-		"2.16.840.1.101.3.2.1.3.41"
-	],
-	"inhibitPolicyMapping": false,
-	"requireExplicitPolicy": true,
-	"inhibitAnyPolicy": true
+ "validationPolicyId": "cc54e0ec-49da-333a-8150-2dd00b758b17",
+ "validationPolicyName": "aal3",
+ "validationPolicyDescription": "Derived from legacy LOA4 validation policy (2.16.840.1.101.10.2.18.2.1.4)",
+ "trustAnchors": [{
+  "trustAnchorId": "5F9AECC24616B2191372600DD80F6DD320C8CA5A0CEB7F09C985EBF0696934FC",
+  "trustAnchorSubject": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
+  "x509Certificate": "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"
+ }],
+ "userPolicySet": [
+  "2.16.840.1.101.3.2.1.3.7",
+  "2.16.840.1.101.3.2.1.3.13",
+  "2.16.840.1.101.3.2.1.3.15",
+  "2.16.840.1.101.3.2.1.3.16",
+  "2.16.840.1.101.3.2.1.3.18",
+  "2.16.840.1.101.3.2.1.3.41"
+ ],
+ "inhibitPolicyMapping": false,
+ "requireExplicitPolicy": true,
+ "inhibitAnyPolicy": true
 }
 ```
 
 To validate a certificate that was presented by the client against this policy, the client simply needs to send the following request to the service [(such as my example service)](https://api.keysupport.org/swagger-ui/index.html), and parse the response [{example via `curl` and `jq`}](https://stedolan.github.io/jq/):
 
-```
+```text
 curl -v -X 'POST' \
   'https://api.keysupport.org/vss/v2/validate' \
   -H 'accept: application/json' \
