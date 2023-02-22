@@ -72,6 +72,8 @@ public class X509Util {
 		/*
 		 * We are pulling the DER encoded value of subjectAltName and we are going to
 		 * parse each SAN value manually
+		 * 
+		 * The result should be rendered compatible with JSON
 		 */
 		encodedExtension = certificate.getExtensionValue("2.5.29.17");
 		x509SubjectAltName = new ArrayList<>();
@@ -107,15 +109,15 @@ public class X509Util {
 						rawFascnValue = rawFascnValue.substring(1);
 					}
 					SANValue fascn = new SANValue();
-					fascn.type = "otherName:pivFASC-N";
+					fascn.type = "otherName#pivFASC-N";
 					fascn.value = rawFascnValue;
 					x509SubjectAltName.add(fascn);
+				} else if (typeId.equals(new ASN1ObjectIdentifier("1.3.6.1.4.1.311.20.2.3"))) {
 					/*
 					 * userPrincipalName (1.3.6.1.4.1.311.20.2.3)
 					 */
-				} else if (typeId.equals(new ASN1ObjectIdentifier("1.3.6.1.4.1.311.20.2.3"))) {
 					SANValue upn = new SANValue();
-					upn.type = "otherName:userPrincipalName";
+					upn.type = "otherName#userPrincipalName";
 					upn.value = value.getBaseUniversal(true, BERTags.UTF8_STRING).toString();
 					x509SubjectAltName.add(upn);
 				} else {
