@@ -130,6 +130,10 @@ public class ValidatePKIX {
 		 */
 		VssResponse response = new VssResponse();
 		/*
+		 * Add Validation Policy
+		 */
+		response.validationPolicyId = valPol.validationPolicyId;
+		/*
 		 * When decoding the certificate contents, don't always assume that the fields
 		 * will be non-NULL. For example, cardAuth certs MAY have a NULL subject name.
 		 */
