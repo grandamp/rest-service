@@ -17,7 +17,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "requestId", "x5t#S256", "x509SubjectName", "x509IssuerName", "x509SerialNumber", "x509SubjectAltName",
+@JsonPropertyOrder({ "requestId", "validationPolicyId", "x5t#S256", "x509SubjectName", "x509IssuerName", "x509SerialNumber", "x509SubjectAltName",
 		"validationTime", "nextUpdate", "validationResultToken", "validationFailureData", "validationSuccessData" })
 public class VssResponse {
 
@@ -26,6 +26,12 @@ public class VssResponse {
 	 */
 	@JsonProperty("requestId")
 	public String requestId;
+
+	/**
+	 * Field validationPolicyId
+	 */
+	@JsonProperty("validationPolicyId")
+	public String validationPolicyId;
 
 	/**
 	 * Field x5t#S256.
