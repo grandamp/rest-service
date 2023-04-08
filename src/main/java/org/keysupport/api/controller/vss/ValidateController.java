@@ -272,27 +272,27 @@ public class ValidateController {
 			 */
 			if (respResult != null) {
 				if (respResult instanceof Success) {
-					LOG.info("Caching valid response with 15min TTL, with Key: " + requestId);
-					mcClient.putWithTtl(requestId, 900, output.getBytes(StandardCharsets.UTF_8));
+					LOG.info("Caching valid response with " + ElasticacheClient.VALID_CERT_TTL + "sec TTL, with Key: " + requestId);
+					mcClient.putWithTtl(requestId, ElasticacheClient.VALID_CERT_TTL, output.getBytes(StandardCharsets.UTF_8));
 					/*
 					 * Created response requires a URI to GET the entity, by requestId
 					 */
 					String getUri = BASE_URI + "/vss/v2/validate/getByRequestId/" + requestId;
 					return ResponseEntity.created(URI.create(getUri))
-							.cacheControl(CacheControl.maxAge(15, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
+							.cacheControl(CacheControl.maxAge(ElasticacheClient.VALID_CERT_TTL / 60, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
 				} else if (respResult instanceof Fail) {
 					/*
 					 * We won't perform a validation operation on a certificate we've deemed invalid for a period of time:
 					 * 
-					 * - 24 Hours is the current default
+					 * - 7 Days is the current default (see 
 					 * - The notAfter date *could* be used, but also abused via certificates that have no valid path
 					 * 
 					 * TODO: We should consider caching revoked certificate validations based on the certificate Expiration date.
 					 */
-					LOG.info("Caching invalid response with 24hr TTL, with Key: " + requestId);
-					mcClient.putWithTtl(requestId, 86400, output.getBytes(StandardCharsets.UTF_8));
+					LOG.info("Caching invalid response with" + ElasticacheClient.INVALID_CERT_TTL + "TTL, with Key: " + requestId);
+					mcClient.putWithTtl(requestId, ElasticacheClient.INVALID_CERT_TTL, output.getBytes(StandardCharsets.UTF_8));
 					return ResponseEntity.ok()
-							.cacheControl(CacheControl.maxAge(24, TimeUnit.HOURS).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
+							.cacheControl(CacheControl.maxAge(ElasticacheClient.INVALID_CERT_TTL / 60, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
 				} else {
 					ResponseEntity.badRequest();
 				}

@@ -24,8 +24,22 @@ public class ElasticacheClient {
 	private String configEndpoint = null;
 
 	private final static Integer clusterPort = 11211;
-
+	
 	private String name;
+
+	/**
+	 * 15 Minute TTL for Valid Certificates
+	 * 
+	 * TODO: Consider TTL Override
+	 */
+	public final static int VALID_CERT_TTL = 900;
+	
+	/**
+	 * 7 Day TTL for In-valid Certificates
+	 * 
+	 * TODO: Consider TTL Override
+	 */
+	public final static int INVALID_CERT_TTL= 604800;
 
 	public ElasticacheClient() {
 		/*
