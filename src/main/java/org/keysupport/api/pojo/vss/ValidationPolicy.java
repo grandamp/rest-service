@@ -17,13 +17,11 @@ import jakarta.validation.constraints.NotBlank;
 
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "validationPolicyId", "validationPolicyName", "validationPolicyDescription", "trustAnchors", "userPolicySet", "inhibitPolicyMapping", "requireExplicitPolicy", "inhibitAnyPolicy" })
+@JsonPropertyOrder({ "validationPolicyId", "validationPolicyName", "validationPolicyDescription", "trustAnchors", "userPolicySet", "inhibitPolicyMapping", "requireExplicitPolicy", "inhibitAnyPolicy", "validCacheLifetime", "inValidCacheLifetime" })
 public class ValidationPolicy {
 
 	/**
 	 * Field validationPolicyId
-	 *
-	 * TODO: Migrate to UUID
 	 */
 	@NotBlank
 	@JsonProperty("validationPolicyId")
@@ -31,16 +29,12 @@ public class ValidationPolicy {
 
 	/**
 	 * Field validationPolicyName
-	 *
-	 * TODO: Integrate and document `validationPolicyName`
 	 */
 	@JsonProperty("validationPolicyName")
 	public String validationPolicyName;
 
 	/**
 	 * Field validationPolicyDescription
-	 *
-	 * TODO: Integrate and document `validationPolicyDescription`
 	 */
 	@JsonProperty("validationPolicyDescription")
 	public String validationPolicyDescription;
@@ -76,6 +70,19 @@ public class ValidationPolicy {
 	 */
 	@JsonProperty("inhibitAnyPolicy")
 	public boolean inhibitAnyPolicy;
+	
+	/**
+	 * Field validCacheLifetime
+	 */
+	@JsonProperty("validCacheLifetime")
+	public int validCacheLifetime;
+	
+	/**
+	 * Field inValidCacheLifetime
+	 */
+	@JsonProperty("inValidCacheLifetime")
+	public int inValidCacheLifetime;
+	
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or
