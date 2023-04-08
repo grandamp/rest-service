@@ -72,7 +72,7 @@ public class ValidationPolicy {
 	 */
 	@JsonProperty("inhibitAnyPolicy")
 	public boolean inhibitAnyPolicy;
-
+	
 	/**
 	 * Field validCacheLifetime
 	 */
