@@ -234,12 +234,15 @@ public class ValidateController {
 		dFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		response.validationTime = dFormat.format(dNow);
 		/*
-		 * TODO: nextUpdate will be based on CRL, for now we will calculate a date that
-		 * is one hour from now.
+		 * nextUpdate is based on the validation policy.
 		 */
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(dNow);
-		calendar.add(Calendar.HOUR_OF_DAY, 1);
+		if (response.validationResult.result == ValidationResult.SUCCESS_VALUE) {
+			calendar.add(Calendar.SECOND, valPol.validCacheLifetime);
+		} else {
+			calendar.add(Calendar.SECOND, valPol.inValidCacheLifetime);
+		}
 		response.nextUpdate = dFormat.format(calendar.getTime());
 		String validationNow = X509Util.ISO8601DateString(dNow);
 		if (respResult != null) {
@@ -272,14 +275,14 @@ public class ValidateController {
 			 */
 			if (respResult != null) {
 				if (respResult instanceof Success) {
-					LOG.info("Caching valid response with " + ElasticacheClient.VALID_CERT_TTL + "sec TTL, with Key: " + requestId);
-					mcClient.putWithTtl(requestId, ElasticacheClient.VALID_CERT_TTL, output.getBytes(StandardCharsets.UTF_8));
+					LOG.info("Caching valid response with " + valPol.validCacheLifetime + "sec TTL, with Key: " + requestId);
+					mcClient.putWithTtl(requestId, valPol.validCacheLifetime, output.getBytes(StandardCharsets.UTF_8));
 					/*
 					 * Created response requires a URI to GET the entity, by requestId
 					 */
 					String getUri = BASE_URI + "/vss/v2/validate/getByRequestId/" + requestId;
 					return ResponseEntity.created(URI.create(getUri))
-							.cacheControl(CacheControl.maxAge(ElasticacheClient.VALID_CERT_TTL / 60, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
+							.cacheControl(CacheControl.maxAge(valPol.validCacheLifetime / 60, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
 				} else if (respResult instanceof Fail) {
 					/*
 					 * We won't perform a validation operation on a certificate we've deemed invalid for a period of time:
@@ -289,10 +292,10 @@ public class ValidateController {
 					 * 
 					 * TODO: We should consider caching revoked certificate validations based on the certificate Expiration date.
 					 */
-					LOG.info("Caching invalid response with" + ElasticacheClient.INVALID_CERT_TTL + "TTL, with Key: " + requestId);
-					mcClient.putWithTtl(requestId, ElasticacheClient.INVALID_CERT_TTL, output.getBytes(StandardCharsets.UTF_8));
+					LOG.info("Caching invalid response with" + valPol.inValidCacheLifetime + "TTL, with Key: " + requestId);
+					mcClient.putWithTtl(requestId, valPol.inValidCacheLifetime, output.getBytes(StandardCharsets.UTF_8));
 					return ResponseEntity.ok()
-							.cacheControl(CacheControl.maxAge(ElasticacheClient.INVALID_CERT_TTL / 60, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
+							.cacheControl(CacheControl.maxAge(valPol.inValidCacheLifetime / 60, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
 				} else {
 					ResponseEntity.badRequest();
 				}

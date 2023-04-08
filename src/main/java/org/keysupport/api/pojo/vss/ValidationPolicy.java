@@ -17,7 +17,9 @@ import jakarta.validation.constraints.NotBlank;
 
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "validationPolicyId", "validationPolicyName", "validationPolicyDescription", "trustAnchors", "userPolicySet", "inhibitPolicyMapping", "requireExplicitPolicy", "inhibitAnyPolicy", "validCacheLifetime", "inValidCacheLifetime" })
+@JsonPropertyOrder({ "validationPolicyId", "validationPolicyName", "validationPolicyDescription", "trustAnchors",
+		"userPolicySet", "inhibitPolicyMapping", "requireExplicitPolicy", "inhibitAnyPolicy", "validCacheLifetime",
+		"inValidCacheLifetime" })
 public class ValidationPolicy {
 
 	/**
@@ -70,19 +72,36 @@ public class ValidationPolicy {
 	 */
 	@JsonProperty("inhibitAnyPolicy")
 	public boolean inhibitAnyPolicy;
-	
+
 	/**
 	 * Field validCacheLifetime
 	 */
 	@JsonProperty("validCacheLifetime")
 	public int validCacheLifetime;
-	
+
 	/**
 	 * Field inValidCacheLifetime
 	 */
 	@JsonProperty("inValidCacheLifetime")
 	public int inValidCacheLifetime;
-	
+
+	/**
+	 * TODO: This may be multiple CMS files if the policy includes more than one
+	 * Trust Anchor
+	 * 
+	 * Field cmsIntermediateHintListUri
+	 */
+	@JsonProperty("cmsIntermediateHintListUri")
+	public List<String> cmsIntermediateHintListUri;
+
+	/**
+	 * TODO: Download multiple CMS files for this policy using the interval
+	 * specified
+	 * 
+	 * Field cmsIntermediateHintListRefresh
+	 */
+	@JsonProperty("cmsIntermediateHintListRefresh")
+	public int cmsIntermediateHintListRefresh;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or
