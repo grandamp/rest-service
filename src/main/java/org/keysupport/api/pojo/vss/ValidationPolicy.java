@@ -19,7 +19,7 @@ import jakarta.validation.constraints.NotBlank;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "validationPolicyId", "validationPolicyName", "validationPolicyDescription", "trustAnchors",
 		"userPolicySet", "inhibitPolicyMapping", "requireExplicitPolicy", "inhibitAnyPolicy", "validCacheLifetime",
-		"inValidCacheLifetime" })
+		"inValidCacheLifetime", "cmsIntermediateHintListUri", "cmsIntermediateHintListRefresh" })
 public class ValidationPolicy {
 
 	/**
