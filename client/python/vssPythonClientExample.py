@@ -17,6 +17,9 @@ class FileEncoding(utils.Enum):
     PEMPKCS7 = "PEMPKCS7"
     DERPKCS7 = "DERPKCS7"
 
+def cert_to_base64(cert: x509.Certificate) -> str:
+    return base64.b64encode(cert.public_bytes(Encoding.DER)).decode("utf-8")
+
 def loadCerts(file: str, type: FileEncoding) -> typing.List[x509.Certificate]:
     bytes = open(file, 'rb').read()
     if type == FileEncoding.DERPKCS7 :
@@ -36,9 +39,6 @@ def validate(vssEndpointUri: str, vssPolicy: str, vssCert:str) -> typing.Dict:
     print("\nResponse:\n" + json.dumps(resJson, sort_keys=False, indent=4))
     return resJson
 
-def cert_to_base64(cert: x509.Certificate) -> str:
-    return base64.b64encode(cert.public_bytes(Encoding.DER)).decode("utf-8")
-
 def validateCert(certificate):
     vsscert = cert_to_base64(certificate)
     resJson = validate(vssEndpointUri, vssPolicy, vsscert)
@@ -46,13 +46,18 @@ def validateCert(certificate):
     print("Issuer: " + x509IssuerName)
     x509SubjectName = resJson["x509SubjectName"]
     print("Subject: " + x509SubjectName)
+    sha256Thumbprint = resJson["x5t#S256"]
+    sha256ThumbprintHex = base64.b64decode(sha256Thumbprint).hex()
+    print("Thumbprint (SHA-256): " + sha256ThumbprintHex)
     certResult = resJson["validationResult"]["result"]
     print("Validation Result: " + certResult)
     if certResult == "FAIL":
-        isAffirmativelyInvalid = resJson["validationResult"]["isAffirmativelyInvalid"]
-        print("Validation Affirmed Invalid: %s" %  isAffirmativelyInvalid)
         invalidityReasonText = resJson["validationResult"]["invalidityReasonText"]
         print("\tValidation Failure Reason: " + invalidityReasonText)
+        isAffirmativelyInvalid = resJson["validationResult"]["isAffirmativelyInvalid"]
+        print("\tValidation Affirmed Invalid: %s" %  isAffirmativelyInvalid)
+    else:
+        print("Valid Certificate:\n" + certificate.public_bytes(Encoding.PEM).decode("utf-8"))
 
 if __name__ == "__main__":
     filename = sys.argv[1]
