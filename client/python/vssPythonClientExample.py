@@ -56,6 +56,8 @@ def validateCert(certificate):
         print("\tValidation Failure Reason: " + invalidityReasonText)
         isAffirmativelyInvalid = resJson["validationResult"]["isAffirmativelyInvalid"]
         print("\tValidation Affirmed Invalid: %s" %  isAffirmativelyInvalid)
+    else:
+        print("Valid Certificate:\n" + certificate.public_bytes(Encoding.PEM).decode("utf-8"))
 
 if __name__ == "__main__":
     filename = sys.argv[1]
