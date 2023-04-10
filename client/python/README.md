@@ -33,10 +33,7 @@ Example Usage:
 Example output:
 
 ```TEXT
-<<<<<<< HEAD
 
-=======
->>>>>>> main
 Request:
 {
     "validationPolicyId": "c21f969b-5f03-333d-83e0-4f8f136e7682",
@@ -52,13 +49,8 @@ Response:
     "x509IssuerName": "CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US",
     "x509SerialNumber": "51410269923060435830884331641355635041",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:42.560+0000",
-    "nextUpdate": "2023-04-17T02:41:42.560+0000",
-=======
-    "validationTime": "2023-04-09T20:53:47.774+0000",
-    "nextUpdate": "2023-04-16T20:53:47.774+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:42.963+0000",
+    "nextUpdate": "2023-04-17T13:43:42.963+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -76,7 +68,6 @@ Response:
 }
 Issuer: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
 Subject: CN=Boeing PCA G3, OU=certservers, O=Boeing, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): e5f9c0638c1eb75e8191f8e687ecd8ad16c9388eeee35c7f72c410f7f90c0d1e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -117,9 +108,6 @@ hEhbKv++Xx+zS569sQLi2s1p30i0cREds4FLgvDLjvSxsp2jTNnLDDwForOhHbQF
 l78elfNzRSs5sASL7KW8FzM9LZdAejkC
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -141,13 +129,8 @@ Response:
             "value": "CN=SymantecPKI-2-175"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:42.693+0000",
-    "nextUpdate": "2023-04-17T02:41:42.693+0000",
-=======
-    "validationTime": "2023-04-09T20:53:47.970+0000",
-    "nextUpdate": "2023-04-16T20:53:47.970+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.056+0000",
+    "nextUpdate": "2023-04-17T13:43:43.056+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -162,7 +145,6 @@ Response:
 }
 Issuer: CN=Symantec SSP Intermediate CA - G4, O=Symantec Corporation, C=US
 Subject: CN=Bureau of the Census Agency CA, OU=Department of Commerce, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 2952ae58a1243a5572bcc5ab7d24790efc02d6a1635a7abec9dbd417bebcf2cf
 Validation Result: SUCCESS
 Valid Certificate:
@@ -196,9 +178,6 @@ RvBJT/lOxDlfsPqV8Poti8X8QJrvU4f1/yL6Sm7dyhSBa8cPkUKJZ5SiXLUrABSl
 RPnkrNvrW+igjd9uDd6xTT4tMjWMwlESMw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -215,13 +194,8 @@ Response:
     "x509IssuerName": "CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US",
     "x509SerialNumber": "156083153431315494706947301531938009057",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:42.817+0000",
-    "nextUpdate": "2023-04-17T02:41:42.817+0000",
-=======
-    "validationTime": "2023-04-09T20:53:48.159+0000",
-    "nextUpdate": "2023-04-16T20:53:48.159+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.144+0000",
+    "nextUpdate": "2023-04-17T13:43:43.144+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -239,7 +213,6 @@ Response:
 }
 Issuer: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
 Subject: CN=Carillon Federal Services PIV-I CA1, OU=Certification Authorities, O=Carillon Federal Services Inc., C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 8ff98833f520286afe108a00d6c5dd561d90f564b96ed725e8809fd57a629692
 Validation Result: SUCCESS
 Valid Certificate:
@@ -289,9 +262,6 @@ fJ9UJqtox0xJ5xujQGHbCr83rvwt8bw4FULWKgzYvdGAD7KPjzw7eqgVVSMnCwxC
 mXyXyCgxhPTrA1/3PbyVlA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -308,13 +278,8 @@ Response:
     "x509IssuerName": "CN=TSCP SHA256 Bridge CA, OU=CAs, O=TSCP Inc., C=US",
     "x509SerialNumber": "94553266354366035910204616370697961283",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:42.839+0000",
-    "nextUpdate": "2023-04-17T02:41:42.839+0000",
-=======
-    "validationTime": "2023-04-09T20:53:48.365+0000",
-    "nextUpdate": "2023-04-16T20:53:48.365+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.160+0000",
+    "nextUpdate": "2023-04-17T13:43:43.160+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -332,7 +297,6 @@ Response:
 }
 Issuer: CN=TSCP SHA256 Bridge CA, OU=CAs, O=TSCP Inc., C=US
 Subject: CN=Carillon Federal Services PIV-I CA2, OU=Certification Authorities, O=Carillon Federal Services Inc., C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): ea3528ff714d05372af5129e3434fa3ad41b692c6659088936b172ad8a67ec4b
 Validation Result: SUCCESS
 Valid Certificate:
@@ -376,9 +340,6 @@ M7W69tY9yFZGdo3h5huDRBrWDJ31Axo2wytCURj6ixbBwFSxSr7RL+TLcYTkK6uZ
 ow==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -395,13 +356,8 @@ Response:
     "x509IssuerName": "CN=Carillon PKI Services G2 Root CA 2, OU=Certification Authorities, O=Carillon Information Security Inc., C=CA",
     "x509SerialNumber": "9782744517218",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:42.901+0000",
-    "nextUpdate": "2023-04-17T02:41:42.901+0000",
-=======
-    "validationTime": "2023-04-09T20:53:48.502+0000",
-    "nextUpdate": "2023-04-16T20:53:48.502+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.216+0000",
+    "nextUpdate": "2023-04-17T13:43:43.216+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -422,7 +378,6 @@ Response:
 }
 Issuer: CN=Carillon PKI Services G2 Root CA 2, OU=Certification Authorities, O=Carillon Information Security Inc., C=CA
 Subject: CN=Carillon PKI Services CA 1, OU=Certification Authorities, O=Carillon Information Security Inc., C=CA
-<<<<<<< HEAD
 Thumbprint (SHA-256): 97df45717c7925208940d3af9f98bf9ba62cfc2115ca1e2af37a12d725fbbe4e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -484,9 +439,6 @@ H/PHZZNQtiYEB+FBg318uY6hkEAcAyqz9MaJA8OaN2dKmqFLuVXY5HeNOAYTt3uV
 ncpco5240zqYScBBURTxuM+VFg==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -503,13 +455,8 @@ Response:
     "x509IssuerName": "CN=Carillon PKI Services G2 Root CA 2, OU=Certification Authorities, O=Carillon Information Security Inc., C=CA",
     "x509SerialNumber": "14251171306420",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.010+0000",
-    "nextUpdate": "2023-04-17T02:41:43.010+0000",
-=======
-    "validationTime": "2023-04-09T20:53:48.677+0000",
-    "nextUpdate": "2023-04-16T20:53:48.677+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.289+0000",
+    "nextUpdate": "2023-04-17T13:43:43.289+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -530,7 +477,6 @@ Response:
 }
 Issuer: CN=Carillon PKI Services G2 Root CA 2, OU=Certification Authorities, O=Carillon Information Security Inc., C=CA
 Subject: CN=Carillon PKI Services CA 2, OU=Certification Authorities, O=Carillon Information Security Inc., C=CA
-<<<<<<< HEAD
 Thumbprint (SHA-256): 14bc75dfb8d9387c29141fa74b536691ecddf801f95c47585d017d9d2fa4c762
 Validation Result: SUCCESS
 Valid Certificate:
@@ -593,9 +539,6 @@ cQ13yQhqSz1Hy6YuZRff3RTeFoJfG9NwLxTJLKwK3FWQvZ4dzwDNANbux7pwuqoP
 UHH1k2dZaoeOP5CGgHlMTX8TK7ATEQC5zpsqwQLNlA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -612,13 +555,8 @@ Response:
     "x509IssuerName": "CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US",
     "x509SerialNumber": "120713548088187617268779091459076216198",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.032+0000",
-    "nextUpdate": "2023-04-17T02:41:43.032+0000",
-=======
-    "validationTime": "2023-04-09T20:53:48.809+0000",
-    "nextUpdate": "2023-04-16T20:53:48.809+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.305+0000",
+    "nextUpdate": "2023-04-17T13:43:43.305+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -636,7 +574,6 @@ Response:
 }
 Issuer: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
 Subject: CN=Carillon PKI Services G2 Root CA 2, OU=Certification Authorities, O=Carillon Information Security Inc., C=CA
-<<<<<<< HEAD
 Thumbprint (SHA-256): 5ce31eabef365da8fce657b616f0f402b1fcf358ac3a9fc96b2e3e3b039a34e2
 Validation Result: SUCCESS
 Valid Certificate:
@@ -690,9 +627,6 @@ jgqKa4SzLblJMTPC1Re0HIjazdQJgj8LwQwdnk98qcSTYyNTd0QsfoMNMVURtKsp
 XJXhzsU=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -709,13 +643,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "120943222303918956377385063198031813382957517676",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.053+0000",
-    "nextUpdate": "2023-04-17T02:41:43.053+0000",
-=======
-    "validationTime": "2023-04-09T20:53:48.938+0000",
-    "nextUpdate": "2023-04-16T20:53:48.938+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.324+0000",
+    "nextUpdate": "2023-04-17T13:43:43.324+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -730,7 +659,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): c2da4c919fcdfdd85214b085f89cb69ec6aee35788f3cf316246e1e76cb2b62a
 Validation Result: SUCCESS
 Valid Certificate:
@@ -778,9 +706,6 @@ sU3ubc3axuauYMdf5TqPN6mq3+UYnUCLzew3m61p4/k4bwGlH3f3GAYDS5KcVxGs
 9mmGYNDc1SvPOEqfdQ==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -797,13 +722,8 @@ Response:
     "x509IssuerName": "CN=Carillon Federal Services PIV-I CA1, OU=Certification Authorities, O=Carillon Federal Services Inc., C=US",
     "x509SerialNumber": "175158942848335742094376338922828684634181",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.071+0000",
-    "nextUpdate": "2023-04-17T02:41:43.071+0000",
-=======
-    "validationTime": "2023-04-09T20:53:49.082+0000",
-    "nextUpdate": "2023-04-16T20:53:49.082+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.333+0000",
+    "nextUpdate": "2023-04-17T13:43:43.333+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -824,7 +744,6 @@ Response:
 }
 Issuer: CN=Carillon Federal Services PIV-I CA1, OU=Certification Authorities, O=Carillon Federal Services Inc., C=US
 Subject: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): b38bf9b6b5bcbf5c9162f3f3d24ee9f7762cef64f6d3f252c80921f08e5ed812
 Validation Result: SUCCESS
 Valid Certificate:
@@ -891,9 +810,6 @@ BA6a8y69jIFwugpQsSqqytXTv3RjKes8woXbEVWIrDWS7fi0Q/u5g6nJDFdISBsP
 zYNTtAqW/dvkJMlnqELTQSMGeyW4HCOa+LV7kGs=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -910,13 +826,8 @@ Response:
     "x509IssuerName": "CN=Carillon PKI Services G2 Root CA 2, OU=Certification Authorities, O=Carillon Information Security Inc., C=CA",
     "x509SerialNumber": "14251171306422",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.313+0000",
-    "nextUpdate": "2023-04-17T02:41:43.313+0000",
-=======
-    "validationTime": "2023-04-09T20:53:49.377+0000",
-    "nextUpdate": "2023-04-16T20:53:49.377+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.542+0000",
+    "nextUpdate": "2023-04-17T13:43:43.542+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -937,7 +848,6 @@ Response:
 }
 Issuer: CN=Carillon PKI Services G2 Root CA 2, OU=Certification Authorities, O=Carillon Information Security Inc., C=CA
 Subject: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 5a6de354a57bd059cfbda6e9631b9a834111e53309a7f9242871cf4a5550b00e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -994,9 +904,6 @@ rjzi9NhkN9m0Ydb+wWMU8u0i48TstblH+kccGHAFDuf73QkKLMlBEE2IVhYDFz54
 g3MXZKiER4aln09qAA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1013,13 +920,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "122443361320154935121182429421792160303484936890",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.339+0000",
-    "nextUpdate": "2023-04-17T02:41:43.339+0000",
-=======
-    "validationTime": "2023-04-09T20:53:49.509+0000",
-    "nextUpdate": "2023-04-16T20:53:49.509+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.557+0000",
+    "nextUpdate": "2023-04-17T13:43:43.557+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1034,7 +936,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=DigiCert Class 3 SSP Intermediate CA - G4, O="DigiCert, Inc.", C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 59ffa4d4929e0bd48aa35b02ccac2e13a8d147b9d146bfbfd00fde736264d00e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1075,9 +976,6 @@ ce5ktJJHsRO8wwt55gyYTdiwXDZUQ1+9/T0NwQmkcr42oYSTyt7ty2+q+FA3qwSn
 BnPYxKD1SmPEvHxVF1J6uKdMGA5361mBo5QrG/t9Pep3+ZPg
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1094,13 +992,8 @@ Response:
     "x509IssuerName": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "209718173186065542067303319587272303608754246246",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.363+0000",
-    "nextUpdate": "2023-04-17T02:41:43.363+0000",
-=======
-    "validationTime": "2023-04-09T20:53:49.650+0000",
-    "nextUpdate": "2023-04-16T20:53:49.650+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.570+0000",
+    "nextUpdate": "2023-04-17T13:43:43.570+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1112,7 +1005,6 @@ Response:
 }
 Issuer: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=DigiCert Federal SSP Intermediate CA - G5, O="DigiCert, Inc.", C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): ea86e0baf55eef020ed58196af865f2fa72a77d1be70a779b65a9cbf0b5ee3f2
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1153,9 +1045,6 @@ DcUHp2CdPTvDcH6wJjwLzDKYIPjZE0ma2SBC+6GixP9rm7I73b+VF/zNSFk7gfCw
 8Y4=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1172,13 +1061,8 @@ Response:
     "x509IssuerName": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "200499301133135504501199594242216341100683462959",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.376+0000",
-    "nextUpdate": "2023-04-17T02:41:43.376+0000",
-=======
-    "validationTime": "2023-04-09T20:53:49.761+0000",
-    "nextUpdate": "2023-04-16T20:53:49.761+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.580+0000",
+    "nextUpdate": "2023-04-17T13:43:43.580+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1190,7 +1074,6 @@ Response:
 }
 Issuer: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=DigiCert Federal SSP Intermediate CA - G6, O="DigiCert, Inc.", C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 72653e7e6aa246b778a07592b4cf09e2b4f629e45994e289090f84d5c054686e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1237,9 +1120,6 @@ RESK7dTWNoWkTCyMxnawNdSkxq84ADIlO8V3yUHnYKJS5AjVMBQNgkWYwGB1o5dN
 kw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1256,13 +1136,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "122665542659569679270511931244400030632594660943",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.389+0000",
-    "nextUpdate": "2023-04-17T02:41:43.389+0000",
-=======
-    "validationTime": "2023-04-09T20:53:49.895+0000",
-    "nextUpdate": "2023-04-16T20:53:49.895+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.586+0000",
+    "nextUpdate": "2023-04-17T13:43:43.586+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1277,7 +1152,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=DigiCert Federated ID CA - G2, O="DigiCert, Inc.", C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 3081657756432201c98b3251507813e37809c5a146237af4e2a3243b704e2452
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1318,9 +1192,6 @@ JpwoArPa8uZwkekcolB1xR4VNDUYBemvtrAze23TXwKhUkVgQpQjkHhcMeACJKFt
 NOg=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1337,13 +1208,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "133170775757738527678021277105300845527569727759",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.404+0000",
-    "nextUpdate": "2023-04-17T02:41:43.404+0000",
-=======
-    "validationTime": "2023-04-09T20:53:50.029+0000",
-    "nextUpdate": "2023-04-16T20:53:50.029+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.593+0000",
+    "nextUpdate": "2023-04-17T13:43:43.593+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1358,7 +1224,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=DigiCert Federated ID L3 CA, OU=www.digicert.com, O=DigiCert Inc, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 93034782576a6cc1fdc683c553c1447475d99a6b974aa85f5b63878125000717
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1394,9 +1259,6 @@ gZJBJt2gadhi7t5y2GM0c2yI+Lbo+wVIsbOer5+L+TB1T2NcLqJlrUyFhV5sm6QJ
 CARZa2mv+8vi
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1413,13 +1275,8 @@ Response:
     "x509IssuerName": "CN=TSCP SHA256 Bridge CA, OU=CAs, O=TSCP Inc., C=US",
     "x509SerialNumber": "135392276974704691017581164065268790658",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.420+0000",
-    "nextUpdate": "2023-04-17T02:41:43.420+0000",
-=======
-    "validationTime": "2023-04-09T20:53:50.261+0000",
-    "nextUpdate": "2023-04-16T20:53:50.261+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.600+0000",
+    "nextUpdate": "2023-04-17T13:43:43.600+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1437,7 +1294,6 @@ Response:
 }
 Issuer: CN=TSCP SHA256 Bridge CA, OU=CAs, O=TSCP Inc., C=US
 Subject: CN=DocuSign Root CA, OU=TSCP, O=DocuSign Inc., C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 9e848b91e7b9e5bc9463a1f4dd04cc86dd01c8f68ef5b2c650407a29e61aed42
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1476,9 +1332,6 @@ SG8Xc6/q8qE9bju2caK/ViCZ+sNIBUh42pORu8VrxOVVc/m8oiM+U3rM1Fc6cdJ1
 1eZMAwQ7ElzaETWMftUjbTwD8w==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1495,13 +1348,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1218",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:43.434+0000",
-    "nextUpdate": "2023-04-17T02:41:43.434+0000",
-=======
-    "validationTime": "2023-04-09T20:53:50.384+0000",
-    "nextUpdate": "2023-04-16T20:53:50.384+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.606+0000",
+    "nextUpdate": "2023-04-17T13:43:43.606+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1522,7 +1370,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD DERILITY CA-1, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 67a953b9e17f77599c6e553053dcd43fd7478fdd5cbd844612ceb6064386f8df
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1555,9 +1402,6 @@ pHNtbzW/Tx2dRfHn0w8WkSQdDvwSTuo1pWOYBo6yJhRwSm3/4rmawxlp3p8lXuiB
 SlUDxA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1574,13 +1418,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "772",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:45.120+0000",
-    "nextUpdate": "2023-04-17T02:41:45.120+0000",
-=======
-    "validationTime": "2023-04-09T20:53:51.426+0000",
-    "nextUpdate": "2023-04-16T20:53:51.426+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:43.903+0000",
+    "nextUpdate": "2023-04-17T13:43:43.903+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1601,7 +1440,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD EMAIL CA-59, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 86a5939bd9054a73d0537dbb1f7b5bda662bb4cdc00d5f7f14b262362e8b489b
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1634,9 +1472,6 @@ vN4t0IFNN5B8JS7ZhFeXwrPVRPGBttxoTZ4m4q/NwaJlyvIjhT7gaVu26MrQN9t2
 vY21E6kLlBE/cTfmLh6e9A==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1653,13 +1488,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1373",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:45.678+0000",
-    "nextUpdate": "2023-04-17T02:41:45.678+0000",
-=======
-    "validationTime": "2023-04-09T20:53:52.698+0000",
-    "nextUpdate": "2023-04-16T20:53:52.698+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:44.114+0000",
+    "nextUpdate": "2023-04-17T13:43:44.114+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1680,7 +1510,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD EMAIL CA-62, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 36490d91175ca3b39b21b21941db70635c58a3fd0f51135af9f0edc15cbf55b6
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1713,9 +1542,6 @@ nZPRC6X+eodQgzNuTpcscspsVuBnOsInkBZd4RXm9PuPjSH77hB8an7bPrWaufE+
 e45aFpkQzFArjrFNz/R/4Q==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1732,13 +1558,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1352",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:55.353+0000",
-    "nextUpdate": "2023-04-17T02:41:55.353+0000",
-=======
-    "validationTime": "2023-04-09T20:53:52.962+0000",
-    "nextUpdate": "2023-04-16T20:53:52.962+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:44.328+0000",
+    "nextUpdate": "2023-04-17T13:43:44.328+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1759,7 +1580,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD EMAIL CA-63, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): c6a4dac9fd846474ea35c52afada31510d388ee5af694d8e7f7300eee73cbd2f
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1792,9 +1612,6 @@ fxVglI8q1YD4UU0/yaeMVgaGwoCx9sb+q5XCXEn9MV2dbmVf4D+jVm12xYYd146M
 G6vK43wgw7eLa6LNYNCF1g==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1811,13 +1628,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1353",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:56.903+0000",
-    "nextUpdate": "2023-04-17T02:41:56.903+0000",
-=======
-    "validationTime": "2023-04-09T20:53:53.219+0000",
-    "nextUpdate": "2023-04-16T20:53:53.219+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:44.542+0000",
+    "nextUpdate": "2023-04-17T13:43:44.542+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1838,7 +1650,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD EMAIL CA-64, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 690c69044761d3a9ab208e4ef2c7b461f09ab524137e7d059176324df42480d8
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1871,9 +1682,6 @@ HlW1pTJsObYjfiicDIPuqJu633MKEaQgQRukOLEfV0CSEt7PLaVcD/JLjuHGttwd
 0019mApk8G9z4Le8G22i4w==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1890,13 +1698,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1374",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:41:58.463+0000",
-    "nextUpdate": "2023-04-17T02:41:58.463+0000",
-=======
-    "validationTime": "2023-04-09T20:53:53.487+0000",
-    "nextUpdate": "2023-04-16T20:53:53.487+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:45.764+0000",
+    "nextUpdate": "2023-04-17T13:43:45.764+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1917,7 +1720,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD EMAIL CA-65, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): d483b29aae8b40d62ad4757f2986a6d541c4241383d7928592fc61ba5d01085a
 Validation Result: SUCCESS
 Valid Certificate:
@@ -1950,9 +1752,6 @@ VhlDnPZ7+nygeq98BXVTDI4F7PaUdaZSk0ZCbztBcj+4Sq86jx0EOFA1BPyTRGru
 7Jlk9Ls1gI1VGp3JiQdfFg==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -1969,13 +1768,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1803",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:00.040+0000",
-    "nextUpdate": "2023-04-17T02:42:00.040+0000",
-=======
-    "validationTime": "2023-04-09T20:53:53.745+0000",
-    "nextUpdate": "2023-04-16T20:53:53.745+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:45.981+0000",
+    "nextUpdate": "2023-04-17T13:43:45.981+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -1996,7 +1790,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD EMAIL CA-71, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 9d7e0bfb84d6a5f66cfd701b786dc75db31422687212bf26c276b70df0627bdb
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2029,9 +1822,6 @@ X/rROCcCCc+bk/RmWiPqw3LeBX8Hh5bCqNlyMCykaGOWPldfbzVF7OAlDKdYhMMm
 XNygUd15QW+qoB+oikZoKA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2048,13 +1838,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "773",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:03.614+0000",
-    "nextUpdate": "2023-04-17T02:42:03.614+0000",
-=======
-    "validationTime": "2023-04-09T20:53:53.997+0000",
-    "nextUpdate": "2023-04-16T20:53:53.997+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:46.200+0000",
+    "nextUpdate": "2023-04-17T13:43:46.200+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2075,7 +1860,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD ID CA-59, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 43b8d8970212304b4b47d6745ca5c281a49013d2f8e8d8489b962f7d7073556e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2108,9 +1892,6 @@ Kp4n57mpREsHutP4XnLQ01ZN2qgn+844JRrzPQ0pazPYiSl4PeI2FUItErA6Ob/D
 PF0ba2y3k4dFkUTApw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2127,13 +1908,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1354",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:05.195+0000",
-    "nextUpdate": "2023-04-17T02:42:05.195+0000",
-=======
-    "validationTime": "2023-04-09T20:53:54.294+0000",
-    "nextUpdate": "2023-04-16T20:53:54.294+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:46.409+0000",
+    "nextUpdate": "2023-04-17T13:43:46.409+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2154,7 +1930,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD ID CA-62, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): a3626dfa33eadf6f1ac300a733f52322c6cdc59f5d561e2188c493d016c49dd5
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2187,9 +1962,6 @@ s4VWiWbcJCB744R93TsBRQ6Cmes/dh1RFtEkcOMC6t+NJV9aSIF20CZv2NlNcD4T
 L7MvBU75kWmaG+2/kA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2206,13 +1978,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1295",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:13.022+0000",
-    "nextUpdate": "2023-04-17T02:42:13.022+0000",
-=======
-    "validationTime": "2023-04-09T20:53:54.554+0000",
-    "nextUpdate": "2023-04-16T20:53:54.554+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:46.622+0000",
+    "nextUpdate": "2023-04-17T13:43:46.622+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2233,7 +2000,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD ID CA-63, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): dd2dc71d5affa281ceb4da78d58a8119ffe606d732dab5343b2b1c3de4993613
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2266,9 +2032,6 @@ YG3zCHENRRKgZd82xoVCB9h3NhZ3M1uS+YXOtcOtkwfBKKHMQ8W14NJUvDL3xjyL
 6NaUjDpi3EZ0riF7FQ==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2285,13 +2048,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1355",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:13.602+0000",
-    "nextUpdate": "2023-04-17T02:42:13.602+0000",
-=======
-    "validationTime": "2023-04-09T20:53:54.822+0000",
-    "nextUpdate": "2023-04-16T20:53:54.822+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:46.838+0000",
+    "nextUpdate": "2023-04-17T13:43:46.838+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2312,7 +2070,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD ID CA-64, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): fc6fd238f81a3b1755db3bc5471440a186ef3ab4e9ea6d76c2e157c22236b482
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2345,9 +2102,6 @@ nh5gG9qMkIX0b/oTkF5loV2Pq7p09Pj48Ebbv8B32vqnaUOQLjRANb/sIQLHXoXH
 qwTizQlR8MkIO8+F+Q==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2364,13 +2118,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1356",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:17.218+0000",
-    "nextUpdate": "2023-04-17T02:42:17.218+0000",
-=======
-    "validationTime": "2023-04-09T20:53:55.092+0000",
-    "nextUpdate": "2023-04-16T20:53:55.092+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:47.051+0000",
+    "nextUpdate": "2023-04-17T13:43:47.051+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2391,7 +2140,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD ID CA-65, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 80e252331942dcaaaa7de7fb450ee9610081f44bbe164fe9936a759ba4541e5b
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2424,9 +2172,6 @@ edL8fHfFNyM4UPNgc4eG+bu0GJK4wKPVjiX7xYDdGaYZ2m4Y++zrKuMq+Oar6DQG
 q3SERMAZCDYsEt3z2g==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2443,13 +2188,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1804",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:17.768+0000",
-    "nextUpdate": "2023-04-17T02:42:17.768+0000",
-=======
-    "validationTime": "2023-04-09T20:53:55.347+0000",
-    "nextUpdate": "2023-04-16T20:53:55.347+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:47.264+0000",
+    "nextUpdate": "2023-04-17T13:43:47.264+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2470,7 +2210,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD ID CA-71, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): f7ba690fe17cff7b191ac6d32522931c6f472df487574f0d1c576da0d2ab7049
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2503,9 +2242,6 @@ KNZU5lKFbmTqjVu+OKfJbrWkIqtkFIkQyoEUvELH1+XLqywl+FyS/+xwH6rGTtl2
 0RecJ4v4oj2Hg13GXA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2522,13 +2258,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "91800165712134855284944440418258783253842609266",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:18.316+0000",
-    "nextUpdate": "2023-04-17T02:42:18.316+0000",
-=======
-    "validationTime": "2023-04-09T20:53:55.609+0000",
-    "nextUpdate": "2023-04-16T20:53:55.609+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:47.477+0000",
+    "nextUpdate": "2023-04-17T13:43:47.477+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2543,7 +2274,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=DoD Interoperability Root CA 2, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): f6cf265e0eb90e08237828209d5acfbc80bb792ec7155b73015a0ff60dcfcdda
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2588,9 +2318,6 @@ ctMny9qljss2tI8A6kRPZnODOZkU9Qeb18N1Bo7le3Jjpb+98Y4eQzZSsaIZLhZ5
 JSL45YyP9Nob0/qkDRY/ZhUbc3Jajao=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2607,13 +2334,8 @@ Response:
     "x509IssuerName": "CN=DoD Interoperability Root CA 2, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "2171",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:18.329+0000",
-    "nextUpdate": "2023-04-17T02:42:18.329+0000",
-=======
-    "validationTime": "2023-04-09T20:53:55.866+0000",
-    "nextUpdate": "2023-04-16T20:53:55.866+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:47.491+0000",
+    "nextUpdate": "2023-04-17T13:43:47.491+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2631,7 +2353,6 @@ Response:
 }
 Issuer: CN=DoD Interoperability Root CA 2, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): f4f21cf5fa41a6e2427ca5a67ef1d77073300b050cc8e2c3fd0b54411e41357a
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2667,9 +2388,6 @@ AGK3xGGdAu/vxbq3ouyOcwf8slJUFl2+HmaxnrNVs1l+tw0XjClPDDkYzUwN1QCO
 WK+4RVQg0gSgAw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2686,13 +2404,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "771",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:21.625+0000",
-    "nextUpdate": "2023-04-17T02:42:21.625+0000",
-=======
-    "validationTime": "2023-04-09T20:53:56.046+0000",
-    "nextUpdate": "2023-04-16T20:53:56.046+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:47.605+0000",
+    "nextUpdate": "2023-04-17T13:43:47.605+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2713,7 +2426,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD SW CA-60, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): d8616149c63651ac9161ab04279b60a64199db9f14ae8dda27cc69f165b59724
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2745,9 +2457,6 @@ O1Le2QJvSK0J9dS21rwV6SCtf+en2Razi0/S44tzOFa4fRdJLHTYPutu69p6+YMh
 Sul++7G14BLwhmWa2iRcjw+AlQ==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2764,13 +2473,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1375",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:22.172+0000",
-    "nextUpdate": "2023-04-17T02:42:22.172+0000",
-=======
-    "validationTime": "2023-04-09T20:53:56.326+0000",
-    "nextUpdate": "2023-04-16T20:53:56.326+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:47.814+0000",
+    "nextUpdate": "2023-04-17T13:43:47.814+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2791,7 +2495,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD SW CA-66, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 79dd87d87503bd9c422b49e2bf7a23a5c0783cce85d588759f3a349ec26eb84a
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2823,9 +2526,6 @@ PGHQZWrPXMJq8nJ9Crps8KucamtlRge++MgsWRi5B/oTaJNBfabD7bZcI+tG8MSm
 jYDkgfOi5nuRC+HuYQJfnN/JLw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2842,13 +2542,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1376",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:22.720+0000",
-    "nextUpdate": "2023-04-17T02:42:22.720+0000",
-=======
-    "validationTime": "2023-04-09T20:53:56.591+0000",
-    "nextUpdate": "2023-04-16T20:53:56.591+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:48.023+0000",
+    "nextUpdate": "2023-04-17T13:43:48.023+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2869,7 +2564,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD SW CA-67, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): cca9b469b4edda4d615b58c130ecaebba5ca439adbee8be15206626e5122f4ca
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2901,9 +2595,6 @@ b7HtqVw44FdhcX91iSsF94227L97FWj2qIh+hg9Hr7+lnUV2jnw78VDAAGYoC2j+
 wFDemBg6D/gOGokJXlfr5G3RtQ==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2920,13 +2611,8 @@ Response:
     "x509IssuerName": "CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "1805",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:23.269+0000",
-    "nextUpdate": "2023-04-17T02:42:23.269+0000",
-=======
-    "validationTime": "2023-04-09T20:53:56.882+0000",
-    "nextUpdate": "2023-04-16T20:53:56.882+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:48.243+0000",
+    "nextUpdate": "2023-04-17T13:43:48.243+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -2947,7 +2633,6 @@ Response:
 }
 Issuer: CN=DoD Root CA 3, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=DOD SW CA-75, OU=PKI, OU=DoD, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 6cbc8895834385d27678cb0012d224277b02dcfc4502bceafdfe1a0a2543f416
 Validation Result: SUCCESS
 Valid Certificate:
@@ -2979,9 +2664,6 @@ is8yooe7hRBl0TaIiNCmItMFaTl7G38ZI8gL2prAGNHITpTjbaWrlC2CYCgtCoWo
 GmlNqlYB/qPgCvk50sSvxFL7dQ==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -2998,13 +2680,8 @@ Response:
     "x509IssuerName": "OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US",
     "x509SerialNumber": "1149291415",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:23.818+0000",
-    "nextUpdate": "2023-04-17T02:42:23.818+0000",
-=======
-    "validationTime": "2023-04-09T20:53:57.137+0000",
-    "nextUpdate": "2023-04-16T20:53:57.137+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:48.456+0000",
+    "nextUpdate": "2023-04-17T13:43:48.456+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3022,7 +2699,6 @@ Response:
 }
 Issuer: OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US
 Subject: CN=DOE SSP CA, OU=Certification Authorities, OU=Department of Energy, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 1046c3eb137d7b796872fff6681708c6b02786fc8152745339a5636644f6d766
 Validation Result: SUCCESS
 Valid Certificate:
@@ -3060,9 +2736,6 @@ qmHQ7qW6Tlr2db77Nfb0DIAuws4uI805UwoTUBEnc91CKRBegC7YQ/VioeHkJZNF
 1NbDwWT8hQ==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -3079,13 +2752,8 @@ Response:
     "x509IssuerName": "CN=DoD Interoperability Root CA 2, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "2056",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:24.334+0000",
-    "nextUpdate": "2023-04-17T02:42:24.334+0000",
-=======
-    "validationTime": "2023-04-09T20:53:57.582+0000",
-    "nextUpdate": "2023-04-16T20:53:57.582+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:48.893+0000",
+    "nextUpdate": "2023-04-17T13:43:48.893+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3103,7 +2771,6 @@ Response:
 }
 Issuer: CN=DoD Interoperability Root CA 2, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 8fa30ea12e781dd5d715736c5ab6746cb13527899c909eb1436bb5d8a71a2bed
 Validation Result: SUCCESS
 Valid Certificate:
@@ -3140,9 +2807,6 @@ ru9id7sAjfSpn7uNmxTxbFL1QsavrV3UXjlWgj8Aku7tX5p+8mCut/8y66VxNeir
 pt97kBi1e+eSeQ+4hGba
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -3164,13 +2828,8 @@ Response:
             "value": "CN=SymantecPKI-2-79"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:31.707+0000",
-    "nextUpdate": "2023-04-17T02:42:31.707+0000",
-=======
-    "validationTime": "2023-04-09T20:53:57.772+0000",
-    "nextUpdate": "2023-04-16T20:53:57.772+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:49.005+0000",
+    "nextUpdate": "2023-04-17T13:43:49.005+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3188,7 +2847,6 @@ Response:
 }
 Issuer: CN=Symantec Class 3 SSP Intermediate CA - G3, OU=Symantec Trust Network, O=Symantec Corporation, C=US
 Subject: CN=Eid Passport LRA 2 CA, OU=Eid Passport PIV-I LRA Network, O="Eid Passport, Inc.", C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 6fd402f1760cbf48a3749840fbb065397f63572843c86b8bc49fcefbbee6e3d7
 Validation Result: SUCCESS
 Valid Certificate:
@@ -3224,9 +2882,6 @@ cDEhs8lNS/TH6sbN77ZNGDAVdMtQdi/iU1JB41cG3vjLWKzMYoG70z04HxfGS17X
 Tg/LjN2RxzfwGGAl91aa9MwHLR/U3GRC8Gkbtt22DCXTJ9saVm8vTjEGoWo=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -3248,13 +2903,8 @@ Response:
             "value": "CN=SymantecPKI-2-102"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:31.786+0000",
-    "nextUpdate": "2023-04-17T02:42:31.786+0000",
-=======
-    "validationTime": "2023-04-09T20:53:57.945+0000",
-    "nextUpdate": "2023-04-16T20:53:57.945+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:49.049+0000",
+    "nextUpdate": "2023-04-17T13:43:49.049+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3272,7 +2922,6 @@ Response:
 }
 Issuer: CN=Symantec Class 3 SSP Intermediate CA - G3, OU=Symantec Trust Network, O=Symantec Corporation, C=US
 Subject: CN=Eid Passport LRA CA 3, OU=RAPIDGate PIV Interoperable LRA, O="Eid Passport, Inc.", C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 46a81b2f991a675e8b9a13d5941374c545aa4316a0200518be69c85bbd1b7d02
 Validation Result: SUCCESS
 Valid Certificate:
@@ -3308,9 +2957,6 @@ xmVH6+4NY+IzIOFtLc7oxX+dqx7ks5kDt+UOJHnMrbwB2fXkLw4PG6XRRGN2cZRL
 QRXot6OABL4YfJ6+jewFJAMCxaapql1GQAWF3Tzdd/UuBaXofJQYldQ1teWEdw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -3327,13 +2973,8 @@ Response:
     "x509IssuerName": "OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US",
     "x509SerialNumber": "1149284737",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:31.841+0000",
-    "nextUpdate": "2023-04-17T02:42:31.841+0000",
-=======
-    "validationTime": "2023-04-09T20:53:58.255+0000",
-    "nextUpdate": "2023-04-16T20:53:58.255+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:49.100+0000",
+    "nextUpdate": "2023-04-17T13:43:49.100+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3351,7 +2992,6 @@ Response:
 }
 Issuer: OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US
 Subject: CN=Entrust Derived Credential SSP CA, OU=Certification Authorities, O=Entrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 35f348080f107f9317bc082fb6f2008b477a906877dca555518f4f61f29dc4cf
 Validation Result: SUCCESS
 Valid Certificate:
@@ -3390,9 +3030,6 @@ bmNAPjLMoJoM1rhtxWqC9C1BEh9iKp058h85Ib58TTmgGtQVruLJ6Eolo/5zC9wq
 /zDd
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -3409,13 +3046,8 @@ Response:
     "x509IssuerName": "OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US",
     "x509SerialNumber": "1149336489",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:32.294+0000",
-    "nextUpdate": "2023-04-17T02:42:32.294+0000",
-=======
-    "validationTime": "2023-04-09T20:53:58.693+0000",
-    "nextUpdate": "2023-04-16T20:53:58.693+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:49.527+0000",
+    "nextUpdate": "2023-04-17T13:43:49.527+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3430,7 +3062,6 @@ Response:
 }
 Issuer: OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US
 Subject: CN=Entrust Derived Credential SSP CA, OU=Certification Authorities, O=Entrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 0e01f016a8b54df534a6768544e2cc9d251a0b206ff73b45249a37637eced7af
 Validation Result: SUCCESS
 Valid Certificate:
@@ -3469,9 +3100,6 @@ JjUaNHFNddzFBDHq44kt3JvKSG8c7KvGC7XQIRmpAYGO/JR5I8FskyMKtuZCtjX1
 87W/
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -3487,11 +3115,7 @@ Response:
     "x509IssuerName": "CN=Exostar Federated Identity Service Root CA 2, OU=Certification Authorities, O=Exostar LLC, C=US",
     "x509SerialNumber": "1025834279162425889105434662153385551908044805",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
     "validationTime": "2023-04-10T02:42:32.508+0000",
-=======
-    "validationTime": "2023-04-09T20:53:58.962+0000",
->>>>>>> main
     "validationResult": {
         "result": "FAIL",
         "isAffirmativelyInvalid": false,
@@ -3500,16 +3124,10 @@ Response:
 }
 Issuer: CN=Exostar Federated Identity Service Root CA 2, OU=Certification Authorities, O=Exostar LLC, C=US
 Subject: CN=Exostar Digital Certificate Service Signing CA 1, O=Exostar UK Limited, C=GB
-<<<<<<< HEAD
 Thumbprint (SHA-256): a32756061d859730249c914d24f008d182506246253a07af9949b66e9d6a4bb7
 Validation Result: FAIL
 	Validation Failure Reason: unable to find valid certification path to requested target
 	Validation Affirmed Invalid: False
-=======
-Validation Result: FAIL
-Validation Affirmed Invalid: False
-	Validation Failure Reason: unable to find valid certification path to requested target
->>>>>>> main
 
 Request:
 {
@@ -3526,13 +3144,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "132098792477909172339608631958225016525047285552",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:32.532+0000",
-    "nextUpdate": "2023-04-17T02:42:32.532+0000",
-=======
-    "validationTime": "2023-04-09T20:53:59.086+0000",
-    "nextUpdate": "2023-04-16T20:53:59.086+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:49.740+0000",
+    "nextUpdate": "2023-04-17T13:43:49.740+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3547,7 +3160,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=Exostar Federated Identity Service Root CA 2, OU=Certification Authorities, O=Exostar LLC, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 5d0fabdc9bbf3ad0922322fce66d0b76e9a5bedae9ff1df03df313902d18d215
 Validation Result: SUCCESS
 Valid Certificate:
@@ -3586,9 +3198,6 @@ GesxSQNuoy4jpcp2pJnRYDeeOwru5eXuKlN83I9dZTbb7R51uS/eVshDNrlaqdAF
 1g==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -3605,13 +3214,8 @@ Response:
     "x509IssuerName": "CN=Exostar Federated Identity Service Root CA 2, OU=Certification Authorities, O=Exostar LLC, C=US",
     "x509SerialNumber": "1025834279145767712875394696522503859761840130",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:32.541+0000",
-    "nextUpdate": "2023-04-17T02:42:32.541+0000",
-=======
-    "validationTime": "2023-04-09T20:53:59.213+0000",
-    "nextUpdate": "2023-04-16T20:53:59.213+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:49.752+0000",
+    "nextUpdate": "2023-04-17T13:43:49.752+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3629,7 +3233,6 @@ Response:
 }
 Issuer: CN=Exostar Federated Identity Service Root CA 2, OU=Certification Authorities, O=Exostar LLC, C=US
 Subject: CN=Exostar Federated Identity Service Signing CA 3, DC=evincible, DC=com
-<<<<<<< HEAD
 Thumbprint (SHA-256): 7c74f428147f63c4c654969d40baaecad7386434d76f33ae9d6492a6e4c18d9b
 Validation Result: SUCCESS
 Valid Certificate:
@@ -3662,9 +3265,6 @@ k4JJqtjW9a0PdlACXaJ5EDZJRIqT3O/V9Da23h75fw/nhX5CAl6LX39bu9toFb/8
 WqKXi5+t
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -3681,13 +3281,8 @@ Response:
     "x509IssuerName": "CN=Exostar Federated Identity Service Root CA 2, OU=Certification Authorities, O=Exostar LLC, C=US",
     "x509SerialNumber": "1025834279169003830050167962603862945874051079",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:32.620+0000",
-    "nextUpdate": "2023-04-17T02:42:32.620+0000",
-=======
-    "validationTime": "2023-04-09T20:53:59.352+0000",
-    "nextUpdate": "2023-04-16T20:53:59.352+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:49.823+0000",
+    "nextUpdate": "2023-04-17T13:43:49.823+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3705,7 +3300,6 @@ Response:
 }
 Issuer: CN=Exostar Federated Identity Service Root CA 2, OU=Certification Authorities, O=Exostar LLC, C=US
 Subject: CN=Exostar Federated Identity Service Signing CA 4, DC=evincible, DC=com
-<<<<<<< HEAD
 Thumbprint (SHA-256): 2b8c28bde8ea5c2f0dbcc744e5b2d870cbb98d3225ca8a3e58e56643ebda6fa0
 Validation Result: SUCCESS
 Valid Certificate:
@@ -3738,9 +3332,6 @@ HHrwPDBTvffUkdsOl2YtENro6xocJJOgoUdO/S/AhlCh7iqiQeR+o6CsML+Ln+tw
 5vrKcxnR
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -3757,13 +3348,8 @@ Response:
     "x509IssuerName": "CN=STRAC Bridge Root Certification Authority, OU=STRAC PKI Trust Infrastructure, O=STRAC, C=US",
     "x509SerialNumber": "279",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:32.635+0000",
-    "nextUpdate": "2023-04-17T02:42:32.635+0000",
-=======
-    "validationTime": "2023-04-09T20:53:59.526+0000",
-    "nextUpdate": "2023-04-16T20:53:59.526+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:49.837+0000",
+    "nextUpdate": "2023-04-17T13:43:49.837+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3781,7 +3367,6 @@ Response:
 }
 Issuer: CN=STRAC Bridge Root Certification Authority, OU=STRAC PKI Trust Infrastructure, O=STRAC, C=US
 Subject: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 6c33f7e6d796dbee24bbc3832197ba53034359f8d081b834e58ca007c7737bf1
 Validation Result: SUCCESS
 Valid Certificate:
@@ -3831,9 +3416,6 @@ BNDz5vsLLYwDnGTuZiA92xXI3fa5qOhHMkV9LXaq9RG7vVYiGU7aELQmhukyerfu
 9pO+B/d7AhvGywIuu3YA643/Jv2roJCeTCCBzp37vmE=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -3850,13 +3432,8 @@ Response:
     "x509IssuerName": "CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US",
     "x509SerialNumber": "45855136141067314572496140087726171902",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:33.128+0000",
-    "nextUpdate": "2023-04-17T02:42:33.128+0000",
-=======
-    "validationTime": "2023-04-09T20:53:59.976+0000",
-    "nextUpdate": "2023-04-16T20:53:59.976+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:50.278+0000",
+    "nextUpdate": "2023-04-17T13:43:50.278+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3874,7 +3451,6 @@ Response:
 }
 Issuer: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
 Subject: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): f05539b62ec18a8a983a234fb227436b6ff10d2104d75a7188e3b8170a7f82b6
 Validation Result: SUCCESS
 Valid Certificate:
@@ -3937,9 +3513,6 @@ Ii5oQgBRwJAKqrR4FISaCPuVmF4zgutHjv7JZojvPm5hURo3uQgq/4VO/69lSTmZ
 pcGrb7JbhPZcIB5kxKjJD/rVMQ3wcSAgPuef4FA7LeBOj4ee1sL3Q+w732fs
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -3956,13 +3529,8 @@ Response:
     "x509IssuerName": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "201286591042125361131093002376976058836339961474",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:33.163+0000",
-    "nextUpdate": "2023-04-17T02:42:33.163+0000",
-=======
-    "validationTime": "2023-04-09T20:54:00.113+0000",
-    "nextUpdate": "2023-04-16T20:54:00.113+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:50.286+0000",
+    "nextUpdate": "2023-04-17T13:43:50.286+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -3974,7 +3542,6 @@ Response:
 }
 Issuer: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 74383ca1bb648f96efe9e6ecadb5a8a359e7df9ba262ef7c02bd004eab3895f4
 Validation Result: SUCCESS
 Valid Certificate:
@@ -4020,9 +3587,6 @@ pjk3DSnKqqgZdGNgAba7DsDGWQ5ZTqAVKvuQSPeL/wGpghuX75cNkPKG9XnCxAI5
 ESKiXDB4NvDPciGH+u3lXW8kKBMYV2t8
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -4038,11 +3602,7 @@ Response:
     "x509IssuerName": "CN=SAFE Identity Bridge CA, OU=Certification Authorities, O=SAFE Identity, C=US",
     "x509SerialNumber": "55052056998865178576625535228225613350",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
     "validationTime": "2023-04-10T02:42:33.171+0000",
-=======
-    "validationTime": "2023-04-09T20:54:00.228+0000",
->>>>>>> main
     "validationResult": {
         "result": "FAIL",
         "isAffirmativelyInvalid": false,
@@ -4051,16 +3611,10 @@ Response:
 }
 Issuer: CN=SAFE Identity Bridge CA, OU=Certification Authorities, O=SAFE Identity, C=US
 Subject: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): af7b5dcfb95d1a11bc2d850738d507c4cecc7d93898bc0363702bcd23f957ae1
 Validation Result: FAIL
 	Validation Failure Reason: unable to find valid certification path to requested target
 	Validation Affirmed Invalid: False
-=======
-Validation Result: FAIL
-Validation Affirmed Invalid: False
-	Validation Failure Reason: unable to find valid certification path to requested target
->>>>>>> main
 
 Request:
 {
@@ -4077,13 +3631,8 @@ Response:
     "x509IssuerName": "CN=TSCP SHA256 Bridge CA, OU=CAs, O=TSCP Inc., C=US",
     "x509SerialNumber": "146086627209023830719395084362843904594",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:33.179+0000",
-    "nextUpdate": "2023-04-17T02:42:33.179+0000",
-=======
-    "validationTime": "2023-04-09T20:54:00.345+0000",
-    "nextUpdate": "2023-04-16T20:54:00.345+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:50.302+0000",
+    "nextUpdate": "2023-04-17T13:43:50.302+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -4101,7 +3650,6 @@ Response:
 }
 Issuer: CN=TSCP SHA256 Bridge CA, OU=CAs, O=TSCP Inc., C=US
 Subject: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 38ee47edbe898e631da15e5e71bb5c4d01b633e60da9c9a5e20bac764a29525e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -4142,9 +3690,6 @@ JkG+fL3ryuMJ/PAzOCREbMiI+Su/uR1kBuR+8kjKmvjv+4DFLQ+/tfsoM5xGKwoT
 5WtkBDc=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -4160,11 +3705,7 @@ Response:
     "x509IssuerName": "CN=DoD Interoperability Root CA 2, OU=PKI, OU=DoD, O=U.S. Government, C=US",
     "x509SerialNumber": "2502",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
     "validationTime": "2023-04-10T02:42:33.220+0000",
-=======
-    "validationTime": "2023-04-09T20:54:00.457+0000",
->>>>>>> main
     "validationResult": {
         "result": "FAIL",
         "isAffirmativelyInvalid": false,
@@ -4173,16 +3714,10 @@ Response:
 }
 Issuer: CN=DoD Interoperability Root CA 2, OU=PKI, OU=DoD, O=U.S. Government, C=US
 Subject: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 05f31d945369e0219e773062c38028d6f3c9f410939c27327a4999dd2fd2a012
 Validation Result: FAIL
 	Validation Failure Reason: unable to find valid certification path to requested target
 	Validation Affirmed Invalid: False
-=======
-Validation Result: FAIL
-Validation Affirmed Invalid: False
-	Validation Failure Reason: unable to find valid certification path to requested target
->>>>>>> main
 
 Request:
 {
@@ -4199,13 +3734,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "106019824788605961680385527082198052410297541169",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:33.230+0000",
-    "nextUpdate": "2023-04-17T02:42:33.230+0000",
-=======
-    "validationTime": "2023-04-09T20:54:00.567+0000",
-    "nextUpdate": "2023-04-16T20:54:00.567+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:50.314+0000",
+    "nextUpdate": "2023-04-17T13:43:50.314+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -4220,7 +3750,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 0b658c27727dfd6cd47e378ae2390ea376d9708ecf4b06775f8ee7bc50119991
 Validation Result: SUCCESS
 Valid Certificate:
@@ -4266,9 +3795,6 @@ nydOX6tgv4EdNvNN9V6gltSuahUPLMW6EwSNMU36i1Cn1o6eVed8dYPqJf8hoB+b
 yEqpVBwzpyPljA8CH1IpjrcqHj/0P6Uk
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -4285,13 +3811,8 @@ Response:
     "x509IssuerName": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "193519736577664692092527670379836328600325585898",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:33.240+0000",
-    "nextUpdate": "2023-04-17T02:42:33.240+0000",
-=======
-    "validationTime": "2023-04-09T20:54:00.688+0000",
-    "nextUpdate": "2023-04-16T20:54:00.688+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:50.320+0000",
+    "nextUpdate": "2023-04-17T13:43:50.320+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": []
@@ -4299,7 +3820,6 @@ Response:
 }
 Issuer: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 5f9aecc24616b2191372600dd80f6dd320c8ca5a0ceb7f09c985ebf0696934fc
 Validation Result: SUCCESS
 Valid Certificate:
@@ -4338,9 +3858,6 @@ e+aReLvIvU4YmaBQQl3vCFj1qMPIkRsTby1Ff8hRDQG3kH0vefcVtcicsdU8kV2M
 ee/xJ/c0cIHZWMw0HoRZPbo=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -4357,13 +3874,8 @@ Response:
     "x509IssuerName": "CN=STRAC Bridge Root Certification Authority, OU=STRAC PKI Trust Infrastructure, O=STRAC, C=US",
     "x509SerialNumber": "321",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:33.247+0000",
-    "nextUpdate": "2023-04-17T02:42:33.247+0000",
-=======
-    "validationTime": "2023-04-09T20:54:00.792+0000",
-    "nextUpdate": "2023-04-16T20:54:00.792+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:50.325+0000",
+    "nextUpdate": "2023-04-17T13:43:50.325+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -4381,7 +3893,6 @@ Response:
 }
 Issuer: CN=STRAC Bridge Root Certification Authority, OU=STRAC PKI Trust Infrastructure, O=STRAC, C=US
 Subject: CN=FTI Certification Authority, OU=FTI PKI Trust Infrastructure, O=Foundation for Trusted Identity, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): d1e88804e0db96e1107e51cb778e9e9e50923eac2f12e342855ce47e4c35d44d
 Validation Result: SUCCESS
 Valid Certificate:
@@ -4438,9 +3949,6 @@ dlQrh6GlDnsIiUSpaaTLl8g5daPhmy05W3DoKWZZQvd93nKSVvyw5fZ39P5owGe8
 ZlmQ9jA3qs+vFzZIpeyQlBM=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -4457,13 +3965,8 @@ Response:
     "x509IssuerName": "OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US",
     "x509SerialNumber": "1149278864",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:33.470+0000",
-    "nextUpdate": "2023-04-17T02:42:33.470+0000",
-=======
-    "validationTime": "2023-04-09T20:54:01.078+0000",
-    "nextUpdate": "2023-04-16T20:54:01.078+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:50.543+0000",
+    "nextUpdate": "2023-04-17T13:43:50.543+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -4481,7 +3984,6 @@ Response:
 }
 Issuer: OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US
 Subject: CN=HHS-FPKI-Intermediate-CA-E1, OU=Certification Authorities, OU=HHS, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 266a9fed5ca5cd34c4924331a1e2f83ac5c4b2d542a50990b76a4a58bf02cbd3
 Validation Result: SUCCESS
 Valid Certificate:
@@ -4520,9 +4022,6 @@ hzgjo2I20ur6JAxtSKj7pCAfezkmI5wa87POpTdJ70NyaUsOWyLYQvcMFvZH1T32
 l3KT7bz99s3axmTkRZsnDKA=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -4539,13 +4038,8 @@ Response:
     "x509IssuerName": "OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US",
     "x509SerialNumber": "1149334146",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:33.844+0000",
-    "nextUpdate": "2023-04-17T02:42:33.844+0000",
-=======
-    "validationTime": "2023-04-09T20:54:01.483+0000",
-    "nextUpdate": "2023-04-16T20:54:01.483+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:50.910+0000",
+    "nextUpdate": "2023-04-17T13:43:50.910+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -4560,7 +4054,6 @@ Response:
 }
 Issuer: OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US
 Subject: CN=HHS-FPKI-Intermediate-CA-E1, OU=Certification Authorities, OU=HHS, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): aa0efc91f7c80cb53af115c618cb4164fe71e9bb60d5df7b9b9cdddd4a2b401f
 Validation Result: SUCCESS
 Valid Certificate:
@@ -4600,9 +4093,6 @@ kuWsVs++VoD7Z+PXWza+2UbSDOiKmMpkfgR7Ik/74JCHLtT6YBqtv+MKXg55beYx
 ZKe4WuzZfXmt3Ojq
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -4619,13 +4109,8 @@ Response:
     "x509IssuerName": "CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US",
     "x509SerialNumber": "1574",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:34.041+0000",
-    "nextUpdate": "2023-04-17T02:42:34.041+0000",
-=======
-    "validationTime": "2023-04-09T20:54:01.749+0000",
-    "nextUpdate": "2023-04-16T20:54:01.749+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:51.100+0000",
+    "nextUpdate": "2023-04-17T13:43:51.100+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -4646,7 +4131,6 @@ Response:
 }
 Issuer: CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US
 Subject: CN=IdenTrust ECA Component S23, OU=Certification Authorities, OU=ECA, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): dbf2107c25639fe95ae2468b4279c9c88bd780aa96470875f8d9c26a2427039b
 Validation Result: SUCCESS
 Valid Certificate:
@@ -4678,9 +4162,6 @@ ZJ7neTwZIWZIRua5WBVRGG72rrJBtE2jSQw8GjSnl1W8sGKzYrVjl8EC9gZ33/kp
 yCwEisdPaZx38/LeDrrqeBi5FUHjZ9xb/8kZIe/VKOBt4Gc/Q4Onq/mJjiSlNg==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -4697,13 +4178,8 @@ Response:
     "x509IssuerName": "CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US",
     "x509SerialNumber": "757",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:34.599+0000",
-    "nextUpdate": "2023-04-17T02:42:34.599+0000",
-=======
-    "validationTime": "2023-04-09T20:54:02.002+0000",
-    "nextUpdate": "2023-04-16T20:54:02.002+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:51.308+0000",
+    "nextUpdate": "2023-04-17T13:43:51.308+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -4724,7 +4200,6 @@ Response:
 }
 Issuer: CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US
 Subject: CN=IdenTrust ECA S22, OU=Certification Authorities, OU=ECA, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 87f627d2eed16d206e9ce3302be2d28bebd9d8ae43d0a4322caec9c436a86e96
 Validation Result: SUCCESS
 Valid Certificate:
@@ -4756,9 +4231,6 @@ VRYl88LcOVsQqEI5F3emqtT1lnoTBfq+ePzuPmHLvxq+cuuhBBT56iyl4yZyXDlQ
 7vhh/XdW2SgeuFmRpJ18hyt0EvAwKw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -4775,13 +4247,8 @@ Response:
     "x509IssuerName": "CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US",
     "x509SerialNumber": "758",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:35.144+0000",
-    "nextUpdate": "2023-04-17T02:42:35.144+0000",
-=======
-    "validationTime": "2023-04-09T20:54:02.262+0000",
-    "nextUpdate": "2023-04-16T20:54:02.262+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:51.515+0000",
+    "nextUpdate": "2023-04-17T13:43:51.515+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -4802,7 +4269,6 @@ Response:
 }
 Issuer: CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US
 Subject: CN=IdenTrust ECA S22C, OU=Certification Authorities, OU=ECA, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): c1b718caf85e4535a07012d6f040b15b2ab3d719dc4d09f4a785e30868097fd8
 Validation Result: SUCCESS
 Valid Certificate:
@@ -4834,9 +4300,6 @@ MqwiYA+H3aQ2lZ3RubLnNsZatpqX6PO9EWofnWQins78SRilbn91JkY/vbLxWj5y
 wfv+5iN+O+mjmVQOkqXJQT7VYEYufFfNlBuis1zDik7IuH40WA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -4853,13 +4316,8 @@ Response:
     "x509IssuerName": "CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US",
     "x509SerialNumber": "1575",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:36.703+0000",
-    "nextUpdate": "2023-04-17T02:42:36.703+0000",
-=======
-    "validationTime": "2023-04-09T20:54:02.515+0000",
-    "nextUpdate": "2023-04-16T20:54:02.515+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:51.727+0000",
+    "nextUpdate": "2023-04-17T13:43:51.727+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -4880,7 +4338,6 @@ Response:
 }
 Issuer: CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US
 Subject: CN=IdenTrust ECA S23, OU=Certification Authorities, OU=ECA, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 13564e34fee6838ba9c5b042a5bf3f3ff4a80fdb67c74986e7fb306ddfa06479
 Validation Result: SUCCESS
 Valid Certificate:
@@ -4912,9 +4369,6 @@ iakyC9A9ktLoxfDuPVS/T3P5huh2r6KfBdyOiRXpL84HVYsmNpiPBBQhoSYmBbXY
 WmMEyOxgtUsYy8uf3gS0JZ0lfbMITg==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -4931,13 +4385,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "117580098806299183606460801080370262300727262523",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:37.248+0000",
-    "nextUpdate": "2023-04-17T02:42:37.248+0000",
-=======
-    "validationTime": "2023-04-09T20:54:02.769+0000",
-    "nextUpdate": "2023-04-16T20:54:02.769+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:51.938+0000",
+    "nextUpdate": "2023-04-17T13:43:51.938+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -4952,7 +4401,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): dd60bf4ccc27eaeaf8c775f6b3c9b9c71b61870052abdb0acbaa9f2b6487ae2e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5012,9 +4460,6 @@ tZBD4eXcvtx4hz4KTqgQLkKTltrZpQQnNTy2fOnlR0/kVfqra807wt6xqK4m3cew
 sc+FwFngnSVCGUYBZtrqy7mgs7W0d1QKP605yMBZZHaawi4jtCmaDzg=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5031,13 +4476,8 @@ Response:
     "x509IssuerName": "CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US",
     "x509SerialNumber": "85077723691493049525541736410605956385",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:37.263+0000",
-    "nextUpdate": "2023-04-17T02:42:37.263+0000",
-=======
-    "validationTime": "2023-04-09T20:54:02.884+0000",
-    "nextUpdate": "2023-04-16T20:54:02.884+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:51.950+0000",
+    "nextUpdate": "2023-04-17T13:43:51.950+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -5055,7 +4495,6 @@ Response:
 }
 Issuer: CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US
 Subject: CN=IGC CA 1, OU=IdenTrust Global Common, O=IdenTrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 6ab50c761e3ee72c34db75c2f106e03af15e2d8e2f6a672ec8ff0966bfd42e78
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5101,9 +4540,6 @@ nS5BXUkxOHfUD0rdSKmKIrIodaU4+1dkdTnXEnAAMVYawVW+vlr36noAtBnGOEZz
 cQU6yDQaVUIyUiHcl/PJUKA5KpKujllZYMgPAUW//w==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5120,13 +4556,8 @@ Response:
     "x509IssuerName": "CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US",
     "x509SerialNumber": "85078218245905140308610574372209471260",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:37.583+0000",
-    "nextUpdate": "2023-04-17T02:42:37.583+0000",
-=======
-    "validationTime": "2023-04-09T20:54:03.260+0000",
-    "nextUpdate": "2023-04-16T20:54:03.260+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:52.232+0000",
+    "nextUpdate": "2023-04-17T13:43:52.232+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -5144,7 +4575,6 @@ Response:
 }
 Issuer: CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US
 Subject: CN=IGC Device CA 1, OU=IdenTrust Global Common, O=IdenTrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): cc0ac905ff000b43ab6ce943ea40ad7da67aaf1631186453ab44546ed744aad2
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5181,9 +4611,6 @@ E4GQ4gsNH7Jy+qEldMv6xd+Ceqel6gGU2Txg1NlWz07/IJfx/lNnKcnE255IOBYL
 fZvmHZxB4eYW3aFM88Q/Q1M1jzaHK/A7q9BZ1uU=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5200,13 +4627,8 @@ Response:
     "x509IssuerName": "CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US",
     "x509SerialNumber": "85078457301024616269625919823409842992",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:38.082+0000",
-    "nextUpdate": "2023-04-17T02:42:38.082+0000",
-=======
-    "validationTime": "2023-04-09T20:54:03.766+0000",
-    "nextUpdate": "2023-04-16T20:54:03.766+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:52.626+0000",
+    "nextUpdate": "2023-04-17T13:43:52.626+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -5224,7 +4646,6 @@ Response:
 }
 Issuer: CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US
 Subject: CN=IGC Device CA 2, OU=IdenTrust Global Common, O=IdenTrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 0603ea410e8613a217e35a064899c8f4316f36a6d3f75635bd425a2daaeb187e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5266,9 +4687,6 @@ tN4TN0ixHIbAABxDCv5z5EiTlR/v+sE8BTwKmoCr6OII9A6Shzq0Ti4amANCGNc0
 4DVWy7fM3QGn1gdwykTA7Jw/aCBharoTFoRVSRJwGQTrfJsBKaZIeQJhK9Xc
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5285,13 +4703,8 @@ Response:
     "x509IssuerName": "CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US",
     "x509SerialNumber": "13298821034946342403555833888695648258",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:38.357+0000",
-    "nextUpdate": "2023-04-17T02:42:38.357+0000",
-=======
-    "validationTime": "2023-04-09T20:54:04.116+0000",
-    "nextUpdate": "2023-04-16T20:54:04.116+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:52.904+0000",
+    "nextUpdate": "2023-04-17T13:43:52.904+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -5309,7 +4722,6 @@ Response:
 }
 Issuer: CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US
 Subject: CN=IGC Server CA 1, OU=IdenTrust Global Common, O=IdenTrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 6a3d76d29a2ac90e27ed552b95ded9913a93b2ceaaff6f32b8523ef26d9b254b
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5347,9 +4759,6 @@ YIhhv6p5vJh33iJaGj/fXof0EW3FresyG5chZvTv46fCq8Yo8rgjzRKaJzMhPp9L
 zDS03oNFf3kzEEf56IoXbkXniLgpNw6Uas2dDb7AB37ammqnQwgP4X49
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5366,13 +4775,8 @@ Response:
     "x509IssuerName": "CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US",
     "x509SerialNumber": "13298821034946342746366242524841902082",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:38.628+0000",
-    "nextUpdate": "2023-04-17T02:42:38.628+0000",
-=======
-    "validationTime": "2023-04-09T20:54:04.473+0000",
-    "nextUpdate": "2023-04-16T20:54:04.473+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:53.174+0000",
+    "nextUpdate": "2023-04-17T13:43:53.174+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -5390,7 +4794,6 @@ Response:
 }
 Issuer: CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US
 Subject: CN=Leidos FBCA Cloud PKI CA-1, O=Leidos
-<<<<<<< HEAD
 Thumbprint (SHA-256): aeaae218bf167ab300a271f1d9d404113d67953e6a9957ccaa75e5a642594220
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5431,9 +4834,6 @@ i9NtandnSzP7gXxMSs6nDQDQBs4hWkv7qY1HCACfMFWUjAkIuabco4meolxLPFF9
 F1/tjook3Z+AG6NZ07XKUH6S/X8HpOe6J7PdH+rPmKOw4AxnxDEsbMw8PbI=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5450,13 +4850,8 @@ Response:
     "x509IssuerName": "CN=Lockheed Martin Root Certification Authority 2, OU=Certification Authorities, O=Lockheed Martin Corporation, L=Denver, ST=Colorado, C=US",
     "x509SerialNumber": "458536645303207850934278",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:38.904+0000",
-    "nextUpdate": "2023-04-17T02:42:38.904+0000",
-=======
-    "validationTime": "2023-04-09T20:54:04.829+0000",
-    "nextUpdate": "2023-04-16T20:54:04.829+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:54.060+0000",
+    "nextUpdate": "2023-04-17T13:43:54.060+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -5477,7 +4872,6 @@ Response:
 }
 Issuer: CN=Lockheed Martin Root Certification Authority 2, OU=Certification Authorities, O=Lockheed Martin Corporation, L=Denver, ST=Colorado, C=US
 Subject: CN=Lockheed Martin Certification Authority 4 G2, OU=Certification Authorities, O=Lockheed Martin Corporation, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): e97efbdb370a065f3456aba4f9b02fe2ff70b88baff86cd384c3de60d624c79a
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5515,9 +4909,6 @@ m1/hPHMh2pD5Pz2aW7IwcyXPUO0UiRXDZNcW32eP1/wy1lImC7mc+6/QfrFNy80R
 HLg4JoggeBD+sBlVZcN7bVv6FlUPinN6DA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5534,13 +4925,8 @@ Response:
     "x509IssuerName": "CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US",
     "x509SerialNumber": "16623210559697089910284946079651655951",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.089+0000",
-    "nextUpdate": "2023-04-17T02:42:39.089+0000",
-=======
-    "validationTime": "2023-04-09T20:54:05.551+0000",
-    "nextUpdate": "2023-04-16T20:54:05.551+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.184+0000",
+    "nextUpdate": "2023-04-17T13:43:58.184+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -5558,7 +4944,6 @@ Response:
 }
 Issuer: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
 Subject: CN=Lockheed Martin Root Certification Authority 2, OU=Certification Authorities, O=Lockheed Martin Corporation, L=Denver, ST=Colorado, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 12e0a342e0847b2eeb0ec41ebf9d14ed32ff4849d0a3dbb5846812b952b8017d
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5605,9 +4990,6 @@ rRGY/U0zQgZ8VbDOkmMujrNMXMB+2QcWabP8IqiufUtafbtEEed1b9OaHp358fmv
 +mTWICKBQIAYMq1dJ/AUW3ErKw6g9vwQ/1ei
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5624,13 +5006,8 @@ Response:
     "x509IssuerName": "CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US",
     "x509SerialNumber": "137928501349233757527702607159677760323",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.108+0000",
-    "nextUpdate": "2023-04-17T02:42:39.108+0000",
-=======
-    "validationTime": "2023-04-09T20:54:05.729+0000",
-    "nextUpdate": "2023-04-16T20:54:05.729+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.191+0000",
+    "nextUpdate": "2023-04-17T13:43:58.191+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -5648,7 +5025,6 @@ Response:
 }
 Issuer: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
 Subject: CN=Ministerie van Defensie PKIoverheid Organisatie Persoon CA - G3, OID.2.5.4.97=NTRNL-27370985, O=Ministerie van Defensie, C=NL
-<<<<<<< HEAD
 Thumbprint (SHA-256): 5a60285fe13ba324f45fb9f55b76d968ed7845c3d97b7be047fd3a45e5673e4a
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5697,9 +5073,6 @@ FA9RJACwzBFmD/S/X9PHB0fwcY31wXTHn8QakjYsp77p3WSDqPIya/a9puVtUI6M
 8wulyCSLWGghTSvpMGFLfTMs9H8ESQAfRO82mw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5721,13 +5094,8 @@ Response:
             "value": "CN=SymantecPKI-2-271"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.117+0000",
-    "nextUpdate": "2023-04-17T02:42:39.117+0000",
-=======
-    "validationTime": "2023-04-09T20:54:05.853+0000",
-    "nextUpdate": "2023-04-16T20:54:05.853+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.199+0000",
+    "nextUpdate": "2023-04-17T13:43:58.199+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -5742,7 +5110,6 @@ Response:
 }
 Issuer: CN=Symantec SSP Intermediate CA - G4, O=Symantec Corporation, C=US
 Subject: CN=Naval Reactors SSP Agency CA G3, OU=U.S. Department of Energy, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 3bb76572c5ef9a19f803382f25027c1c7dc734b5b732a96888ede205f8d35bcc
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5776,9 +5143,6 @@ fxyHFCUA22a5VyC+hqlfEcIzkvB1Fv1qhgLFvFIJOzDxqhXHVl2PtOjPod1TNPGi
 QuZ7TejgC5aApwxUhwyU7aWg/nCRBIWbEql+s7Q=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5800,13 +5164,8 @@ Response:
             "value": "CN=SymantecPKI-2-272"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.162+0000",
-    "nextUpdate": "2023-04-17T02:42:39.162+0000",
-=======
-    "validationTime": "2023-04-09T20:54:06.194+0000",
-    "nextUpdate": "2023-04-16T20:54:06.194+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.234+0000",
+    "nextUpdate": "2023-04-17T13:43:58.234+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -5821,7 +5180,6 @@ Response:
 }
 Issuer: CN=Symantec SSP Intermediate CA - G4, O=Symantec Corporation, C=US
 Subject: CN=Naval Reactors SSP Device CA G3, OU=U.S. Department of Energy, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 5cba6626508c6f3d0f3e1ab2dee8f8b5998fdf406fc853209f1df551a63ce1cc
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5854,9 +5212,6 @@ g/EZutlrQ50t2JSTwozhoEneYArQofu+ysSOcE1ET+wDCZ7UqStdehDpK/cxNhmN
 uR5UcJujbDUZcDftcDAGYunlISkIFnN7d2qqBk23tPdAKA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5873,13 +5228,8 @@ Response:
     "x509IssuerName": "CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US",
     "x509SerialNumber": "11611548424345830731834498612624166637",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.204+0000",
-    "nextUpdate": "2023-04-17T02:42:39.204+0000",
-=======
-    "validationTime": "2023-04-09T20:54:06.468+0000",
-    "nextUpdate": "2023-04-16T20:54:06.468+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.267+0000",
+    "nextUpdate": "2023-04-17T13:43:58.267+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -5897,7 +5247,6 @@ Response:
 }
 Issuer: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
 Subject: CN=Northrop Grumman Corporate Root CA-G2, OU=Northrop Grumman Information Technology, O=Northrop Grumman Corporation, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 7f73cf17a289d93494bee5b0699dfe64771d636f4bdc7dab46c47000815562d9
 Validation Result: SUCCESS
 Valid Certificate:
@@ -5955,9 +5304,6 @@ VWax15tp768BoTOOq+k5Qx7Ghh1hOt8nJcXJZqbMqk588Wzz0ixFIVx1GqAKAWl8
 ba2H5YXHsVdBGlc=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -5974,13 +5320,8 @@ Response:
     "x509IssuerName": "CN=Northrop Grumman Corporate Root CA-G2, OU=Northrop Grumman Information Technology, O=Northrop Grumman Corporation, C=US",
     "x509SerialNumber": "460514030658498253029378",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.225+0000",
-    "nextUpdate": "2023-04-17T02:42:39.225+0000",
-=======
-    "validationTime": "2023-04-09T20:54:06.589+0000",
-    "nextUpdate": "2023-04-16T20:54:06.589+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.281+0000",
+    "nextUpdate": "2023-04-17T13:43:58.281+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6001,7 +5342,6 @@ Response:
 }
 Issuer: CN=Northrop Grumman Corporate Root CA-G2, OU=Northrop Grumman Information Technology, O=Northrop Grumman Corporation, C=US
 Subject: CN=Northrop Grumman Corporate Signing CA-G2, OU=Northrop Grumman Information Technology, O=Northrop Grumman Corporation, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 2211c0b4a740a301c7fc241cab37b2e3fc3e190d14f433892c34df855b6548b2
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6052,9 +5392,6 @@ p51lKHecveL90YjUz5nyiHasG4cVm0dEbuXHP3LPDrlnaD2E12o/SR9ETdMrSBTk
 wrrTTkjldg==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -6076,13 +5413,8 @@ Response:
             "value": "CN=MPKI-Private-RSA-4096-1"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.440+0000",
-    "nextUpdate": "2023-04-17T02:42:39.440+0000",
-=======
-    "validationTime": "2023-04-09T20:54:07.032+0000",
-    "nextUpdate": "2023-04-16T20:54:07.032+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.532+0000",
+    "nextUpdate": "2023-04-17T13:43:58.532+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6097,7 +5429,6 @@ Response:
 }
 Issuer: CN=DigiCert Federal SSP Intermediate CA - G6, O="DigiCert, Inc.", C=US
 Subject: CN=NRC PROD G6 Fed SSP CA, OU=U.S. Nuclear Regulatory Commission, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 9b7c732bf19d4735f6ffd654ef36f813a23437dae5de9e5fc6d176185bf8b009
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6144,9 +5475,6 @@ BZ6B9eIpklYG6ezZYDmhFq47+er2/dIxk3s6Dioo1QS6HZB7/S86nFiY4IOQ6lwh
 WRk=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -6168,13 +5496,8 @@ Response:
             "value": "CN=SymantecPKI-2-5"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.571+0000",
-    "nextUpdate": "2023-04-17T02:42:39.571+0000",
-=======
-    "validationTime": "2023-04-09T20:54:07.329+0000",
-    "nextUpdate": "2023-04-16T20:54:07.329+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.819+0000",
+    "nextUpdate": "2023-04-17T13:43:58.819+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6189,7 +5512,6 @@ Response:
 }
 Issuer: CN=Symantec SSP Intermediate CA - G4, O=Symantec Corporation, C=US
 Subject: CN=NRC SSP Agency CA G3, OU=U.S. Nuclear Regulatory Commission, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): fca68a55d893990557f4da900f74020cae4323606887c28126ad43eb6d177294
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6223,9 +5545,6 @@ BgAdqhbuR5Jc5HhRlxH7WVMb1NEUvCCimF/c01VvkWcxe7HHR5saX60Dh4/iTPCy
 kuqO/6VssmQbjPIYzEDxpSM0cGRf3HCxmw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -6247,13 +5566,8 @@ Response:
             "value": "CN=SymantecPKI-2-853"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.625+0000",
-    "nextUpdate": "2023-04-17T02:42:39.625+0000",
-=======
-    "validationTime": "2023-04-09T20:54:07.494+0000",
-    "nextUpdate": "2023-04-16T20:54:07.494+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.859+0000",
+    "nextUpdate": "2023-04-17T13:43:58.859+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6268,7 +5582,6 @@ Response:
 }
 Issuer: CN=DigiCert Federal SSP Intermediate CA - G5, O="DigiCert, Inc.", C=US
 Subject: CN=NRC SSP Agency CA G4, OU=U.S. Nuclear Regulatory Commission, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 1da67b5c8fe26b42c3f49230176ce677c7fad7b8ad86f71860ee87cc495ead4d
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6302,9 +5615,6 @@ d1gkSnLOrahxR5pJwHiFZzgqWGCO/1LDBpkinyqe9jO/C3mFr8Q+8wPBS6v2SJ1E
 OhsiTT1Ew4xk3vwuOWWji0R7c+0v9q8Qm49URyMdqMXs
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -6326,13 +5636,8 @@ Response:
             "value": "CN=SymantecPKI-2-6"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.680+0000",
-    "nextUpdate": "2023-04-17T02:42:39.680+0000",
-=======
-    "validationTime": "2023-04-09T20:54:07.794+0000",
-    "nextUpdate": "2023-04-16T20:54:07.794+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.904+0000",
+    "nextUpdate": "2023-04-17T13:43:58.904+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6347,7 +5652,6 @@ Response:
 }
 Issuer: CN=Symantec SSP Intermediate CA - G4, O=Symantec Corporation, C=US
 Subject: CN=NRC SSP Device CA G3, OU=U.S. Nuclear Regulatory Commission, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 7ad09bbf9168f1bd404db0dca78f9eabb657bb42a3cc9d679a781ddca5db94a0
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6380,9 +5684,6 @@ p8a0Y9dtIQkWEegULBu5/KpiLrC46HnNyP5yRHn8FxtYhritBdlBqVs1tfA7bCiF
 J0HeGuk20k/Bkfk6PPYc5zB8GoTXbl6iEHKcVxtyPg==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -6404,13 +5705,8 @@ Response:
             "value": "CN=SymantecPKI-2-854"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.738+0000",
-    "nextUpdate": "2023-04-17T02:42:39.738+0000",
-=======
-    "validationTime": "2023-04-09T20:54:07.948+0000",
-    "nextUpdate": "2023-04-16T20:54:07.948+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.945+0000",
+    "nextUpdate": "2023-04-17T13:43:58.945+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6425,7 +5721,6 @@ Response:
 }
 Issuer: CN=DigiCert Federal SSP Intermediate CA - G5, O="DigiCert, Inc.", C=US
 Subject: CN=NRC SSP Device CA G4, OU=U.S. Nuclear Regulatory Commission, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 4e774a89506e9e3f0d5f584f642c2cd22e2141dba0ac14bd575cec4cdfeb9d5a
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6458,9 +5753,6 @@ MJvBmaVJSMHxCp/BCGOPEOQ/gN+gkFULSQzkr7awaIotrAOsh/OR91RUHHW7hSYO
 NqT656A6ez2lM5wPurQTuufpJu8Nbhq2un4E+Bi0Hl2vGjw5oMU4
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -6477,13 +5769,8 @@ Response:
     "x509IssuerName": "CN=WidePoint NFI Root 2, OU=Certification Authorities, O=WidePoint, C=US",
     "x509SerialNumber": "685358773232249855141408445553331689950506020848",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:39.927+0000",
-    "nextUpdate": "2023-04-17T02:42:39.927+0000",
-=======
-    "validationTime": "2023-04-09T20:54:08.125+0000",
-    "nextUpdate": "2023-04-16T20:54:08.125+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:58.989+0000",
+    "nextUpdate": "2023-04-17T13:43:58.989+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6501,7 +5788,6 @@ Response:
 }
 Issuer: CN=WidePoint NFI Root 2, OU=Certification Authorities, O=WidePoint, C=US
 Subject: CN=ORC NFI CA 3, O=ORC PKI, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): b14f8ecf940191bf5175191871fc5652f65f3f441d98442ef7053aa999adde6c
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6539,9 +5825,6 @@ G7+AJP0IbmIZGguyqmrucEpnbU+4HLmiv1i+OYP5Rwnbm5WfMcmbtsT/gxOXzTLd
 5BaO
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -6558,13 +5841,8 @@ Response:
     "x509IssuerName": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "186275779149375119680836444361313523668440728235",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:40.002+0000",
-    "nextUpdate": "2023-04-17T02:42:40.002+0000",
-=======
-    "validationTime": "2023-04-09T20:54:08.269+0000",
-    "nextUpdate": "2023-04-16T20:54:08.269+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:59.054+0000",
+    "nextUpdate": "2023-04-17T13:43:59.054+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6576,7 +5854,6 @@ Response:
 }
 Issuer: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=ORC SSP 4, O=ORC PKI, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 7cd7f21d04beb99d9f833be8697138e3ad4e11313897ee573c066132d21ab5f8
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6615,9 +5892,6 @@ dFbkwvkzAyrB3+mN5VCp+RDXOJwD/CZqpm8koX+H1ta3TyC+y4B9oTdWNici1TFY
 GocZw7h5yxxNKieQLhwEhusu6kGIITHUxmfZBFNS
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -6634,13 +5908,8 @@ Response:
     "x509IssuerName": "CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US",
     "x509SerialNumber": "145968584562163825942752431591149337579",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:40.011+0000",
-    "nextUpdate": "2023-04-17T02:42:40.011+0000",
-=======
-    "validationTime": "2023-04-09T20:54:08.369+0000",
-    "nextUpdate": "2023-04-16T20:54:08.369+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:59.071+0000",
+    "nextUpdate": "2023-04-17T13:43:59.071+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6658,7 +5927,6 @@ Response:
 }
 Issuer: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
 Subject: CN=Raytheon Class 3 MASCA, OU=Class3-g2, O=cas, DC=raytheon, DC=com
-<<<<<<< HEAD
 Thumbprint (SHA-256): 9903b4f030caa6562393f8bacd5203ec2e1cbb7d366141690cd07c3c87883540
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6712,9 +5980,6 @@ IlJTm6iwilvYP8rjhTsD2CJDhwtQUDBq2dn4+mg3zxoeT7CfAHnYJCu93WS1R3o3
 iiOgyS3LGDdkqESRujkxL1ZVrbrADqCDLOEYqR74bQ8S
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -6731,13 +5996,8 @@ Response:
     "x509IssuerName": "CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US",
     "x509SerialNumber": "35217165612747625106973560114002612698",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:40.020+0000",
-    "nextUpdate": "2023-04-17T02:42:40.020+0000",
-=======
-    "validationTime": "2023-04-09T20:54:08.487+0000",
-    "nextUpdate": "2023-04-16T20:54:08.487+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:59.083+0000",
+    "nextUpdate": "2023-04-17T13:43:59.083+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6755,7 +6015,6 @@ Response:
 }
 Issuer: CN=CertiPath Bridge CA - G3, OU=Certification Authorities, O=CertiPath, C=US
 Subject: CN=Raytheon Technologies Medium Assurance CA, OU=Class3-G3, O=CAs, DC=rtx, DC=com
-<<<<<<< HEAD
 Thumbprint (SHA-256): 022444bb2e8d351aca43f7ab72f29bf79d3f17b7db0f5173a81afcedd67a4e21
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6812,9 +6071,6 @@ NQndiVGJoyVmK/lFVSAWGfvUuFNK9hE8qNJWVneY212eBi36R8YvIb0TU2CqOX9J
 iU0v7mT1S9TpirNv1kybhQ==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -6831,13 +6087,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "123421438966263652673222810604688700517293711682",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:40.029+0000",
-    "nextUpdate": "2023-04-17T02:42:40.029+0000",
-=======
-    "validationTime": "2023-04-09T20:54:08.600+0000",
-    "nextUpdate": "2023-04-16T20:54:08.600+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:59.098+0000",
+    "nextUpdate": "2023-04-17T13:43:59.098+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6852,7 +6103,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=SAFE Identity Bridge CA, OU=Certification Authorities, O=SAFE Identity, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 906cec3c0ea944ec569e24968900cd08082666b256c8892c22f59b47cf3a8662
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6898,9 +6148,6 @@ Fiw7W6mV82lJnysChQkKqNVzzXB3b+9lhNHsZKJJ4Rh4cjA7/t8KcCu8vrZJw57t
 ppanUX30
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -6917,13 +6164,8 @@ Response:
     "x509IssuerName": "CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US",
     "x509SerialNumber": "85078367949615555158333311092868754123",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:40.037+0000",
-    "nextUpdate": "2023-04-17T02:42:40.037+0000",
-=======
-    "validationTime": "2023-04-09T20:54:08.718+0000",
-    "nextUpdate": "2023-04-16T20:54:08.718+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:59.109+0000",
+    "nextUpdate": "2023-04-17T13:43:59.109+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -6941,7 +6183,6 @@ Response:
 }
 Issuer: CN=IdenTrust Global Common Root CA 1, O=IdenTrust, C=US
 Subject: CN=SAIC FBCA Cloud PKI CA 1, OU=IdenTrust Global Common, O=SAIC LLC, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 5d6d6cd106af14bb3ddc6185949963428341b331232aed56cb1fa8b823b5e51f
 Validation Result: SUCCESS
 Valid Certificate:
@@ -6981,9 +6222,6 @@ vLs4cplcx3EwHSUpSwVT4Op6Mfn/SZx1zXRRoI9Pf/l3CLA7qIbA/G/I5GQjV/6D
 e+JXq/PFM6EMAL4=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7005,13 +6243,8 @@ Response:
             "value": "CN=SymantecPKI-2-593"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:40.310+0000",
-    "nextUpdate": "2023-04-17T02:42:40.310+0000",
-=======
-    "validationTime": "2023-04-09T20:54:09.072+0000",
-    "nextUpdate": "2023-04-16T20:54:09.072+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:59.376+0000",
+    "nextUpdate": "2023-04-17T13:43:59.376+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7029,7 +6262,6 @@ Response:
 }
 Issuer: CN=Symantec Class 3 SSP Intermediate CA - G3, OU=Symantec Trust Network, O=Symantec Corporation, C=US
 Subject: CN=Senate PIV-I CA G4, OU=Office of the Sergeant at Arms, OU=U.S. Senate, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 811d63fe72cd72b04cfd15a9c7cb909b319298944fedecb90fdd8099828b460e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7066,9 +6298,6 @@ Yx6yy2H+sr536Lg7j6Q5NOyu8ZaABQavJKir7fwGyo6CwUO0EIJwnm7f4wbg7gof
 AMOAhPKqeh76fuRZSYU=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7090,13 +6319,8 @@ Response:
             "value": "CN=DigiCertPKI-3-306"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:40.479+0000",
-    "nextUpdate": "2023-04-17T02:42:40.479+0000",
-=======
-    "validationTime": "2023-04-09T20:54:09.245+0000",
-    "nextUpdate": "2023-04-16T20:54:09.245+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:59.403+0000",
+    "nextUpdate": "2023-04-17T13:43:59.403+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7114,7 +6338,6 @@ Response:
 }
 Issuer: CN=DigiCert Class 3 SSP Intermediate CA - G4, O="DigiCert, Inc.", C=US
 Subject: CN=Senate PIV-I CA G5 PROD, OU=Office of the Sergeant at Arms, OU=U.S. Senate, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 8016c98b3477206d7eef58f60ac574dcee9142c41f590e118b93c6b133098c04
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7150,9 +6373,6 @@ Tlyy7D2vD4jtU5pzzLIcZfjdL9xydeb00ElrEcEUG3dsS9YBod8hfIz84s7UffaL
 UH9cx4yPX6UoeQn16s8X2RNER/JZ5t+otYRevg==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7174,13 +6394,8 @@ Response:
             "value": "CN=SymantecPKI-2-594"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:40.548+0000",
-    "nextUpdate": "2023-04-17T02:42:40.548+0000",
-=======
-    "validationTime": "2023-04-09T20:54:09.409+0000",
-    "nextUpdate": "2023-04-16T20:54:09.409+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:59.426+0000",
+    "nextUpdate": "2023-04-17T13:43:59.426+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7198,7 +6413,6 @@ Response:
 }
 Issuer: CN=Symantec Class 3 SSP Intermediate CA - G3, OU=Symantec Trust Network, O=Symantec Corporation, C=US
 Subject: CN=Senate PIV-I Device CA G4, OU=Office of the Sergeant at Arms, OU=U.S. Senate, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): f5d8cb624dd6e283645b3c3383d905529e8d538c1535fbb75f3aed36ae9d19ae
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7233,9 +6447,6 @@ cR1MRvGkB8oHOnEOPPTJx3mzA80xoPXmyWKF+K6GF59K8JztRkAau1DCccXfQblO
 4DgN0X2nSuhaSzw0+O8slOsdmDQrrST33xqt71OaF3dnwEqm+HoV9YL34PYfLxoV
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7257,13 +6468,8 @@ Response:
             "value": "CN=DigiCertPKI-3-307"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:40.726+0000",
-    "nextUpdate": "2023-04-17T02:42:40.726+0000",
-=======
-    "validationTime": "2023-04-09T20:54:09.577+0000",
-    "nextUpdate": "2023-04-16T20:54:09.577+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:59.614+0000",
+    "nextUpdate": "2023-04-17T13:43:59.614+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7281,7 +6487,6 @@ Response:
 }
 Issuer: CN=DigiCert Class 3 SSP Intermediate CA - G4, O="DigiCert, Inc.", C=US
 Subject: CN=Senate PIV-I Device CA G5 PROD, OU=Office of the Sergeant at Arms, OU=U.S. Senate, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 7fc81c378599711cfca7217e16863fa98d817c194eba0c9b9a24e230e6a21071
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7316,9 +6521,6 @@ Uqb3ET0D/Z0GRKolWwdPO97u6iGr3B9ZwRdI7oNXeZ4QI1No3gsHp3yL3VJ85Vxj
 C1AMhdxFtgQHKP/1A0E=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7335,13 +6537,8 @@ Response:
     "x509IssuerName": "CN=FTI Certification Authority, OU=FTI PKI Trust Infrastructure, O=Foundation for Trusted Identity, C=US",
     "x509SerialNumber": "78856",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:40.934+0000",
-    "nextUpdate": "2023-04-17T02:42:40.934+0000",
-=======
-    "validationTime": "2023-04-09T20:54:09.749+0000",
-    "nextUpdate": "2023-04-16T20:54:09.749+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:43:59.772+0000",
+    "nextUpdate": "2023-04-17T13:43:59.772+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7362,7 +6559,6 @@ Response:
 }
 Issuer: CN=FTI Certification Authority, OU=FTI PKI Trust Infrastructure, O=Foundation for Trusted Identity, C=US
 Subject: CN=STRAC Bridge Root Certification Authority, OU=STRAC PKI Trust Infrastructure, O=STRAC, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 4ae58f7459cb7fc793e30b5f70a1835c6e42a42ab525440652edafcdc2d7f63b
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7418,9 +6614,6 @@ h7AiFc9LADpuQBYqHArSweSZR7unwDfaFOUb3NzakMEFHuHWn8BRsZJc7M0PdWgK
 cZszw2DxB6qj1qL/EPKFRloXpB3J1iXVw0ov/6C9I9ArqaUYKuCRbDF0Feo85W4=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7437,13 +6630,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "136883620521285465115968103941885837203538745801",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:41.620+0000",
-    "nextUpdate": "2023-04-17T02:42:41.620+0000",
-=======
-    "validationTime": "2023-04-09T20:54:10.405+0000",
-    "nextUpdate": "2023-04-16T20:54:10.405+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.435+0000",
+    "nextUpdate": "2023-04-17T13:44:00.435+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7458,7 +6646,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=STRAC Bridge Root Certification Authority, OU=STRAC PKI Trust Infrastructure, O=STRAC, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 854a6693df58f4068360aa8bafa42fd49c5132f7b49fa4b221c22541977758e8
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7507,9 +6694,6 @@ pkE56R0prkVy8kNxSqcC9fNMQWkgRVMtn8qGuJKJfcY147KacJ4sHsMmqK+i5nud
 sbRA7dgUYPpUG5pUp3Pucw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7531,13 +6715,8 @@ Response:
             "value": "CN=SymantecPKI-2-292"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:41.631+0000",
-    "nextUpdate": "2023-04-17T02:42:41.631+0000",
-=======
-    "validationTime": "2023-04-09T20:54:10.530+0000",
-    "nextUpdate": "2023-04-16T20:54:10.530+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.446+0000",
+    "nextUpdate": "2023-04-17T13:44:00.446+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7555,7 +6734,6 @@ Response:
 }
 Issuer: CN=Symantec Class 3 SSP Intermediate CA - G3, OU=Symantec Trust Network, O=Symantec Corporation, C=US
 Subject: CN=SureID Inc. CA1, OU=SureID PIV-I, O="SureID, Inc.", C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): d6f0919ddd904d875af953d39ba3cf3278a84f2d0e3daa8d991119ce67e73ff2
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7591,9 +6769,6 @@ DV4JeBPhcLXs2tKAIgGitARvTGtBwe85o1GovSyS2GRP4x67p3co0iod70cyxduI
 SwXgCNyZSTrxqOftRMu7
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7615,13 +6790,8 @@ Response:
             "value": "CN=SymantecPKI-2-381"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:41.672+0000",
-    "nextUpdate": "2023-04-17T02:42:41.672+0000",
-=======
-    "validationTime": "2023-04-09T20:54:10.706+0000",
-    "nextUpdate": "2023-04-16T20:54:10.706+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.487+0000",
+    "nextUpdate": "2023-04-17T13:44:00.487+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7639,7 +6809,6 @@ Response:
 }
 Issuer: CN=Symantec Class 3 SSP Intermediate CA - G3, OU=Symantec Trust Network, O=Symantec Corporation, C=US
 Subject: CN=SureID Inc. Device CA2, O="SureID, Inc.", C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): f8fe5fa95ed04eecb46c09a5068b189dd12c708400893b93d637b4a70ca558f5
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7673,9 +6842,6 @@ oSjlpWsPeNIcIRknX+VCNz2uBbNiaQG/YZmzvzs6XvBrIuGWZvSx66jEQluxoyX5
 TmLn+m8RmGvO0yZIBKWFodMcqy8p9Gi8mhE=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7692,13 +6858,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "92755267400756876025975519437427891162422109922",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:41.715+0000",
-    "nextUpdate": "2023-04-17T02:42:41.715+0000",
-=======
-    "validationTime": "2023-04-09T20:54:11.022+0000",
-    "nextUpdate": "2023-04-16T20:54:11.022+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.533+0000",
+    "nextUpdate": "2023-04-17T13:44:00.533+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7713,7 +6874,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=Symantec Class 3 SSP Intermediate CA - G3, OU=Symantec Trust Network, O=Symantec Corporation, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 11f2ce13701756a1bc76fb548aa049180c3a485d201cc4c2a1d1ce16d2f89fa4
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7755,9 +6915,6 @@ gc5PYnVF0ot7qAmNFENIpbKg3BdusBkF9rGxLaDSUBvSc7+s9iQz9d/iRuAebrYu
 +eqUlJ2lsjS1U8qyPmlH+spfPNbAEQEsuP32Aw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7774,13 +6931,8 @@ Response:
     "x509IssuerName": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "217918869520593966643571788112229175777368484916",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:41.727+0000",
-    "nextUpdate": "2023-04-17T02:42:41.727+0000",
-=======
-    "validationTime": "2023-04-09T20:54:11.139+0000",
-    "nextUpdate": "2023-04-16T20:54:11.139+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.542+0000",
+    "nextUpdate": "2023-04-17T13:44:00.542+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7792,7 +6944,6 @@ Response:
 }
 Issuer: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=Symantec SSP Intermediate CA - G4, O=Symantec Corporation, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 09d3f1a7d2e0be1a8d043fdf5d16bf8bf18e0dff2f397f27b0b8ee962de59de5
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7833,9 +6984,6 @@ yTNIyG7YliWqXCDGNouPfUfAjredXmQWntjHxMc51c3Pzt+AqsYxnrggK2KwNtg9
 l1Db
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7852,13 +7000,8 @@ Response:
     "x509IssuerName": "CN=SAFE Identity Bridge CA, OU=Certification Authorities, O=SAFE Identity, C=US",
     "x509SerialNumber": "26445761548339073864057105944852044423",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:41.736+0000",
-    "nextUpdate": "2023-04-17T02:42:41.736+0000",
-=======
-    "validationTime": "2023-04-09T20:54:11.249+0000",
-    "nextUpdate": "2023-04-16T20:54:11.249+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.548+0000",
+    "nextUpdate": "2023-04-17T13:44:00.548+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7876,7 +7019,6 @@ Response:
 }
 Issuer: CN=SAFE Identity Bridge CA, OU=Certification Authorities, O=SAFE Identity, C=US
 Subject: CN=Trans Sped Mobile eIDAS QCA G2, OU=Individual Subscriber CA, O=Trans Sped SRL, C=RO
-<<<<<<< HEAD
 Thumbprint (SHA-256): e4d3261565692448f3a3554fe5f9ea930f41efb592dee322cb93c0faae783ba2
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7915,9 +7057,6 @@ oqZXSrj3jpwOQByab3mUgiZqZCcf3DV/5TaR7OOpA3YpL/tG1uEHBxarwvsufcvZ
 wNqU0Ux6FFKT/pDL1gcKo9ZVPsBPSJMHmojonjdenMQ4+vbBp4WK2nq5xw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -7934,13 +7073,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "108319238192251673104673230515646387665542243468",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:41.830+0000",
-    "nextUpdate": "2023-04-17T02:42:41.830+0000",
-=======
-    "validationTime": "2023-04-09T20:54:11.387+0000",
-    "nextUpdate": "2023-04-16T20:54:11.387+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.616+0000",
+    "nextUpdate": "2023-04-17T13:44:00.616+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -7955,7 +7089,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=TSCP SHA256 Bridge CA, OU=CAs, O=TSCP Inc., C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): c3bdddc3b3c64fdb453e6dd334e0cfea23d83d1436a2bdae9a959ed1dcbf07ae
 Validation Result: SUCCESS
 Valid Certificate:
@@ -7996,9 +7129,6 @@ WtwUE5Rg2fDpSde1fPy9KJSF04vAcWJIAIYZ91youqGg0i06DActS0la3EfAHcI1
 YY5fGubF
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8020,13 +7150,8 @@ Response:
             "value": "CN=SymantecPKI-2-171"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:41.839+0000",
-    "nextUpdate": "2023-04-17T02:42:41.839+0000",
-=======
-    "validationTime": "2023-04-09T20:54:11.515+0000",
-    "nextUpdate": "2023-04-16T20:54:11.515+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.631+0000",
+    "nextUpdate": "2023-04-17T13:44:00.631+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8041,7 +7166,6 @@ Response:
 }
 Issuer: CN=Symantec SSP Intermediate CA - G4, O=Symantec Corporation, C=US
 Subject: CN=U.S. Department of Education Agency CA - G4, OU=U.S. Department of Education, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 797601c438e99043a935fcb225209643922369a8f0bd1fb526390590bd3bf758
 Validation Result: SUCCESS
 Valid Certificate:
@@ -8075,9 +7199,6 @@ HZUOQth+73x91u16oMf6XK5x6zb2OhhDG3iWdpPmH0bSDClqz4xiN9RnkFYm4qKo
 aYntR7TDZC9EWFy9t2SprLxo/2GuX+hhFdkgVUYec9YMKfU3tXomFJ2UPMTA
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8099,13 +7220,8 @@ Response:
             "value": "CN=DigiCertPKI-3-197"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:41.894+0000",
-    "nextUpdate": "2023-04-17T02:42:41.894+0000",
-=======
-    "validationTime": "2023-04-09T20:54:11.682+0000",
-    "nextUpdate": "2023-04-16T20:54:11.682+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.670+0000",
+    "nextUpdate": "2023-04-17T13:44:00.670+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8120,7 +7236,6 @@ Response:
 }
 Issuer: CN=DigiCert Federal SSP Intermediate CA - G5, O="DigiCert, Inc.", C=US
 Subject: CN=U.S. Department of Education Agency CA - G5, OU=U.S. Department of Education, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 29e1f32152377266605d5e254f43b3c8bb6b56cbd79863bc3bef1bf3a26e4ad9
 Validation Result: SUCCESS
 Valid Certificate:
@@ -8155,9 +7270,6 @@ vNh8qYtBz7Rm2ithiW9aDsR2Yc9YK874/0tGwlxyumHzVac/4t4lKXho0ndmHQi4
 Lgue
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8179,13 +7291,8 @@ Response:
             "value": "CN=SymantecPKI-2-172"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:41.952+0000",
-    "nextUpdate": "2023-04-17T02:42:41.952+0000",
-=======
-    "validationTime": "2023-04-09T20:54:11.835+0000",
-    "nextUpdate": "2023-04-16T20:54:11.835+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.711+0000",
+    "nextUpdate": "2023-04-17T13:44:00.711+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8200,7 +7307,6 @@ Response:
 }
 Issuer: CN=Symantec SSP Intermediate CA - G4, O=Symantec Corporation, C=US
 Subject: CN=U.S. Department of Education Device CA - G4, OU=U.S. Department of Education, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 310aa94e2de95899b9a59ccf90189ecd213a6d83c554ff7d5cc239007d6c5939
 Validation Result: SUCCESS
 Valid Certificate:
@@ -8234,9 +7340,6 @@ FwWG3Fqt7DbQ+CMF1CrekZTWGCnuVLXa0aKyZ+4a+wJSWrVWomYXiqoWoSXIDWOT
 OWDx
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8258,13 +7361,8 @@ Response:
             "value": "CN=DigiCertPKI-3-102"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:42.003+0000",
-    "nextUpdate": "2023-04-17T02:42:42.003+0000",
-=======
-    "validationTime": "2023-04-09T20:54:12.013+0000",
-    "nextUpdate": "2023-04-16T20:54:12.013+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.747+0000",
+    "nextUpdate": "2023-04-17T13:44:00.747+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8279,7 +7377,6 @@ Response:
 }
 Issuer: CN=DigiCert Federal SSP Intermediate CA - G5, O="DigiCert, Inc.", C=US
 Subject: CN=U.S. Department of Education Device CA - G5, OU=U.S. Department of Education, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 931b5ec2b54094a12e6d405537890e394115bb92ef8795dd27058b1bc65f6c43
 Validation Result: SUCCESS
 Valid Certificate:
@@ -8313,9 +7410,6 @@ l+KIa91OlZjZGWMVSo1dp7Nt8pydLhsSIfQBXIkCHOqBc6037nnmyVpejbbjQ49B
 RlT+687+vqsLl7JTfKdax5gkn5XpTog=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8332,13 +7426,8 @@ Response:
     "x509IssuerName": "CN=U.S. Department of State AD Root CA, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=state, DC=sbu",
     "x509SerialNumber": "1370515962",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:42.164+0000",
-    "nextUpdate": "2023-04-17T02:42:42.164+0000",
-=======
-    "validationTime": "2023-04-09T20:54:12.188+0000",
-    "nextUpdate": "2023-04-16T20:54:12.188+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:00.781+0000",
+    "nextUpdate": "2023-04-17T13:44:00.781+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8353,7 +7442,6 @@ Response:
 }
 Issuer: CN=U.S. Department of State AD Root CA, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=state, DC=sbu
 Subject: CN=U.S. Department of State AD High Assurance CA, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=state, DC=sbu
-<<<<<<< HEAD
 Thumbprint (SHA-256): d3f25ac0f17a5de2b3dcfaebe9b3464672368df7c263f7b1c920741c4ec5dda7
 Validation Result: SUCCESS
 Valid Certificate:
@@ -8415,9 +7503,6 @@ MRyMcfR/C7mw/9gaaabZtzLIqlzDdR71M9zAEBddR7k6G0C8+/QZC8gk1FE3i9LI
 zyt3/+hQF7U1slqTYPCxxL9RuODKUdQiCA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8434,13 +7519,8 @@ Response:
     "x509IssuerName": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "224865367551876005217662603190122430757144890377",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:42.810+0000",
-    "nextUpdate": "2023-04-17T02:42:42.810+0000",
-=======
-    "validationTime": "2023-04-09T20:54:12.871+0000",
-    "nextUpdate": "2023-04-16T20:54:12.871+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:01.335+0000",
+    "nextUpdate": "2023-04-17T13:44:01.335+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8452,7 +7532,6 @@ Response:
 }
 Issuer: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=U.S. Department of State AD Root CA, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=state, DC=sbu
-<<<<<<< HEAD
 Thumbprint (SHA-256): 9744734dbd34f28d3c87a9094387388e7623a272437c612e88d251138c1db93c
 Validation Result: SUCCESS
 Valid Certificate:
@@ -8506,9 +7585,6 @@ BPWwBzzpseqfV5GlEOdGDI7OAIJtOXRKjnS15qgTjoQ9SDEOiVNNhJ3tCyH5rTJf
 vlYqHTl+lUr1CX+rpkMh1swXmkBqUwKRXNoIYluolhYJbuCKYq0OhpN1a8eFXQ==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8525,13 +7601,8 @@ Response:
     "x509IssuerName": "CN=U.S. Department of State AD Root CA, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=state, DC=sbu",
     "x509SerialNumber": "1370536047",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:42.819+0000",
-    "nextUpdate": "2023-04-17T02:42:42.819+0000",
-=======
-    "validationTime": "2023-04-09T20:54:12.987+0000",
-    "nextUpdate": "2023-04-16T20:54:12.987+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:01.346+0000",
+    "nextUpdate": "2023-04-17T13:44:01.346+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8546,7 +7617,6 @@ Response:
 }
 Issuer: CN=U.S. Department of State AD Root CA, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=state, DC=sbu
 Subject: CN=U.S. Department of State AD Root CA, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=state, DC=sbu
-<<<<<<< HEAD
 Thumbprint (SHA-256): c736d892682dc5f0ccdace1a310d12a439177758bfa17a83be99a30158103dc7
 Validation Result: SUCCESS
 Valid Certificate:
@@ -8605,9 +7675,6 @@ oTe4PYdJeJ13ms//HMHI0Mqz6Ywc6lT5vNPA8RUmX/rJOQ9GYRM3Y5yjLiuRshmJ
 t3J+L6w6e20+2hR9Ju/Ny3jiIodrN3bgUCJGRs2VuU0=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8629,13 +7696,8 @@ Response:
             "value": "CN=SymantecPKI-2-14"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:43.004+0000",
-    "nextUpdate": "2023-04-17T02:42:43.004+0000",
-=======
-    "validationTime": "2023-04-09T20:54:13.809+0000",
-    "nextUpdate": "2023-04-16T20:54:13.809+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:01.528+0000",
+    "nextUpdate": "2023-04-17T13:44:01.528+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8650,7 +7712,6 @@ Response:
 }
 Issuer: CN=Symantec SSP Intermediate CA - G4, O=Symantec Corporation, C=US
 Subject: CN=U.S. Department of Transportation Agency CA G4, OU=U.S. Department of Transportation, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): fb776beb824118f1f8228d8c673b3e0b1bc711ce61f4d65130815109c4510b7e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -8685,9 +7746,6 @@ QwDHEMXDkK6/oJW+W2hHrL28wcWWUo9w+ha+Skn5b0lLm/iC/t7CkvrPPJGEkSmE
 3KM6TA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8709,13 +7767,8 @@ Response:
             "value": "CN=SymantecPKI-2-973"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:43.044+0000",
-    "nextUpdate": "2023-04-17T02:42:43.044+0000",
-=======
-    "validationTime": "2023-04-09T20:54:13.979+0000",
-    "nextUpdate": "2023-04-16T20:54:13.979+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:01.554+0000",
+    "nextUpdate": "2023-04-17T13:44:01.554+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8730,7 +7783,6 @@ Response:
 }
 Issuer: CN=DigiCert Federal SSP Intermediate CA - G5, O="DigiCert, Inc.", C=US
 Subject: CN=U.S. Department of Transportation Agency CA G5, OU=U.S. Department of Transportation, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): cb208cf45b27d58efe7fb91844a74e804d9608bcd204d7f0ecf9f01f7389e33d
 Validation Result: SUCCESS
 Valid Certificate:
@@ -8765,9 +7817,6 @@ YtjOG7MO/PiEmRI+cuAaWf5WRnIYO8NGp+8YnojQ4J9eNSVPKvJB+Ti3ct5xC7IN
 61s8NLnZfWgZmRA=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8789,13 +7838,8 @@ Response:
             "value": "CN=SymantecPKI-2-15"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:43.120+0000",
-    "nextUpdate": "2023-04-17T02:42:43.120+0000",
-=======
-    "validationTime": "2023-04-09T20:54:14.128+0000",
-    "nextUpdate": "2023-04-16T20:54:14.128+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:01.599+0000",
+    "nextUpdate": "2023-04-17T13:44:01.599+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8810,7 +7854,6 @@ Response:
 }
 Issuer: CN=Symantec SSP Intermediate CA - G4, O=Symantec Corporation, C=US
 Subject: CN=U.S. Department of Transportation Device CA G4, OU=U.S. Department of Transportation, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 27d698191643f320c33b25f013a869c773f83d44c269769a93e3df7af5e50ef0
 Validation Result: SUCCESS
 Valid Certificate:
@@ -8844,9 +7887,6 @@ q/5fNWgCd/+wd0BU3LKIAIFRwjdK8vU3CD+uI3I1pk1eI6eSO4yYrCGXNEjgT5IQ
 geMBc8BJSyG/Pw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8868,13 +7908,8 @@ Response:
             "value": "CN=SymantecPKI-2-974"
         }
     ],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:43.169+0000",
-    "nextUpdate": "2023-04-17T02:42:43.169+0000",
-=======
-    "validationTime": "2023-04-09T20:54:14.275+0000",
-    "nextUpdate": "2023-04-16T20:54:14.275+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:01.646+0000",
+    "nextUpdate": "2023-04-17T13:44:01.646+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8889,7 +7924,6 @@ Response:
 }
 Issuer: CN=DigiCert Federal SSP Intermediate CA - G5, O="DigiCert, Inc.", C=US
 Subject: CN=U.S. Department of Transportation Device CA G5, OU=U.S. Department of Transportation, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 239ff43b8cd3df6338a7625ded47d11c86e965f9e257271f83b01a058c32b2c9
 Validation Result: SUCCESS
 Valid Certificate:
@@ -8923,9 +7957,6 @@ d21FsyaCLNl6MNf/++xRxWYNLwFmXlwoN4gkHQjpRp0PbD7QqpHFU+2mhw94PF0l
 h68AVBadbahnltM3TvbEbra5RQv5tZ4+n5g5ZXrfIw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -8942,13 +7973,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "134386946227104801741451160400873158627767087350",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:43.213+0000",
-    "nextUpdate": "2023-04-17T02:42:43.213+0000",
-=======
-    "validationTime": "2023-04-09T20:54:14.433+0000",
-    "nextUpdate": "2023-04-16T20:54:14.433+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:01.692+0000",
+    "nextUpdate": "2023-04-17T13:44:01.692+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -8963,7 +7989,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=USPTO_INTR_CA1, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=uspto, DC=gov
-<<<<<<< HEAD
 Thumbprint (SHA-256): 9af0b0d372e9995a9278aede392b450997cd167bb2e66008b2c94a48bded7091
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9007,9 +8032,6 @@ yNHsrX+iH7ovDd8rjLHI0DmuY233fP+L6EWTYDqYN/3zeI/PVZUo1BeQ5ug3/W1X
 k4slu5Vhcxmo9tAqRekXOiyudrx84HMWXWAn5Sc8oQ==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9026,13 +8048,8 @@ Response:
     "x509IssuerName": "CN=USPTO_INTR_CA1, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=uspto, DC=gov",
     "x509SerialNumber": "1277783878",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:43.235+0000",
-    "nextUpdate": "2023-04-17T02:42:43.235+0000",
-=======
-    "validationTime": "2023-04-09T20:54:14.554+0000",
-    "nextUpdate": "2023-04-16T20:54:14.554+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:01.705+0000",
+    "nextUpdate": "2023-04-17T13:44:01.705+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9050,7 +8067,6 @@ Response:
 }
 Issuer: CN=USPTO_INTR_CA1, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=uspto, DC=gov
 Subject: CN=USPTO_INTR_CA1, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=uspto, DC=gov
-<<<<<<< HEAD
 Thumbprint (SHA-256): ffde7f362d6e14b4fafd2a047865d79efecbdfb79943417f88b73b952b5f27ca
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9093,9 +8109,6 @@ awp3nUek/bEDRQnaz/kxQOMy+yMV6SQY4HTgDfyPSQfJqUDayBjhwHfQ7LDhyqWX
 3XBy
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9112,13 +8125,8 @@ Response:
     "x509IssuerName": "CN=USPTO_INTR_CA1, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=uspto, DC=gov",
     "x509SerialNumber": "1277783879",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:43.334+0000",
-    "nextUpdate": "2023-04-17T02:42:43.334+0000",
-=======
-    "validationTime": "2023-04-09T20:54:14.709+0000",
-    "nextUpdate": "2023-04-16T20:54:14.709+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:01.812+0000",
+    "nextUpdate": "2023-04-17T13:44:01.812+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9139,7 +8147,6 @@ Response:
 }
 Issuer: CN=USPTO_INTR_CA1, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=uspto, DC=gov
 Subject: CN=USPTO_INTR_CA1, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=uspto, DC=gov
-<<<<<<< HEAD
 Thumbprint (SHA-256): cd9b899242ccdb2911f669050d7d2b0ac9dcf71220ce61defcfd5afefc5ed5ee
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9182,9 +8189,6 @@ ED4v+3ivRxGhidqyx58WvE5hl/cMpbDQgqTRL84Bpbh8rrjsAoT7GC0KYcmARd/M
 EF/h
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9201,13 +8205,8 @@ Response:
     "x509IssuerName": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "216867099100030496712731972985788689052539129402",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:43.459+0000",
-    "nextUpdate": "2023-04-17T02:42:43.459+0000",
-=======
-    "validationTime": "2023-04-09T20:54:14.886+0000",
-    "nextUpdate": "2023-04-16T20:54:14.886+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:01.945+0000",
+    "nextUpdate": "2023-04-17T13:44:01.945+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9219,7 +8218,6 @@ Response:
 }
 Issuer: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=Verizon SSP CA A2, OU=SSP, O=Verizon, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 226508d2a1c926a7092218e743ccd01bab8273291feef66941691592fa7c12b8
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9259,9 +8257,6 @@ atvsNg1V1+un9UEklO0X8j7PK9xy9QV67c9Q7bRfuQRIG+G6e1BhwTW+wWuc6/u4
 MqtFvsHj3GT7xCuQwY9CeK1tKvANafWRruMc
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9278,13 +8273,8 @@ Response:
     "x509IssuerName": "CN=Verizon SSP CA A2, OU=SSP, O=Verizon, C=US",
     "x509SerialNumber": "541183969108318241482288737465085124701815448830",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:43.475+0000",
-    "nextUpdate": "2023-04-17T02:42:43.475+0000",
-=======
-    "validationTime": "2023-04-09T20:54:15.009+0000",
-    "nextUpdate": "2023-04-16T20:54:15.009+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:01.957+0000",
+    "nextUpdate": "2023-04-17T13:44:01.957+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9299,7 +8289,6 @@ Response:
 }
 Issuer: CN=Verizon SSP CA A2, OU=SSP, O=Verizon, C=US
 Subject: CN=Veterans Affairs CA B3, OU=PKI, OU=Services, DC=va, DC=gov
-<<<<<<< HEAD
 Thumbprint (SHA-256): 9a3bd186637a9f716093feaae4eb80e393e90f711d3082905fcc4630823fdb2c
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9332,9 +8321,6 @@ KjjLy3Cxn2sWL1KjIOVM3qnU1Ct7H+eoiUB8P1Tx7kDz10cCuHD90WBeEFZ2Yirl
 faLnnrK0nY49bIeIbSgQSp/0G0VvKBtOKdyLOjMLMf4vNjQdPOAjZzS5
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9351,13 +8337,8 @@ Response:
     "x509IssuerName": "CN=Verizon SSP CA A2, OU=SSP, O=Verizon, C=US",
     "x509SerialNumber": "211915914620421814630739146678823081726843118985",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:44.007+0000",
-    "nextUpdate": "2023-04-17T02:42:44.007+0000",
-=======
-    "validationTime": "2023-04-09T20:54:15.467+0000",
-    "nextUpdate": "2023-04-16T20:54:15.467+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:02.603+0000",
+    "nextUpdate": "2023-04-17T13:44:02.603+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9372,7 +8353,6 @@ Response:
 }
 Issuer: CN=Verizon SSP CA A2, OU=SSP, O=Verizon, C=US
 Subject: CN=Veterans Affairs User CA B1, OU=PKI, OU=Services, DC=va, DC=gov
-<<<<<<< HEAD
 Thumbprint (SHA-256): dd54d3545e9d36b5efcdbe07ee7b250ac0125334ad7969a3f42b64a5203a412f
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9407,9 +8387,6 @@ s0Lo7X1h/ahugDTOVS4CuDvlaqgSvKp6+VUqanYdLHtlub371kEls2iy5nx6CMAv
 ZPIzfJtnK1qtf1uHqRWy3u0isDpyyRpuGXs=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9426,13 +8403,8 @@ Response:
     "x509IssuerName": "CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US",
     "x509SerialNumber": "1359",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:44.198+0000",
-    "nextUpdate": "2023-04-17T02:42:44.198+0000",
-=======
-    "validationTime": "2023-04-09T20:54:16.109+0000",
-    "nextUpdate": "2023-04-16T20:54:16.109+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:02.779+0000",
+    "nextUpdate": "2023-04-17T13:44:02.779+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9453,7 +8425,6 @@ Response:
 }
 Issuer: CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US
 Subject: CN=WidePoint ECA 8, OU=Certification Authorities, OU=ECA, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 2b0e16ea1381bbd744abccdace3236306ea4bc60cc7c0d1c95f5249bdfd0defa
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9486,9 +8457,6 @@ phfnJzzjIXlSd/kLByU8No0BMnBHaT8ytfKfNKUD/4rnyrz5EUbXecvLdq8WYXsA
 55b6Xzb1r3KvhjyKHCjpRpwWWhFuJ1k5KomNRA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9505,13 +8473,8 @@ Response:
     "x509IssuerName": "CN=WidePoint NFI Root 2, OU=Certification Authorities, O=WidePoint, C=US",
     "x509SerialNumber": "588632817168500360942173976391308308568275617716",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:51.747+0000",
-    "nextUpdate": "2023-04-17T02:42:51.747+0000",
-=======
-    "validationTime": "2023-04-09T20:54:16.374+0000",
-    "nextUpdate": "2023-04-16T20:54:16.374+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:02.988+0000",
+    "nextUpdate": "2023-04-17T13:44:02.988+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9529,7 +8492,6 @@ Response:
 }
 Issuer: CN=WidePoint NFI Root 2, OU=Certification Authorities, O=WidePoint, C=US
 Subject: CN=WidePoint NFI CA 5, O=ORC PKI, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 4ddac64f5034a13e13f12d8cd37df5d8ad7ad0e8f4413f5179f72494824a787b
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9567,9 +8529,6 @@ LlBts5W4RooNPSOoQshAJHUnvIPKR4WhwUlTYoY9xPee5R86jzjnxBdhRZtKUQKF
 t6co4sn+UlYR
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9586,13 +8545,8 @@ Response:
     "x509IssuerName": "CN=WidePoint NFI Root 2, OU=Certification Authorities, O=WidePoint, C=US",
     "x509SerialNumber": "122397600369708333189105718797387903666113840099",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:51.758+0000",
-    "nextUpdate": "2023-04-17T02:42:51.758+0000",
-=======
-    "validationTime": "2023-04-09T20:54:16.484+0000",
-    "nextUpdate": "2023-04-16T20:54:16.484+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.002+0000",
+    "nextUpdate": "2023-04-17T13:44:03.002+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9610,7 +8564,6 @@ Response:
 }
 Issuer: CN=WidePoint NFI Root 2, OU=Certification Authorities, O=WidePoint, C=US
 Subject: CN=WidePoint NFI CA 6, O=ORC PKI, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 87522969bf31c82e6c82688ba49a888ec7bc74529e517d197f1a61b645e41aa6
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9648,9 +8601,6 @@ riuwj4Fqqzc0fP4CU7B7Esn6mI7LCq71JpEPglJI8TEIJalu3wbOQZE0QYh+yYwk
 8Nsnv9NLWFxw
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9667,13 +8617,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "112215750668859520618481248057976858103115082485",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:51.767+0000",
-    "nextUpdate": "2023-04-17T02:42:51.767+0000",
-=======
-    "validationTime": "2023-04-09T20:54:16.647+0000",
-    "nextUpdate": "2023-04-16T20:54:16.647+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.012+0000",
+    "nextUpdate": "2023-04-17T13:44:03.012+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9688,7 +8633,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=WidePoint NFI Root 2, OU=Certification Authorities, O=WidePoint, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): ce65b9a8f39157cb9cc3931245eea185b8227fae30967aa9fc8efa036f8be433
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9733,9 +8677,6 @@ oIHUYUGuZbn19ZyOTe3g3975XtLSvX8pMAcerkqkPF1ca9OwomZrQP5Qol4rzzqD
 SwE3loOgDuNXm1Q/CA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9752,13 +8693,8 @@ Response:
     "x509IssuerName": "CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US",
     "x509SerialNumber": "564",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:51.775+0000",
-    "nextUpdate": "2023-04-17T02:42:51.775+0000",
-=======
-    "validationTime": "2023-04-09T20:54:16.770+0000",
-    "nextUpdate": "2023-04-16T20:54:16.770+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.019+0000",
+    "nextUpdate": "2023-04-17T13:44:03.019+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9779,7 +8715,6 @@ Response:
 }
 Issuer: CN=ECA Root CA 4, OU=ECA, O=U.S. Government, C=US
 Subject: CN=WidePoint ORC ECA 7, OU=Certification Authorities, OU=ECA, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 1158fe54e9fc5d4913fa03d76450f5f209f4e35b19eecccae05b9c7e4029fbc8
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9812,9 +8747,6 @@ YKSsLwM2GZnVBlqwfilWBGzOgm6INBRc7R5912ctWBxQG11QtV50xxg+OtiTwZbG
 /Zjk2D0xlEQoRN+8rjFR+TgYaKTa3jEf4gUDM01FDGs=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9831,13 +8763,8 @@ Response:
     "x509IssuerName": "CN=WidePoint NFI Root 2, OU=Certification Authorities, O=WidePoint, C=US",
     "x509SerialNumber": "305463503150464343476243562946594516223728844479",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:52.985+0000",
-    "nextUpdate": "2023-04-17T02:42:52.985+0000",
-=======
-    "validationTime": "2023-04-09T20:54:17.029+0000",
-    "nextUpdate": "2023-04-16T20:54:17.029+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.226+0000",
+    "nextUpdate": "2023-04-17T13:44:03.226+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9855,7 +8782,6 @@ Response:
 }
 Issuer: CN=WidePoint NFI Root 2, OU=Certification Authorities, O=WidePoint, C=US
 Subject: CN=WidePoint ORC NFI 4, OU=Certification Authorities, O=WidePoint, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): b0f86983f1bbbb3090bc9540951610fce3b3f17d182954524f1c8be9ae9c8b92
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9903,9 +8829,6 @@ MLdIaYQZILMcIJx66F8Bj9iwzW+sfjosdDdKrnyPFfvJX1QrbpcwgCvtKb4QuhRX
 mE2FVZr49w==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9922,13 +8845,8 @@ Response:
     "x509IssuerName": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "188647499826587402713844393501128965656689788059",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:52.995+0000",
-    "nextUpdate": "2023-04-17T02:42:52.995+0000",
-=======
-    "validationTime": "2023-04-09T20:54:17.126+0000",
-    "nextUpdate": "2023-04-16T20:54:17.126+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.241+0000",
+    "nextUpdate": "2023-04-17T13:44:03.241+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -9940,7 +8858,6 @@ Response:
 }
 Issuer: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
 Subject: CN=WidePoint ORC SSP 5, O=ORC PKI, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 70200179049bdc8cbe94b4880730609489f324f2a770477f7c1859401e644c72
 Validation Result: SUCCESS
 Valid Certificate:
@@ -9980,9 +8897,6 @@ lHqCzBK+yqQ17eTy6bBoHswADAgPfSbza8VYlqt7yHbJ1YTAH+fhWePjhyMHBpV7
 9QM=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -9999,13 +8913,8 @@ Response:
     "x509IssuerName": "OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US",
     "x509SerialNumber": "1312391545",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:53.003+0000",
-    "nextUpdate": "2023-04-17T02:42:53.003+0000",
-=======
-    "validationTime": "2023-04-09T20:54:17.245+0000",
-    "nextUpdate": "2023-04-16T20:54:17.245+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.253+0000",
+    "nextUpdate": "2023-04-17T13:44:03.253+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10023,7 +8932,6 @@ Response:
 }
 Issuer: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
 Subject: OU=Department of Veterans Affairs CA, OU=Certification Authorities, OU=Department of Veterans Affairs, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): d3f96c56a90230eff805ec3eafa99037399da8e0eece679e195ad32ccde03239
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10063,9 +8971,6 @@ aNTZANvU3e/U+O7jo8+PrRpIzCqY72QLKxAHw9VknWmEzWjkkWBYltdzka9CPuM0
 mzywCD7A3TRBcaiksPGLPQtIoRL4qpGNoI6/iwbmCf+ZJRsGCXVAwg==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -10082,13 +8987,8 @@ Response:
     "x509IssuerName": "OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US",
     "x509SerialNumber": "1556820501",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:53.158+0000",
-    "nextUpdate": "2023-04-17T02:42:53.158+0000",
-=======
-    "validationTime": "2023-04-09T20:54:17.465+0000",
-    "nextUpdate": "2023-04-16T20:54:17.465+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.414+0000",
+    "nextUpdate": "2023-04-17T13:44:03.414+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10103,7 +9003,6 @@ Response:
 }
 Issuer: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
 Subject: OU=Department of Veterans Affairs CA, OU=Certification Authorities, OU=Department of Veterans Affairs, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): cb3e8b747b134db5e683bcfc8dded8f3b38b1feb51edcbe69bbf6923ffb0fc0f
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10150,9 +9049,6 @@ RrMV1HTv/nUmhehzCImuHyAphTsDu7ahLrwaWuTB3VbA6DkZZqJKO0gA7HZEo4AD
 bIz2
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -10169,13 +9065,8 @@ Response:
     "x509IssuerName": "OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US",
     "x509SerialNumber": "1312391464",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:53.166+0000",
-    "nextUpdate": "2023-04-17T02:42:53.166+0000",
-=======
-    "validationTime": "2023-04-09T20:54:17.585+0000",
-    "nextUpdate": "2023-04-16T20:54:17.585+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.429+0000",
+    "nextUpdate": "2023-04-17T13:44:03.429+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10193,7 +9084,6 @@ Response:
 }
 Issuer: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
 Subject: OU=DHS CA4, OU=Certification Authorities, OU=Department of Homeland Security, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 8e72d7982431c4bdcf7c2ab2c9b5b1321738d65841b8197eacce142f0a9c8343
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10233,9 +9123,6 @@ qpALUkkY5zTa+ZlPHDf/4pfedZN4cJDpv9X49/RterYIj0cGw8UyWFaObSAOVEBr
 Ye+Tz+l0RQ3GVQ8mhpBK2YI=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -10252,13 +9139,8 @@ Response:
     "x509IssuerName": "OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US",
     "x509SerialNumber": "1556820426",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:53.174+0000",
-    "nextUpdate": "2023-04-17T02:42:53.174+0000",
-=======
-    "validationTime": "2023-04-09T20:54:17.694+0000",
-    "nextUpdate": "2023-04-16T20:54:17.694+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.441+0000",
+    "nextUpdate": "2023-04-17T13:44:03.441+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10273,7 +9155,6 @@ Response:
 }
 Issuer: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
 Subject: OU=DHS CA4, OU=Certification Authorities, OU=Department of Homeland Security, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 1f876321693113ea500050531a755716f196dc05ead8499e794d341f6cb44515
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10319,9 +9200,6 @@ o+nI+HAKZ0viN2BM0be1cvdC9L+6dTo9GQwhJsDdVefRRs8dLcbCLBU8p2uJ/Lzq
 osySxPGrjP+XQVXNTzP4cfLr9MHnLDbNxVZnug==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -10338,13 +9216,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "103249124483536009983603819608787809144698671785",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:53.187+0000",
-    "nextUpdate": "2023-04-17T02:42:53.187+0000",
-=======
-    "validationTime": "2023-04-09T20:54:17.805+0000",
-    "nextUpdate": "2023-04-16T20:54:17.805+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.448+0000",
+    "nextUpdate": "2023-04-17T13:44:03.448+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10359,7 +9232,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: OU=Entrust Managed Services NFI Root CA, OU=Certification Authorities, O=Entrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): b3c55bbf061a8065390d8a39582c0f4962be3cbb20c5fd28f2dfb50fd052d3c7
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10403,9 +9275,6 @@ yYHNcZzghmCLKQGplBqNRrEZQCQQ0BhRVqyLJ1XXGOoiPkjPQ39TPXbco/ZTUxfa
 HXF7bbYqvhDaKSZjUbYT8/BFi4xBjn7WsAeHpDLaCIxTww71hQ+RFQ==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -10422,13 +9291,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "134438939907708807470910238709384261307369289854",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:53.200+0000",
-    "nextUpdate": "2023-04-17T02:42:53.200+0000",
-=======
-    "validationTime": "2023-04-09T20:54:17.909+0000",
-    "nextUpdate": "2023-04-16T20:54:17.909+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.454+0000",
+    "nextUpdate": "2023-04-17T13:44:03.454+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10443,7 +9307,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: OU=Entrust Managed Services NFI Root CA, OU=Certification Authorities, O=Entrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): b180e8a051a91d8b0d88dcda6e7c4711cff5ae03c7c60a239da06429ba8dbb10
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10491,9 +9354,6 @@ e2thb5tmv3DodN1v3hlkRo6vcf4vBcTie4pnIjrpUoRv4bAU1lmSiMv3xIdvsLki
 PBo5uovuxmN/bEKS+7ogAPvFL/PVkcxA68q9lTseRg==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -10510,13 +9370,8 @@ Response:
     "x509IssuerName": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "190503493001195633069761058136731591490102486421",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:53.212+0000",
-    "nextUpdate": "2023-04-17T02:42:53.212+0000",
-=======
-    "validationTime": "2023-04-09T20:54:18.029+0000",
-    "nextUpdate": "2023-04-16T20:54:18.029+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.461+0000",
+    "nextUpdate": "2023-04-17T13:44:03.461+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10528,7 +9383,6 @@ Response:
 }
 Issuer: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
 Subject: OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): e3d6b1b33d0a5df0630b32bf17f9fb632b0471a6cac561f164aa6429ef0699a1
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10572,9 +9426,6 @@ W58yw5u2mtzO0WNj1gUuvyUfw33AQ88nZCgtNUWrponvTf7onW+RcEJv+N/6JyYm
 DIp+1qtsrtLmwAoNfe/KAKBWumEv5d0EqR8jWoFfJ0I=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -10591,13 +9442,8 @@ Response:
     "x509IssuerName": "OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US",
     "x509SerialNumber": "1149306747",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:53.220+0000",
-    "nextUpdate": "2023-04-17T02:42:53.220+0000",
-=======
-    "validationTime": "2023-04-09T20:54:18.149+0000",
-    "nextUpdate": "2023-04-16T20:54:18.149+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.467+0000",
+    "nextUpdate": "2023-04-17T13:44:03.467+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10612,7 +9458,6 @@ Response:
 }
 Issuer: OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US
 Subject: OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 629e7494917e9c447f98a2fd8a6c7473232144a62ee29b63319d2776ad98c2e7
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10652,9 +9497,6 @@ zEk1EQcM3K95UfXzH6LocRcGsOCU57mGRWPeBLDwoHW1wY2PKwxgJW3bEpaECLPK
 958Ntoj5UCVS4R811DCRfEzpeJGeQb9GiJqYSXj/
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -10671,13 +9513,8 @@ Response:
     "x509IssuerName": "OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US",
     "x509SerialNumber": "1149264853",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:53.407+0000",
-    "nextUpdate": "2023-04-17T02:42:53.407+0000",
-=======
-    "validationTime": "2023-04-09T20:54:18.458+0000",
-    "nextUpdate": "2023-04-16T20:54:18.458+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:03.650+0000",
+    "nextUpdate": "2023-04-17T13:44:03.650+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10695,7 +9532,6 @@ Response:
 }
 Issuer: OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US
 Subject: OU=Entrust Managed Services SSP CA, OU=Certification Authorities, O=Entrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 0200d4d2db1aa4c1292101143e196cc9481e2ccd2a90fc4cb5ed81271fd308b1
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10741,9 +9577,6 @@ YJ7V4c1ryxnbCP0IDF8zw0Ocuw08tvtP4YdSid+FcR7PoGqKXBUdOJR6GwIP6n3F
 FVgoq2/4mMrZ1ZDmz2mbS/O6xdllRc99aHA9MHvbq/EpE5dr3g==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -10760,13 +9593,8 @@ Response:
     "x509IssuerName": "OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US",
     "x509SerialNumber": "1149306806",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:53.945+0000",
-    "nextUpdate": "2023-04-17T02:42:53.945+0000",
-=======
-    "validationTime": "2023-04-09T20:54:18.969+0000",
-    "nextUpdate": "2023-04-16T20:54:18.969+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:04.169+0000",
+    "nextUpdate": "2023-04-17T13:44:04.169+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10781,7 +9609,6 @@ Response:
 }
 Issuer: OU=Entrust Managed Services Root CA, OU=Certification Authorities, O=Entrust, C=US
 Subject: OU=Entrust Managed Services SSP CA, OU=Certification Authorities, O=Entrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 6798811b90a96e21258e409d1fb6092cb358bd70f45855acda0cf5a075beb090
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10819,9 +9646,6 @@ U8jc2aPDIK5KTCtzh2tfEG6dkjykPosx5ZwNjcZ8IkTFoIh7hsLxniu8kHhOd2k0
 V0lxFBzM+0lGoM8FlV31siMrQBoi0pjDgSjkkJFMFA==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -10838,13 +9662,8 @@ Response:
     "x509IssuerName": "OU=Entrust Managed Services NFI Root CA, OU=Certification Authorities, O=Entrust, C=US",
     "x509SerialNumber": "1252571626",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:54.234+0000",
-    "nextUpdate": "2023-04-17T02:42:54.234+0000",
-=======
-    "validationTime": "2023-04-09T20:54:19.230+0000",
-    "nextUpdate": "2023-04-16T20:54:19.230+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:04.355+0000",
+    "nextUpdate": "2023-04-17T13:44:04.355+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10862,7 +9681,6 @@ Response:
 }
 Issuer: OU=Entrust Managed Services NFI Root CA, OU=Certification Authorities, O=Entrust, C=US
 Subject: OU=Entrust NFI Medium Assurance SSP CA, OU=Certification Authorities, O=Entrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 4347e967ebf9f986de1e98609c2001e046e99a5f3ea73affb146fc9de77dbf6b
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10912,9 +9730,6 @@ M+llQt6jM2L3C+PTOBALt9XZyq3Qw1RLfQWsaNcs0/fDOoJfHHw0r9QmMLrBpWJp
 7pVxA2WkITMFclBt
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -10931,13 +9746,8 @@ Response:
     "x509IssuerName": "OU=Entrust Managed Services NFI Root CA, OU=Certification Authorities, O=Entrust, C=US",
     "x509SerialNumber": "1252616596",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:54.468+0000",
-    "nextUpdate": "2023-04-17T02:42:54.468+0000",
-=======
-    "validationTime": "2023-04-09T20:54:19.505+0000",
-    "nextUpdate": "2023-04-16T20:54:19.505+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:04.577+0000",
+    "nextUpdate": "2023-04-17T13:44:04.577+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -10955,7 +9765,6 @@ Response:
 }
 Issuer: OU=Entrust Managed Services NFI Root CA, OU=Certification Authorities, O=Entrust, C=US
 Subject: OU=Entrust NFI Medium Assurance SSP CA, OU=Certification Authorities, O=Entrust, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 4204476d2deebd583c7895f4fe5927d9014ebda74af25d1861332d618c177a68
 Validation Result: SUCCESS
 Valid Certificate:
@@ -10997,9 +9806,6 @@ ipUqkP7+DrD2VlUZJdB4tAc7oYY0rdimU+qfeyHOp1GdNk+XFlYGzWe3UdGaWmei
 /Vbg2Q==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11016,13 +9822,8 @@ Response:
     "x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "144792572462228690119171973634784043170041034242",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:54.673+0000",
-    "nextUpdate": "2023-04-17T02:42:54.673+0000",
-=======
-    "validationTime": "2023-04-09T20:54:19.761+0000",
-    "nextUpdate": "2023-04-16T20:54:19.761+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:04.772+0000",
+    "nextUpdate": "2023-04-17T13:44:04.772+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -11037,7 +9838,6 @@ Response:
 }
 Issuer: CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US
 Subject: OU=GPO PCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 2f2836417bf38530f2dddfbd5ea8a069e629d07422c292614d425f1ad638910f
 Validation Result: SUCCESS
 Valid Certificate:
@@ -11074,9 +9874,6 @@ l7FgEGjhErGFN84BqVqU+4EBlAV1sCyTYEO+lXD9OZj0iwxmmT5zhrjTi6DSeE6s
 nZLtc8Pr3RYPYqCfmMBHOvvyCBBaqaf4JRZxjsQb2RcFCQ==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11093,13 +9890,8 @@ Response:
     "x509IssuerName": "OU=GPO PCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US",
     "x509SerialNumber": "1087924815",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:54.690+0000",
-    "nextUpdate": "2023-04-17T02:42:54.690+0000",
-=======
-    "validationTime": "2023-04-09T20:54:19.871+0000",
-    "nextUpdate": "2023-04-16T20:54:19.871+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:04.780+0000",
+    "nextUpdate": "2023-04-17T13:44:04.780+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -11117,7 +9909,6 @@ Response:
 }
 Issuer: OU=GPO PCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US
 Subject: OU=GPO SCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 1c58a3fa3402790c1a85e3ada3e50a1f64eeac925b0505050585182c66559baa
 Validation Result: SUCCESS
 Valid Certificate:
@@ -11166,9 +9957,6 @@ ZBrbV1JYC3+DpnU4sHFgX9wRe3UejroTNgt2rbv7G/pZ0nObZVa4okfUsi7tQGHU
 YAVFOWqBW++fmXcaS5xHZTK9cSi8NvOjyvGS5PY=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11185,13 +9973,8 @@ Response:
     "x509IssuerName": "OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US",
     "x509SerialNumber": "1312391446",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:54.903+0000",
-    "nextUpdate": "2023-04-17T02:42:54.903+0000",
-=======
-    "validationTime": "2023-04-09T20:54:20.051+0000",
-    "nextUpdate": "2023-04-16T20:54:20.051+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:06.413+0000",
+    "nextUpdate": "2023-04-17T13:44:06.413+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -11209,7 +9992,6 @@ Response:
 }
 Issuer: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
 Subject: OU=NASA Operational CA, OU=Certification Authorities, OU=NASA, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): f410e066ec1674c3ddfc104b1cf3cc78b159a537d8ea88281d7d0dab5d102d8e
 Validation Result: SUCCESS
 Valid Certificate:
@@ -11248,9 +10030,6 @@ tpqtj/ZSwYEFZpecbWZjxvTVhmrAQv+9k1FO4zcpStYY+tD62eiRdEnHanN5MR3q
 E+zLhSow/xs6K5uTJCuVEiaalM+HBDJ10UDjwKGMlUX1H6bI1iEnk/dYbc6Pvv8=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11267,13 +10046,8 @@ Response:
     "x509IssuerName": "OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US",
     "x509SerialNumber": "1556820374",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:54.916+0000",
-    "nextUpdate": "2023-04-17T02:42:54.916+0000",
-=======
-    "validationTime": "2023-04-09T20:54:20.276+0000",
-    "nextUpdate": "2023-04-16T20:54:20.276+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:06.426+0000",
+    "nextUpdate": "2023-04-17T13:44:06.426+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -11288,7 +10062,6 @@ Response:
 }
 Issuer: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
 Subject: OU=NASA Operational CA, OU=Certification Authorities, OU=NASA, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 8a71bbabd4a2373427ced4329cf2a8acbd93b62b020d52b377b32e51780072e4
 Validation Result: SUCCESS
 Valid Certificate:
@@ -11334,9 +10107,6 @@ sa1wasV/8lR+NUhYElwnw8U26cyzspGRL5nuP7kgklFXOSWfsNwA/QOV3wzVDkCe
 osK9fuSkERJIYw==
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11353,13 +10123,8 @@ Response:
     "x509IssuerName": "OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US",
     "x509SerialNumber": "1312391425",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:54.925+0000",
-    "nextUpdate": "2023-04-17T02:42:54.925+0000",
-=======
-    "validationTime": "2023-04-09T20:54:20.384+0000",
-    "nextUpdate": "2023-04-16T20:54:20.384+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:06.432+0000",
+    "nextUpdate": "2023-04-17T13:44:06.432+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -11377,7 +10142,6 @@ Response:
 }
 Issuer: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
 Subject: OU=OCIO CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): fb937c32ca31a423d8fb6f559668916bce6d01ebc3c09cf92477c091fee5d417
 Validation Result: SUCCESS
 Valid Certificate:
@@ -11417,9 +10181,6 @@ uh8vuWzo4YP2hPOfVO18EMXH0M639REKtqDMIkllBuNOHD8RcMu+CJ/xSxdUrra5
 Kao6TKIjbio9/JhCr5XL7ee3a0tjkt9p
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11436,13 +10197,8 @@ Response:
     "x509IssuerName": "OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US",
     "x509SerialNumber": "1556820478",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:54.944+0000",
-    "nextUpdate": "2023-04-17T02:42:54.944+0000",
-=======
-    "validationTime": "2023-04-09T20:54:20.518+0000",
-    "nextUpdate": "2023-04-16T20:54:20.518+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:06.439+0000",
+    "nextUpdate": "2023-04-17T13:44:06.439+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -11457,7 +10213,6 @@ Response:
 }
 Issuer: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
 Subject: OU=OCIO CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 8a9a179c50ed4db5b084f89654fc849c768010d5a3dec39be9fba51143c1a51f
 Validation Result: SUCCESS
 Valid Certificate:
@@ -11504,9 +10259,6 @@ oiBuD2rM9hVGkQtb0Ufbk+IP5QYgIRMcLi0kopVJlyrdAs3EZov5b8dB/abZMyb5
 74bVoheP2PAarCvmEWXL
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11523,13 +10275,8 @@ Response:
     "x509IssuerName": "OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US",
     "x509SerialNumber": "1312391407",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:54.951+0000",
-    "nextUpdate": "2023-04-17T02:42:54.951+0000",
-=======
-    "validationTime": "2023-04-09T20:54:20.633+0000",
-    "nextUpdate": "2023-04-16T20:54:20.633+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:06.446+0000",
+    "nextUpdate": "2023-04-17T13:44:06.446+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -11547,7 +10294,6 @@ Response:
 }
 Issuer: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
 Subject: OU=Social Security Administration Certification Authority, OU=SSA, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): d04c60329ee3777ffdad5defa59b79128ee2e6eedfd49a5fe8d5bc2331a95c5c
 Validation Result: SUCCESS
 Valid Certificate:
@@ -11587,9 +10333,6 @@ ENHMsB3X0MJDxV8JmqT3sJ0eLGFf/4iEEZCuj5Bwk3byddnJimxXdk54Txd+vCg1
 orq3DN/saJE3L1yiArkPGug8NQWXyFhIcEP+
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11606,13 +10349,8 @@ Response:
     "x509IssuerName": "OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US",
     "x509SerialNumber": "1542740313",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:54.960+0000",
-    "nextUpdate": "2023-04-17T02:42:54.960+0000",
-=======
-    "validationTime": "2023-04-09T20:54:20.750+0000",
-    "nextUpdate": "2023-04-16T20:54:20.750+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:06.454+0000",
+    "nextUpdate": "2023-04-17T13:44:06.454+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -11627,7 +10365,6 @@ Response:
 }
 Issuer: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
 Subject: OU=Social Security Administration Certification Authority, OU=SSA, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 23212b00ac42ae1f1dce4aabb0cd15acb4fb8e172edc55452c01a2db92ccf47c
 Validation Result: SUCCESS
 Valid Certificate:
@@ -11672,9 +10409,6 @@ SWTqSpK+3SIcUUeS1B3OGWIXxZ7U1lAM+2yV4jET/GMSZC4mrLM9SKFTMayh7/Yc
 WF8Uqgx23Co7gjAXF4b9l9tkH9Rvnloday4Od8mEUoB+WZxcVvfA0yc9/ek=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11691,13 +10425,8 @@ Response:
     "x509IssuerName": "CN=U.S. Department of State AD Root CA, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=state, DC=sbu",
     "x509SerialNumber": "1370498050",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:54.969+0000",
-    "nextUpdate": "2023-04-17T02:42:54.969+0000",
-=======
-    "validationTime": "2023-04-09T20:54:20.860+0000",
-    "nextUpdate": "2023-04-16T20:54:20.860+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:06.461+0000",
+    "nextUpdate": "2023-04-17T13:44:06.461+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -11715,7 +10444,6 @@ Response:
 }
 Issuer: CN=U.S. Department of State AD Root CA, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=state, DC=sbu
 Subject: OU=U.S. Department of State PIV CA2, OU=Certification Authorities, OU=PIV, OU=Department of State, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 13aff624e391cbd5e3a1d1adc2b018eaa5bc8b34c8385cd621d78569efade517
 Validation Result: SUCCESS
 Valid Certificate:
@@ -11768,9 +10496,6 @@ SekXrvjkRFc7CMchnIF3AJ576eaOdR15yiAG1UqZwIE2LK3OJB0IGtHJOKcTO5Dx
 k+zB616j8DK+
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11787,13 +10512,8 @@ Response:
     "x509IssuerName": "CN=U.S. Department of State AD Root CA, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=state, DC=sbu",
     "x509SerialNumber": "1370536319",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:55.494+0000",
-    "nextUpdate": "2023-04-17T02:42:55.494+0000",
-=======
-    "validationTime": "2023-04-09T20:54:21.645+0000",
-    "nextUpdate": "2023-04-16T20:54:21.645+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:06.947+0000",
+    "nextUpdate": "2023-04-17T13:44:06.947+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -11808,7 +10528,6 @@ Response:
 }
 Issuer: CN=U.S. Department of State AD Root CA, CN=AIA, CN=Public Key Services, CN=Services, CN=Configuration, DC=state, DC=sbu
 Subject: OU=U.S. Department of State PIV CA2, OU=Certification Authorities, OU=PIV, OU=Department of State, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): 20506f34e71e57f714b5382b2d6e7d932ffbb0b752b375d7a83f8b0f31cc65be
 Validation Result: SUCCESS
 Valid Certificate:
@@ -11868,9 +10587,6 @@ nzHfJM1FPkkJQfYEhdMbVIp15bKsLwmJto7vLU3eDTd5LggcGF0ByxDyWspihXw8
 C3Vmw7tXZzXjrFRjwpgBsL5C7eeB8BPvr/y+9uKA5C8B7zMcitC6Xmg=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11887,13 +10603,8 @@ Response:
     "x509IssuerName": "CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US",
     "x509SerialNumber": "226197281861747171001742527929153572507297613057",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:55.678+0000",
-    "nextUpdate": "2023-04-17T02:42:55.678+0000",
-=======
-    "validationTime": "2023-04-09T20:54:21.997+0000",
-    "nextUpdate": "2023-04-16T20:54:21.997+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:07.127+0000",
+    "nextUpdate": "2023-04-17T13:44:07.127+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -11905,7 +10616,6 @@ Response:
 }
 Issuer: CN=Federal Common Policy CA G2, OU=FPKI, O=U.S. Government, C=US
 Subject: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): ed40cc2e18e224f1c8dc6d0786559576517139be777153cd9f8ad2d215a9be79
 Validation Result: SUCCESS
 Valid Certificate:
@@ -11962,9 +10672,6 @@ Glja2xW0Wy8TFld3a+0O1YyH3BZhuC/1MvSaRVE64mHWnwnZqnDYw4xJ1OS1Q+l1
 8Eg=
 -----END CERTIFICATE-----
 
-=======
-Validation Result: SUCCESS
->>>>>>> main
 
 Request:
 {
@@ -11981,13 +10688,8 @@ Response:
     "x509IssuerName": "OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US",
     "x509SerialNumber": "1460481024",
     "x509SubjectAltName": [],
-<<<<<<< HEAD
-    "validationTime": "2023-04-10T02:42:55.692+0000",
-    "nextUpdate": "2023-04-17T02:42:55.692+0000",
-=======
-    "validationTime": "2023-04-09T20:54:22.117+0000",
-    "nextUpdate": "2023-04-16T20:54:22.117+0000",
->>>>>>> main
+    "validationTime": "2023-04-10T13:44:07.136+0000",
+    "nextUpdate": "2023-04-17T13:44:07.136+0000",
     "validationResult": {
         "result": "SUCCESS",
         "x509CertificatePath": [
@@ -12002,7 +10704,6 @@ Response:
 }
 Issuer: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
 Subject: OU=US Treasury Root CA, OU=Certification Authorities, OU=Department of the Treasury, O=U.S. Government, C=US
-<<<<<<< HEAD
 Thumbprint (SHA-256): b29701b95ee250e1c13a15131cacc7c503f1f980ba1044f704eadf81393f90a3
 Validation Result: SUCCESS
 Valid Certificate:
@@ -12049,7 +10750,5 @@ A843vFQuVRgIwp1M+D4xnvxnLbehLzqEZ6ZSSIPoHXzitfz9/oycCfUbIyYE4TW9
 8wEwfpj4wCO1Gldl+2rZYUEb5mjkkltR1O8s5rYqoxVSVKUrAD/fHYdOzteWkNQk
 yiTo/Q==
 -----END CERTIFICATE-----
-=======
-Validation Result: SUCCESS
->>>>>>> main
+
 ```
