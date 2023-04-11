@@ -21,15 +21,15 @@ public class CacheUpdateConfiguration {
 	@Scheduled(timeUnit = TimeUnit.MINUTES, fixedRate = 15)
 	private static void refreshIntermediates() {
 		/*
-		 * Update intermediate cache from FPKI Playbook
-		 */
-		IntermediateCacheSingleton cache = IntermediateCacheSingleton.getInstance();
-		cache.updateIntermediates();
-		/*
 		 * Update validation policies from project main branch
 		 */
 		ValidationPoliciesSingleton policy = ValidationPoliciesSingleton.getInstance();
 		policy.updateValidationPolicies();
+		/*
+		 * Update intermediate cache from policy defined hints
+		 */
+		IntermediateCacheSingleton cache = IntermediateCacheSingleton.getInstance();
+		cache.updateIntermediates();
 	}
 
 }
