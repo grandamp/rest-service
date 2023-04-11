@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 public class IntermediateCacheSingleton {
 	private final Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
 
-	private final String p7Uri = "https://raw.githubusercontent.com/grandamp/rest-service/main/configuration/FCPCAG2-Intermediates/valid-c21f969b-5f03-333d-83e0-4f8f136e7682-20230410T1700.p7b";
+	private final String p7Uri = "https://raw.githubusercontent.com/grandamp/rest-service/main/configuration/FCPCAG2-Intermediates/valid-c21f969b-5f03-333d-83e0-4f8f136e7682-current.p7b";
 
 	private CertStore intermediates = null;
 
