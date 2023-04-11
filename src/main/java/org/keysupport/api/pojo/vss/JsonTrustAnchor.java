@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.constraints.NotBlank;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "x5t#S256", "trustAnchorSubject", "x509Certificate" })
+@JsonPropertyOrder({ "x5t#S256", "X509SubjectName", "x509Certificate" })
 public class JsonTrustAnchor {
 
 	/**
@@ -24,10 +24,10 @@ public class JsonTrustAnchor {
 	public String x5tS256;
 
 	/**
-	 * Field trustAnchorSubject.
+	 * Field X509SubjectName.
 	 */
-	@JsonProperty("trustAnchorSubject")
-	public String trustAnchorSubject;
+	@JsonProperty("x509SubjectName")
+	public String x509SubjectName;
 
 	/**
 	 * Field x509Certificate.
