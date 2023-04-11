@@ -15,27 +15,20 @@ import java.util.List;
 import javax.security.auth.x500.X500Principal;
 
 import org.keysupport.api.pkix.X509Util;
+import org.keysupport.api.pojo.vss.ExcludedIntermediate;
+import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.singletons.HTTPClientSingleton;
+import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This class uses a singleton pattern to store the configured intermediate
  * cache.
  *
- * Since we are initially testing against the U.S. Federal PKI, we will use an
- * artifact from the Federal PKI Playbooks:
- *
- * https://playbooks.idmanagement.gov/fpki/tools/fpkigraph/
- *
- * (Source CMS CERTS-ONLY message containing all Federal PKI Intermediates)
- *
- * https://github.com/GSA/ficam-playbooks/raw/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b
- * 
- * Adding local repository option:
- * 
- * https://raw.githubusercontent.com/grandamp/rest-service/main/configuration/FCPCAG2-Intermediates/valid-c21f969b-5f03-333d-83e0-4f8f136e7682-20230410T1700.p7b
- * 
  * TODO:
  * 
  * - Download intermediate URLs for each policy;
@@ -44,21 +37,55 @@ import org.slf4j.LoggerFactory;
  * - Use the validation cache for each CA as much as possible. 
  */
 public class IntermediateCacheSingleton {
+	
 	private final Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
 
-	private final String p7Uri = "https://raw.githubusercontent.com/grandamp/rest-service/main/configuration/FCPCAG2-Intermediates/valid-c21f969b-5f03-333d-83e0-4f8f136e7682-current.p7b";
-
 	private CertStore intermediates = null;
+	
+	private ValidationPoliciesSingleton policy = null;
+	
+	ObjectMapper mapper = null;
 
 	private IntermediateCacheSingleton() {
+		policy = ValidationPoliciesSingleton.getInstance();
+		mapper = new ObjectMapper();
+	}
+
+	private boolean excludedByPolicy(List<ExcludedIntermediate> valPolExcludeList, X509Certificate cert) {
+		String x5tS256 = X509Util.x5tS256(cert);
+		for (ExcludedIntermediate exclude: valPolExcludeList) {
+			if (exclude.x5tS256.equalsIgnoreCase(x5tS256)) {
+				String loggedExclustion = null;
+				try {
+					loggedExclustion = mapper.writeValueAsString(exclude);
+				} catch (JsonProcessingException e) {
+					LOG.error("Error mapping POJO to JSON", e);
+				}
+				LOG.info(loggedExclustion);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void updateIntermediates() {
+		
+		/*
+		 * WIP: For now we are only fething the first default policy since all of our example policies leverage the same Trust Anchor
+		 * 
+		 * TODO:  Refactor to incorporate intermediates from multiple Trust Anchors
+		 */
+		ValidationPolicy valPol = policy.getValidationPolicies().validationPolicies.get(0);
+		String policyUriStr = valPol.cmsIntermediateHintListUri.get(0);
+		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
+		URI uri = URI.create(policyUriStr);
+		/*
+		 * Temp for testing
+		 */
+		//URI uri = URI.create("https://raw.githubusercontent.com/grandamp/rest-service/main/configuration/FCPCAG2-Intermediates/rejecting-wrong-direction-current.p7b");
 		/*
 		 * Download the CMS object
 		 */
-		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
-		URI uri = URI.create(p7Uri);
 		CertPath cp = client.getCms(uri);
 		@SuppressWarnings("unchecked")
 		List<X509Certificate> certs = (List<X509Certificate>) cp.getCertificates();
@@ -68,28 +95,16 @@ public class IntermediateCacheSingleton {
 		 * Filter the Intermediates we received
 		 */
 		for (X509Certificate cert : certs) {
-			X500Principal fbcag4 = new X500Principal("CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US");
-			X500Principal fcpcag2 = new X500Principal("CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US");
+
+			/*
+			 * New filtering logic
+			 * 
+			 * Derive x5t#S256, and obtain subject and issuer for logging
+			 */
 			X500Principal subject = cert.getSubjectX500Principal();
 			X500Principal issuer = cert.getIssuerX500Principal();
-			/*
-			 * Derive x5t#S256
-			 */
-			String x5tS256 = X509Util.x5tS256(cert);
 			LOG.info("CMS Cert: " + subject.getName() + " signed by " + issuer.getName());
-			/*
-			 * Filter out any certificate issued to FCPCAG2, including the FCPCAG2, and;
-			 * Filter out any FBCAG4 issued by any other issue except FCPCAG2.
-			 */
-			if (subject.equals(fcpcag2)) {
-				LOG.info("Filtering out x5t#S256: " + x5tS256 + " Subject: " + subject.getName() + " Issuer: " + issuer.getName());
-			} else if (subject.equals(fbcag4)) {
-				if (issuer.equals(fcpcag2)) {
-					filteredCerts.add(cert);
-				} else {
-					LOG.info("Filtering out x5t#S256: " + x5tS256 + " Subject: " + subject.getName() + " Issuer: " + issuer.getName());
-				}
-			} else {
+			if (!excludedByPolicy(valPol.excludeIntermediates, cert)) {
 				filteredCerts.add(cert);
 			}
 		}

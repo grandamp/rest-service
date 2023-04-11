@@ -16,15 +16,27 @@ import jakarta.validation.constraints.NotBlank;
 
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "intermediateId", "excludeReason" })
-public class excludedIntermediate {
+@JsonPropertyOrder({ "intermediateId", "x509SubjectName", "x509IssuerName", "excludeReason" })
+public class ExcludedIntermediate {
 
 	/**
-	 * Field intermediateId
+	 * Field x5t#S256
 	 */
 	@NotBlank
-	@JsonProperty("intermediateId")
-	public String intermediateId;
+	@JsonProperty("x5t#S256")
+	public String x5tS256;
+
+	/**
+	 * Field X509SubjectName.
+	 */
+	@JsonProperty("x509SubjectName")
+	public String x509SubjectName;
+
+	/**
+	 * Field X509IssuerName.
+	 */
+	@JsonProperty("x509IssuerName")
+	public String x509IssuerName;
 
 	/**
 	 * Field excludeReason
