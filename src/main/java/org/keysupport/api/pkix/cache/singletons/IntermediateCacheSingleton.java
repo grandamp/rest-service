@@ -35,6 +35,13 @@ import org.slf4j.LoggerFactory;
  * Adding local repository option:
  * 
  * https://raw.githubusercontent.com/grandamp/rest-service/main/configuration/FCPCAG2-Intermediates/valid-c21f969b-5f03-333d-83e0-4f8f136e7682-20230410T1700.p7b
+ * 
+ * TODO:
+ * 
+ * - Download intermediate URLs for each policy;
+ * - Consolidate duplicate intermediates per policy as much as possible;
+ * - Periodically validate each intermediate; and;
+ * - Use the validation cache for each CA as much as possible. 
  */
 public class IntermediateCacheSingleton {
 	private final Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
