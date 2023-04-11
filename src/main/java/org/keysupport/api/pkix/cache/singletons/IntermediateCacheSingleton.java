@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
+import org.keysupport.api.pkix.X509Util;
 import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +31,15 @@ import org.slf4j.LoggerFactory;
  * (Source CMS CERTS-ONLY message containing all Federal PKI Intermediates)
  *
  * https://github.com/GSA/ficam-playbooks/raw/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b
+ * 
+ * Adding local repository option:
+ * 
+ * https://raw.githubusercontent.com/grandamp/rest-service/main/configuration/FCPCAG2-Intermediates/valid-c21f969b-5f03-333d-83e0-4f8f136e7682-20230410T1700.p7b
  */
 public class IntermediateCacheSingleton {
 	private final Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
 
-	private final String p7Uri = "https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b";
+	private final String p7Uri = "https://raw.githubusercontent.com/grandamp/rest-service/main/configuration/FCPCAG2-Intermediates/valid-c21f969b-5f03-333d-83e0-4f8f136e7682-20230410T1700.p7b";
 
 	private CertStore intermediates = null;
 
@@ -60,18 +65,22 @@ public class IntermediateCacheSingleton {
 			X500Principal fcpcag2 = new X500Principal("CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US");
 			X500Principal subject = cert.getSubjectX500Principal();
 			X500Principal issuer = cert.getIssuerX500Principal();
+			/*
+			 * Derive x5t#S256
+			 */
+			String x5tS256 = X509Util.x5tS256(cert);
 			LOG.info("CMS Cert: " + subject.getName() + " signed by " + issuer.getName());
 			/*
 			 * Filter out any certificate issued to FCPCAG2, including the FCPCAG2, and;
 			 * Filter out any FBCAG4 issued by any other issue except FCPCAG2.
 			 */
 			if (subject.equals(fcpcag2)) {
-				LOG.info("Filtering out " + subject.getName() + " signed by " + issuer.getName());
+				LOG.info("Filtering out x5t#S256: " + x5tS256 + " Subject: " + subject.getName() + " Issuer: " + issuer.getName());
 			} else if (subject.equals(fbcag4)) {
 				if (issuer.equals(fcpcag2)) {
 					filteredCerts.add(cert);
 				} else {
-					LOG.info("Filtering out " + subject.getName() + " signed by " + issuer.getName());
+					LOG.info("Filtering out x5t#S256: " + x5tS256 + " Subject: " + subject.getName() + " Issuer: " + issuer.getName());
 				}
 			} else {
 				filteredCerts.add(cert);
