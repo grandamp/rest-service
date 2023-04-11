@@ -27,23 +27,33 @@
 			"cmsIntermediateHintListRefresh": 3600,
 			"excludeIntermediates": [
 				{
-					"intermediateId": "X5rswkYWshkTcmAN2A9t0yDIyloM638JyYXr8GlpNPw=",
+					"x5t#S256": "X5rswkYWshkTcmAN2A9t0yDIyloM638JyYXr8GlpNPw=",
+					"x509SubjectName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
+					"x509IssuerName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
 					"excludeReason": "wrong direction"
 				},
 				{
-					"intermediateId": "OO5H7b6JjmMdoV5ecbtcTQG2M+YNqcml4gusdkopUl4=",
+					"x5t#S256": "OO5H7b6JjmMdoV5ecbtcTQG2M+YNqcml4gusdkopUl4=",
+					"x509SubjectName": "CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US",
+					"x509IssuerName": "CN=TSCP SHA256 Bridge CA,OU=CAs,O=TSCP Inc.,C=US",
 					"excludeReason": "wrong direction"
 				},
 				{
-					"intermediateId": "bDP35teW2+4ku8ODIZe6UwNDWfjQgbg05YygB8dze/E=",
+					"x5t#S256": "bDP35teW2+4ku8ODIZe6UwNDWfjQgbg05YygB8dze/E=",
+					"x509SubjectName": "CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US",
+					"x509IssuerName": "CN=STRAC Bridge Root Certification Authority,OU=STRAC PKI Trust Infrastructure,O=STRAC,C=US",
 					"excludeReason": "wrong direction"
 				},
 				{
-					"intermediateId": "C2WMJ3J9/WzUfjeK4jkOo3bZcI7PSwZ3X47nvFARmZE=",
+					"x5t#S256": "C2WMJ3J9/WzUfjeK4jkOo3bZcI7PSwZ3X47nvFARmZE=",
+					"x509SubjectName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
+					"x509IssuerName": "CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US",
 					"excludeReason": "wrong direction"
 				},
 				{
-					"intermediateId": "8FU5ti7BioqYOiNPsidDa2/xDSEE11pxiOO4Fwp/grY=",
+					"x5t#S256": "8FU5ti7BioqYOiNPsidDa2/xDSEE11pxiOO4Fwp/grY=",
+					"x509SubjectName": "CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US",
+					"x509IssuerName": "CN=CertiPath Bridge CA - G3,OU=Certification Authorities,O=CertiPath,C=US",
 					"excludeReason": "wrong direction"
 				}
 			]
@@ -80,23 +90,33 @@
 			"cmsIntermediateHintListRefresh": 900,
 			"excludeIntermediates": [
 				{
-					"intermediateId": "X5rswkYWshkTcmAN2A9t0yDIyloM638JyYXr8GlpNPw=",
+					"x5t#S256": "X5rswkYWshkTcmAN2A9t0yDIyloM638JyYXr8GlpNPw=",
+					"x509SubjectName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
+					"x509IssuerName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
 					"excludeReason": "wrong direction"
 				},
 				{
-					"intermediateId": "OO5H7b6JjmMdoV5ecbtcTQG2M+YNqcml4gusdkopUl4=",
+					"x5t#S256": "OO5H7b6JjmMdoV5ecbtcTQG2M+YNqcml4gusdkopUl4=",
+					"x509SubjectName": "CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US",
+					"x509IssuerName": "CN=TSCP SHA256 Bridge CA,OU=CAs,O=TSCP Inc.,C=US",
 					"excludeReason": "wrong direction"
 				},
 				{
-					"intermediateId": "bDP35teW2+4ku8ODIZe6UwNDWfjQgbg05YygB8dze/E=",
+					"x5t#S256": "bDP35teW2+4ku8ODIZe6UwNDWfjQgbg05YygB8dze/E=",
+					"x509SubjectName": "CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US",
+					"x509IssuerName": "CN=STRAC Bridge Root Certification Authority,OU=STRAC PKI Trust Infrastructure,O=STRAC,C=US",
 					"excludeReason": "wrong direction"
 				},
 				{
-					"intermediateId": "C2WMJ3J9/WzUfjeK4jkOo3bZcI7PSwZ3X47nvFARmZE=",
+					"x5t#S256": "C2WMJ3J9/WzUfjeK4jkOo3bZcI7PSwZ3X47nvFARmZE=",
+					"x509SubjectName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
+					"x509IssuerName": "CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US",
 					"excludeReason": "wrong direction"
 				},
 				{
-					"intermediateId": "8FU5ti7BioqYOiNPsidDa2/xDSEE11pxiOO4Fwp/grY=",
+					"x5t#S256": "8FU5ti7BioqYOiNPsidDa2/xDSEE11pxiOO4Fwp/grY=",
+					"x509SubjectName": "CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US",
+					"x509IssuerName": "CN=CertiPath Bridge CA - G3,OU=Certification Authorities,O=CertiPath,C=US",
 					"excludeReason": "wrong direction"
 				}
 			]

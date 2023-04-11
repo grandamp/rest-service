@@ -101,7 +101,7 @@ public class ValidationPolicy {
 	 * Field excludeIntermediates 
 	 */
 	@JsonProperty("excludeIntermediates")
-	public List<excludedIntermediate> excludeIntermediates;
+	public List<ExcludedIntermediate> excludeIntermediates;
 	
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or
