@@ -19,7 +19,7 @@ import jakarta.validation.constraints.NotBlank;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "validationPolicyId", "validationPolicyName", "validationPolicyDescription", "trustAnchors",
 		"userPolicySet", "inhibitPolicyMapping", "requireExplicitPolicy", "inhibitAnyPolicy", "validCacheLifetime",
-		"inValidCacheLifetime", "cmsIntermediateHintListUri", "cmsIntermediateHintListRefresh" })
+		"inValidCacheLifetime", "cmsIntermediateHintListUri", "cmsIntermediateHintListRefresh", "excludeIntermediates" })
 public class ValidationPolicy {
 
 	/**
@@ -86,23 +86,23 @@ public class ValidationPolicy {
 	public int inValidCacheLifetime;
 
 	/**
-	 * TODO: This may be multiple CMS files if the policy includes more than one
-	 * Trust Anchor
-	 * 
 	 * Field cmsIntermediateHintListUri
 	 */
 	@JsonProperty("cmsIntermediateHintListUri")
 	public List<String> cmsIntermediateHintListUri;
 
 	/**
-	 * TODO: Download multiple CMS files for this policy using the interval
-	 * specified
-	 * 
 	 * Field cmsIntermediateHintListRefresh
 	 */
 	@JsonProperty("cmsIntermediateHintListRefresh")
 	public int cmsIntermediateHintListRefresh;
 
+	/*
+	 * Field excludeIntermediates 
+	 */
+	@JsonProperty("excludeIntermediates")
+	public List<excludedIntermediate> excludeIntermediates;
+	
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or
 	 * undefined
