@@ -250,7 +250,7 @@ public class ValidatePKIX {
 		 * </pre>
 		 */
 		IntermediateCacheSingleton intermediateCacheSingleton = IntermediateCacheSingleton.getInstance();
-		params.addCertStore(intermediateCacheSingleton.getIntermediates());
+		params.addCertStore(intermediateCacheSingleton.getIntermediates(valPol.validationPolicyId));
 		/*
 		 * Build the certificate path
 		 */

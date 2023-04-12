@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,11 +30,11 @@ public class IntermediatesController {
 	private final static Logger LOG = LoggerFactory.getLogger(IntermediatesController.class);
 
 	@SuppressWarnings("unchecked")
-	@GetMapping(path = "/vss/v2/intermediates", produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<List<JsonX509Certificate>> intermediates() {
+	@GetMapping(path = "/vss/v2/intermediates/{validationPolicyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<List<JsonX509Certificate>> intermediates(@PathVariable String validationPolicyId) {
 		List<JsonX509Certificate> intermediates = new ArrayList<JsonX509Certificate>();
 		IntermediateCacheSingleton intermediateCacheSingleton = IntermediateCacheSingleton.getInstance();
-		CertStore intermediateStore = intermediateCacheSingleton.getIntermediates();
+		CertStore intermediateStore = intermediateCacheSingleton.getIntermediates(validationPolicyId);
 		Collection<X509Certificate> intermediateCerts = null;
 		try {
 			intermediateCerts = (Collection<X509Certificate>) intermediateStore.getCertificates(new X509CertSelector());

@@ -41,8 +41,6 @@ public class IntermediateCacheSingleton {
 	
 	private final Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
 
-	private CertStore intermediates = null;
-	
 	private ValidationPoliciesSingleton policy = null;
 	
 	/*
@@ -77,7 +75,7 @@ public class IntermediateCacheSingleton {
 
 	public void updateIntermediates() {
 		/*
-		 * WIP: For now we are only fething the first default policy since all of our example policies leverage the same Trust Anchor
+		 * WIP: For now we are only fetching the first default policy since all of our example policies leverage the same Trust Anchor
 		 * 
 		 * TODO:  Refactor to incorporate intermediates from multiple Trust Anchors
 		 */
@@ -114,9 +112,10 @@ public class IntermediateCacheSingleton {
 			}
 		}
 		/*
-		 * Place certificates into a Collection CertStore
+		 * Place certificates into a Collection CertStore, per `validationPolicyId`
 		 */
 		CertStoreParameters cparam = new CollectionCertStoreParameters(filteredCerts);
+		CertStore intermediates = null;
 		try {
 			intermediates = CertStore.getInstance("Collection", cparam, "SUN");
 		} catch (InvalidAlgorithmParameterException e) {
@@ -141,8 +140,4 @@ public class IntermediateCacheSingleton {
 		return intermediateMap.get(validationPolicyId);
 	}
 
-	public CertStore getIntermediates() {
-		return intermediates;
-	}
-	
 }
