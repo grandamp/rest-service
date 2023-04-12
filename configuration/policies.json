@@ -30,7 +30,7 @@
 					"x5t#S256": "X5rswkYWshkTcmAN2A9t0yDIyloM638JyYXr8GlpNPw=",
 					"x509SubjectName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
 					"x509IssuerName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
-					"excludeReason": "wrong direction"
+					"excludeReason": "current trust anchor"
 				},
 				{
 					"x5t#S256": "OO5H7b6JjmMdoV5ecbtcTQG2M+YNqcml4gusdkopUl4=",
@@ -93,7 +93,7 @@
 					"x5t#S256": "X5rswkYWshkTcmAN2A9t0yDIyloM638JyYXr8GlpNPw=",
 					"x509SubjectName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
 					"x509IssuerName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
-					"excludeReason": "wrong direction"
+					"excludeReason": "current trust anchor"
 				},
 				{
 					"x5t#S256": "OO5H7b6JjmMdoV5ecbtcTQG2M+YNqcml4gusdkopUl4=",
