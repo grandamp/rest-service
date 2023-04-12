@@ -76,7 +76,7 @@ This service can implement such a policy using the service's following `validati
     {
       "x509SubjectName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
       "x509IssuerName": "CN=Federal Common Policy CA G2,OU=FPKI,O=U.S. Government,C=US",
-      "excludeReason": "wrong direction",
+      "excludeReason": "current trust anchor",
       "x5t#S256": "X5rswkYWshkTcmAN2A9t0yDIyloM638JyYXr8GlpNPw="
     },
     {
