@@ -139,5 +139,5 @@ public class IntermediateCacheSingleton {
 	public CertStore getIntermediates(String validationPolicyId) {
 		return intermediateMap.get(validationPolicyId);
 	}
-
+	
 }
