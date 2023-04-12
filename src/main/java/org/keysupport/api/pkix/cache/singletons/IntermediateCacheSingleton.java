@@ -11,6 +11,7 @@ import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.security.auth.x500.X500Principal;
 
@@ -44,10 +45,16 @@ public class IntermediateCacheSingleton {
 	
 	private ValidationPoliciesSingleton policy = null;
 	
+	/*
+	 * TODO: Create a map of intermediate stores that correspond to each validation policy.
+	 */
+	ConcurrentHashMap<String, CertStore> intermediateMap = null;
+	
 	ObjectMapper mapper = null;
 
 	private IntermediateCacheSingleton() {
 		policy = ValidationPoliciesSingleton.getInstance();
+		intermediateMap = new ConcurrentHashMap<String, CertStore>();
 		mapper = new ObjectMapper();
 	}
 
@@ -69,7 +76,6 @@ public class IntermediateCacheSingleton {
 	}
 
 	public void updateIntermediates() {
-		
 		/*
 		 * WIP: For now we are only fething the first default policy since all of our example policies leverage the same Trust Anchor
 		 * 
@@ -95,7 +101,6 @@ public class IntermediateCacheSingleton {
 		 * Filter the Intermediates we received
 		 */
 		for (X509Certificate cert : certs) {
-
 			/*
 			 * New filtering logic
 			 * 
@@ -121,6 +126,7 @@ public class IntermediateCacheSingleton {
 		} catch (NoSuchProviderException e) {
 			LOG.error("Failed to create CertStore from CMS object", e);
 		}
+		intermediateMap.put(valPol.validationPolicyId, intermediates);
 	}
 
 	private class SingletonHelper {
@@ -131,8 +137,12 @@ public class IntermediateCacheSingleton {
 		return SingletonHelper.INSTANCE;
 	}
 
+	public CertStore getIntermediates(String validationPolicyId) {
+		return intermediateMap.get(validationPolicyId);
+	}
+
 	public CertStore getIntermediates() {
 		return intermediates;
 	}
-
+	
 }
