@@ -74,9 +74,13 @@ public class ValidatePKIX {
 
 	private final static String CERTPATH_ALGORITHM = "PKIX";
 
-	/*
+	/**
+	 * <pre>
 	 * TODO: For now, use the BC signature provider until BCFIPS is avail for
 	 * OpenJDK/Corretto 17
+	 * 
+	 * - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-45146
+	 * </pre>
 	 */
 	private final static String JCE_PROVIDER = "BC";
 
@@ -122,9 +126,22 @@ public class ValidatePKIX {
 		 * 
 		 * https://docs.oracle.com/en/java/javase/17/security/java-pki-programmers-guide.html#GUID-E6E737DB-4000-4005-969E-BCD0238B1566
 		 * 
-		 * If enabled, we should not rely on the following property:
+		 * If enabled, we should not rely on the following properties:
 		 * 
 		 * System.setProperty("com.sun.security.enableCRLDP", "true");
+		 * Security.setProperty("ocsp.enable", "true");
+		 * 
+		 * The preference is to not beacon human credential use.  
+		 * 
+		 * It is much more efficient for us to consider local revocation 
+		 * data caching (expecting ~2Gb/24hr for FPKI) via CRLs.
+		 * 
+		 * Some teams *may* want to consider an internal OCSP responder, 
+		 * where the revocation source data is CRL based, and; can 
+		 * discover from any certificate that is successfully validated.
+		 * 
+		 * Below are the properties that should be set in lieu of the 
+		 * System/Security properties above to enable OCSP and CRL DP Download:
 		 * 
 		 * Security.setProperty("ocsp.responderURL", "http://{host}/");
 		 * Security.setProperty("ocsp.responderCertIssuerName", "{issuer}");
@@ -170,7 +187,9 @@ public class ValidatePKIX {
 			LOG.error("Error parsing Certificate SAN.", e);
 		}
 		/*
-		 * Add x5t#S256
+		 * Add x5t#S256, because we are checking temporal validity next.
+		 * 
+		 * We can render a *much* faster validity result in this case.
 		 */
 		response.x5tS256 = x5tS256;
 		try {
@@ -195,14 +214,19 @@ public class ValidatePKIX {
 		 * algorithm/keySize check.
 		 *
 		 * Set RFC 5280 Inputs based on the selected certificate and validation policy
+		 * 
+		 * This seems easy to do with the SUN JCE Provider, but; we are using the BC
+		 * provider (targeting BCFIPS)
 		 */
 		X509CertSelector selector = new X509CertSelector();
 		selector.setCertificate(cert);
 		/*
 		 * Initialize the TrustAnchor via the ValidationPolicy.
 		 *
-		 * TODO: Address policies that indicate multiple trust anchors, for now; we will
-		 * only inject the first trust anchor defined in the validation policy.
+		 * TODO: Address policies that indicate multiple trust anchors,
+		 * 
+		 * *partially* implemented. Next, we should introduce another trust anchor
+		 * (CITE) and define some complex testing policies.
 		 */
 		List<Certificate> cert_list = new ArrayList<>();
 		HashSet<TrustAnchor> taList = new HashSet<TrustAnchor>();
