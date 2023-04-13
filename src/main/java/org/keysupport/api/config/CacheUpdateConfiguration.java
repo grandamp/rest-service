@@ -18,7 +18,9 @@ public class CacheUpdateConfiguration {
 	}
 
 	/*
-	 * Run every 15 minutes
+	 * TODO: Right now we fetch policy every 15 minutes
+	 * 
+	 * We should create deployment variables for the policy source URI and refresh rate.
 	 */
 	@Scheduled(timeUnit = TimeUnit.MINUTES, fixedRate = 15)
 	private static void refreshIntermediates() {
