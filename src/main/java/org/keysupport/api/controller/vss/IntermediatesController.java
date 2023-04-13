@@ -40,6 +40,9 @@ public class IntermediatesController {
 			intermediateCerts = (Collection<X509Certificate>) intermediateStore.getCertificates(new X509CertSelector());
 		} catch (CertStoreException e) {
 			LOG.error("Error obtaining intermediates from CertStore", e);
+		} catch (NullPointerException e) {
+			LOG.info("There are no intermediates cached for the policy: " + validationPolicyId);
+			return new ResponseEntity<>(intermediates, HttpStatus.NOT_FOUND);
 		}
 		for (X509Certificate cert: intermediateCerts) {
 			JsonX509Certificate bCert = new JsonX509Certificate();
