@@ -19,7 +19,7 @@ import jakarta.validation.constraints.NotBlank;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "validationPolicyId", "validationPolicyName", "validationPolicyDescription", "trustAnchors",
 		"userPolicySet", "inhibitPolicyMapping", "requireExplicitPolicy", "inhibitAnyPolicy", "validCacheLifetime",
-		"inValidCacheLifetime", "cmsIntermediateHintListUri", "cmsIntermediateHintListRefresh", "excludeIntermediates" })
+		"inValidCacheLifetime", "cmsIntermediateHintListUri", "excludeIntermediates" })
 public class ValidationPolicy {
 
 	/**
@@ -90,12 +90,6 @@ public class ValidationPolicy {
 	 */
 	@JsonProperty("cmsIntermediateHintListUri")
 	public List<String> cmsIntermediateHintListUri;
-
-	/**
-	 * Field cmsIntermediateHintListRefresh
-	 */
-	@JsonProperty("cmsIntermediateHintListRefresh")
-	public int cmsIntermediateHintListRefresh;
 
 	/*
 	 * Field excludeIntermediates 

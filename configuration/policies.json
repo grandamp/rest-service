@@ -24,7 +24,6 @@
 				"https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b",
 				"https://monitor.certipath.com/fpki/download/all/p7b/"
 			],
-			"cmsIntermediateHintListRefresh": 3600,
 			"excludeIntermediates": [
 				{
 					"x5t#S256": "X5rswkYWshkTcmAN2A9t0yDIyloM638JyYXr8GlpNPw=",
@@ -87,7 +86,6 @@
 				"https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b",
 				"https://monitor.certipath.com/fpki/download/all/p7b/"
 			],
-			"cmsIntermediateHintListRefresh": 900,
 			"excludeIntermediates": [
 				{
 					"x5t#S256": "X5rswkYWshkTcmAN2A9t0yDIyloM638JyYXr8GlpNPw=",
@@ -152,7 +150,6 @@
 				"http://crl.nit.disa.mil/issuedby/DODJITCINTEROPERABILITYROOTCA2_IB.p7c",
 				"http://dsspweb.managed.entrust.com/SIA/CAcertsIssuedByEMSDemoFRootCA.p7c"
 			],
-			"cmsIntermediateHintListRefresh": 3600,
 			"excludeIntermediates": [
 				{
 					"x5t#S256": "X5rswkYWshkTcmAN2A9t0yDIyloM638JyYXr8GlpNPw=",
