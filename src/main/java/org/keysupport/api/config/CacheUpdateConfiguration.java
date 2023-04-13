@@ -1,8 +1,10 @@
 package org.keysupport.api.config;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
+import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -29,7 +31,10 @@ public class CacheUpdateConfiguration {
 		 * Update intermediate cache from policy defined hints
 		 */
 		IntermediateCacheSingleton cache = IntermediateCacheSingleton.getInstance();
-		cache.updateIntermediates();
+		List<ValidationPolicy> valPols = policy.getValidationPolicies().validationPolicies;
+		for (ValidationPolicy valPol: valPols) {
+			cache.updateIntermediates(valPol);
+		}
 	}
 
 }
