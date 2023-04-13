@@ -74,9 +74,13 @@ public class ValidatePKIX {
 
 	private final static String CERTPATH_ALGORITHM = "PKIX";
 
-	/*
+	/**
+	 * <pre>
 	 * TODO: For now, use the BC signature provider until BCFIPS is avail for
 	 * OpenJDK/Corretto 17
+	 * 
+	 * - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-45146
+	 * </pre>
 	 */
 	private final static String JCE_PROVIDER = "BC";
 
@@ -170,7 +174,9 @@ public class ValidatePKIX {
 			LOG.error("Error parsing Certificate SAN.", e);
 		}
 		/*
-		 * Add x5t#S256
+		 * Add x5t#S256, because we are checking temporal validity next.
+		 * 
+		 * We can render a *much* faster validity result in this case.
 		 */
 		response.x5tS256 = x5tS256;
 		try {
@@ -203,6 +209,9 @@ public class ValidatePKIX {
 		 *
 		 * TODO: Address policies that indicate multiple trust anchors, for now; we will
 		 * only inject the first trust anchor defined in the validation policy.
+		 * 
+		 * *partially* implemented.  Next, we should introduce another trust anchor (CITE)
+		 * and define some complex testing policies.
 		 */
 		List<Certificate> cert_list = new ArrayList<>();
 		HashSet<TrustAnchor> taList = new HashSet<TrustAnchor>();
