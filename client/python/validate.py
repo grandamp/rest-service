@@ -31,17 +31,18 @@ def loadCerts(file: str, type: FileEncoding) -> typing.List[x509.Certificate]:
     if type == FileEncoding.DER:
         return x509.load_der_x509_certificate(bytes)
 
-def validate(vssEndpointUri: str, vssPolicy: str, vssCert:str) -> typing.Dict:
-    request = {"validationPolicyId":vssPolicy,"x509Certificate":vssCert}
+def validate(host: str, policy: str, vssCert:str) -> typing.Dict:
+    request = {"validationPolicyId":policy,"x509Certificate":vssCert}
+    apiEndpointUri = "https://" + host + "/vss/v2/validate"
     print("\nRequest:\n" + json.dumps(request, sort_keys=False, indent=4))
-    response = requests.post(vssEndpointUri, json=request)
+    response = requests.post(apiEndpointUri, json=request)
     resJson = response.json()
     print("\nResponse:\n" + json.dumps(resJson, sort_keys=False, indent=4))
     return resJson
 
 def validateCert(certificate):
     vsscert = cert_to_base64(certificate)
-    resJson = validate(vssEndpointUri, vssPolicy, vsscert)
+    resJson = validate(host, policy, vsscert)
     x509IssuerName = resJson["x509IssuerName"]
     print("Issuer: " + x509IssuerName)
     x509SubjectName = resJson["x509SubjectName"]
@@ -61,8 +62,8 @@ def validateCert(certificate):
 
 if __name__ == "__main__":
     filename = sys.argv[1]
-    vssEndpointUri = sys.argv[2]
-    vssPolicy = sys.argv[3]
+    host = sys.argv[2]
+    policy = sys.argv[3]
     if (filename.endswith('p7c') | filename.endswith('p7b') | filename.endswith('p7s') | filename.endswith('p7m')):
         certs = loadCerts(filename, FileEncoding.DERPKCS7)
         for certificate in certs:
