@@ -22,4 +22,4 @@ if __name__ == "__main__":
     host = sys.argv[1]
     policy = sys.argv[2]
     resJson = policies(host, policy)
-    print("\nResponse:\n" + json.dumps(resJson, sort_keys=False, indent=4))
+    print(json.dumps(resJson, sort_keys=False, indent=4))
