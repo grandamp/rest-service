@@ -33,7 +33,7 @@ def loadCerts(file: str, type: FileEncoding) -> typing.List[x509.Certificate]:
 
 def validate(host: str, policy: str, vssCert:str) -> typing.Dict:
     request = {"validationPolicyId":policy,"x509Certificate":vssCert}
-    apiEndpointUri = "https://" + host + "/vss/v2/validate"
+    apiEndpointUri = host + "/vss/v2/validate"
     print("\nRequest:\n" + json.dumps(request, sort_keys=False, indent=4))
     response = requests.post(apiEndpointUri, json=request)
     resJson = response.json()

@@ -83,8 +83,7 @@
 			"inValidCacheLifetime": 900,
 			"cmsIntermediateHintListUri": [
 				"https://raw.githubusercontent.com/grandamp/rest-service/main/configuration/FCPCAG2-Intermediates/valid-c21f969b-5f03-333d-83e0-4f8f136e7682-current.p7b",
-				"https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b",
-				"https://monitor.certipath.com/fpki/download/all/p7b/"
+				"https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b"
 			],
 			"excludeIntermediates": [
 				{
