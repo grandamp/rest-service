@@ -14,7 +14,7 @@ def cert_to_base64(cert: x509.Certificate) -> str:
     return base64.b64encode(cert.public_bytes(Encoding.DER)).decode("utf-8")
 
 def policies(host: str, policy: str) -> typing.Dict:
-    apiEndpointUri = "https://" + host + "/vss/v2/policies/" + policy
+    apiEndpointUri = host + "/vss/v2/policies/" + policy
     response = requests.get(apiEndpointUri)
     return response.json()
 
