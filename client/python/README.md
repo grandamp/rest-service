@@ -2,6 +2,22 @@
 
 This is a quick and dirty Python client example.
 
+*Break and Inspect Warning:* In the event the exampe below fails with an error similar to:
+
+```TEXT
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.keysupport.org', port=443): Max retries exceeded with url: /vss/v2/policies/0f89456b-e336-3544-986c-6a42d982b239 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:997)')))
+```
+
+You can add the following to each Python example to allow the Break and Inspect signing certificaite in the file `bi.crt`:
+
+```TEXT
+#
+# The following lines are needed due to Break & Inspect
+#
+import os
+os.environ['REQUESTS_CA_BUNDLE'] = './bi.crt'
+```
+
 When using on the command line, you should be able to parse the following types of files to validate the enclosed certificates:
 
 - .p7c
