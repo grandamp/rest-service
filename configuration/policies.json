@@ -38,6 +38,12 @@
 					"excludeReason": "No longer operational"
 				},
 				{
+					"x5t#S256": "HFij+jQCeQwaheOto+UKH2TurJJbBQUFBYUYLGZVm6o=",
+					"x509SubjectName": "OU=GPO SCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US",
+					"x509IssuerName": "OU=GPO PCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US",
+					"excludeReason": "No longer operational"
+				},
+				{
 					"x5t#S256": "OO5H7b6JjmMdoV5ecbtcTQG2M+YNqcml4gusdkopUl4=",
 					"x509SubjectName": "CN=Federal Bridge CA G4,OU=FPKI,O=U.S. Government,C=US",
 					"x509IssuerName": "CN=TSCP SHA256 Bridge CA,OU=CAs,O=TSCP Inc.,C=US",
@@ -102,6 +108,12 @@
 					"x5t#S256": "Lyg2QXvzhTDy3d+9XqigaeYp0HQiwpJhTUJfGtY4kQ8=",
 					"x509SubjectName": "OU=GPO PCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US",
 					"x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
+					"excludeReason": "No longer operational"
+				},
+				{
+					"x5t#S256": "HFij+jQCeQwaheOto+UKH2TurJJbBQUFBYUYLGZVm6o=",
+					"x509SubjectName": "OU=GPO SCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US",
+					"x509IssuerName": "OU=GPO PCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US",
 					"excludeReason": "No longer operational"
 				},
 				{
@@ -172,6 +184,12 @@
 					"x5t#S256": "Lyg2QXvzhTDy3d+9XqigaeYp0HQiwpJhTUJfGtY4kQ8=",
 					"x509SubjectName": "OU=GPO PCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US",
 					"x509IssuerName": "CN=Federal Bridge CA G4, OU=FPKI, O=U.S. Government, C=US",
+					"excludeReason": "No longer operational"
+				},
+				{
+					"x5t#S256": "HFij+jQCeQwaheOto+UKH2TurJJbBQUFBYUYLGZVm6o=",
+					"x509SubjectName": "OU=GPO SCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US",
+					"x509IssuerName": "OU=GPO PCA, OU=Certification Authorities, OU=Government Printing Office, O=U.S. Government, C=US",
 					"excludeReason": "No longer operational"
 				},
 				{
