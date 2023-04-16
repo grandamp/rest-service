@@ -178,6 +178,9 @@ public class ValidatePKIX {
 			response.x509SerialNumber = cert.getSerialNumber().toString();
 		}
 		/*
+		 * TODO: populate subjectKeyIdentifer & isCA and 
+		 */
+		/*
 		 * Get subjectAltName values, swallow the exception as far as the consumer is
 		 * concerned, but log it.
 		 */
