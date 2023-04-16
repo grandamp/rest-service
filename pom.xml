@@ -41,6 +41,11 @@
 			<version>1.73</version>
 		</dependency>
 		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15to18</artifactId>
+			<version>1.73</version>
+		</dependency>
+		<dependency>
 			<groupId>org.commonmark</groupId>
 			<artifactId>commonmark</artifactId>
 			<version>0.21.0</version>
