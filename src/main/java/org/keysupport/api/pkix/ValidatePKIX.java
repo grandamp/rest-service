@@ -151,6 +151,8 @@ public class ValidatePKIX {
 		 */
 		/*
 		 * Disable AIA fetch to restrict our intermediate store
+		 * 
+		 * TODO: Consider this as an option
 		 */
 		System.setProperty("com.sun.security.enableAIAcaIssuers", "false");
 		/*
@@ -178,8 +180,28 @@ public class ValidatePKIX {
 			response.x509SerialNumber = cert.getSerialNumber().toString();
 		}
 		/*
-		 * TODO: populate subjectKeyIdentifer & isCA and 
+		 * TODO: populate subjectKeyIdentifer
 		 */
+
+		if (cert.getBasicConstraints() == -1) {
+			/*
+			 * This is not a CA
+			 */
+			response.isCA = Boolean.FALSE;
+		} else {
+			/**
+			 * <pre>
+			 * This is a CA:
+			 * 
+			 * - https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/security/cert/X509Certificate.html#getBasicConstraints()
+			 * 
+			 * "the value of pathLenConstraint if the BasicConstraints extension is present
+			 *  in the certificate and the subject of the certificate is a CA, otherwise -1."
+			 * 
+			 * </pre>
+			 */
+			response.isCA = Boolean.TRUE;
+		}
 		/*
 		 * Get subjectAltName values, swallow the exception as far as the consumer is
 		 * concerned, but log it.
@@ -225,11 +247,6 @@ public class ValidatePKIX {
 		selector.setCertificate(cert);
 		/*
 		 * Initialize the TrustAnchor via the ValidationPolicy.
-		 *
-		 * TODO: Address policies that indicate multiple trust anchors,
-		 * 
-		 * *partially* implemented. Next, we should introduce another trust anchor
-		 * (CITE) and define some complex testing policies.
 		 */
 		List<Certificate> cert_list = new ArrayList<>();
 		HashSet<TrustAnchor> taList = new HashSet<TrustAnchor>();
@@ -288,7 +305,7 @@ public class ValidatePKIX {
 		/**
 		 * <pre>
 		 * 
-		 * Add FPKI Intermediate Store from our IntermediateCacheSingleton
+		 * Add Intermediate Store from our IntermediateCacheSingleton
 		 *
 		 * - https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/security/cert/CertStore.html
 		 * 
@@ -377,10 +394,14 @@ public class ValidatePKIX {
 		}
 		LOG.debug(pvr.getPolicyTree().toString());
 		/*
-		 * If we got this far, the certificate is valid.
+		 * If we got this far, the certificate is valid. (Regardless of default
+		 * revocation checking behavior)
 		 *
 		 * Populate the ValidationSuccessData, add it to the result, and; return the
 		 * result.
+		 * 
+		 * TODO: If we disable default revocation checking by policy, then; we should
+		 * consider checking revocation using a method we define (and config via policy)
 		 */
 		Success success = new Success();
 		List<JsonX509Certificate> x509CertificatePath = new ArrayList<>();
