@@ -17,8 +17,9 @@ import jakarta.validation.constraints.NotBlank;
 
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "requestId", "validationPolicyId", "x5t#S256", "x509SubjectName", "x509IssuerName", "x509SerialNumber", "x509SubjectAltName",
-		"validationTime", "nextUpdate", "validationResultToken", "validationFailureData", "validationSuccessData" })
+@JsonPropertyOrder({ "requestId", "validationPolicyId", "x5t#S256", "x509SubjectName", "x509IssuerName",
+		"x509SerialNumber", "x509SubjectAltName", "subjectKeyIdentifer", "isCA", "validationTime", "nextUpdate",
+		"validationResultToken", "validationFailureData", "validationSuccessData" })
 public class VssResponse {
 
 	/**
@@ -64,6 +65,18 @@ public class VssResponse {
 	 */
 	@JsonProperty("x509SubjectAltName")
 	public List<SANValue> x509SubjectAltName;
+
+	/**
+	 * Field subjectKeyIdentifer.
+	 */
+	@JsonProperty("subjectKeyIdentifer")
+	public String subjectKeyIdentifer;
+
+	/**
+	 * Field isCA.
+	 */
+	@JsonProperty("isCA")
+	public boolean isCA;
 
 	/**
 	 * Field validationTime.
