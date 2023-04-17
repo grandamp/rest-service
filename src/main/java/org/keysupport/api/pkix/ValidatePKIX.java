@@ -60,7 +60,7 @@ public class ValidatePKIX {
 	/**
 	 * <pre>
 	 * 
-	 * TODO: For now, we will stick with the SUN provider since it can fetch CRL and
+	 * For now, we will stick with the SUN provider since it can fetch CRL and
 	 * OCSP data.
 	 *
 	 * https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/URICertStore.java
@@ -94,8 +94,6 @@ public class ValidatePKIX {
 		 * CRLs via the CDP extension - Check OCSP via the AIA extension - Chase CA
 		 * Issuers via the AIA extension
 		 *
-		 * TODO: Consider writing our own provider that leverages cached objects.
-		 *
 		 * The AIA and CDP chases would be valuable to update a local cache.
 		 *
 		 * The OCSP responses would be valuable *if* the CA is not able to produce a CRL
@@ -115,8 +113,18 @@ public class ValidatePKIX {
 		 * </pre>
 		 */
 		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-		System.setProperty("com.sun.security.enableCRLDP", "true");
-		Security.setProperty("ocsp.enable", "true");
+		/*
+		 * *Temporary Testing a non-revocation testing option*
+		 * 
+		 * 
+		 */
+		Boolean revocationCheckingDisabled = true;
+		if (revocationCheckingDisabled) {
+			Security.setProperty("ocsp.enable", "false");
+		} else {
+			System.setProperty("com.sun.security.enableCRLDP", "true");
+			Security.setProperty("ocsp.enable", "true");
+		}
 		/**
 		 * <pre>
 		 * 
@@ -302,6 +310,11 @@ public class ValidatePKIX {
 		params.setAnyPolicyInhibited(valPol.inhibitAnyPolicy);
 		params.setMaxPathLength(MAX_PATH_LENGTH);
 		params.addCertStore(cstore);
+		if (revocationCheckingDisabled) {
+			params.setRevocationEnabled(false);
+		} else {
+			params.setRevocationEnabled(false);
+		}
 		/**
 		 * <pre>
 		 * 
