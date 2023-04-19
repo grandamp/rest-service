@@ -1,6 +1,5 @@
 package org.keysupport.api.pkix;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -15,9 +14,7 @@ import java.security.cert.CertStore;
 import java.security.cert.CertStoreParameters;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateException;
 import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.CertificateRevokedException;
 import java.security.cert.CollectionCertStoreParameters;
@@ -37,11 +34,11 @@ import org.keysupport.api.RestServiceEventLogger;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.pojo.vss.Fail;
-import org.keysupport.api.pojo.vss.JsonTrustAnchor;
 import org.keysupport.api.pojo.vss.JsonX509Certificate;
 import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssResponse;
+import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -257,36 +254,8 @@ public class ValidatePKIX {
 		 * Initialize the TrustAnchor via the ValidationPolicy.
 		 */
 		List<Certificate> cert_list = new ArrayList<>();
-		HashSet<TrustAnchor> taList = new HashSet<TrustAnchor>();
-		List<JsonTrustAnchor> anchors = valPol.trustAnchors;
-		for (JsonTrustAnchor currentTa : anchors) {
-			X509Certificate ta = null;
-			try {
-				byte[] certBytes = null;
-				CertificateFactory cf = null;
-				ByteArrayInputStream bais = null;
-				try {
-					certBytes = Base64.getDecoder().decode(currentTa.x509Certificate);
-				} catch (Throwable e) {
-					LOG.error("Internal Validation Error", e);
-					throw new ServiceException("Internal Validation Error");
-				}
-				if (null != certBytes) {
-					cf = CertificateFactory.getInstance("X509");
-					bais = new ByteArrayInputStream(certBytes);
-					ta = (X509Certificate) cf.generateCertificate(bais);
-				} else {
-					LOG.error("Internal Validation Error, null certBytes");
-					throw new ServiceException("Internal Validation Error");
-				}
-			} catch (CertificateException e) {
-				LOG.error("Internal Validation Error", e);
-				throw new ServiceException("Internal Validation Error");
-			}
-			TrustAnchor anchor = new TrustAnchor(ta, null);
-			cert_list.add(ta);
-			taList.add(anchor);
-		}
+		ValidationPoliciesSingleton validationPoliciesSingleton = ValidationPoliciesSingleton.getInstance();
+		HashSet<TrustAnchor> taList = validationPoliciesSingleton.getTrustAnchors(valPol.validationPolicyId);
 		CertStoreParameters cparam = new CollectionCertStoreParameters(cert_list);
 		CertStore cstore = null;
 		try {
