@@ -211,6 +211,10 @@ public class ValidateController {
 				LOG.error("Error converting JSON to POJO", e);
 			}
 			if (null != response) {
+				/*
+				 * Log cached response
+				 */
+				LOG.info("{\"ValidationResponse\":" + strResponse + "}");
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			}
 		}
