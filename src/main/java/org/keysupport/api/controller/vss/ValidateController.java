@@ -201,7 +201,6 @@ public class ValidateController {
 		ElasticacheClient mcClient = client.getCacheClient();
 		byte[] cachedResponse = mcClient.get(requestId);
 		if (null != cachedResponse) {
-			LOG.info("We found a cached response, attempting to return to client");
 			String strResponse = new String(cachedResponse, StandardCharsets.UTF_8);
 			try {
 				response = mapper.readValue(strResponse, VssResponse.class);
@@ -218,7 +217,6 @@ public class ValidateController {
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			}
 		}
-		LOG.info("No cached response found, validating certificate per clients request");
 		/*
 		 * Validate, log, and; return the result
 		 */
@@ -342,7 +340,6 @@ public class ValidateController {
 		} else {
 			byte[] cachedResponse = mcClient.get(requestId);
 			if (null != cachedResponse) {
-				LOG.info("We found a cached response, attempting to return to client");
 				String strResponse = new String(cachedResponse, StandardCharsets.UTF_8);
 				try {
 					response = mapper.readValue(strResponse, VssResponse.class);
