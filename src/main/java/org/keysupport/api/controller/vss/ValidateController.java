@@ -7,13 +7,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -211,10 +209,16 @@ public class ValidateController {
 			}
 			if (null != response) {
 				/*
-				 * Log cached response
+				 * Log and return cached response
 				 */
 				LOG.info("{\"ValidationResponse\":" + strResponse + "}");
-				return new ResponseEntity<>(response, HttpStatus.OK);
+				String getUri = BASE_URI + "/vss/v2/validate/getByRequestId/" + requestId;
+				Date lastModified = X509Util.ISO8601DateFromString(response.validationTime);
+				return ResponseEntity.created(URI.create(getUri))
+						.cacheControl(CacheControl.maxAge(valPol.validCacheLifetime / 60, TimeUnit.MINUTES).cachePublic())
+						.eTag(requestId)
+						.lastModified(lastModified.toInstant())
+						.body(response);
 			}
 		}
 		/*
@@ -225,16 +229,7 @@ public class ValidateController {
 		Date dNow = new Date(lNow);
 		response = ValidatePKIX.validate(clientCert, x5tS256, valPol, dNow);
 		ValidationResult respResult = response.validationResult;
-		/*
-		 * Set validationTime and nextUpdate in the response
-		 *
-		 * Date Format now conforms to ISO 8601:
-		 *
-		 * http://xkcd.com/1179/
-		 */
-		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-		dFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-		response.validationTime = dFormat.format(dNow);
+		response.validationTime = X509Util.ISO8601DateString(dNow);
 		/*
 		 * nextUpdate is based on the validation policy.
 		 */
@@ -245,7 +240,7 @@ public class ValidateController {
 		} else {
 			calendar.add(Calendar.SECOND, valPol.inValidCacheLifetime);
 		}
-		response.nextUpdate = dFormat.format(calendar.getTime());
+		response.nextUpdate = X509Util.ISO8601DateString(calendar.getTime());
 		String validationNow = X509Util.ISO8601DateString(dNow);
 		if (respResult != null) {
 			if (respResult instanceof Success) {
