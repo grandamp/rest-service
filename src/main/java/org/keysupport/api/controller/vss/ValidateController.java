@@ -267,8 +267,6 @@ public class ValidateController {
 			 * - CREATED for valid certificates, for 15 minutes
 			 * - OK for invalid certificates, for 24 hours
 			 * 
-			 * TODO: Address invalidity reasons that may arise due to lack of intermediate
-			 * or revocation data.
 			 */
 			if (respResult != null) {
 				if (respResult instanceof Success) {
@@ -284,7 +282,7 @@ public class ValidateController {
 					/*
 					 * We won't perform a validation operation on a certificate we've deemed invalid for a period of time:
 					 * 
-					 * - 7 Days is the current default (see 
+					 * - 7 Days is the current default
 					 * - The notAfter date *could* be used, but also abused via certificates that have no valid path
 					 * 
 					 * TODO: We should consider caching revoked certificate validations based on the certificate Expiration date.
@@ -315,11 +313,7 @@ public class ValidateController {
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		ElasticacheClient mcClient = client.getCacheClient();
 		/*
-		 * TODO: Make sure this endpoint can't be used to harvest non-VssResponse data
-		 * from our cache.
-		 * 
-		 * For now, we will check to ensure the requestId is limited to a Hex SHA-256
-		 * value @ 64 characters
+		 * The requestId is limited to a Hex SHA-256 value @ 64 characters
 		 */
 		String headerJson = null;
 		try {
@@ -359,9 +353,6 @@ public class ValidateController {
 		}
 	}
 
-	/*
-	 * TODO: Expand on error handling based on the exception or logic error
-	 */
 	@ExceptionHandler({ Exception.class })
 	public ResponseEntity<Object> handleAll(Exception e, WebRequest request) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
