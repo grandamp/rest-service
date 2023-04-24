@@ -87,9 +87,11 @@ public class ValidatePKIX {
 		 *  		 
 		 * Begin Set JCE Signature Provider and System/Security variables
 		 *
-		 * <pre> Set System and Security properties to make the Sun provider: - Fetch
-		 * CRLs via the CDP extension - Check OCSP via the AIA extension - Chase CA
-		 * Issuers via the AIA extension
+		 * Set System and Security properties to make the Sun provider:
+		 * 
+		 * - Fetch CRLs via the CDP extension
+		 * - Check OCSP via the AIA extension
+		 * - Chase CA Issuers via the AIA extension
 		 *
 		 * The AIA and CDP chases would be valuable to update a local cache.
 		 *
@@ -112,7 +114,6 @@ public class ValidatePKIX {
 		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		/*
 		 * *Temporary Testing a non-revocation testing option*
-		 * 
 		 * 
 		 */
 		Boolean revocationCheckingDisabled = true;
