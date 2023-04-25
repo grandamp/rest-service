@@ -20,6 +20,7 @@ import org.keysupport.api.pkix.cache.ElasticacheClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 
 /**
  * This class uses a singleton pattern to manage our HTTP client needs.
@@ -37,6 +38,8 @@ public class HTTPClientSingleton {
 	private final String mimeCms = "application/pkcs7-mime";
 
 	private final String mimeTextPlainUtf8 = "text/plain; charset=utf-8";
+	
+	private final int MAX_ENTITY_SIZE = 1000000;
 
 	private HttpClient client = null;
 
@@ -84,9 +87,9 @@ public class HTTPClientSingleton {
 			try {
 				response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
 			} catch (IOException e) {
-				LOG.error("Error GETing data", e);
+				LOG.error("Error with GET request: " + uri.toASCIIString() + ":", e.getCause());
 			} catch (InterruptedException e) {
-				LOG.error("Error GETing data", e);
+				LOG.error("Error with GET request: " + uri.toASCIIString() + ":", e.getCause());
 			}
 			java.net.http.HttpHeaders headers = response.headers();
 			List<String> cControl = headers.allValues("Cache-Control");
@@ -102,10 +105,25 @@ public class HTTPClientSingleton {
 				LOG.info("Header:Last-Modified:value: " + X509Util.ISO8601DateStringFromHttpHeader(lastModified.get()));
 			}
 			/*
-			 * Cache the response, and return to the client
+			 * Cache the response, and return to the client, so long as we received a 200
+			 * 
 			 */
-			mcClient.put(uri.toASCIIString(), response.body());
-			return response.body();
+			if (response.statusCode() == HttpStatus.OK.value()) {
+				byte[] responseBody = response.body();
+				if (null == responseBody) {
+					LOG.error("Received null entity from " + uri.toASCIIString());
+					return null;
+				} else if (responseBody.length >= MAX_ENTITY_SIZE) {
+					LOG.error("Entity from " + uri.toASCIIString() + " exceeds " + MAX_ENTITY_SIZE + "bytes");
+					return null;
+				} else {
+					mcClient.put(uri.toASCIIString(), responseBody);
+					return response.body();
+				}
+			} else {
+				LOG.error("Received HTTP " + response.statusCode() + " status from " + uri.toASCIIString());
+				return null;
+			}
 		}
 	}
 
@@ -145,6 +163,10 @@ public class HTTPClientSingleton {
 
 	public CertPath getCms(URI uri) {
 		byte[] cmsBytes = getData(uri, mimeCms);
+		if (null == cmsBytes) {
+			LOG.error("CMS not received from: " + uri.toASCIIString());
+			return null;
+		}
 		CertPath cp = null;
 		CertificateFactory cf = null;
 		try {

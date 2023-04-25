@@ -70,27 +70,31 @@ public class IntermediateCacheSingleton {
 			HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 			URI uri = URI.create(cmsUri);
 			CertPath cp = client.getCms(uri);
-			List<? extends Certificate> cmsCerts = cp.getCertificates();
-			List<X509Certificate> certs = new ArrayList<X509Certificate>();
-			for (Certificate cmsCert : cmsCerts) {
-				certs.add((X509Certificate) cmsCert);
-			}
-			LOG.info("CMS object contains " + certs.size() + " certificates");
-			/*
-			 * Filter the Intermediates we received
-			 */
-			for (X509Certificate cert : certs) {
+			if (null != cp) {
+				List<? extends Certificate> cmsCerts = cp.getCertificates();
+				List<X509Certificate> certs = new ArrayList<X509Certificate>();
+				for (Certificate cmsCert : cmsCerts) {
+					certs.add((X509Certificate) cmsCert);
+				}
+				LOG.info("CMS object contains " + certs.size() + " certificates");
 				/*
-				 * Derive x5t#S256, and obtain subject and issuer for logging
+				 * Filter the Intermediates we received
 				 */
-				X500Principal subject = cert.getSubjectX500Principal();
-				X500Principal issuer = cert.getIssuerX500Principal();
-				LOG.info("CMS Cert: " + subject.getName() + " signed by " + issuer.getName());
-				if (!excludedByPolicy(valPol.excludeIntermediates, cert)) {
-					if (!filteredCerts.contains(cert)) {
-						filteredCerts.add(cert);
+				for (X509Certificate cert : certs) {
+					/*
+					 * Derive x5t#S256, and obtain subject and issuer for logging
+					 */
+					X500Principal subject = cert.getSubjectX500Principal();
+					X500Principal issuer = cert.getIssuerX500Principal();
+					LOG.info("CMS Cert: " + subject.getName() + " signed by " + issuer.getName());
+					if (!excludedByPolicy(valPol.excludeIntermediates, cert)) {
+						if (!filteredCerts.contains(cert)) {
+							filteredCerts.add(cert);
+						}
 					}
 				}
+			} else {
+				LOG.error("Skipping invalid CMS from: " + uri.toASCIIString());
 			}
 		}
 		/*
