@@ -13,14 +13,17 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
-import org.keysupport.api.pkix.X509Util;
 import org.keysupport.api.pkix.cache.ElasticacheClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This class uses a singleton pattern to manage our HTTP client needs.
@@ -68,9 +71,8 @@ public class HTTPClientSingleton {
 		/*
 		 * Set a custom User-Agent to identify calls from this code
 		 *
-		 * TODO: Eventually change to use build info
-		 */
-		/*
+		 * TODO: Address all TTLs via config or policy
+		 *
 		 * Initial caching test, where we will cache all data via the call with the
 		 * default 1hr TTL.
 		 */
@@ -91,18 +93,17 @@ public class HTTPClientSingleton {
 			} catch (InterruptedException e) {
 				LOG.error("Error with GET request: " + uri.toASCIIString() + ":", e.getCause());
 			}
-			java.net.http.HttpHeaders headers = response.headers();
-			List<String> cControl = headers.allValues("Cache-Control");
-			for (String curVal : cControl) {
-				LOG.info("Header:Cache-Control:value: " + curVal);
-			}
-			Optional<String> eTag = headers.firstValue("ETag");
-			if (eTag.isPresent()) {
-				LOG.info("Header:ETag:value: " + eTag.get());
-			}
-			Optional<String> lastModified = headers.firstValue("Last-Modified");
-			if (lastModified.isPresent()) {
-				LOG.info("Header:Last-Modified:value: " + X509Util.ISO8601DateStringFromHttpHeader(lastModified.get()));
+			Map<String, List<String>> headers = response.headers().map();
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				String output = mapper.writeValueAsString(headers);
+				LOG.info("{\"ResponseHeaders\":" + output + "}");
+			} catch (JsonGenerationException e) {
+				LOG.error("Error converting POJO to JSON", e);
+			} catch (JsonMappingException e) {
+				LOG.error("Error converting POJO to JSON", e);
+			} catch (IOException e) {
+				LOG.error("Error converting POJO to JSON", e);
 			}
 			/*
 			 * Cache the response, and return to the client, so long as we received a 200
