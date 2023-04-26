@@ -56,7 +56,7 @@ public class IntermediateCacheSingleton {
 				} catch (JsonProcessingException e) {
 					LOG.error("Error mapping POJO to JSON", e);
 				}
-				LOG.info(loggedExclustion);
+				LOG.warn(loggedExclustion);
 				return true;
 			}
 		}
@@ -76,7 +76,7 @@ public class IntermediateCacheSingleton {
 				for (Certificate cmsCert : cmsCerts) {
 					certs.add((X509Certificate) cmsCert);
 				}
-				LOG.info("CMS object contains " + certs.size() + " certificates");
+				LOG.info("CMS object contains " + certs.size() + " certificates: " + uri.toASCIIString());
 				/*
 				 * Filter the Intermediates we received
 				 */
@@ -86,7 +86,7 @@ public class IntermediateCacheSingleton {
 					 */
 					X500Principal subject = cert.getSubjectX500Principal();
 					X500Principal issuer = cert.getIssuerX500Principal();
-					LOG.info("CMS Cert: " + subject.getName() + " signed by " + issuer.getName());
+					LOG.debug("CMS Cert: " + subject.getName() + " signed by " + issuer.getName());
 					if (!excludedByPolicy(valPol.excludeIntermediates, cert)) {
 						if (!filteredCerts.contains(cert)) {
 							filteredCerts.add(cert);
