@@ -16,6 +16,8 @@ import net.spy.memcached.MemcachedClient;
  */
 
 public class ElasticacheClient {
+	
+	public enum cache { HIT, MISS, PUT, DELETE, FLUSH };
 
 	private final static Logger LOG = LoggerFactory.getLogger(ElasticacheClient.class);
 
@@ -71,12 +73,12 @@ public class ElasticacheClient {
 
 	public void clear() {
 		mcClient.flush();
-		LOG.info("Cache Fluch complete");
+		LOG.info("{\"cache\":{\"status\":\"" + cache.FLUSH + "\"}}");
 	}
 
 	public void evict(final String key) {
 		mcClient.delete(key.toString());
-		LOG.info("Cache Delete for key: " + key);
+		LOG.info("{\"cache\":{\"status\":\"" + cache.DELETE + "\",\"key\":\"" + key + "\"}}");
 	}
 
 	public byte[] get(final String key) {
@@ -87,10 +89,10 @@ public class ElasticacheClient {
 			LOG.error(e.getMessage());
 		}
 		if (value == null) {
-			LOG.info("Cache Miss for key: " + key);
+			LOG.info("{\"cache\":{\"status\":\"" + cache.MISS + "\",\"key\":\"" + key + "\"}}");
 			return null;
 		}
-		LOG.info("Cache Hit for key: " + key);
+		LOG.info("{\"cache\":{\"status\":\"" + cache.HIT + "\",\"key\":\"" + key + "\"}}");
 		return value;
 	}
 
@@ -101,16 +103,12 @@ public class ElasticacheClient {
 	public void putWithTtl(final String key, final int ttl, final byte[] value) {
 		if (value != null) {
 			mcClient.set(key.toString(), ttl, value);
-			LOG.info("Cache Put for key: " + key);
+			LOG.info("{\"cache\":{\"status\":\"" + cache.PUT + "\",\"key\":\"" + key + "\"}}");
 		}
 	}
 
 	public void close() {
 		mcClient.shutdown();
 	}
-
-	/*
-	 * TODO: Add Memcached client methods for different Caching use-cases
-	 */
 
 }
