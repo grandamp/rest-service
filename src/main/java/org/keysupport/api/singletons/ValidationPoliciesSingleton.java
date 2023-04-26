@@ -29,6 +29,9 @@ public class ValidationPoliciesSingleton {
 
 	private final Logger LOG = LoggerFactory.getLogger(ValidationPoliciesSingleton.class);
 
+	/*
+	 * TODO: Make a config option ASAP!
+	 */
 	private final String polUri = "https://raw.githubusercontent.com/grandamp/rest-service/main/configuration/policies.json";
 
 	private ValidationPolicies validationPolicies = null;
