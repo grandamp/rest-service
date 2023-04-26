@@ -49,6 +49,7 @@ public class ValidationPoliciesSingleton {
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		URI uri = URI.create(polUri);
 		String validationPoliciesJson = client.getText(uri);
+		LOG.info(validationPoliciesJson);
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			validationPolicies = mapper.readValue(validationPoliciesJson, ValidationPolicies.class);
@@ -57,7 +58,6 @@ public class ValidationPoliciesSingleton {
 		} catch (JsonProcessingException e) {
 			LOG.error("Error converting JSON to POJO", e);
 		}
-		LOG.info("ValidationPolicies: " + validationPoliciesJson);
 		/*
 		 * Iterate through each ValidationPolicy, and initialize the HashSet<TrustAnchor>
 		 */
