@@ -2,7 +2,6 @@ package org.keysupport.api.singletons;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -89,14 +88,17 @@ public class HTTPClientSingleton {
 			HttpResponse<byte[]> response = null;
 			try {
 				response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
-			} catch (ConnectException e) {
-				LOG.error("Error with GET request: " + uri.toASCIIString() + ":", e.getCause());
-				return null;
 			} catch (IOException e) {
-				LOG.error("Error with GET request: " + uri.toASCIIString() + ":", e.getCause());
+				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ":" + e.getCause().getMessage());
 				return null;
 			} catch (InterruptedException e) {
-				LOG.error("Error with GET request: " + uri.toASCIIString() + ":", e.getCause());
+				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ":" + e.getCause().getMessage());
+				return null;
+			} catch (IllegalArgumentException  e) {
+				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ":" + e.getCause().getMessage());
+				return null;
+			} catch (SecurityException e) {
+				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ":" + e.getCause().getMessage());
 				return null;
 			}
 			Map<String, List<String>> headers = response.headers().map();
@@ -191,7 +193,12 @@ public class HTTPClientSingleton {
 
 	public String getText(URI uri) {
 		byte[] textBytes = getData(uri, mimeTextPlainUtf8);
-		return new String(textBytes, StandardCharsets.UTF_8);
+		if (null != textBytes) {
+			return new String(textBytes, StandardCharsets.UTF_8);
+		} else {
+			LOG.error("Unexpected null response from: " + uri.toASCIIString());
+			return null;
+		}
 	}
 
 	public ElasticacheClient getCacheClient() {
