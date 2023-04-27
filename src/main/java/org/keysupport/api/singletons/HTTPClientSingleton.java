@@ -2,6 +2,7 @@ package org.keysupport.api.singletons;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -88,10 +89,15 @@ public class HTTPClientSingleton {
 			HttpResponse<byte[]> response = null;
 			try {
 				response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+			} catch (ConnectException e) {
+				LOG.error("Error with GET request: " + uri.toASCIIString() + ":", e.getCause());
+				return null;
 			} catch (IOException e) {
 				LOG.error("Error with GET request: " + uri.toASCIIString() + ":", e.getCause());
+				return null;
 			} catch (InterruptedException e) {
 				LOG.error("Error with GET request: " + uri.toASCIIString() + ":", e.getCause());
+				return null;
 			}
 			Map<String, List<String>> headers = response.headers().map();
 			ObjectMapper mapper = new ObjectMapper();
