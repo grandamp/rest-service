@@ -14,12 +14,18 @@ import net.spy.memcached.MemcachedClient;
  * 
  * https://github.com/awslabs/aws-elasticache-cluster-client-memcached-for-java/blob/master/src/main/java/net/spy/memcached/MemcachedClient.java
  * 
- * TODO: We should consider a cacheVersion attribute, to potentially track the
+ * TODO: We should consider a schemaVersion attribute, to potentially track the
  * cache during deployments, and allow a flush() during a deployment when
  * identified.
  * 
  * Any JSON schema change, or change in cache should consider selective
  * evictions, or a complete cache flush.
+ * 
+ * The schemaVersion attribute could simply be the SHA-256 digest of the OAS3 JSON for this implementation.
+ * 
+ * I.e., https://api.keysupport.org/v3/api-docs
+ * 
+ * We *should* be able to internally fetch this JSON.
  */
 
 public class ElasticacheClient {
