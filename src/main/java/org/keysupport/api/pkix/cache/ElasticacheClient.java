@@ -13,11 +13,26 @@ import net.spy.memcached.MemcachedClient;
  * client needs.
  * 
  * https://github.com/awslabs/aws-elasticache-cluster-client-memcached-for-java/blob/master/src/main/java/net/spy/memcached/MemcachedClient.java
+ * 
+ * TODO: We should consider a schemaVersion attribute, to potentially track the
+ * cache during deployments, and allow a flush() during a deployment when
+ * identified.
+ * 
+ * Any JSON schema change, or change in cache should consider selective
+ * evictions, or a complete cache flush.
+ * 
+ * The schemaVersion attribute could simply be the SHA-256 digest of the OAS3 JSON for this implementation.
+ * 
+ * I.e., https://api.keysupport.org/v3/api-docs
+ * 
+ * We *should* be able to internally fetch this JSON.
  */
 
 public class ElasticacheClient {
-	
-	public enum cache { HIT, MISS, PUT, DELETE, FLUSH };
+
+	public enum cache {
+		HIT, MISS, PUT, DELETE, FLUSH
+	};
 
 	private final static Logger LOG = LoggerFactory.getLogger(ElasticacheClient.class);
 
@@ -26,7 +41,7 @@ public class ElasticacheClient {
 	private String configEndpoint = null;
 
 	private final static Integer clusterPort = 11211;
-	
+
 	private String name;
 
 	/**
@@ -35,13 +50,13 @@ public class ElasticacheClient {
 	 * TODO: Consider TTL Override
 	 */
 	public final static int VALID_CERT_TTL = 900;
-	
+
 	/**
 	 * 7 Day TTL for In-valid Certificates
 	 * 
 	 * TODO: Consider TTL Override
 	 */
-	public final static int INVALID_CERT_TTL= 604800;
+	public final static int INVALID_CERT_TTL = 604800;
 
 	public ElasticacheClient() {
 		/*
@@ -71,7 +86,7 @@ public class ElasticacheClient {
 		return name;
 	}
 
-	public void clear() {
+	public void flush() {
 		mcClient.flush();
 		LOG.info("{\"cache\":{\"status\":\"" + cache.FLUSH + "\"}}");
 	}

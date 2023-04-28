@@ -11,12 +11,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.keysupport.api.RestServiceApplication;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pojo.vss.JsonTrustAnchor;
 import org.keysupport.api.pojo.vss.ValidationPolicies;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -98,10 +100,16 @@ public class ValidationPoliciesSingleton {
 				trustAnchotMap.put(policy.validationPolicyId, taList);
 			}
 		} else {
+			/*
+			 * Check to see if this failure is an update, or; an initial fetch of the
+			 * mandatory policies.
+			 */
 			if (null != validationPolicies) {
 				LOG.warn("Failed to refresh ValidationPolicies JSON");
 			} else {
-				LOG.error("Failed to obtain initial ValidationPolicies JSON");
+				LOG.error("FATAL: Failed to obtain initial ValidationPolicies JSON from \"" + uri.toASCIIString()
+						+ "\", shutting down!");
+				SpringApplication.run(RestServiceApplication.class, (String[]) null).close();
 			}
 		}
 	}
