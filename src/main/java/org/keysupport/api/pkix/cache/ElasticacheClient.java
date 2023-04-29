@@ -75,6 +75,7 @@ public class ElasticacheClient {
 		} catch (IOException e) {
 			LOG.error("Error creating memcached client", e);
 		}
+		
 
 	}
 
