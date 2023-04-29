@@ -35,6 +35,7 @@ import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.pojo.vss.Fail;
 import org.keysupport.api.pojo.vss.JsonX509Certificate;
+import org.keysupport.api.pojo.vss.PKIXPolicyNode;
 import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssResponse;
@@ -375,7 +376,8 @@ public class ValidatePKIX {
 			LOG.error("Internal Validation Error", e);
 			throw new ServiceException("Internal Validation Error");
 		}
-		LOG.debug(pvr.getPolicyTree().toString());
+		PKIXPolicyNode policyTree = X509Util.policyNodeToJSON(pvr.getPolicyTree());
+		LOG.info(pvr.getPolicyTree().toString());
 		/*
 		 * If we got this far, the certificate is valid. (Regardless of default
 		 * revocation checking behavior)
@@ -399,7 +401,9 @@ public class ValidatePKIX {
 			x509CertificatePath.add(bCert);
 		}
 		success.x509CertificatePath = x509CertificatePath;
+		success.policyTree = policyTree;
 		response.validationResult = success;
 		return response;
 	}
+	
 }

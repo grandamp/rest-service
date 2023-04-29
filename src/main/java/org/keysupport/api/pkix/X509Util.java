@@ -5,14 +5,18 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.PolicyNode;
 import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -23,6 +27,7 @@ import org.bouncycastle.asn1.ASN1TaggedObject;
 import org.bouncycastle.asn1.BERTags;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.x509.GeneralName;
+import org.keysupport.api.pojo.vss.PKIXPolicyNode;
 import org.keysupport.api.pojo.vss.SANValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -314,5 +319,26 @@ public class X509Util {
 		Date now = new Date();
 		return (int)(then.getTime()-now.getTime())/1000;
 	}
+
+    public static PKIXPolicyNode policyNodeToJSON(PolicyNode policyNode) {
+    	if (null == policyNode) {
+    		return null;
+    	}
+    	PKIXPolicyNode pkixPolicyNode = new PKIXPolicyNode();
+    	pkixPolicyNode.validPolicy = policyNode.getValidPolicy();
+    	pkixPolicyNode.critical = policyNode.isCritical();
+    	pkixPolicyNode.depth = policyNode.getDepth();
+    	pkixPolicyNode.expectedPolicies = policyNode.getExpectedPolicies();
+    	pkixPolicyNode.children = null;
+    	Set<PKIXPolicyNode> children = new HashSet<PKIXPolicyNode>();
+    	Iterator<? extends PolicyNode> itr = policyNode.getChildren();
+        while (itr.hasNext()) {
+        	children.add(policyNodeToJSON(itr.next()));
+        }
+        if (!children.isEmpty()) {
+        	pkixPolicyNode.children = children;
+        }
+        return pkixPolicyNode;
+    }
 
 }

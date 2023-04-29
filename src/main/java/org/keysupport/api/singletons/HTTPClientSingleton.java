@@ -89,16 +89,16 @@ public class HTTPClientSingleton {
 			try {
 				response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
 			} catch (IOException e) {
-				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ":" + e.getCause().getMessage());
+				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ": " + e.getCause().getMessage());
 				return null;
 			} catch (InterruptedException e) {
-				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ":" + e.getCause().getMessage());
+				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ": " + e.getCause().getMessage());
 				return null;
 			} catch (IllegalArgumentException  e) {
-				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ":" + e.getCause().getMessage());
+				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ": " + e.getCause().getMessage());
 				return null;
 			} catch (SecurityException e) {
-				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ":" + e.getCause().getMessage());
+				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ": " + e.getCause().getMessage());
 				return null;
 			}
 			Map<String, List<String>> headers = response.headers().map();
