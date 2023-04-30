@@ -376,7 +376,6 @@ public class ValidatePKIX {
 			LOG.error("Internal Validation Error", e);
 			throw new ServiceException("Internal Validation Error");
 		}
-		PKIXPolicyNode policyTree = X509Util.policyNodeToJSON(pvr.getPolicyTree());
 		LOG.info(pvr.getPolicyTree().toString());
 		/*
 		 * If we got this far, the certificate is valid. (Regardless of default
@@ -389,6 +388,9 @@ public class ValidatePKIX {
 		 * consider checking revocation using a method we define (and config via policy)
 		 */
 		Success success = new Success();
+		/*
+		 * Add certPath
+		 */
 		List<JsonX509Certificate> x509CertificatePath = new ArrayList<>();
 		for (Certificate currentCert : cp.getCertificates()) {
 			JsonX509Certificate bCert = new JsonX509Certificate();
@@ -401,6 +403,10 @@ public class ValidatePKIX {
 			x509CertificatePath.add(bCert);
 		}
 		success.x509CertificatePath = x509CertificatePath;
+		/*
+		 * Add policyTree
+		 */
+		PKIXPolicyNode policyTree = X509Util.policyNodeToJSON(pvr.getPolicyTree());
 		success.policyTree = policyTree;
 		response.validationResult = success;
 		return response;
