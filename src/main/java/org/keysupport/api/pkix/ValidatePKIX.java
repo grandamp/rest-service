@@ -376,7 +376,6 @@ public class ValidatePKIX {
 			LOG.error("Internal Validation Error", e);
 			throw new ServiceException("Internal Validation Error");
 		}
-		LOG.info(pvr.getPolicyTree().toString());
 		/*
 		 * If we got this far, the certificate is valid. (Regardless of default
 		 * revocation checking behavior)
