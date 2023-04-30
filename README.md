@@ -9,8 +9,8 @@ Example Implementations:
 
 - [This API](https://api.keysupport.org/swagger-ui/index.html)
 - [Python Client](https://github.com/grandamp/rest-service/tree/main/client/python)
-- [Mobile Client (Android)]()
-- [Desktop Client (Java)]()
+- [TODO: Mobile Client (Android)]()
+- [TODO: Desktop Client (Java)]()
 
 A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-testing/blob/master/utilities/vss2/README.md), with something more modern.
 
