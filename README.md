@@ -5,6 +5,8 @@
 
 [![OpenAPI v3 Compliance](https://validator.swagger.io/validator?url=https://api.keysupport.org/v3/api-docs)](https://api.keysupport.org/v3/api-docs)
 
+Example Implementation: [https://api.keysupport.org/swagger-ui/index.html](https://api.keysupport.org/swagger-ui/index.html)
+
 A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-testing/blob/master/utilities/vss2/README.md), with something more modern.
 
 Why?  Many mTLS use-cases involve complex certificate validation in the application layer, which is *hard* to scale.
