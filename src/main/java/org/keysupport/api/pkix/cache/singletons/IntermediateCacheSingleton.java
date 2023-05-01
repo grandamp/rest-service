@@ -8,13 +8,13 @@ import java.security.cert.CertPath;
 import java.security.cert.CertStore;
 import java.security.cert.CertStoreParameters;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateExpiredException;
+import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.security.auth.x500.X500Principal;
 
 import org.keysupport.api.pkix.X509Util;
 import org.keysupport.api.pojo.vss.ExcludedIntermediate;
@@ -83,10 +83,44 @@ public class IntermediateCacheSingleton {
 				for (X509Certificate cert : certs) {
 					/*
 					 * Derive x5t#S256, and obtain subject and issuer for logging
+					 * 
+					 * We will only perform Temporal validation on the proposed intermediates, since
+					 * the entity responsible for crafting policy should be aware of what to
+					 * include, and; deny.
+					 * 
+					 * TODO: We should wrap exclusion logging into a reusable method.
 					 */
-					X500Principal subject = cert.getSubjectX500Principal();
-					X500Principal issuer = cert.getIssuerX500Principal();
-					LOG.debug("CMS Cert: " + subject.getName() + " signed by " + issuer.getName());
+					try {
+						cert.checkValidity();
+					} catch (CertificateExpiredException e) {
+						String x5tS256 = X509Util.x5tS256(cert);
+						ExcludedIntermediate exclude = new ExcludedIntermediate();
+						exclude.excludeReason = e.getLocalizedMessage();
+						exclude.x509IssuerName = cert.getIssuerX500Principal().toString();
+						exclude.x509SubjectName = cert.getSubjectX500Principal().toString();
+						exclude.x5tS256 = x5tS256;
+						String loggedExclustion = null;
+						try {
+							loggedExclustion = mapper.writeValueAsString(exclude);
+						} catch (JsonProcessingException e1) {
+							LOG.error("Error mapping POJO to JSON", e1);
+						}
+						LOG.warn(loggedExclustion);
+					} catch (CertificateNotYetValidException e) {
+						String x5tS256 = X509Util.x5tS256(cert);
+						ExcludedIntermediate exclude = new ExcludedIntermediate();
+						exclude.excludeReason = e.getLocalizedMessage();
+						exclude.x509IssuerName = cert.getIssuerX500Principal().toString();
+						exclude.x509SubjectName = cert.getSubjectX500Principal().toString();
+						exclude.x5tS256 = x5tS256;
+						String loggedExclustion = null;
+						try {
+							loggedExclustion = mapper.writeValueAsString(exclude);
+						} catch (JsonProcessingException e1) {
+							LOG.error("Error mapping POJO to JSON", e1);
+						}
+						LOG.warn(loggedExclustion);
+					}
 					if (!excludedByPolicy(valPol.excludeIntermediates, cert)) {
 						if (!filteredCerts.contains(cert)) {
 							filteredCerts.add(cert);
