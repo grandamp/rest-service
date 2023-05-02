@@ -53,13 +53,7 @@ public class IntermediateCacheSingleton {
 		String x5tS256 = X509Util.x5tS256(cert);
 		for (ExcludedIntermediate exclude : valPolExcludeList) {
 			if (exclude.x5tS256.equalsIgnoreCase(x5tS256)) {
-				String loggedExclustion = null;
-				try {
-					loggedExclustion = mapper.writeValueAsString(exclude);
-				} catch (JsonProcessingException e) {
-					LOG.error("Error mapping POJO to JSON", e);
-				}
-				LOG.warn(loggedExclustion);
+				logExcluded(cert, "Exclude by Policy: "+ exclude.excludeReason);
 				return true;
 			}
 		}
@@ -74,40 +68,14 @@ public class IntermediateCacheSingleton {
 		 * We will only perform Temporal validation on the proposed intermediates, since
 		 * the entity responsible for crafting policy should be aware of what to
 		 * include, and; deny.
-		 * 
-		 * TODO: We should wrap exclusion logging into a reusable method.
 		 */
 		try {
 			cert.checkValidity();
 		} catch (CertificateExpiredException e) {
-			String x5tS256 = X509Util.x5tS256(cert);
-			ExcludedIntermediate exclude = new ExcludedIntermediate();
-			exclude.excludeReason = "Implementation Temporal Exclude: "+ e.getLocalizedMessage();
-			exclude.x509IssuerName = cert.getIssuerX500Principal().toString();
-			exclude.x509SubjectName = cert.getSubjectX500Principal().toString();
-			exclude.x5tS256 = x5tS256;
-			String loggedExclustion = null;
-			try {
-				loggedExclustion = mapper.writeValueAsString(exclude);
-			} catch (JsonProcessingException e1) {
-				LOG.error("Error mapping POJO to JSON", e1);
-			}
-			LOG.warn(loggedExclustion);
+			logExcluded(cert, "Implementation Temporal Exclude: "+ e.getLocalizedMessage());
 			return true;
 		} catch (CertificateNotYetValidException e) {
-			String x5tS256 = X509Util.x5tS256(cert);
-			ExcludedIntermediate exclude = new ExcludedIntermediate();
-			exclude.excludeReason = "Implementation Temporal Exclude: "+ e.getLocalizedMessage();
-			exclude.x509IssuerName = cert.getIssuerX500Principal().toString();
-			exclude.x509SubjectName = cert.getSubjectX500Principal().toString();
-			exclude.x5tS256 = x5tS256;
-			String loggedExclustion = null;
-			try {
-				loggedExclustion = mapper.writeValueAsString(exclude);
-			} catch (JsonProcessingException e1) {
-				LOG.error("Error mapping POJO to JSON", e1);
-			}
-			LOG.warn(loggedExclustion);
+			logExcluded(cert, "Implementation Temporal Exclude: "+ e.getLocalizedMessage());
 			return true;
 		}
 		return false;
@@ -160,6 +128,22 @@ public class IntermediateCacheSingleton {
 			LOG.error("Failed to create CertStore from CMS object", e);
 		}
 		intermediateMap.put(valPol.validationPolicyId, intermediates);
+	}
+	
+	private void logExcluded(X509Certificate cert, String reason) {
+		String x5tS256 = X509Util.x5tS256(cert);
+		ExcludedIntermediate exclude = new ExcludedIntermediate();
+		exclude.excludeReason = reason;
+		exclude.x509IssuerName = cert.getIssuerX500Principal().toString();
+		exclude.x509SubjectName = cert.getSubjectX500Principal().toString();
+		exclude.x5tS256 = x5tS256;
+		String loggedExclustion = null;
+		try {
+			loggedExclustion = mapper.writeValueAsString(exclude);
+		} catch (JsonProcessingException e1) {
+			LOG.error("Error mapping POJO to JSON", e1);
+		}
+		LOG.warn(loggedExclustion);
 	}
 
 	private class SingletonHelper {
