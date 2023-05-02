@@ -46,6 +46,9 @@ public class IntermediateCacheSingleton {
 		mapper = new ObjectMapper();
 	}
 
+	/**
+	 * @returns boolean
+	 */
 	private boolean excludedByPolicy(List<ExcludedIntermediate> valPolExcludeList, X509Certificate cert) {
 		String x5tS256 = X509Util.x5tS256(cert);
 		for (ExcludedIntermediate exclude : valPolExcludeList) {
@@ -63,8 +66,12 @@ public class IntermediateCacheSingleton {
 		return false;
 	}
 
+	/**
+	 * @returns boolean
+	 */
 	private boolean excludeByTemporal(X509Certificate cert) {
-		/* We will only perform Temporal validation on the proposed intermediates, since
+		/*
+		 * We will only perform Temporal validation on the proposed intermediates, since
 		 * the entity responsible for crafting policy should be aware of what to
 		 * include, and; deny.
 		 * 
@@ -75,7 +82,7 @@ public class IntermediateCacheSingleton {
 		} catch (CertificateExpiredException e) {
 			String x5tS256 = X509Util.x5tS256(cert);
 			ExcludedIntermediate exclude = new ExcludedIntermediate();
-			exclude.excludeReason = e.getLocalizedMessage();
+			exclude.excludeReason = "Implementation Temporal Exclude: "+ e.getLocalizedMessage();
 			exclude.x509IssuerName = cert.getIssuerX500Principal().toString();
 			exclude.x509SubjectName = cert.getSubjectX500Principal().toString();
 			exclude.x5tS256 = x5tS256;
@@ -90,7 +97,7 @@ public class IntermediateCacheSingleton {
 		} catch (CertificateNotYetValidException e) {
 			String x5tS256 = X509Util.x5tS256(cert);
 			ExcludedIntermediate exclude = new ExcludedIntermediate();
-			exclude.excludeReason = e.getLocalizedMessage();
+			exclude.excludeReason = "Implementation Temporal Exclude: "+ e.getLocalizedMessage();
 			exclude.x509IssuerName = cert.getIssuerX500Principal().toString();
 			exclude.x509SubjectName = cert.getSubjectX500Principal().toString();
 			exclude.x5tS256 = x5tS256;
@@ -121,16 +128,17 @@ public class IntermediateCacheSingleton {
 				}
 				LOG.info("CMS object contains " + certs.size() + " certificates: " + uri.toASCIIString());
 				/*
-				 * Filter the Intermediates we received
+				 * Filter the Intermediates we received using exclusion methods
 				 */
 				for (X509Certificate cert : certs) {
-					/*
-					 * Derive x5t#S256, and obtain subject and issuer for logging
-					 */
-					if (!excludedByPolicy(valPol.excludeIntermediates, cert) || !excludeByTemporal(cert)) {
+					if (!excludedByPolicy(valPol.excludeIntermediates, cert) && !excludeByTemporal(cert)) {
 						if (!filteredCerts.contains(cert)) {
 							filteredCerts.add(cert);
+						} else {
+							LOG.warn("Excluding Duplicate Cert: " + cert.getSubjectX500Principal().toString());
 						}
+					} else {
+						LOG.warn("Excluding Cert: " + cert.getSubjectX500Principal().toString());
 					}
 				}
 			} else {
