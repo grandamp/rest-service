@@ -18,8 +18,21 @@ def intermediates(host: str, policy: str) -> typing.Dict:
     response = requests.get(apiEndpointUri)
     return response.json()
 
+def printPEM(base64str: str) -> str:
+    line = []
+    # Add PEM header
+    line.append("-----BEGIN CERTIFICATE-----")
+    # Add Base64 DER string values, split at 64 chars
+    for i in range(0, len(base64str), 64):
+        line.append(base64str[i:i+64])
+    # Add PEM footer
+    line.append("-----END CERTIFICATE-----")
+    for x in line:
+        print(x)
+
 if __name__ == "__main__":
     host = sys.argv[1]
     policy = sys.argv[2]
     resJson = intermediates(host, policy)
-    print(json.dumps(resJson, sort_keys=False, indent=4))
+    for x509Certificate in resJson:
+        printPEM(x509Certificate['x509Certificate'])
