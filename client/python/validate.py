@@ -9,6 +9,7 @@ import cryptography
 
 from cryptography import x509 
 from cryptography.hazmat.primitives.serialization import pkcs7, Encoding
+from cryptography.x509.oid import ExtensionOID
 from cryptography import utils
 
 class FileEncoding(utils.Enum):
@@ -50,6 +51,9 @@ def validateCert(certificate):
     sha256Thumbprint = resJson["x5t#S256"]
     sha256ThumbprintHex = base64.b64decode(sha256Thumbprint).hex()
     print("Thumbprint (SHA-256): " + sha256ThumbprintHex)
+    ski = certificate.extensions.get_extension_for_oid(ExtensionOID.SUBJECT_KEY_IDENTIFIER)
+    kid = ski.value.key_identifier.hex()
+    print("kid: " + kid)
     certResult = resJson["validationResult"]["result"]
     print("Validation Result: " + certResult)
     if certResult == "FAIL":
