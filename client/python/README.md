@@ -40,7 +40,9 @@ When using on the command line, you should be able to parse the following types 
 Example Usage:
 
 ```TEXT
-/usr/bin/curl -v https://raw.githubusercontent.com/GSA/ficam-playbooks/federalist-pages/_fpki/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b --output /tmp/CACertificatesValidatingToFederalCommonPolicyG2.p7b
+/usr/bin/curl -v https://www.idmanagement.gov/implement/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b --output /tmp/CACertificatesValidatingToFederalCommonPolicyG2.pem
+
+/usr/bin/openssl pkcs7 -in /tmp/CACertificatesValidatingToFederalCommonPolicyG2.pem -outform DER -out /tmp/CACertificatesValidatingToFederalCommonPolicyG2.p7b
 
 ./validate.py /tmp/CACertificatesValidatingToFederalCommonPolicyG2.p7b https://api.keysupport.org c21f969b-5f03-333d-83e0-4f8f136e7682
 
