@@ -1,10 +1,12 @@
 package org.keysupport.api.pkix;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.security.cert.PolicyNode;
 import java.security.cert.X509Certificate;
 import java.text.ParseException;
@@ -27,6 +29,8 @@ import org.bouncycastle.asn1.ASN1TaggedObject;
 import org.bouncycastle.asn1.BERTags;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemWriter;
 import org.keysupport.api.pojo.vss.PKIXPolicyNode;
 import org.keysupport.api.pojo.vss.SANValue;
 import org.slf4j.Logger;
@@ -39,15 +43,6 @@ import org.slf4j.LoggerFactory;
 public class X509Util {
 
 	private final static Logger LOG = LoggerFactory.getLogger(X509Util.class);
-
-	/*
-	 * TODO: Make this class a helper that can compose `ValidationPolicy` with
-	 * `validationPolicyId` values as a `UUID` type-3 object.
-	 *
-	 * If needed, we can create an inner Helper class to run on the console.
-	 *
-	 * The intent would be to allow a human or code to define a validation policy.
-	 */
 
 	/**
 	 *
@@ -247,7 +242,6 @@ public class X509Util {
 		return x5tS256;
 	}
 
-	
 	/**
 	 * Return a UUID derived from the UTF-8 String provided
 	 *
@@ -280,22 +274,21 @@ public class X509Util {
 	/**
 	 * Convert a byte array to a Hex String
 	 * 
-	 * The following method converts a byte[] object to a String object, where
-	 * the only output characters are "0123456789ABCDEF".
+	 * The following method converts a byte[] object to a String object, where the
+	 * only output characters are "0123456789ABCDEF".
 	 * 
-	 * @param ba
-	 *            A byte array
-	
-	 * @return String Hexidecimal String object which represents the contents of
-	 *         the byte array */
+	 * @param ba A byte array
+	 * 
+	 * @return String Hexidecimal String object which represents the contents of the
+	 *         byte array
+	 */
 	public static String byteArrayToHexString(byte[] ba) {
 		if (ba == null) {
 			return "";
 		}
 		StringBuffer hex = new StringBuffer(ba.length * 2);
 		for (int i = 0; i < ba.length; i++) {
-			hex.append(Integer.toString((ba[i] & 0xff) + 0x100, 16)
-					.substring(1));
+			hex.append(Integer.toString((ba[i] & 0xff) + 0x100, 16).substring(1));
 		}
 		return hex.toString().toUpperCase(Locale.US);
 	}
@@ -317,28 +310,81 @@ public class X509Util {
 
 	public static int calculateCacheTTL(Date then) {
 		Date now = new Date();
-		return (int)(then.getTime()-now.getTime())/1000;
+		return (int) (then.getTime() - now.getTime()) / 1000;
 	}
 
-    public static PKIXPolicyNode policyNodeToJSON(PolicyNode policyNode) {
-    	if (null == policyNode) {
-    		return null;
-    	}
-    	PKIXPolicyNode pkixPolicyNode = new PKIXPolicyNode();
-    	pkixPolicyNode.validPolicy = policyNode.getValidPolicy();
-    	pkixPolicyNode.critical = policyNode.isCritical();
-    	pkixPolicyNode.depth = policyNode.getDepth();
-    	pkixPolicyNode.expectedPolicies = policyNode.getExpectedPolicies();
-    	pkixPolicyNode.children = null;
-    	Set<PKIXPolicyNode> children = new HashSet<PKIXPolicyNode>();
-    	Iterator<? extends PolicyNode> itr = policyNode.getChildren();
-        while (itr.hasNext()) {
-        	children.add(policyNodeToJSON(itr.next()));
-        }
-        if (!children.isEmpty()) {
-        	pkixPolicyNode.children = children;
-        }
-        return pkixPolicyNode;
-    }
+	public static PKIXPolicyNode policyNodeToJSON(PolicyNode policyNode) {
+		if (null == policyNode) {
+			return null;
+		}
+		PKIXPolicyNode pkixPolicyNode = new PKIXPolicyNode();
+		pkixPolicyNode.validPolicy = policyNode.getValidPolicy();
+		pkixPolicyNode.critical = policyNode.isCritical();
+		pkixPolicyNode.depth = policyNode.getDepth();
+		pkixPolicyNode.expectedPolicies = policyNode.getExpectedPolicies();
+		pkixPolicyNode.children = null;
+		Set<PKIXPolicyNode> children = new HashSet<PKIXPolicyNode>();
+		Iterator<? extends PolicyNode> itr = policyNode.getChildren();
+		while (itr.hasNext()) {
+			children.add(policyNodeToJSON(itr.next()));
+		}
+		if (!children.isEmpty()) {
+			pkixPolicyNode.children = children;
+		}
+		return pkixPolicyNode;
+	}
 
+	/**
+	 *
+	 * @param cert
+	 * @return String
+	 * @throws CertificateException
+	 * @throws IOException
+	 */
+	public static String toPEM(X509Certificate cert) throws CertificateException {
+		StringBuffer sb = new StringBuffer();
+		sb.append("Subject=" + cert.getSubjectX500Principal().getName() + "\n");
+		sb.append("Issuer=" + cert.getIssuerX500Principal().getName() + "\n");
+		sb.append("NotBefore=" + cert.getNotBefore() + "\n");
+		sb.append("NotAfter=" + cert.getNotAfter() + "\n");
+		sb.append(toPEM(cert.getEncoded()));
+		return sb.toString();
+	}
+
+	public static String toPEM(byte[] certData) {
+		StringBuffer sb = new StringBuffer();
+		PemObject certPem = new PemObject("CERTIFICATE", certData);
+		StringWriter sw = new StringWriter();
+		PemWriter writer = new PemWriter(sw);
+		try {
+			writer.writeObject(certPem);
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		sb.append(sw.getBuffer());
+		return sb.toString();
+	}
+
+	/**
+	 * Return Hex String of SHA-256 digest of the certificate
+	 *
+	 * @param cert
+	 * @return String vss_cert_id
+	 */
+	public static String getVssCertId(X509Certificate cert) {
+
+		byte[] digest = null;
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+			md.update(cert.getEncoded());
+			digest = md.digest();
+		} catch (NoSuchAlgorithmException | CertificateEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return X509Util.byteArrayToHexString(digest);
+	}
 }

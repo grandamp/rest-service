@@ -1,4 +1,4 @@
-package org.keysupport.api.pojo.vss;
+package org.keysupport.api.pojo.vss.v1;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,42 +13,36 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import jakarta.validation.constraints.NotBlank;
-
 /**
- * This class is a Java representation of the JSON Object VssResponse.
+ * This class is a Java representation of the JSON object ResultByCertificate's
+ * Data.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "requestId", "validationPolicyId", "x5t#S256", "x509SubjectName", "x509IssuerName",
-		"x509SerialNumber", "x509SubjectAltName", "subjectKeyIdentifer", "isCA", "validationTime", "nextUpdate",
-		"validationResultToken", "validationFailureData", "validationSuccessData" })
-public class VssResponse {
+@JsonPropertyOrder({ "vssCertId", "x509SubjectName", "x509IssuerName", "x509SerialNumber", "x509SubjectAltName",
+		"validationTime", "nextUpdate", "validationResultToken", "validationFailureData", "validationSuccessData" })
+public class ResultByCertificateData {
 
 	/**
-	 * Field requestId.
+	 * Field validationResultToken.
+	 *
 	 */
-	@JsonProperty("requestId")
-	public String requestId;
+	@JsonProperty("validationResultToken")
+	public String validationResultToken;
 
 	/**
-	 * Field validationPolicyId
+	 * Field validationFailureData.
+	 *
 	 */
-	@JsonProperty("validationPolicyId")
-	public String validationPolicyId;
+	@JsonProperty("validationFailureData")
+	public ValidationFailureData validationFailureData;
 
 	/**
-	 * Field x5t#S256.
+	 * Field validationSuccessData.
+	 *
 	 */
-	@NotBlank
-	@JsonProperty("x5t#S256")
-	public String x5tS256;
-
-	/**
-	 * Field X509SubjectName.
-	 */
-	@JsonProperty("x509SubjectName")
-	public String x509SubjectName;
+	@JsonProperty("validationSuccessData")
+	public ValidationSuccessData validationSuccessData;
 
 	/**
 	 * Field X509IssuerName.
@@ -57,49 +51,44 @@ public class VssResponse {
 	public String x509IssuerName;
 
 	/**
+	 * Field vssCertId.
+	 */
+	@JsonProperty("vssCertId")
+	public String vssCertId;
+
+	/**
 	 * Field X509SerialNumber.
 	 */
-	@NotBlank
 	@JsonProperty("x509SerialNumber")
 	public String x509SerialNumber;
 
-	/**
+	/*
 	 * Field x509SubjectAltName
 	 */
 	@JsonProperty("x509SubjectAltName")
 	public List<SANValue> x509SubjectAltName;
 
 	/**
-	 * Field subjectKeyIdentifer.
+	 * Field X509SubjectName.
 	 */
-	@JsonProperty("subjectKeyIdentifer")
-	public String subjectKeyIdentifer;
-
-	/**
-	 * Field isCA.
-	 */
-	@JsonProperty("isCA")
-	public boolean isCA;
+	@JsonProperty("x509SubjectName")
+	public String x509SubjectName;
 
 	/**
 	 * Field validationTime.
+	 *
+	 * Base64 Encoded
 	 */
-	@NotBlank
 	@JsonProperty("validationTime")
 	public String validationTime;
 
 	/**
 	 * Field nextUpdate.
+	 *
+	 * Base64 Encoded
 	 */
 	@JsonProperty("nextUpdate")
 	public String nextUpdate;
-
-	/**
-	 * Field validationResult.
-	 */
-	@NotBlank
-	@JsonProperty("validationResult")
-	public ValidationResult validationResult;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

@@ -1,0 +1,53 @@
+package org.keysupport.api.pojo.vss.v1;
+
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+
+import org.keysupport.api.pkix.ValidatePKIX;
+import org.keysupport.api.pkix.X509Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class V1ClientRequestHelper {
+
+	private final static Logger LOG = LoggerFactory.getLogger(ValidatePKIX.class);
+
+	/**
+	 * POST /vss/rest/
+	 *
+	 * @param cert
+	 * @param valPol
+	 * @param wantBackList
+	 */
+	public static VSSRequest validateCert(String vssHost, X509Certificate cert, String valPol,
+			List<WantBackTypeToken> wantBackList) {
+
+		byte[] certBytes = null;
+		try {
+			certBytes = cert.getEncoded();
+		} catch (CertificateEncodingException e) {
+			e.printStackTrace();
+		}
+		org.keysupport.api.pojo.vss.v1.X509Certificate certList[] = new org.keysupport.api.pojo.vss.v1.X509Certificate[1];
+		org.keysupport.api.pojo.vss.v1.X509Certificate jsonCert = new org.keysupport.api.pojo.vss.v1.X509Certificate();
+		jsonCert.x509Certificate = Base64.getEncoder().encodeToString(certBytes);
+		jsonCert.setAdditionalProperty("vssCertId", X509Util.getVssCertId(cert));
+		certList[0] = jsonCert;
+		VSSRequest request = new VSSRequest(valPol, wantBackList, Arrays.asList(certList));
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			LOG.debug(objectMapper.writeValueAsString(request));
+		} catch (JsonProcessingException e) {
+			LOG.error("Error mapping request POJO", e);
+		}
+		return request;
+
+	}
+
+}
