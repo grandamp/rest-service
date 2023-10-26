@@ -1,6 +1,7 @@
 package org.keysupport.api.pojo.vss.v1;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.jackson.JsonComponent;
@@ -13,26 +14,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON Object invalidityReason.
+ * This class is a Java representation of the JSON Object validationFailureData.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "invalidityReasonToken", "invalidityReasonText" })
-public class InvalidityReason {
+@JsonPropertyOrder({ "isAffirmativelyInvalid", "invalidityReasonList" })
+public class ValidationFailureData {
 
 	/**
-	 * Field invalidityReasonToken.
+	 * Field isAffirmativelyInvalid.
 	 *
 	 */
-	@JsonProperty("invalidityReasonToken")
-	public String invalidityReasonToken;
+	@JsonProperty("isAffirmativelyInvalid")
+	public boolean isAffirmativelyInvalid;
 
 	/**
-	 * Field invalidityReasonText.
+	 * Field invalidityReasonList.
 	 *
 	 */
-	@JsonProperty("invalidityReasonText")
-	public String invalidityReasonText;
+	@JsonProperty("invalidityReasonList")
+	public List<InvalidityReason> invalidityReasonList;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

@@ -13,26 +13,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON Object invalidityReason.
+ * This class is a Java representation of the JSON Object transactionResult.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "invalidityReasonToken", "invalidityReasonText" })
-public class InvalidityReason {
+@JsonPropertyOrder({ "transactionResultToken", "transactionResultText" })
+public class TransactionResult {
 
 	/**
-	 * Field invalidityReasonToken.
+	 * Field transactionResultToken.
 	 *
 	 */
-	@JsonProperty("invalidityReasonToken")
-	public String invalidityReasonToken;
+	@JsonProperty("transactionResultToken")
+	public String transactionResultToken;
 
 	/**
-	 * Field invalidityReasonText.
+	 * Field transactionResultText.
 	 *
 	 */
-	@JsonProperty("invalidityReasonText")
-	public String invalidityReasonText;
+	@JsonProperty("transactionResultText")
+	public String transactionResultText;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

@@ -1,6 +1,7 @@
 package org.keysupport.api.pojo.vss.v1;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.jackson.JsonComponent;
@@ -10,29 +11,19 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON Object invalidityReason.
+ * This class is a Java representation of the JSON Object ocspResponseList.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "invalidityReasonToken", "invalidityReasonText" })
-public class InvalidityReason {
+public class OCSPResponseList {
 
 	/**
-	 * Field invalidityReasonToken.
-	 *
+	 * Field ocspResponseList
 	 */
-	@JsonProperty("invalidityReasonToken")
-	public String invalidityReasonToken;
-
-	/**
-	 * Field invalidityReasonText.
-	 *
-	 */
-	@JsonProperty("invalidityReasonText")
-	public String invalidityReasonText;
+	@JsonProperty("ocspResponseList")
+	public List<OCSPResponse> ocspResponseList;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or
