@@ -56,7 +56,7 @@ public class X509Util {
 	/**
 	 * Method getSubjectAlternativeNames.
 	 *
-	 * @param certificate X509Certificate
+	 * @param certificate V1X509Certificate
 	 * @return Map<String,String>
 	 * @throws IOException
 	 */

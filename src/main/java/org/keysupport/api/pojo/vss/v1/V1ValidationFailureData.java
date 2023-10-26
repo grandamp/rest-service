@@ -11,19 +11,29 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON Object ocspResponseList.
+ * This class is a Java representation of the JSON Object validationFailureData.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class OCSPResponseList {
+@JsonPropertyOrder({ "isAffirmativelyInvalid", "invalidityReasonList" })
+public class V1ValidationFailureData {
 
 	/**
-	 * Field ocspResponseList
+	 * Field isAffirmativelyInvalid.
+	 *
 	 */
-	@JsonProperty("ocspResponseList")
-	public List<OCSPResponse> ocspResponseList;
+	@JsonProperty("isAffirmativelyInvalid")
+	public boolean isAffirmativelyInvalid;
+
+	/**
+	 * Field invalidityReasonList.
+	 *
+	 */
+	@JsonProperty("invalidityReasonList")
+	public List<V1InvalidityReason> invalidityReasonList;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

@@ -13,12 +13,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON Object SANValue.
+ * This class is a Java representation of the JSON Object V1SANValue.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "type", "value" })
-public class SANValue {
+public class V1SANValue {
 
 	/**
 	 * Field type.

@@ -1,4 +1,4 @@
-package org.keysupport.api.pojo.vssv1;
+package org.keysupport.api.pojo.vss.v1;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,19 +10,31 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON Object x509Certificate.
+ * This class is a Java representation of the JSON response.
+ *
+ * @author tejohnson
+ *
+ * @version $Revision: 1.0 $
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class X509Certificate {
+@JsonPropertyOrder({ "transactionResult", "validationResult" })
+public class V1VSSResponse {
 
 	/**
-	 * Field x509Certificate
+	 * Field transactionResult.
 	 */
-	@JsonProperty("x509Certificate")
-	public String x509Certificate;
+	@JsonProperty("transactionResult")
+	public V1TransactionResult transactionResult;
+
+	/**
+	 * Field validationResult.
+	 */
+	@JsonProperty("validationResult")
+	public V1ValidationResult validationResult;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

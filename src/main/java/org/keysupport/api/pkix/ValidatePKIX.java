@@ -200,7 +200,7 @@ public class ValidatePKIX {
 			 * <pre>
 			 * This is a CA:
 			 * 
-			 * - https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/security/cert/X509Certificate.html#getBasicConstraints()
+			 * - https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/security/cert/V1X509Certificate.html#getBasicConstraints()
 			 * 
 			 * "the value of pathLenConstraint if the BasicConstraints extension is present
 			 *  in the certificate and the subject of the certificate is a CA, otherwise -1."
@@ -380,7 +380,7 @@ public class ValidatePKIX {
 		 * If we got this far, the certificate is valid. (Regardless of default
 		 * revocation checking behavior)
 		 *
-		 * Populate the ValidationSuccessData, add it to the result, and; return the
+		 * Populate the V1ValidationSuccessData, add it to the result, and; return the
 		 * result.
 		 * 
 		 * TODO: If we disable default revocation checking by policy, then; we should

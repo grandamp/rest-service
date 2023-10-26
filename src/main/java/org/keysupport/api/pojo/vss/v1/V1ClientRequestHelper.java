@@ -25,8 +25,8 @@ public class V1ClientRequestHelper {
 	 * @param valPol
 	 * @param wantBackList
 	 */
-	public static VSSRequest validateCert(String vssHost, X509Certificate cert, String valPol,
-			List<WantBackTypeToken> wantBackList) {
+	public static V1VSSRequest validateCert(String vssHost, X509Certificate cert, String valPol,
+			List<V1WantBackTypeToken> wantBackList) {
 
 		byte[] certBytes = null;
 		try {
@@ -34,12 +34,15 @@ public class V1ClientRequestHelper {
 		} catch (CertificateEncodingException e) {
 			e.printStackTrace();
 		}
-		org.keysupport.api.pojo.vss.v1.X509Certificate certList[] = new org.keysupport.api.pojo.vss.v1.X509Certificate[1];
-		org.keysupport.api.pojo.vss.v1.X509Certificate jsonCert = new org.keysupport.api.pojo.vss.v1.X509Certificate();
+		org.keysupport.api.pojo.vss.v1.V1X509Certificate certList[] = new org.keysupport.api.pojo.vss.v1.V1X509Certificate[1];
+		org.keysupport.api.pojo.vss.v1.V1X509Certificate jsonCert = new org.keysupport.api.pojo.vss.v1.V1X509Certificate();
 		jsonCert.x509Certificate = Base64.getEncoder().encodeToString(certBytes);
 		jsonCert.setAdditionalProperty("vssCertId", X509Util.getVssCertId(cert));
 		certList[0] = jsonCert;
-		VSSRequest request = new VSSRequest(valPol, wantBackList, Arrays.asList(certList));
+		V1VSSRequest request = new V1VSSRequest();
+		request.validationPolicy = valPol;
+		request.wantBackList = wantBackList;
+		request.x509CertificateList = Arrays.asList(certList);
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
 			LOG.debug(objectMapper.writeValueAsString(request));
