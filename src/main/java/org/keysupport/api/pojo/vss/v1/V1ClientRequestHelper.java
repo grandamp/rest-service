@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
-import org.keysupport.api.pkix.ValidatePKIX;
 import org.keysupport.api.pkix.X509Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class V1ClientRequestHelper {
 
-	private final static Logger LOG = LoggerFactory.getLogger(ValidatePKIX.class);
+	private final static Logger LOG = LoggerFactory.getLogger(V1ClientRequestHelper.class);
 
 	/**
 	 * POST /vss/rest/
