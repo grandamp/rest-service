@@ -1,4 +1,4 @@
-package org.keysupport.api.pojo.vss.v1;
+package org.keysupport.api.pojo.vssv1;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,29 +11,19 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON Object validationFailureData.
+ * This class is a Java representation of the JSON Object x509CertificateList.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "isAffirmativelyInvalid", "invalidityReasonList" })
-public class ValidationFailureData {
+public class X509CertificateList {
 
 	/**
-	 * Field isAffirmativelyInvalid.
-	 *
+	 * Field x509CertificateList
 	 */
-	@JsonProperty("isAffirmativelyInvalid")
-	public boolean isAffirmativelyInvalid;
-
-	/**
-	 * Field invalidityReasonList.
-	 *
-	 */
-	@JsonProperty("invalidityReasonList")
-	public List<InvalidityReason> invalidityReasonList;
+	@JsonProperty("x509CertificateList")
+	public List<X509Certificate> x509CertificateList;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

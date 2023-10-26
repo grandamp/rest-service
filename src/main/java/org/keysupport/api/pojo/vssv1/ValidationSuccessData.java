@@ -1,4 +1,4 @@
-package org.keysupport.api.pojo.vss.v1;
+package org.keysupport.api.pojo.vssv1;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,17 +13,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This class is a Java representation of the JSON Object x509CertificateList.
+ * This class is a Java representation of the JSON Object validationSuccessData.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class X509CertificateList {
+public class ValidationSuccessData {
 
 	/**
-	 * Field x509CertificateList
+	 * Field wantBackResultList.
+	 *
 	 */
-	@JsonProperty("x509CertificateList")
-	public List<X509Certificate> x509CertificateList;
+	@JsonProperty("wantBackResultList")
+	public List<WantBack> wantBackResultList;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

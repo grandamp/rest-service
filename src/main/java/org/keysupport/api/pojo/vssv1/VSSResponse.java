@@ -1,4 +1,4 @@
-package org.keysupport.api.pojo.vss.v1;
+package org.keysupport.api.pojo.vssv1;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,28 +13,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON Object SANValue.
+ * This class is a Java representation of the JSON response.
+ *
+ * @author tejohnson
+ *
+ * @version $Revision: 1.0 $
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "type", "value" })
-public class SANValue {
+@JsonPropertyOrder({ "transactionResult", "validationResult" })
+public class VSSResponse {
 
 	/**
-	 * Field type.
-	 *
-	 * This is the General Name type.
+	 * Field transactionResult.
 	 */
-	@JsonProperty("type")
-	public String type;
+	@JsonProperty("transactionResult")
+	public TransactionResult transactionResult;
 
 	/**
-	 * Field value.
-	 *
-	 * This is the General Name value.
+	 * Field validationResult.
 	 */
-	@JsonProperty("value")
-	public String value;
+	@JsonProperty("validationResult")
+	public V1ValidationResult validationResult;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

@@ -1,6 +1,5 @@
-package org.keysupport.api.pojo.vss.v1;
+package org.keysupport.api.pojo.vssv1;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,14 +8,10 @@ import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This class is a Java representation of the JSON request.
@@ -24,39 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "validationPolicy", "wantBackList", "x509CertificateList" })
-public class VSSRequest {
-
-	/**
-	 * Static creator for de-serialization
-	 *
-	 * @throws IOException
-	 * @throws JsonMappingException
-	 * @throws JsonParseException
-	 */
-	@JsonCreator
-	public static VSSRequest getInstance(String jsonString)
-			throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		VSSRequest req = null;
-		req = mapper.readValue(jsonString, VSSRequest.class);
-		return req;
-	}
-
-	/**
-	 * Default Constructor
-	 *
-	 * @param validationPolicy
-	 * @param wantBackList
-	 * @param x509CertificateList
-	 */
-	@JsonCreator
-	public VSSRequest(@JsonProperty("validationPolicy") String validationPolicy,
-			@JsonProperty("wantBackList") List<WantBackTypeToken> wantBackList,
-			@JsonProperty("x509CertificateList") List<X509Certificate> x509CertificateList) {
-		this.validationPolicy = validationPolicy;
-		this.wantBackList = wantBackList;
-		this.x509CertificateList = x509CertificateList;
-	}
+public class V1VSSRequest {
 
 	/**
 	 * Field validationPolicy.

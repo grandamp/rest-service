@@ -1,4 +1,4 @@
-package org.keysupport.api.pojo.vss.v1;
+package org.keysupport.api.pojo.vssv1;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,28 +12,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This abstract class is a Java representation of the JSON Object representing
- * a service wantBack.
+ * This class is a Java representation of the JSON Object resultByCertificate.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class WantBack {
+public class ResultByCertificate {
 
 	/**
-	 * Field certPath.
-	 *
-	 * Base64 Encoded
+	 * Field resultByCertificate.
 	 */
-	@JsonProperty("certPath")
-	public X509CertificateList certPath;
-
-	/**
-	 * Field revocationInfo.
-	 *
-	 * Base64 Encoded
-	 */
-	@JsonProperty("revocationInfo")
-	public OCSPResponseList revocationInfo;
+	@JsonProperty("resultByCertificate")
+	public ResultByCertificateData resultByCertificate;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

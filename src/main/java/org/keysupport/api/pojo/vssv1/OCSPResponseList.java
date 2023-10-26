@@ -1,6 +1,7 @@
-package org.keysupport.api.pojo.vss.v1;
+package org.keysupport.api.pojo.vssv1;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.jackson.JsonComponent;
@@ -10,31 +11,19 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON response.
- *
- * @author tejohnson
- *
- * @version $Revision: 1.0 $
+ * This class is a Java representation of the JSON Object ocspResponseList.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "transactionResult", "validationResult" })
-public class VSSResponse {
+public class OCSPResponseList {
 
 	/**
-	 * Field transactionResult.
+	 * Field ocspResponseList
 	 */
-	@JsonProperty("transactionResult")
-	public TransactionResult transactionResult;
-
-	/**
-	 * Field validationResult.
-	 */
-	@JsonProperty("validationResult")
-	public ValidationResult validationResult;
+	@JsonProperty("ocspResponseList")
+	public List<OCSPResponse> ocspResponseList;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

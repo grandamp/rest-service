@@ -1,6 +1,8 @@
-package org.keysupport.api.pojo.vss.v1;
+package org.keysupport.api.pojo.vssv1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.jackson.JsonComponent;
@@ -9,20 +11,23 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This class is a Java representation of the JSON Object OCSPResponse.
+ * This class is a Java representation of the JSON Object validationResult.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class OCSPResponse {
+public class V1ValidationResult {
+
+	public V1ValidationResult() {
+		resultsByCertificateList = new ArrayList<>();
+	}
 
 	/**
-	 * Field ocspResponse
+	 * Field resultsByCertificateList.
 	 */
-	@JsonProperty("ocspResponse")
-	public String ocspResponse;
+	@com.fasterxml.jackson.annotation.JsonProperty("resultsByCertificateList")
+	public List<ResultByCertificate> resultsByCertificateList;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

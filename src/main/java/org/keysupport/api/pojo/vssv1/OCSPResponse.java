@@ -1,4 +1,4 @@
-package org.keysupport.api.pojo.vss.v1;
+package org.keysupport.api.pojo.vssv1;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,17 +12,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This class is a Java representation of the JSON Object resultByCertificate.
+ * This class is a Java representation of the JSON Object OCSPResponse.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResultByCertificate {
+public class OCSPResponse {
 
 	/**
-	 * Field resultByCertificate.
+	 * Field ocspResponse
 	 */
-	@JsonProperty("resultByCertificate")
-	public ResultByCertificateData resultByCertificate;
+	@JsonProperty("ocspResponse")
+	public String ocspResponse;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

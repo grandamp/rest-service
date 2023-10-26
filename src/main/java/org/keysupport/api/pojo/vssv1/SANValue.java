@@ -1,8 +1,6 @@
-package org.keysupport.api.pojo.vss.v1;
+package org.keysupport.api.pojo.vssv1;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.jackson.JsonComponent;
@@ -11,23 +9,32 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON Object validationResult.
+ * This class is a Java representation of the JSON Object SANValue.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ValidationResult {
-
-	public ValidationResult() {
-		resultsByCertificateList = new ArrayList<>();
-	}
+@JsonPropertyOrder({ "type", "value" })
+public class SANValue {
 
 	/**
-	 * Field resultsByCertificateList.
+	 * Field type.
+	 *
+	 * This is the General Name type.
 	 */
-	@com.fasterxml.jackson.annotation.JsonProperty("resultsByCertificateList")
-	public List<ResultByCertificate> resultsByCertificateList;
+	@JsonProperty("type")
+	public String type;
+
+	/**
+	 * Field value.
+	 *
+	 * This is the General Name value.
+	 */
+	@JsonProperty("value")
+	public String value;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or
