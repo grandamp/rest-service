@@ -10,19 +10,29 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON Object x509Certificate.
+ * This class is a Java representation of the JSON Object invalidityReason.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class X509Certificate {
+@JsonPropertyOrder({ "invalidityReasonToken", "invalidityReasonText" })
+public class V1InvalidityReason {
 
 	/**
-	 * Field x509Certificate
+	 * Field invalidityReasonToken.
+	 *
 	 */
-	@JsonProperty("x509Certificate")
-	public String x509Certificate;
+	@JsonProperty("invalidityReasonToken")
+	public String invalidityReasonToken;
+
+	/**
+	 * Field invalidityReasonText.
+	 *
+	 */
+	@JsonProperty("invalidityReasonText")
+	public String invalidityReasonText;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

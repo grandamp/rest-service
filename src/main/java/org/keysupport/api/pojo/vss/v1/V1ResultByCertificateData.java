@@ -1,4 +1,4 @@
-package org.keysupport.api.pojo.vssv1;
+package org.keysupport.api.pojo.vss.v1;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,14 +14,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * This class is a Java representation of the JSON object ResultByCertificate's
+ * This class is a Java representation of the JSON object V1ResultByCertificate's
  * Data.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "vssCertId", "x509SubjectName", "x509IssuerName", "x509SerialNumber", "x509SubjectAltName",
 		"validationTime", "nextUpdate", "validationResultToken", "validationFailureData", "validationSuccessData" })
-public class ResultByCertificateData {
+public class V1ResultByCertificateData {
 
 	/**
 	 * Field validationResultToken.
@@ -35,14 +35,14 @@ public class ResultByCertificateData {
 	 *
 	 */
 	@JsonProperty("validationFailureData")
-	public ValidationFailureData validationFailureData;
+	public V1ValidationFailureData validationFailureData;
 
 	/**
 	 * Field validationSuccessData.
 	 *
 	 */
 	@JsonProperty("validationSuccessData")
-	public ValidationSuccessData validationSuccessData;
+	public V1ValidationSuccessData validationSuccessData;
 
 	/**
 	 * Field X509IssuerName.
@@ -66,7 +66,7 @@ public class ResultByCertificateData {
 	 * Field x509SubjectAltName
 	 */
 	@JsonProperty("x509SubjectAltName")
-	public List<SANValue> x509SubjectAltName;
+	public List<V1SANValue> x509SubjectAltName;
 
 	/**
 	 * Field X509SubjectName.

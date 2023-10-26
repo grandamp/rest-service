@@ -12,17 +12,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This class is a Java representation of the JSON Object OCSPResponse.
+ * This class is a Java representation of the JSON Object wantBackTypeToken.
  */
 @JsonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class OCSPResponse {
+public class V1WantBackTypeToken {
 
 	/**
-	 * Field ocspResponse
+	 * Field wantBackTypeToken
 	 */
-	@JsonProperty("ocspResponse")
-	public String ocspResponse;
+	@JsonProperty("wantBackTypeToken")
+	public String wantBackTypeToken;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or
