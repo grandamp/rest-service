@@ -12,6 +12,7 @@ import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -235,7 +236,7 @@ public class X509Util {
 		}
 		String x5tS256 = null;
 		try {
-			x5tS256 = java.util.Base64.getEncoder().encodeToString(digest);
+			x5tS256 = Base64.getUrlEncoder().encodeToString(digest).replace("=", "");
 		} catch (Throwable e) {
 			LOG.error("Error base64 encoding digest result", e);
 		}
