@@ -284,7 +284,7 @@ public class ValidatePKIX {
 		if (revocationCheckingDisabled) {
 			params.setRevocationEnabled(false);
 		} else {
-			params.setRevocationEnabled(false);
+			params.setRevocationEnabled(true);
 		}
 		/**
 		 * <pre>
