@@ -161,7 +161,7 @@ public class ValidatePKIX {
 		 * 
 		 * TODO: Consider this as an option
 		 */
-		System.setProperty("com.sun.security.enableAIAcaIssuers", "false");
+		System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
 		/*
 		 * End Set JCE Signature Provider and System/Security variables
 		 */
