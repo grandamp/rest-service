@@ -117,7 +117,7 @@ public class ValidatePKIX {
 		 * *Temporary Testing a non-revocation testing option*
 		 * 
 		 */
-		Boolean revocationCheckingDisabled = true;
+		Boolean revocationCheckingDisabled = false;
 		if (revocationCheckingDisabled) {
 			Security.setProperty("ocsp.enable", "false");
 		} else {
