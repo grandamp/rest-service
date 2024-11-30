@@ -5,10 +5,10 @@ export BASE_URI=http://localhost:5000
 #
 # - `echo 'flush_all' | netcat 127.0.0.1 11211`
 #
-#export MEMCACHED_CNF=127.0.0.1
-export MEMCACHED_CNF=server.lan
+export MEMCACHED_CNF=127.0.0.1
+#export MEMCACHED_CNF=server.lan
 #
 # For additional debugging info, add: -Djava.security.debug=certpath -D-Djavax.net.debug=all
 #
 # mvn clean package spring-boot:repackage; java -Djava.security.debug=certpath -jar target/rest-service-eb.jar >out 2>&1
-mvn clean package spring-boot:repackage; java -jar target/rest-service-eb.jar
+mvn clean package spring-boot:repackage; java -Djava.security.debug=certpath -jar target/rest-service-eb.jar
