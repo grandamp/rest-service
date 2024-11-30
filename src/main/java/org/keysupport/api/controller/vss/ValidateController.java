@@ -81,7 +81,7 @@ public class ValidateController {
 
 	@PostMapping(path = "/vss/v2/validate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(
-			description = "Certificate Validation Request - *NOTE: Revocation checking via this implementation is currently disabled.*", 
+			description = "Certificate Validation Request", 
 			required = true, 
 			content = @Content(schema = @Schema(implementation = VssRequest.class), 
 			mediaType = MediaType.APPLICATION_JSON_VALUE, 
