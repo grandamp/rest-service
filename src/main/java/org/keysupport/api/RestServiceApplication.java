@@ -15,6 +15,7 @@ public class RestServiceApplication {
 	 * TODO:  Define Spring Boot Properties:  https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
 	 */
     public static void main(String[] args) {
+    	SystemLog.logSystemOutAndErr();
         SpringApplication app = new SpringApplication(RestServiceApplication.class);
         LOG.info("Service Starting");
         app.run(args);
