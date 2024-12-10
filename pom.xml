@@ -15,7 +15,7 @@
 	<description>Spring Boot Rest Service for api.keysupport.org</description>
 	<properties>
 		<java.version>17</java.version>
-		<aws.sdk.version>2.29.29</aws.sdk.version>
+		<aws.sdk.version>2.29.30</aws.sdk.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
