@@ -46,6 +46,8 @@ Consider the [U.S. Federal PKI](https://playbooks.idmanagement.gov/fpki/), and; 
 (i)  initial-excluded-subtrees == null
 ```
 
+I.e., [DoD produces a list of approved policies](https://dl.dod.cyber.mil/wp-content/uploads/pki-pke/txt/unclass-pki_interop_assurance_levels.txt), however; there is no claimed resolution of IAL/AAL of each policy per [NIST 800-63]((https://pages.nist.gov/800-63-3/sp800-63b.html#43-authenticator-assurance-level-3)).
+
 This service can implement such a policy using the service's following `validationPolicy` definition:
 
 ```text
