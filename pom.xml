@@ -35,14 +35,14 @@
 			<version>1.2.2</version>
 		</dependency>
 		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15to18</artifactId>
-			<version>1.80</version>
+    		<groupId>org.bouncycastle</groupId>
+    		<artifactId>bc-fips</artifactId>
+    		<version>2.1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcpkix-jdk15to18</artifactId>
-			<version>1.80</version>
+    		<groupId>org.bouncycastle</groupId>
+    		<artifactId>bcpkix-fips</artifactId>
+    		<version>2.1.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -27,7 +27,6 @@ import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.ASN1TaggedObject;
-import org.bouncycastle.asn1.BERTags;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.util.io.pem.PemObject;
@@ -105,7 +104,7 @@ public class X509Util {
 					 * somewhere, because that character is not part of the literal encoding.
 					 */
 
-					String rawFascnValue = value.getBaseUniversal(true, BERTags.OCTET_STRING).toString().toUpperCase();
+					String rawFascnValue = value.getObject().toString().toUpperCase();
 					if (rawFascnValue.startsWith("#")) {
 						rawFascnValue = rawFascnValue.substring(1);
 					}
@@ -119,7 +118,7 @@ public class X509Util {
 					 */
 					SANValue upn = new SANValue();
 					upn.type = "otherName#userPrincipalName";
-					upn.value = value.getBaseUniversal(true, BERTags.UTF8_STRING).toString();
+					upn.value = value.getObject().toString();
 					x509SubjectAltName.add(upn);
 				} else {
 					SANValue ukOther = new SANValue();

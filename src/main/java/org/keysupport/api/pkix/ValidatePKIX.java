@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 import org.keysupport.api.RestServiceEventLogger;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
@@ -80,7 +81,7 @@ public class ValidatePKIX {
 	 * - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-45146
 	 * </pre>
 	 */
-	private final static String JCE_PROVIDER = "BC";
+	private final static String JCE_PROVIDER = "BCFIPS";
 
 	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, Date now) {
 		/**
@@ -112,7 +113,7 @@ public class ValidatePKIX {
 		 *
 		 * </pre>
 		 */
-		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+		Security.addProvider(new BouncyCastleFipsProvider());
 		/*
 		 * *Temporary Testing a non-revocation testing option*
 		 * 
