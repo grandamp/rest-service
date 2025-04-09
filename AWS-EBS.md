@@ -11,7 +11,6 @@ eb init
 eb use api-keysupport-rest-dev
 eb setenv SPRING_PROFILES_ACTIVE=beanstalk
 eb setenv SERVER_PORT=5000
-eb setenv MEMCACHED_CNF=api-keysupport-rest.vdmmtc.cfg.use1.cache.amazonaws.com
 eb setenv S3_BUCKET=elasticbeanstalk-us-east-1-216896468348
 eb setenv BASE_URI=https://api.keysupport.org
 eb list

@@ -15,25 +15,8 @@
 	<description>Spring Boot Rest Service for api.keysupport.org</description>
 	<properties>
 		<java.version>17</java.version>
-		<aws.sdk.version>2.31.17</aws.sdk.version>
 	</properties>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>software.amazon.awssdk</groupId>
-				<artifactId>bom</artifactId>
-				<version>${aws.sdk.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<dependencies>
-		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>elasticache-java-cluster-client</artifactId>
-			<version>1.2.2</version>
-		</dependency>
 		<dependency>
     		<groupId>org.bouncycastle</groupId>
     		<artifactId>bc-fips</artifactId>

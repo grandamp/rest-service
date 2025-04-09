@@ -15,7 +15,6 @@ import java.security.cert.X509CRL;
 import java.util.List;
 import java.util.Map;
 
-import org.keysupport.api.pkix.cache.ElasticacheClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -46,8 +45,6 @@ public class HTTPClientSingleton {
 
 	private HttpClient client = null;
 
-	private ElasticacheClient mcClient = null;
-
 	private HTTPClientSingleton() {
 		/*
 		 * Create HTTP Client
@@ -68,21 +65,6 @@ public class HTTPClientSingleton {
 	}
 
 	public byte[] getData(URI uri, String mimeType) {
-		/*
-		 * Set a custom User-Agent to identify calls from this code
-		 *
-		 * TODO: Address all TTLs via config or policy
-		 *
-		 * Initial caching test, where we will cache all data via the call with the
-		 * default 1hr TTL.
-		 */
-		if (null == this.mcClient) {
-			this.mcClient = new ElasticacheClient();
-		}
-		byte[] cacheResponse = mcClient.get(uri.toASCIIString());
-		if (null != cacheResponse) {
-			return cacheResponse;
-		} else {
 			HttpRequest request = HttpRequest.newBuilder().uri(uri).setHeader("User-Agent", USER_AGENT)
 					.setHeader(accept, mimeType).build();
 			HttpResponse<byte[]> response = null;
@@ -126,14 +108,12 @@ public class HTTPClientSingleton {
 					LOG.error("Entity from " + uri.toASCIIString() + " exceeds " + MAX_ENTITY_SIZE + "bytes");
 					return null;
 				} else {
-					mcClient.put(uri.toASCIIString(), responseBody);
-					return response.body();
+					return responseBody;
 				}
 			} else {
 				LOG.error("Received HTTP " + response.statusCode() + " status from " + uri.toASCIIString());
 				return null;
 			}
-		}
 	}
 
 	public X509CRL getCrl(URI uri) {
@@ -199,17 +179,5 @@ public class HTTPClientSingleton {
 			LOG.error("Unexpected null response from: " + uri.toASCIIString());
 			return null;
 		}
-	}
-
-	public ElasticacheClient getCacheClient() {
-		return mcClient;
-	}
-
-	/*
-	 * Likely only a method for testing
-	 */
-	public void reset() {
-		client = null;
-		mcClient.close();
 	}
 }

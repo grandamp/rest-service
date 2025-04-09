@@ -3,7 +3,6 @@ package org.keysupport.api.controller.vss;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -20,14 +19,12 @@ import org.keysupport.api.config.ConfigurationPolicies;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.ValidatePKIX;
 import org.keysupport.api.pkix.X509Util;
-import org.keysupport.api.pkix.cache.ElasticacheClient;
 import org.keysupport.api.pojo.vss.Fail;
 import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.ValidationResult;
 import org.keysupport.api.pojo.vss.VssRequest;
 import org.keysupport.api.pojo.vss.VssResponse;
-import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +35,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -47,11 +42,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -213,35 +206,6 @@ public class ValidateController {
 			LOG.error("Error converting POJO to JSON", e);
 		}
 		/*
-		 * Check our cache for a response first, if cached, return immediately
-		 */
-		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
-		ElasticacheClient mcClient = client.getCacheClient();
-		byte[] cachedResponse = mcClient.get(requestId);
-		if (null != cachedResponse) {
-			String strResponse = new String(cachedResponse, StandardCharsets.UTF_8);
-			try {
-				response = mapper.readValue(strResponse, VssResponse.class);
-			} catch (JsonMappingException e) {
-				LOG.error("Error converting JSON to POJO", e);
-			} catch (JsonProcessingException e) {
-				LOG.error("Error converting JSON to POJO", e);
-			}
-			if (null != response) {
-				/*
-				 * Log and return cached response
-				 */
-				LOG.info("{\"ValidationResponse\":" + strResponse + "}");
-				String getUri = BASE_URI + "/vss/v2/validate/getByRequestId/" + requestId;
-				Date lastModified = X509Util.ISO8601DateFromString(response.validationTime);
-				return ResponseEntity.created(URI.create(getUri))
-						.cacheControl(CacheControl.maxAge(valPol.validCacheLifetime / 60, TimeUnit.MINUTES).cachePublic())
-						.eTag(requestId)
-						.lastModified(lastModified.toInstant())
-						.body(response);
-			}
-		}
-		/*
 		 * Validate, log, and; return the result
 		 */
 		Instant vNow = Instant.now();
@@ -290,8 +254,6 @@ public class ValidateController {
 			 */
 			if (respResult != null) {
 				if (respResult instanceof Success) {
-					LOG.info("Caching valid response with " + valPol.validCacheLifetime + "sec TTL, with Key: " + requestId);
-					mcClient.putWithTtl(requestId, valPol.validCacheLifetime, output.getBytes(StandardCharsets.UTF_8));
 					/*
 					 * Created response requires a URI to GET the entity, by requestId
 					 */
@@ -299,16 +261,6 @@ public class ValidateController {
 					return ResponseEntity.created(URI.create(getUri))
 							.cacheControl(CacheControl.maxAge(valPol.validCacheLifetime / 60, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
 				} else if (respResult instanceof Fail) {
-					/*
-					 * We won't perform a validation operation on a certificate we've deemed invalid for a period of time:
-					 * 
-					 * - 7 Days is the current default
-					 * - The notAfter date *could* be used, but also abused via certificates that have no valid path
-					 * 
-					 * TODO: We should consider caching revoked certificate validations based on the certificate Expiration date.
-					 */
-					LOG.info("Caching invalid response with" + valPol.inValidCacheLifetime + "TTL, with Key: " + requestId);
-					mcClient.putWithTtl(requestId, valPol.inValidCacheLifetime, output.getBytes(StandardCharsets.UTF_8));
 					return ResponseEntity.ok()
 							.cacheControl(CacheControl.maxAge(valPol.inValidCacheLifetime / 60, TimeUnit.MINUTES).cachePublic()).eTag(requestId).lastModified(vNow).body(response);
 				} else {
@@ -324,59 +276,6 @@ public class ValidateController {
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 
-	}
-
-	@GetMapping(path = "/vss/v2/validate/getByRequestId/{requestId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@Operation(description="Get Cached Validation Response by requestId<br><br>" 
-	  		+ "The requestId is a SHA-256 digest Hex string (64 characters) that is derived via the following:<br><br>"
-	  		+ "- Construct a UTF-8 String by first combining the calculated x5t#S256 value of the certificate and the valididationPolicyId, seperated with a colon<br>"
-	  		+ "- SHA-256 digest the String byte[] value, and convert the digest value to a HEX String.")
-	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = VssResponse.class)))
-	@ApiResponse(responseCode = "404", content = @Content(schema = @Schema(defaultValue = "")))
-	@CrossOrigin(origins = "*")
-	ResponseEntity<VssResponse> validate(@PathVariable String requestId, @RequestHeader Map<String, String> headers) {
-		ObjectMapper mapper = new ObjectMapper();
-		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
-		ElasticacheClient mcClient = client.getCacheClient();
-		/*
-		 * The requestId is limited to a Hex SHA-256 value @ 64 characters
-		 */
-		String headerJson = null;
-		try {
-			headerJson = mapper.writeValueAsString(headers);
-		} catch (JsonProcessingException e) {
-			LOG.error("Error converting POJO to JSON", e);
-		}
-		LOG.info("{\"getByRequestId\":\"" + requestId + "\",\"headers\":" + headerJson + "}");
-		if (requestId.length() != 64) {
-			LOG.error("Returning 404: Client request does not appear to be a legitimate requestId: \"" + requestId
-					+ "\": {\"headers\":" + headerJson + "}");
-			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-		} else {
-			byte[] cachedResponse = mcClient.get(requestId);
-			if (null != cachedResponse) {
-				String strResponse = new String(cachedResponse, StandardCharsets.UTF_8);
-				try {
-					response = mapper.readValue(strResponse, VssResponse.class);
-				} catch (JsonMappingException e) {
-					LOG.error("Error converting JSON to POJO", e);
-				} catch (JsonProcessingException e) {
-					LOG.error("Error converting JSON to POJO", e);
-				}
-				if (null != response) {
-					Date lmDate = X509Util.ISO8601DateFromString(response.validationTime);
-					return ResponseEntity.ok().cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePublic()).eTag(requestId)
-							/*
-							 * Serialize validationTime within the Cached response into the Last-Modified header.
-							 */
-							.lastModified(Instant.ofEpochMilli(lmDate.getTime())).body(response);
-				} else {
-					return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-				}
-			} else {
-				return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-			}
-		}
 	}
 
 	@ExceptionHandler({ Exception.class })
