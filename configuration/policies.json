@@ -17,8 +17,6 @@
             "inhibitPolicyMapping": false,
             "requireExplicitPolicy": true,
             "inhibitAnyPolicy": true,
-            "validCacheLifetime": 3600,
-            "inValidCacheLifetime": 604800,
             "cmsIntermediateHintListUri": [
                 "https://www.idmanagement.gov/implement/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b"
             ],
@@ -45,8 +43,6 @@
             "inhibitPolicyMapping": false,
             "requireExplicitPolicy": true,
             "inhibitAnyPolicy": true,
-            "validCacheLifetime": 3600,
-            "inValidCacheLifetime": 604800,
             "cmsIntermediateHintListUri": [
                 "https://www.idmanagement.gov/implement/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b"
             ],
