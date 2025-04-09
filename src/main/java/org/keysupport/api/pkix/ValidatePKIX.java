@@ -73,14 +73,6 @@ public class ValidatePKIX {
 
 	private final static String CERTPATH_ALGORITHM = "PKIX";
 
-	/**
-	 * <pre>
-	 * TODO: For now, use the BC signature provider until BCFIPS is avail for
-	 * OpenJDK/Corretto 17
-	 * 
-	 * - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-45146
-	 * </pre>
-	 */
 	private final static String JCE_PROVIDER = "BCFIPS";
 
 	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, Date now) {
@@ -114,17 +106,18 @@ public class ValidatePKIX {
 		 * </pre>
 		 */
 		Security.addProvider(new BouncyCastleFipsProvider());
+
 		/*
-		 * *Temporary Testing a non-revocation testing option*
-		 * 
+		 * SUN JSSE Provider config for revocation checking, but; only for the EE cert being validated
 		 */
-		Boolean revocationCheckingDisabled = false;
-		if (revocationCheckingDisabled) {
-			Security.setProperty("ocsp.enable", "false");
-		} else {
-			System.setProperty("com.sun.security.enableCRLDP", "true");
-			Security.setProperty("ocsp.enable", "true");
-		}
+		System.setProperty("com.sun.security.onlyCheckRevocationOfEECert", "true");
+		System.setProperty("com.sun.security.enableCRLDP", "true");
+		Security.setProperty("ocsp.enable", "true");
+		/*
+		 * Allow AIA fetch
+		 */
+		System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
+
 		/**
 		 * <pre>
 		 * 
@@ -158,12 +151,6 @@ public class ValidatePKIX {
 		 * </pre>
 		 */
 		/*
-		 * Disable AIA fetch to restrict our intermediate store
-		 * 
-		 * TODO: Consider this as an option
-		 */
-		System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
-		/*
 		 * End Set JCE Signature Provider and System/Security variables
 		 */
 		/*
@@ -187,9 +174,6 @@ public class ValidatePKIX {
 		if (null != cert.getSerialNumber()) {
 			response.x509SerialNumber = cert.getSerialNumber().toString();
 		}
-		/*
-		 * TODO: populate subjectKeyIdentifer
-		 */
 
 		if (cert.getBasicConstraints() == -1) {
 			/*
@@ -282,11 +266,10 @@ public class ValidatePKIX {
 		params.setAnyPolicyInhibited(valPol.inhibitAnyPolicy);
 		params.setMaxPathLength(MAX_PATH_LENGTH);
 		params.addCertStore(cstore);
-		if (revocationCheckingDisabled) {
-			params.setRevocationEnabled(false);
-		} else {
-			params.setRevocationEnabled(true);
-		}
+		/*
+		 * Disable the following if trying to eliminate revocation checking in the provider.
+		 */
+		params.setRevocationEnabled(true);
 		/**
 		 * <pre>
 		 * 
