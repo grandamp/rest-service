@@ -16,7 +16,7 @@ A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-t
 
 Why?  Many mTLS use-cases involve complex certificate validation in the application layer, which is *hard* to scale.
 
-This implementation is intended to allow a relying party/team to centralize that validation using a simple API, easily hosted by the relying party/team locally, or via [AWS Elastic Beanstalk](/AWS-EBS.md).
+This implementation is intended to allow a relying party/team to centralize that validation using a simple API.
 
 Here is some [basic performance information](./locust/README.md).
 
@@ -110,13 +110,9 @@ As a relying party, you can perform post-processing on the logs for:
 
 - Advanced Test Case, see [mTLS Testing (please open an issue if this link fails, inclusive of a screenshot)](https://x509.keysupport.org/swagger-ui/index.html)
 
-## Deploying to AWS Elasitic Beanstalk
-
-- See [AWS Elastic Beanstalk](/AWS-EBS.md)
-
 ## Current API Documentation & API Example
 
-- See/Try the operational example via [this Swagger-UI](https://api.keysupport.org/swagger-ui/index.html), based on the above example [AWS Elastic Beanstalk](/AWS-EBS.md) deployment
+- See/Try the operational example via [this Swagger-UI](https://api.keysupport.org/swagger-ui/index.html)
 - [Current issues](https://github.com/grandamp/rest-service/issues) apply to example above
 
 ## How to Contribute
