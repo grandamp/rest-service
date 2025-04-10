@@ -11,7 +11,8 @@ ADD target/rest-service-eb.jar /opt/vss/lib/
 RUN /usr/bin/chown -R 1001 /opt/vss
 USER 1001
 # Run App
-ENTRYPOINT /bin/bash
+#ENTRYPOINT ["/bin/bash"]  
+ENTRYPOINT ["/usr/bin/java", "-jar", "/opt/vss/lib/rest-service-eb.jar"]
 # =================================
 # Container meta information
 # ---------------------------------
