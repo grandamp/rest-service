@@ -73,9 +73,22 @@ public class ValidatePKIX {
 
 	private final static String CERTPATH_ALGORITHM = "PKIX";
 
+	/*
+	 * This implementation will rely on BCFIPS for cryptographic compliance.
+	 */
 	private final static String JCE_PROVIDER = "BCFIPS";
 
 	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, Date now) {
+		/*
+		 * SUN JSSE Provider config for revocation checking, but; only for the EE cert being validated
+		 */
+		System.setProperty("com.sun.security.onlyCheckRevocationOfEECert", "true");
+		System.setProperty("com.sun.security.enableCRLDP", "true");
+		Security.setProperty("ocsp.enable", "true");
+		/*
+		 * Allow AIA fetch
+		 */
+		System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
 		/**
 		 * <pre>
 		 *  		 
@@ -105,19 +118,10 @@ public class ValidatePKIX {
 		 *
 		 * </pre>
 		 */
+		/*
+		 * This implementation will rely on BCFIPS for cryptographic compliance.
+		 */
 		Security.addProvider(new BouncyCastleFipsProvider());
-
-		/*
-		 * SUN JSSE Provider config for revocation checking, but; only for the EE cert being validated
-		 */
-		System.setProperty("com.sun.security.onlyCheckRevocationOfEECert", "true");
-		System.setProperty("com.sun.security.enableCRLDP", "true");
-		Security.setProperty("ocsp.enable", "true");
-		/*
-		 * Allow AIA fetch
-		 */
-		System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
-
 		/**
 		 * <pre>
 		 * 
@@ -226,15 +230,6 @@ public class ValidatePKIX {
 			response.validationResult = fail;
 			return response;
 		}
-		/*
-		 * TODO: Before we dive into RFC5280, we should perform a minimum
-		 * algorithm/keySize check.
-		 *
-		 * Set RFC 5280 Inputs based on the selected certificate and validation policy
-		 * 
-		 * This seems easy to do with the SUN JCE Provider, but; we are using the BC
-		 * provider (targeting BCFIPS)
-		 */
 		X509CertSelector selector = new X509CertSelector();
 		selector.setCertificate(cert);
 		/*

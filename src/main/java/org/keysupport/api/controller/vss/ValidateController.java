@@ -174,10 +174,10 @@ public class ValidateController {
 		 */
 		x5tS256 = X509Util.x5tS256(clientCert);
 		/*
-		 * Derive requestId, which is used for the entity E-Tag, as well as GET requests
-		 *
+		 * Derive requestId.
+		 * 
 		 * The client can also derive the requestId in order to attempt a GET request,
-		 * before POST.
+		 * before POST, *if* this implementation supports caching.
 		 *
 		 * This would yield a much faster response from the cache, or; a 404 if not
 		 * cached.
@@ -220,11 +220,6 @@ public class ValidateController {
 		 */
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(dNow);
-		if (response.validationResult.result == ValidationResult.SUCCESS_VALUE) {
-			calendar.add(Calendar.SECOND, valPol.validCacheLifetime);
-		} else {
-			calendar.add(Calendar.SECOND, valPol.inValidCacheLifetime);
-		}
 		response.nextUpdate = X509Util.ISO8601DateString(calendar.getTime());
 		String validationNow = X509Util.ISO8601DateString(dNow);
 		if (respResult != null) {
@@ -246,13 +241,6 @@ public class ValidateController {
 		try {
 			output = mapper.writeValueAsString(response);
 			LOG.info("{\"ValidationResponse\":" + output + "}");
-			/*
-			 * Cache the response:
-			 *
-			 * - CREATED for valid certificates, for 15 minutes - OK for invalid
-			 * certificates, for 24 hours
-			 *
-			 */
 			if (respResult != null) {
 				if (respResult instanceof Success) {
 					return ResponseEntity.ok().body(response);
