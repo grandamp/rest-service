@@ -12,7 +12,7 @@ RUN /usr/bin/chown -R 1001 /opt/vss
 USER 1001
 # Run App
 #ENTRYPOINT ["/bin/bash"]  
-ENTRYPOINT ["/usr/bin/java", "-jar", "/opt/vss/lib/rest-service-eb.jar"]
+ENTRYPOINT ["/usr/bin/java", "-Xms4096m", "-Xmx10240m", "-jar", "/opt/vss/lib/rest-service-eb.jar"]
 # =================================
 # Container meta information
 # ---------------------------------
@@ -25,6 +25,10 @@ LABEL vcs-ref=$PIPELINE_ID
 LABEL vcs-url="https://github.com/grandamp/rest-service"
 LABEL vendor="https://keysupport.net"
 
-#docker build -t vss .
-#docker run -it --network host vss:latest
+# sudo docker build -t vss .
+# 
+# Ensure `crldata` repository Docker volume exists and contains .crl files
+#
+# sudo docker run -it --network host --mount source=crldata,destination=/opt/vss/crls vss:latest
+# 
 
