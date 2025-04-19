@@ -1,5 +1,6 @@
 package org.keysupport.api.pkix.cache.singletons;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,12 +9,10 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.cert.CRL;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ public class CRLCacheSingleton {
 	/**
 	 * A map of intermediate stores that correspond to each validation policy.
 	 */
-	private ConcurrentHashMap<String, X509CRL> crlMap = null;
+	private ConcurrentHashMap<String, byte[]> crlMap = null;
 
 	ObjectMapper mapper = null;
 
@@ -52,22 +51,14 @@ public class CRLCacheSingleton {
 		/*
 		 * Create global crlMap
 		 */
-		crlMap = new ConcurrentHashMap<String, X509CRL>();
+		crlMap = new ConcurrentHashMap<String, byte[]>();
 		mapper = new ObjectMapper();
 		List<Path> crlPaths = getCachedCRLs();
 		for (Path currentPath: crlPaths) {
 			int revokedCerts = 0;
 			String crlPath = currentPath.toString();
 			LOG.info("Loadinng CRL: " + crlPath);
-			Collection<CRL> currentCRL = readCRLFromFile(crlPath);
-			/*
-			 * We are assuming one CRL object per CRL file from disk/volume
-			 * 
-			 * TODO: Perhaps convert to List<X509CRL>
-			 * 
-			 */
-			X509CRL[] crls = currentCRL.toArray(new X509CRL[currentCRL.size()]);
-			X509CRL crl = crls[0];
+			X509CRL crl = readCRLFromFile(crlPath);
 			totalCrls++;
 			int crlSize = 0;
 			try {
@@ -105,12 +96,38 @@ public class CRLCacheSingleton {
 					LOG.info("revokedCertCount: " + revokedCerts);
 					totalCrlRevoked = totalCrlRevoked + revokedCerts;
 				}
-				crlMap.put(kid, crl);
+				try {
+					crlMap.put(kid, crl.getEncoded());
+				} catch (CRLException e) {
+					LOG.error("Error rendering CRL to byte[]", e);
+				}
 				LOG.info("totalCrls: " + totalCrls);
 				LOG.info("totalCrlSize: " + totalCrlSize);
 				LOG.info("totalCrlRevoked: " + totalCrlRevoked);
 			}
 		}
+	}
+
+	public X509CRL getCrl(String kid) {
+		byte[] encodedCrl = crlMap.get(kid);
+		return renderX509Crl(encodedCrl);
+	}
+
+	private X509CRL renderX509Crl(byte[] crlBytes) {
+		CertificateFactory cf = null;
+		try {
+			cf = CertificateFactory.getInstance("X.509");
+		} catch (CertificateException e) {
+			LOG.error("Error creating Certificate Factory", e);
+		}
+		InputStream in = new ByteArrayInputStream(crlBytes);
+		X509CRL crl = null;
+		try {
+			crl = (X509CRL) cf.generateCRL(in);
+		} catch (CRLException e) {
+			LOG.error("Error rendering CRL", e);
+		}
+		return crl;
 	}
 
 	public static List<Path> getCachedCRLs() {
@@ -130,17 +147,14 @@ public class CRLCacheSingleton {
 		return crlFiles;
 	}
 
-	public static Collection<CRL> readCRLFromFile(String filePath) {
+	public static X509CRL readCRLFromFile(String filePath) {
 		File crlFile = new File(filePath);
-		// if (!crlFile.isAbsolute()) {
-		// crlFile = new File(System.getProperty("catalina.base"), filePath);
-		// }
-		Collection<? extends CRL> crls = null;
+		X509CRL crl = null;
 		InputStream is = null;
 		try {
 			CertificateFactory cf = CertificateFactory.getInstance("X.509");
 			is = new FileInputStream(crlFile);
-			crls = cf.generateCRLs(is);
+			crl = (X509CRL) cf.generateCRL(is);
 		} catch (CertificateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -158,7 +172,7 @@ public class CRLCacheSingleton {
 				}
 			}
 		}
-		return (Collection<CRL>) crls;
+		return crl;
 	}
 
 	public void updateIntermediates(ValidationPolicy valPol) {
@@ -174,12 +188,8 @@ public class CRLCacheSingleton {
 		 * 
 		 * For now, we will always return a new Instance/Object
 		 */
-		//return SingletonHelper.INSTANCE;
-		return new CRLCacheSingleton();
+		return SingletonHelper.INSTANCE;
+		//return new CRLCacheSingleton();
 	}
-
-//	public CertStore getIntermediates(String validationPolicyId) {
-//		return crlMap.get(validationPolicyId);
-//	}
 
 }
