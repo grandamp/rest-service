@@ -19,6 +19,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.bouncycastle.asn1.ASN1OctetString;
+import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier;
+import org.keysupport.api.pkix.X509Util;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +57,8 @@ public class CRLCacheSingleton {
 		//Collection<CRL> crls = new ArrayList<CRL>();
 		for (Path currentPath: crlPaths) {
 			LOG.info("Loadinng CRL: " + currentPath.toString());
-			Collection<CRL> currentCRL = readCRLFromFile(currentPath.toString());
+			String crlPath = currentPath.toString();
+			Collection<CRL> currentCRL = readCRLFromFile(crlPath);
 			/*
 			 * We are assuming one CRL object per CRL file from disk/volume
 			 * 
@@ -64,12 +68,22 @@ public class CRLCacheSingleton {
 			X509CRL[] crls = currentCRL.toArray(new X509CRL[currentCRL.size()]);
 			X509CRL crl = crls[0];
 			String issuer_name = crl.getIssuerX500Principal().getName();
-			//byte[] issuer_key = AKI Value
-			//byte[] authorityKeyIdentifier = crl.getExtensionValue("2.5.29.35");
-			LOG.info("CRL Issuer: " + crl.getIssuerX500Principal().getName());
-			LOG.info("thisUpdate: " + crl.getThisUpdate());
-			LOG.info("nextUpdate: " + crl.getNextUpdate());
-			crlMap.put(issuer_name, crl);
+			String kid = null;
+			LOG.info("CRL Issuer: " + issuer_name);
+			byte[] authorityKeyIdentifier = crl.getExtensionValue("2.5.29.35");
+			if (null == authorityKeyIdentifier) {
+				LOG.warn("CRL " + crlPath + "does not contain an authorityKeyIdentifier extension!");
+			} else {
+				LOG.info("AuthorityKeyIdentifier:" + X509Util.byteArrayToHexString(authorityKeyIdentifier));
+				ASN1OctetString authorityKeyId = ASN1OctetString.getInstance(authorityKeyIdentifier);
+				AuthorityKeyIdentifier akid = AuthorityKeyIdentifier.getInstance(authorityKeyId.getOctets());
+				byte[] authorityKeyIdBytes = akid.getKeyIdentifier();
+				kid = X509Util.byteArrayToHexString(authorityKeyIdBytes).toLowerCase();
+				LOG.info("kid:" + kid);
+				LOG.info("thisUpdate: " + crl.getThisUpdate());
+				LOG.info("nextUpdate: " + crl.getNextUpdate());
+				crlMap.put(kid, crl);
+			}
 		}
 	}
 
@@ -129,7 +143,13 @@ public class CRLCacheSingleton {
 	}
 
 	public static CRLCacheSingleton getInstance() {
-		return SingletonHelper.INSTANCE;
+		/*
+		 * TODO: Return to singleton
+		 * 
+		 * For now, we will always return a new Instance/Object
+		 */
+		//return SingletonHelper.INSTANCE;
+		return new CRLCacheSingleton();
 	}
 
 //	public CertStore getIntermediates(String validationPolicyId) {

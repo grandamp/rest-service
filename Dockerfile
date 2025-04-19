@@ -12,7 +12,7 @@ RUN /usr/bin/chown -R 1001 /opt/vss
 USER 1001
 # Run App
 #ENTRYPOINT ["/bin/bash"]  
-ENTRYPOINT ["/usr/bin/java", "-Xms4096m", "-Xmx10240m", "-jar", "/opt/vss/lib/rest-service-eb.jar"]
+ENTRYPOINT ["/usr/bin/java", "-Xms8192m", "-Xmx10240m", "-jar", "/opt/vss/lib/rest-service-eb.jar"]
 # =================================
 # Container meta information
 # ---------------------------------
