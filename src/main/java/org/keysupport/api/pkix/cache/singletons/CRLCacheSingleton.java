@@ -44,20 +44,21 @@ public class CRLCacheSingleton {
 
 	private CRLCacheSingleton() {
 		/*
-		 * Since we are the constructor, we will initialize every time for memory testing.
-		 * 
-		 * For now, we will update all CRLs on disk/volume, and is non-blocking, so our crlMap *could* be unstable during re-initialization
+		 * Collect stats for revocation data
 		 */
-		//if (null == crlMap) {
-		//	crlMap = new ConcurrentHashMap<String, X509CRL>();
-		//}
+		int totalCrls = 0;
+		int totalCrlSize = 0;
+		int totalCrlRevoked = 0;
+		/*
+		 * Create global crlMap
+		 */
 		crlMap = new ConcurrentHashMap<String, X509CRL>();
 		mapper = new ObjectMapper();
 		List<Path> crlPaths = getCachedCRLs();
-		//Collection<CRL> crls = new ArrayList<CRL>();
 		for (Path currentPath: crlPaths) {
-			LOG.info("Loadinng CRL: " + currentPath.toString());
+			int revokedCerts = 0;
 			String crlPath = currentPath.toString();
+			LOG.info("Loadinng CRL: " + crlPath);
 			Collection<CRL> currentCRL = readCRLFromFile(crlPath);
 			/*
 			 * We are assuming one CRL object per CRL file from disk/volume
@@ -67,22 +68,47 @@ public class CRLCacheSingleton {
 			 */
 			X509CRL[] crls = currentCRL.toArray(new X509CRL[currentCRL.size()]);
 			X509CRL crl = crls[0];
+			totalCrls++;
+			int crlSize = 0;
+			try {
+				crlSize = crl.getEncoded().length;
+			} catch (CRLException e) {
+				LOG.error("Unable to decode CRL", e);
+			}
+			if (crlSize == 0) {
+				LOG.warn("CRL file contains no bytes: " + crlPath);
+			} 
+			totalCrlSize = totalCrlSize + crlSize;
 			String issuer_name = crl.getIssuerX500Principal().getName();
 			String kid = null;
-			LOG.info("CRL Issuer: " + issuer_name);
+			/*
+			 * Lack of an authorityKeyIidentifier extension is a deal breaker for consuming CRL data
+			 */
 			byte[] authorityKeyIdentifier = crl.getExtensionValue("2.5.29.35");
 			if (null == authorityKeyIdentifier) {
 				LOG.warn("CRL " + crlPath + "does not contain an authorityKeyIdentifier extension!");
 			} else {
-				LOG.info("AuthorityKeyIdentifier:" + X509Util.byteArrayToHexString(authorityKeyIdentifier));
+				LOG.debug("AuthorityKeyIdentifier:" + X509Util.byteArrayToHexString(authorityKeyIdentifier));
 				ASN1OctetString authorityKeyId = ASN1OctetString.getInstance(authorityKeyIdentifier);
 				AuthorityKeyIdentifier akid = AuthorityKeyIdentifier.getInstance(authorityKeyId.getOctets());
 				byte[] authorityKeyIdBytes = akid.getKeyIdentifier();
 				kid = X509Util.byteArrayToHexString(authorityKeyIdBytes).toLowerCase();
-				LOG.info("kid:" + kid);
-				LOG.info("thisUpdate: " + crl.getThisUpdate());
-				LOG.info("nextUpdate: " + crl.getNextUpdate());
+				LOG.info("CRL Issuer: " + issuer_name);
+				LOG.debug("kid:" + kid);
+				LOG.debug("thisUpdate: " + crl.getThisUpdate());
+				LOG.debug("nextUpdate: " + crl.getNextUpdate());
+				LOG.info("crlSize: " + crlSize);
+				if (null == crl.getRevokedCertificates()) {
+					LOG.info("revokedCertCount: 0");
+				} else {
+					revokedCerts = crl.getRevokedCertificates().size();
+					LOG.info("revokedCertCount: " + revokedCerts);
+					totalCrlRevoked = totalCrlRevoked + revokedCerts;
+				}
 				crlMap.put(kid, crl);
+				LOG.info("totalCrls: " + totalCrls);
+				LOG.info("totalCrlSize: " + totalCrlSize);
+				LOG.info("totalCrlRevoked: " + totalCrlRevoked);
 			}
 		}
 	}
