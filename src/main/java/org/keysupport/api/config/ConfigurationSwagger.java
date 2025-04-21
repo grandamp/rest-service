@@ -15,12 +15,10 @@ import io.swagger.v3.oas.models.servers.Server;
 @Configuration
 public class ConfigurationSwagger {
 
-	private final String BASE_URI = System.getenv("BASE_URI");
-
 	@Bean
 	public OpenAPI springShopOpenAPI() {
 
-		return new OpenAPI().addServersItem(new Server().url(BASE_URI))
+		return new OpenAPI().addServersItem(new Server())
 				.info(new Info().title("Certificate Validation Service API")
 						.description("Current main branch of Spring Boot reference implementation for the Certificate Validation Service API")
 						.contact(new Contact().name("Todd E. Johnson").email("grandamp@gmail.com")
