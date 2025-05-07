@@ -3,6 +3,7 @@ package org.keysupport.api.config;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.keysupport.api.pkix.cache.singletons.CRLCacheSingleton;
 import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
@@ -37,6 +38,13 @@ public class CacheUpdateConfiguration {
 		for (ValidationPolicy valPol: valPols) {
 			cache.updateIntermediates(valPol);
 		}
+		//CRLCacheSingleton crls = CRLCacheSingleton.getInstance();
 	}
+	
+	@Scheduled(timeUnit = TimeUnit.MINUTES, fixedRate = 15)
+	private static void updateCRLs() {
+		CRLCacheSingleton crls = CRLCacheSingleton.getInstance();
+	}
+	
 
 }
