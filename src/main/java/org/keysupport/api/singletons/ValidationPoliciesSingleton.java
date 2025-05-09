@@ -11,14 +11,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.keysupport.api.RestServiceApplication;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pojo.vss.JsonTrustAnchor;
 import org.keysupport.api.pojo.vss.ValidationPolicies;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -32,11 +30,6 @@ public class ValidationPoliciesSingleton {
 
 	private final Logger LOG = LoggerFactory.getLogger(ValidationPoliciesSingleton.class);
 
-	/*
-	 * TODO: Make a config option ASAP!
-	 */
-	private final String polUri = "https://raw.githubusercontent.com/grandamp/rest-service/main/configuration/policies.json";
-
 	private ValidationPolicies validationPolicies = null;
 
 	/**
@@ -48,7 +41,14 @@ public class ValidationPoliciesSingleton {
 		trustAnchotMap = new ConcurrentHashMap<String, HashSet<TrustAnchor>>();
 	}
 
-	public void updateValidationPolicies() {
+	public void updateValidationPolicies(String polUri) {
+		/*
+		 * Ensure `service.policies.uri` has been defined, and if not; terminate
+		 */
+		if (null == polUri) {
+			LOG.error("FATAL: \"service.policies.uri\" must not be null, shutting down!");
+			System.exit(0);
+		}
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		URI uri = URI.create(polUri);
 		String validationPoliciesJson = client.getText(uri);
@@ -109,7 +109,7 @@ public class ValidationPoliciesSingleton {
 			} else {
 				LOG.error("FATAL: Failed to obtain initial ValidationPolicies JSON from \"" + uri.toASCIIString()
 						+ "\", shutting down!");
-				SpringApplication.run(RestServiceApplication.class, (String[]) null).close();
+				System.exit(0);
 			}
 		}
 	}
