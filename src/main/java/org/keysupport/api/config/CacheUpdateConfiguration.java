@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,6 +15,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class CacheUpdateConfiguration {
 
+	@Value("${service.policies.uri}")
+	private String polUri;
+	
 	public CacheUpdateConfiguration() {
 	}
 
@@ -23,12 +27,12 @@ public class CacheUpdateConfiguration {
 	 * We should create deployment variables for the policy source URI and refresh rate.
 	 */
 	@Scheduled(timeUnit = TimeUnit.MINUTES, fixedRate = 15)
-	private static void refreshIntermediates() {
+	private void refreshIntermediates() {
 		/*
 		 * Update validation policies from project main branch
 		 */
 		ValidationPoliciesSingleton policy = ValidationPoliciesSingleton.getInstance();
-		policy.updateValidationPolicies();
+		policy.updateValidationPolicies(polUri);
 		/*
 		 * Update intermediate cache from policy defined hints
 		 */
