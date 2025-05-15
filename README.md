@@ -5,13 +5,6 @@
 
 [![OpenAPI v3 Compliance](https://validator.swagger.io/validator?url=https://api.keysupport.org/v3/api-docs)](https://api.keysupport.org/v3/api-docs)
 
-Example Implementations: 
-
-- [This API](https://api.keysupport.org/swagger-ui/index.html)
-- [Python Client](https://github.com/grandamp/rest-service/tree/main/client/python)
-- [TODO: Mobile Client (Android)]()
-- [TODO: Desktop Client (Java)]()
-
 A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-testing/blob/master/utilities/vss2/README.md), with something more modern.
 
 Why?  Many mTLS use-cases involve complex certificate validation in the application layer, which is *hard* to scale.
@@ -79,7 +72,7 @@ This service can implement such a policy using the service's following `validati
 }
 ```
 
-To validate a certificate that was presented by the client against this policy, the client simply needs to send the following request to the service [(such as my example service)](https://api.keysupport.org/swagger-ui/index.html), and parse the response [{example via `curl` and `jq`}](https://stedolan.github.io/jq/):
+To validate a certificate that was presented by the client against this policy, the client simply needs to send the following request to the service, and parse the response [{example via `curl` and `jq`}](https://stedolan.github.io/jq/):
 
 ```text
 curl -v -X 'POST' \
