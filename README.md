@@ -11,7 +11,7 @@ Why?  Many mTLS use-cases involve complex certificate validation in the applicat
 
 This implementation is intended to allow a relying party/team to centralize that validation using a simple API.
 
-Here is some [basic performance information](./locust/README.md).
+Here is a way to instrument some [basic performance information](./locust/agent.py).
 
 ## Example use/business-case (mTLS Client Certificate Validation)
 
