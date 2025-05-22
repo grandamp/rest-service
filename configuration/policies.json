@@ -1,7 +1,7 @@
 {
     "validationPolicies": [
         {
-            "validationPolicyId": "c21f969b-5f03-333d-83e0-4f8f136e7682",
+            "validationPolicyId": "1.3.6.1.5.5.7.19.1",
             "validationPolicyName": "default",
             "validationPolicyDescription": "Derived from Default SCVP Policy (1.3.6.1.5.5.7.19.1)",
             "trustAnchors": [
@@ -23,7 +23,7 @@
             "excludeIntermediates": []
         },
         {
-            "validationPolicyId": "cc54e0ec-49da-333a-8150-2dd00b758b17",
+            "validationPolicyId": "2.16.840.1.101.10.2.18.2.1.4",
             "validationPolicyName": "aal3",
             "validationPolicyDescription": "Derived from legacy LOA4 validation policy (2.16.840.1.101.10.2.18.2.1.4)",
             "trustAnchors": [
