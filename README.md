@@ -15,7 +15,7 @@ Here is a way to instrument some [basic performance information](./locust/agent.
 
 ## Example Implementation
 
-- [https://home.keysupport.net Swagger UI]{https://home.keysupport.net/swagger-ui/index.html}
+- [https://home.keysupport.net Swagger UI](https://home.keysupport.net/swagger-ui/index.html)
 
 ## Example use/business-case (mTLS Client Certificate Validation)
 
