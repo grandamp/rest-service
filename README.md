@@ -3,7 +3,7 @@
 
 [![Build Status](https://github.com/grandamp/rest-service/actions/workflows/build.yml/badge.svg)](https://github.com/grandamp/rest-service/actions)
 
-[![OpenAPI v3 Compliance](https://validator.swagger.io/validator?url=https://api.keysupport.org/v3/api-docs)](https://api.keysupport.org/v3/api-docs)
+[![OpenAPI v3 Compliance](https://validator.swagger.io/validator?url=https://home.keysupport.net/v3/api-docs)](https://home.keysupport.net/v3/api-docs)
 
 A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-testing/blob/master/utilities/vss2/README.md), with something more modern.
 
