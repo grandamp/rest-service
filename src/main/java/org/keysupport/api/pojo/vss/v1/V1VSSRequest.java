@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.keysupport.api.pojo.vss.JsonX509Certificate;
 import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -37,7 +38,7 @@ public class V1VSSRequest {
 	 * Field x509CertificateList
 	 */
 	@JsonProperty("x509CertificateList")
-	public List<V1X509Certificate> x509CertificateList;
+	public List<JsonX509Certificate> x509CertificateList;
 
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or

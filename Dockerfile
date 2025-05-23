@@ -9,7 +9,7 @@ RUN /bin/rm -rf /opt/jboss
 RUN /usr/bin/mkdir /opt/vss
 ADD target/rest-service-eb.jar /opt/vss/lib/
 RUN /usr/bin/chown -R 1001 /opt/vss
-USER 1001
+USER 1000
 # Run App
 #ENTRYPOINT ["/bin/bash"]  
 ENTRYPOINT ["/usr/bin/java", "-jar", "/opt/vss/lib/rest-service-eb.jar"]
@@ -25,6 +25,7 @@ LABEL vcs-ref=$PIPELINE_ID
 LABEL vcs-url="https://github.com/grandamp/rest-service"
 LABEL vendor="https://keysupport.net"
 
-#docker build -t vss .
-#docker run -it --network host vss:latest
+# This example uses a bind mount that assumes /opt/vss/ext is available on the host system with mixed r/w privs for user 1000
+# $ docker build -t vss .
+# $ docker run --restart unless-stopped -it --network host -v /opt/vss/ext:/opt/vss/ext:z --cap-add=CAP_AUDIT_WRITE vss:latest
 

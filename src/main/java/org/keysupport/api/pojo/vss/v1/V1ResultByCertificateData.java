@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.keysupport.api.pojo.vss.SANValue;
 import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -66,7 +67,7 @@ public class V1ResultByCertificateData {
 	 * Field x509SubjectAltName
 	 */
 	@JsonProperty("x509SubjectAltName")
-	public List<V1SANValue> x509SubjectAltName;
+	public List<SANValue> x509SubjectAltName;
 
 	/**
 	 * Field X509SubjectName.

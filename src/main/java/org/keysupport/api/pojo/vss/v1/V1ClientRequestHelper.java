@@ -7,6 +7,7 @@ import java.util.Base64;
 import java.util.List;
 
 import org.keysupport.api.pkix.X509Util;
+import org.keysupport.api.pojo.vss.JsonX509Certificate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,8 +34,8 @@ public class V1ClientRequestHelper {
 		} catch (CertificateEncodingException e) {
 			e.printStackTrace();
 		}
-		V1X509Certificate certList[] = new V1X509Certificate[1];
-		V1X509Certificate jsonCert = new V1X509Certificate();
+		JsonX509Certificate certList[] = new JsonX509Certificate[1];
+		JsonX509Certificate jsonCert = new JsonX509Certificate();
 		jsonCert.x509Certificate = Base64.getEncoder().encodeToString(certBytes);
 		jsonCert.setAdditionalProperty("vssCertId", X509Util.getVssCertId(cert));
 		certList[0] = jsonCert;

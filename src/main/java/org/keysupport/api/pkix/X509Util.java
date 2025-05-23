@@ -109,7 +109,7 @@ public class X509Util {
 						rawFascnValue = rawFascnValue.substring(1);
 					}
 					SANValue fascn = new SANValue();
-					fascn.type = "otherName#pivFASC-N";
+					fascn.type = "otherName:pivFASC-N";
 					fascn.value = rawFascnValue;
 					x509SubjectAltName.add(fascn);
 				} else if (typeId.equals(new ASN1ObjectIdentifier("1.3.6.1.4.1.311.20.2.3"))) {
@@ -117,7 +117,7 @@ public class X509Util {
 					 * userPrincipalName (1.3.6.1.4.1.311.20.2.3)
 					 */
 					SANValue upn = new SANValue();
-					upn.type = "otherName#userPrincipalName";
+					upn.type = "otherName:userPrincipalName";
 					upn.value = value.getObject().toString();
 					x509SubjectAltName.add(upn);
 				} else {
