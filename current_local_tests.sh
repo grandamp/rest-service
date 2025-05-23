@@ -1,10 +1,16 @@
 #!/bin/bash
+
+##############################################################################
+# Testing against $BASEURI
+##############################################################################
+BASEURI="http://localhost:5000"
+
 ##############################################################################
 # Valid - DoD Issuing CA
 ##############################################################################
 
 curl -v -X 'POST' \
-  'http://localhost:5000/vss/v2/validate' \
+  "${BASEURI}/vss/v2/validate" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -17,7 +23,7 @@ curl -v -X 'POST' \
 ##############################################################################
 
 curl -v -X 'POST' \
-  'http://localhost:5000/vss/v2/validate' \
+  "${BASEURI}/vss/v2/validate" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -30,7 +36,7 @@ curl -v -X 'POST' \
 ##############################################################################
 
 curl -v -X 'POST' \
-  'http://localhost:5000/vss/v2/validate' \
+  "${BASEURI}/vss/v2/validate" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -43,7 +49,7 @@ curl -v -X 'POST' \
 ##############################################################################
 
 curl -v -X 'POST' \
-  'http://localhost:5000/vss/v2/validate' \
+  "${BASEURI}/vss/v2/validate" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -56,7 +62,7 @@ curl -v -X 'POST' \
 ##############################################################################
 
 curl -v -X 'POST' \
-  'http://localhost:5000/vss/v2/validate' \
+  "${BASEURI}/vss/v2/validate" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -69,7 +75,7 @@ curl -v -X 'POST' \
 ##############################################################################
 
 curl -v -X 'POST' \
-  'http://localhost:5000/vss/v2/validate' \
+  "${BASEURI}/vss/v2/validate" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -82,7 +88,7 @@ curl -v -X 'POST' \
 ##############################################################################
 
 curl -v -X 'POST' \
-  'http://localhost:5000/vss/v2/validate' \
+  "${BASEURI}/vss/v2/validate" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
