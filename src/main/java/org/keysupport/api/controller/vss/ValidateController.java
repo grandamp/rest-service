@@ -159,8 +159,17 @@ public class ValidateController {
 			VssRequest v2Request = new VssRequest();
 			v2Request.validationPolicyId = request.validationPolicy;
 			v2Request.x509Certificate = toValidate.x509Certificate;
-			VssResponse v2Response = validate(v2Request, headers).getBody();
+			VssResponse v2Response = null;
 			V1TransactionResult txResult = new V1TransactionResult();
+			try {
+				v2Response = validate(v2Request, headers).getBody();
+			} catch(ServiceException e) {
+				LOG.warn("Exception thrown via V2 endpoint, returning SERVICEFAIL");
+				txResult.transactionResultToken = "SERVICEFAIL";
+				txResult.transactionResultText = e.getMessage();
+				response.transactionResult = txResult;
+				return new ResponseEntity<>(response, HttpStatus.OK);
+			}
 			txResult.transactionResultToken = "SUCCESS";
 			txResult.transactionResultText = "Validation Operation Completed Successfully";
 			response.transactionResult = txResult;
