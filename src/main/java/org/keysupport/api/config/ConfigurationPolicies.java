@@ -7,9 +7,6 @@ import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-/*
- * TODO:  We migrated the TrustAnchors and ValidationPolicies to JSON configs in AWS S3, so we need to figure out lifecycle rules for updates.
- */
 public class ConfigurationPolicies {
 
 	/**

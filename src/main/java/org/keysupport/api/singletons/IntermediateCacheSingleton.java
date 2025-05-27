@@ -1,4 +1,4 @@
-package org.keysupport.api.pkix.cache.singletons;
+package org.keysupport.api.singletons;
 
 import java.net.URI;
 import java.security.InvalidAlgorithmParameterException;
@@ -14,12 +14,9 @@ import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.keysupport.api.pkix.X509Util;
 import org.keysupport.api.pojo.vss.ExcludedIntermediate;
-import org.keysupport.api.pojo.vss.ValidationPolicy;
-import org.keysupport.api.singletons.HTTPClientSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,30 +31,15 @@ public class IntermediateCacheSingleton {
 
 	private final Logger LOG = LoggerFactory.getLogger(IntermediateCacheSingleton.class);
 
-	/**
-	 * A map of intermediate stores that correspond to each validation policy.
+	/*
+	 * Our intermediate CertStore
 	 */
-	private ConcurrentHashMap<String, CertStore> intermediateMap = null;
+	private CertStore intermediateStore = null;
 
 	ObjectMapper mapper = null;
 
 	private IntermediateCacheSingleton() {
-		intermediateMap = new ConcurrentHashMap<String, CertStore>();
 		mapper = new ObjectMapper();
-	}
-
-	/**
-	 * @returns boolean
-	 */
-	private boolean excludedByPolicy(List<ExcludedIntermediate> valPolExcludeList, X509Certificate cert) {
-		String x5tS256 = X509Util.x5tS256(cert);
-		for (ExcludedIntermediate exclude : valPolExcludeList) {
-			if (exclude.x5tS256.equalsIgnoreCase(x5tS256)) {
-				logExcluded(cert, "Exclude by Policy: "+ exclude.excludeReason);
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -72,46 +54,43 @@ public class IntermediateCacheSingleton {
 		try {
 			cert.checkValidity();
 		} catch (CertificateExpiredException e) {
-			logExcluded(cert, "Implementation Temporal Exclude: "+ e.getLocalizedMessage());
+			logExcluded(cert, "Implementation Temporal Exclude: " + e.getLocalizedMessage());
 			return true;
 		} catch (CertificateNotYetValidException e) {
-			logExcluded(cert, "Implementation Temporal Exclude: "+ e.getLocalizedMessage());
+			logExcluded(cert, "Implementation Temporal Exclude: " + e.getLocalizedMessage());
 			return true;
 		}
 		return false;
 	}
 
-	public void updateIntermediates(ValidationPolicy valPol) {
-		List<String> cmsIntermediateHintListUri = valPol.cmsIntermediateHintListUri;
+	public void updateIntermediates(String intermediatesUri) {
 		List<X509Certificate> filteredCerts = new ArrayList<>();
-		for (String cmsUri : cmsIntermediateHintListUri) {
-			HTTPClientSingleton client = HTTPClientSingleton.getInstance();
-			URI uri = URI.create(cmsUri);
-			CertPath cp = client.getCms(uri);
-			if (null != cp) {
-				List<? extends Certificate> cmsCerts = cp.getCertificates();
-				List<X509Certificate> certs = new ArrayList<X509Certificate>();
-				for (Certificate cmsCert : cmsCerts) {
-					certs.add((X509Certificate) cmsCert);
-				}
-				LOG.info("CMS object contains " + certs.size() + " certificates: " + uri.toASCIIString());
-				/*
-				 * Filter the Intermediates we received using exclusion methods
-				 */
-				for (X509Certificate cert : certs) {
-					if (!excludedByPolicy(valPol.excludeIntermediates, cert) && !excludeByTemporal(cert)) {
-						if (!filteredCerts.contains(cert)) {
-							filteredCerts.add(cert);
-						} else {
-							LOG.warn("Excluding Duplicate Cert: " + cert.getSubjectX500Principal().toString());
-						}
-					} else {
-						LOG.warn("Excluding Cert: " + cert.getSubjectX500Principal().toString());
-					}
-				}
-			} else {
-				LOG.error("Skipping invalid CMS from: " + uri.toASCIIString());
+		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
+		URI uri = URI.create(intermediatesUri);
+		CertPath cp = client.getCms(uri);
+		if (null != cp) {
+			List<? extends Certificate> cmsCerts = cp.getCertificates();
+			List<X509Certificate> certs = new ArrayList<X509Certificate>();
+			for (Certificate cmsCert : cmsCerts) {
+				certs.add((X509Certificate) cmsCert);
 			}
+			LOG.info("CMS object contains " + certs.size() + " certificates: " + uri.toASCIIString());
+			/*
+			 * Filter the Intermediates we received using exclusion methods
+			 */
+			for (X509Certificate cert : certs) {
+				if (!excludeByTemporal(cert)) {
+					if (!filteredCerts.contains(cert)) {
+						filteredCerts.add(cert);
+					} else {
+						LOG.warn("Excluding Duplicate Cert: " + cert.getSubjectX500Principal().toString());
+					}
+				} else {
+					LOG.warn("Excluding Cert: " + cert.getSubjectX500Principal().toString());
+				}
+			}
+		} else {
+			LOG.error("Skipping invalid CMS from: " + uri.toASCIIString());
 		}
 		/*
 		 * Place certificates into a Collection CertStore, per `validationPolicyId`
@@ -127,9 +106,9 @@ public class IntermediateCacheSingleton {
 		} catch (NoSuchProviderException e) {
 			LOG.error("Failed to create CertStore from CMS object", e);
 		}
-		intermediateMap.put(valPol.validationPolicyId, intermediates);
+		intermediateStore = intermediates;
 	}
-	
+
 	private void logExcluded(X509Certificate cert, String reason) {
 		String x5tS256 = X509Util.x5tS256(cert);
 		ExcludedIntermediate exclude = new ExcludedIntermediate();
@@ -154,8 +133,8 @@ public class IntermediateCacheSingleton {
 		return SingletonHelper.INSTANCE;
 	}
 
-	public CertStore getIntermediates(String validationPolicyId) {
-		return intermediateMap.get(validationPolicyId);
+	public CertStore getIntermediates() {
+		return intermediateStore;
 	}
 
 }

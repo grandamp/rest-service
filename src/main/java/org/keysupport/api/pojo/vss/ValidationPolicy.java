@@ -73,30 +73,6 @@ public class ValidationPolicy {
 	@JsonProperty("inhibitAnyPolicy")
 	public boolean inhibitAnyPolicy;
 	
-	/**
-	 * Field validCacheLifetime
-	 */
-	@JsonProperty("validCacheLifetime")
-	public int validCacheLifetime;
-
-	/**
-	 * Field inValidCacheLifetime
-	 */
-	@JsonProperty("inValidCacheLifetime")
-	public int inValidCacheLifetime;
-
-	/**
-	 * Field cmsIntermediateHintListUri
-	 */
-	@JsonProperty("cmsIntermediateHintListUri")
-	public List<String> cmsIntermediateHintListUri;
-
-	/*
-	 * Field excludeIntermediates 
-	 */
-	@JsonProperty("excludeIntermediates")
-	public List<ExcludedIntermediate> excludeIntermediates;
-	
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or
 	 * undefined

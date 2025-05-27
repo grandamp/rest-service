@@ -10,15 +10,14 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 
-import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.pojo.vss.JsonX509Certificate;
+import org.keysupport.api.singletons.IntermediateCacheSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,18 +29,18 @@ public class IntermediatesController {
 	private final static Logger LOG = LoggerFactory.getLogger(IntermediatesController.class);
 
 	@SuppressWarnings("unchecked")
-	@GetMapping(path = "/vss/v2/intermediates/{validationPolicyId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<List<JsonX509Certificate>> intermediates(@PathVariable String validationPolicyId) {
+	@GetMapping(path = "/vss/v2/intermediates", produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<List<JsonX509Certificate>> intermediates() {
 		List<JsonX509Certificate> intermediates = new ArrayList<JsonX509Certificate>();
 		IntermediateCacheSingleton intermediateCacheSingleton = IntermediateCacheSingleton.getInstance();
-		CertStore intermediateStore = intermediateCacheSingleton.getIntermediates(validationPolicyId);
+		CertStore intermediateStore = intermediateCacheSingleton.getIntermediates();
 		Collection<X509Certificate> intermediateCerts = null;
 		try {
 			intermediateCerts = (Collection<X509Certificate>) intermediateStore.getCertificates(new X509CertSelector());
 		} catch (CertStoreException e) {
 			LOG.error("Error obtaining intermediates from CertStore", e);
 		} catch (NullPointerException e) {
-			LOG.info("There are no intermediates cached for the policy: " + validationPolicyId);
+			LOG.info("There are no intermediates cached!");
 			return new ResponseEntity<>(intermediates, HttpStatus.NOT_FOUND);
 		}
 		for (X509Certificate cert: intermediateCerts) {

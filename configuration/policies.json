@@ -16,11 +16,7 @@
             ],
             "inhibitPolicyMapping": false,
             "requireExplicitPolicy": true,
-            "inhibitAnyPolicy": true,
-            "cmsIntermediateHintListUri": [
-                "https://www.idmanagement.gov/implement/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b"
-            ],
-            "excludeIntermediates": []
+            "inhibitAnyPolicy": true
         },
         {
             "validationPolicyId": "2.16.840.1.101.10.2.18.2.1.4",
@@ -42,11 +38,7 @@
             ],
             "inhibitPolicyMapping": false,
             "requireExplicitPolicy": true,
-            "inhibitAnyPolicy": true,
-            "cmsIntermediateHintListUri": [
-                "https://www.idmanagement.gov/implement/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b"
-            ],
-            "excludeIntermediates": []
+            "inhibitAnyPolicy": true
         }
     ]
 }

@@ -33,13 +33,13 @@ import java.util.List;
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 import org.keysupport.api.RestServiceEventLogger;
 import org.keysupport.api.controller.ServiceException;
-import org.keysupport.api.pkix.cache.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.pojo.vss.Fail;
 import org.keysupport.api.pojo.vss.JsonX509Certificate;
 import org.keysupport.api.pojo.vss.PKIXPolicyNode;
 import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssResponse;
+import org.keysupport.api.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -275,7 +275,7 @@ public class ValidatePKIX {
 		 * </pre>
 		 */
 		IntermediateCacheSingleton intermediateCacheSingleton = IntermediateCacheSingleton.getInstance();
-		params.addCertStore(intermediateCacheSingleton.getIntermediates(valPol.validationPolicyId));
+		params.addCertStore(intermediateCacheSingleton.getIntermediates());
 		/*
 		 * Build the certificate path
 		 */
@@ -287,10 +287,6 @@ public class ValidatePKIX {
 			throw new ServiceException("Internal Validation Error");
 		}
 		PKIXCertPathBuilderResult result = null;
-		/*
-		 * TODO: Consider isolating the following into it's own method, or class that
-		 * accommodates multiple exception types.
-		 */
 		try {
 			result = (PKIXCertPathBuilderResult) cpb.build(params);
 		} catch (InvalidAlgorithmParameterException e) {
@@ -361,9 +357,6 @@ public class ValidatePKIX {
 		 *
 		 * Populate the V1ValidationSuccessData, add it to the result, and; return the
 		 * result.
-		 * 
-		 * TODO: If we disable default revocation checking by policy, then; we should
-		 * consider checking revocation using a method we define (and config via policy)
 		 */
 		Success success = new Success();
 		/*

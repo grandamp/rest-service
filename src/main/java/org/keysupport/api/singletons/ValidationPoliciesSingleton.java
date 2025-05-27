@@ -42,13 +42,6 @@ public class ValidationPoliciesSingleton {
 	}
 
 	public void updateValidationPolicies(String polUri) {
-		/*
-		 * Ensure `service.policies.uri` has been defined, and if not; terminate
-		 */
-		if (null == polUri) {
-			LOG.error("FATAL: \"service.policies.uri\" must not be null, shutting down!");
-			System.exit(0);
-		}
 		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
 		URI uri = URI.create(polUri);
 		String validationPoliciesJson = client.getText(uri);
