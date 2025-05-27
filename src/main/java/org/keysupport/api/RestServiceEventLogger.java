@@ -17,20 +17,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class RestServiceEventLogger {
 
 	/*
-	 * TODO: We should probably configure the eventType values as an Enum.
-	 * 
-	 * TODO: We should migrate all logging events to this class, and log in JSON.
-	 *
 	 * At the moment, we are logging validation failures, but; the intent is to log
 	 * all major events.
 	 */
 
 	private final static Logger LOG = LoggerFactory.getLogger(RestServiceEventLogger.class);
 
-	/*
-	 * TODO: Seems odd to have a Jackson mapper in this class, but; we will be
-	 * converting the Validation Event POJO in all logging events.
-	 */
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	public static void logEvent(VssResponse vssResponse, CertPathBuilderException e) {

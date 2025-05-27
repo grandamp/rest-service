@@ -14,4 +14,4 @@ I'm using the following to execute and test, but you mileage may vary depending 
 
 - Test (Via another terminal)
 
-`./current_local_tests.sh`
+`./current_tests.sh`

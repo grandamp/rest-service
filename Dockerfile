@@ -3,7 +3,7 @@ FROM registry.access.redhat.com/ubi9/openjdk-21-runtime
 # Modify openssl.cnf to enable FIPS
 USER 0
 RUN echo -e "\n[algorithm_sect]\ndefault_properties = fips=yes" >> /etc/pki/tls/openssl.cnf
-# Image contains `/opt/jboss`, which isn't needed. TODO: Should probably check to see if a package or two should be removed.
+# Image contains `/opt/jboss`, which isn't needed.
 RUN /bin/rm -rf /opt/jboss
 # Setup App; copy code, install dependencies, set working dir
 RUN /usr/bin/mkdir /opt/vss
