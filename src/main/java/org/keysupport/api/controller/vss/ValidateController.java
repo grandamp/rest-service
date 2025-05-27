@@ -130,14 +130,22 @@ public class ValidateController {
 	@CrossOrigin(origins = "*")
 	ResponseEntity<V1VSSResponse> validatev1(@RequestBody V1VSSRequest request, @RequestHeader Map<String, String> headers) {
 		V1VSSResponse response = new V1VSSResponse();
+		V1TransactionResult txResult = new V1TransactionResult();
 		/*
-		 * TODO:  Validate V1 request meets the requirements (from legacy code)
+		 * Ensure we have validationPolicy, wantBackList, and x509CertificateList
 		 */
+		if (null == request || null == request.validationPolicy || null == request.x509CertificateList
+				|| null == request.wantBackList) {
+			LOG.warn("Exception thrown via V2 endpoint, returning SERVICEFAIL");
+			txResult.transactionResultToken = "SERVICEFAIL";
+			txResult.transactionResultText = "Request must include validationPolicy, wantBackList, and x509CertificateList";
+			response.transactionResult = txResult;
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
 		boolean certPathWantBack = false;
 		List<V1WantBackTypeToken> wantBackList = request.wantBackList;
 		for (V1WantBackTypeToken wantBack: wantBackList) {
 			if (!wantBack.wantBackTypeToken.equalsIgnoreCase("certPath")) {
-				V1TransactionResult txResult = new V1TransactionResult();
 				txResult.transactionResultToken = "SERVICEFAIL";
 				txResult.transactionResultText = "Unsupported WantBack";
 				response.transactionResult = txResult;
@@ -160,7 +168,6 @@ public class ValidateController {
 			v2Request.validationPolicyId = request.validationPolicy;
 			v2Request.x509Certificate = toValidate.x509Certificate;
 			VssResponse v2Response = null;
-			V1TransactionResult txResult = new V1TransactionResult();
 			try {
 				v2Response = validate(v2Request, headers).getBody();
 			} catch(ServiceException e) {
