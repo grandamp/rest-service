@@ -15,7 +15,7 @@ import java.util.Map;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.keysupport.api.ApiError;
-import org.keysupport.api.config.ConfigurationPolicies;
+import org.keysupport.api.config.ServiceValidationPolicies;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.ValidatePKIX;
 import org.keysupport.api.pkix.X509Util;
@@ -83,7 +83,7 @@ public class ValidateController {
 	private VssResponse response;
 	
 
-	@PostMapping(path = "/vss/validate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/vss/rest", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Certificate Validation Request", required = true, content = @Content(schema = @Schema(implementation = VssRequest.class), mediaType = MediaType.APPLICATION_JSON_VALUE, examples = {
 			@ExampleObject(name = "A validation request using a valid end-entity certificate", value = "{\n"
 					+ "    \"validationPolicy\": \"2.16.840.1.101.10.2.18.2.1.4\",\n"
@@ -304,7 +304,7 @@ public class ValidateController {
 		/*
 		 * Check to see if we have the policy, otherwise throw an error
 		 */
-		ValidationPolicy valPol = ConfigurationPolicies.getPolicy(validationPolicyId.toString());
+		ValidationPolicy valPol = ServiceValidationPolicies.getPolicy(validationPolicyId.toString());
 		if (null == valPol) {
 			LOG.error("Invalid Policy Specified: " + validationPolicyId.toString());
 			throw new ServiceException("Invalid Policy Specified");
