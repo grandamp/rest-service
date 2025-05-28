@@ -3,9 +3,9 @@
 ##############################################################################
 # Testing against $BASEURI
 ##############################################################################
-BASEURI="https://home.keysupport.net"
+#BASEURI="https://home.keysupport.net"
 # For localhost testing, comment out the line above, and use:
-#BASEURI="http://localhost:5000"
+BASEURI="http://localhost:5000"
 
 ##############################################################################
 # Valid - DoD Issuing CA
@@ -103,7 +103,7 @@ curl -v -X 'POST' \
 ##############################################################################
 
 curl -X 'POST' \
-  "${BASEURI}/vss/validate" \
+  "${BASEURI}/vss/rest" \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{

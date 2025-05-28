@@ -51,12 +51,14 @@ public class ValidationPolicy {
 	/**
 	 * Field userPolicySet.
 	 */
+	@NotBlank
 	@JsonProperty("userPolicySet")
 	public List<String> userPolicySet;
 
 	/**
 	 * Field inhibitPolicyMapping
 	 */
+	@NotBlank
 	@JsonProperty("inhibitPolicyMapping")
 	public boolean inhibitPolicyMapping;
 
@@ -70,6 +72,7 @@ public class ValidationPolicy {
 	/**
 	 * Field inhibitAnyPolicy
 	 */
+	@NotBlank
 	@JsonProperty("inhibitAnyPolicy")
 	public boolean inhibitAnyPolicy;
 	
