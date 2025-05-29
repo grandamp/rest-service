@@ -136,7 +136,10 @@ public class ValidateController {
 		 */
 		if (null == request || null == request.validationPolicy || null == request.x509CertificateList
 				|| null == request.wantBackList) {
-			LOG.warn("Exception thrown via V2 endpoint, returning SERVICEFAIL");
+			//TODO: Address logging JSON objects, maybe: https://docs.spring.io/spring-boot/reference/features/logging.html#features.logging.structured.other-formats
+			String jsonString = "{\"foo\":\"bar\"}";
+			//LOG.warn(Marker.appendRaw("my_field", jsonString), "Request is not a valid v1 request, returning SERVICEFAIL");
+			LOG.warn("Request is not a valid v1 request, returning SERVICEFAIL");
 			txResult.transactionResultToken = "SERVICEFAIL";
 			txResult.transactionResultText = "Request must include validationPolicy, wantBackList, and x509CertificateList";
 			response.transactionResult = txResult;

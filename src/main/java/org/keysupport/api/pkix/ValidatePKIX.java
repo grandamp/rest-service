@@ -81,12 +81,27 @@ public class ValidatePKIX {
 	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, Date now) {
 		/*
 		 * SUN JSSE Provider config for revocation checking, but; only for the EE cert being validated
+		 * 
+		 * TODO: Enable SUN revocation checking or some custom revocation checking configurable
 		 */
 		System.setProperty("com.sun.security.onlyCheckRevocationOfEECert", "true");
+		/*
+		 * Allow CRL
+		 * 
+		 * TODO: Make crl-enabled configurable
+		 */
 		System.setProperty("com.sun.security.enableCRLDP", "true");
+		/*
+		 * Allow OCSP
+		 * 
+ 		 * TODO: Make ocsp-enabled configurable
+		 *
+		 */
 		Security.setProperty("ocsp.enable", "true");
 		/*
-		 * Allow AIA fetch
+		 * Allow AIA chase
+		 * 
+		 * TODO: Make aia-chase configurable
 		 */
 		System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
 		/**
@@ -259,10 +274,13 @@ public class ValidatePKIX {
 		params.setPolicyMappingInhibited(valPol.inhibitPolicyMapping);
 		params.setExplicitPolicyRequired(valPol.requireExplicitPolicy);
 		params.setAnyPolicyInhibited(valPol.inhibitAnyPolicy);
+		//TODO: Make max path len configurable
 		params.setMaxPathLength(MAX_PATH_LENGTH);
 		params.addCertStore(cstore);
 		/*
 		 * Disable the following if trying to eliminate revocation checking in the provider.
+		 * 
+		 * TODO: Make revocation-enabled configurable
 		 */
 		params.setRevocationEnabled(true);
 		/**
