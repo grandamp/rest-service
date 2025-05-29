@@ -31,3 +31,15 @@ service:
       revocation-enabled: true
       ocsp-enabled: true
       crl-enabled: true
+logging:
+  structured:
+    format:
+      console: logstash
+      file: logstash
+  file:
+    name: /opt/vss/ext/logs/vss.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: 'vss-%d{yyyy-MM-dd}.%i.log'
+      max-file-size: 10MB
+      max-history: '7'
