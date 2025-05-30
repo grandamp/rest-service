@@ -54,6 +54,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -62,6 +63,9 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import net.logstash.logback.argument.StructuredArguments;
+import net.logstash.logback.marker.LogstashMarker;
+import net.logstash.logback.marker.Markers;
 
 @RestController
 @Tag(name = "validate", description = "Validate a certificate based on the specified validation policy")
@@ -128,6 +132,20 @@ public class ValidateController {
 					+ "}")}))
 	@CrossOrigin(origins = "*")
 	ResponseEntity<V1VSSResponse> validatev1(@RequestBody V1VSSRequest request, @RequestHeader Map<String, String> headers) {
+		//TODO: Address logging JSON objects, maybe: https://docs.spring.io/spring-boot/reference/features/logging.html#features.logging.structured.other-formats
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			//LogstashMarker payloadMarker = Markers.appendRaw("v1Request", mapper.writeValueAsString(request));
+			//LOG.info(payloadMarker, "Request Received");
+			LOG.info("v1Request", StructuredArguments.raw("v1Request", mapper.writeValueAsString(request)));
+			//LOG.info("Request Receievd", StructuredArguments.raw("v1Request", mapper.writeValueAsString(request)));
+			//LOG.info
+			//LOG.atInfo().setMessage("Request Received").addKeyValue("v1Request", mapper.writeValueAsString(request)).log();
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		V1VSSResponse response = new V1VSSResponse();
 		V1TransactionResult txResult = new V1TransactionResult();
 		/*
@@ -135,9 +153,6 @@ public class ValidateController {
 		 */
 		if (null == request || null == request.validationPolicy || null == request.x509CertificateList
 				|| null == request.wantBackList) {
-			//TODO: Address logging JSON objects, maybe: https://docs.spring.io/spring-boot/reference/features/logging.html#features.logging.structured.other-formats
-			String jsonString = "{\"foo\":\"bar\"}";
-			//LOG.warn(Marker.appendRaw("my_field", jsonString), "Request is not a valid v1 request, returning SERVICEFAIL");
 			LOG.warn("Request is not a valid v1 request, returning SERVICEFAIL");
 			txResult.transactionResultToken = "SERVICEFAIL";
 			txResult.transactionResultText = "Request must include validationPolicy, wantBackList, and x509CertificateList";
