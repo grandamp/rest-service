@@ -26,7 +26,7 @@ service:
       https://www.idmanagement.gov/implement/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b
   validation:
     pkix:
-      max-path-length: '7'
+      max-path-length: 7
       aia-chase: true
       revocation-enabled: true
       revocation-ee-only: true
@@ -43,4 +43,4 @@ logging:
     rollingpolicy:
       file-name-pattern: 'vss-%d{yyyy-MM-dd}.%i.log'
       max-file-size: 10MB
-      max-history: '7'
+      max-history: 7
