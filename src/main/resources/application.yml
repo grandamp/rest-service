@@ -29,6 +29,7 @@ service:
       max-path-length: '7'
       aia-chase: true
       revocation-enabled: true
+      revocation-ee-only: true
       ocsp-enabled: true
       crl-enabled: true
 logging:

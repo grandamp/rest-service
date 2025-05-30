@@ -82,7 +82,6 @@ public class ValidateController {
 	@Autowired
 	private VssResponse response;
 	
-
 	@PostMapping(path = "/vss/rest", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Certificate Validation Request", required = true, content = @Content(schema = @Schema(implementation = VssRequest.class), mediaType = MediaType.APPLICATION_JSON_VALUE, examples = {
 			@ExampleObject(name = "A validation request using a valid end-entity certificate", value = "{\n"

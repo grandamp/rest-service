@@ -32,6 +32,18 @@ public class ValidationPoliciesSingleton {
 
 	private ValidationPolicies validationPolicies = null;
 
+	private int maxPathLen;
+	
+	private boolean aiaChase;
+	
+	private boolean revocationEnabled;
+	
+	private boolean revocationEeOnly;
+
+	private boolean ocspEnabled;	
+	
+	private boolean crlEnabled;
+
 	/**
 	 * A map of TrustAnchor collections that correspond to each validation policy.
 	 */
@@ -121,6 +133,54 @@ public class ValidationPoliciesSingleton {
 
 	public HashSet<TrustAnchor> getTrustAnchors(String validationPolicyId) {
 		return trustAnchotMap.get(validationPolicyId);
+	}
+
+	public int getMaxPathLen() {
+		return maxPathLen;
+	}
+
+	public void setMaxPathLen(int maxPathLen) {
+		this.maxPathLen = maxPathLen;
+	}
+
+	public boolean getAiaChase() {
+		return aiaChase;
+	}
+
+	public void setAiaChase(boolean aiaChase) {
+		this.aiaChase = aiaChase;
+	}
+
+	public boolean getRevocationEnabled() {
+		return revocationEnabled;
+	}
+
+	public void setRevocationEnabled(boolean revocationEnabled) {
+		this.revocationEnabled = revocationEnabled;
+	}
+
+	public boolean getRevocationEeOnly() {
+		return revocationEeOnly;
+	}
+
+	public void setRevocationEeOnly(boolean revocationEeOnly) {
+		this.revocationEeOnly = revocationEeOnly;
+	}
+
+	public boolean getOcspEnabled() {
+		return ocspEnabled;
+	}
+
+	public void setOcspEnabled(boolean ocspEnabled) {
+		this.ocspEnabled = ocspEnabled;
+	}
+
+	public boolean getCrlEnabled() {
+		return crlEnabled;
+	}
+
+	public void setCrlEnabled(boolean crlEnabled) {
+		this.crlEnabled = crlEnabled;
 	}
 
 }
