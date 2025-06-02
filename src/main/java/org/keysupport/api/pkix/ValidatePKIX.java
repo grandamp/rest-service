@@ -54,8 +54,6 @@ public class ValidatePKIX {
 
 	private final static Logger LOG = LoggerFactory.getLogger(ValidatePKIX.class);
 
-	private final static int MAX_PATH_LENGTH = 7;
-
 	/**
 	 * <pre>
 	 * 
@@ -79,16 +77,31 @@ public class ValidatePKIX {
 	private final static String JCE_PROVIDER = "BCFIPS";
 
 	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, Date now) {
+		ValidationPoliciesSingleton policies = ValidationPoliciesSingleton.getInstance();
 		/*
 		 * SUN JSSE Provider config for revocation checking, but; only for the EE cert being validated
 		 */
-		System.setProperty("com.sun.security.onlyCheckRevocationOfEECert", "true");
-		System.setProperty("com.sun.security.enableCRLDP", "true");
-		Security.setProperty("ocsp.enable", "true");
+		if (policies.getRevocationEnabled() && policies.getRevocationEeOnly()) {
+			System.setProperty("com.sun.security.onlyCheckRevocationOfEECert", "true");
+		}
 		/*
-		 * Allow AIA fetch
+		 * Allow CRL
 		 */
-		System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
+		if (policies.getRevocationEnabled() && policies.getCrlEnabled()) {
+			System.setProperty("com.sun.security.enableCRLDP", "true");
+		}
+		/*
+		 * Allow OCSP
+		 */
+		if (policies.getRevocationEnabled() && policies.getOcspEnabled()) {
+			Security.setProperty("ocsp.enable", "true");
+		}
+		/*
+		 * Allow AIA chase
+		 */
+		if (policies.getAiaChase()) {
+			System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
+		}
 		/**
 		 * <pre>
 		 *  		 
@@ -236,8 +249,7 @@ public class ValidatePKIX {
 		 * Initialize the TrustAnchor via the ValidationPolicy.
 		 */
 		List<Certificate> cert_list = new ArrayList<>();
-		ValidationPoliciesSingleton validationPoliciesSingleton = ValidationPoliciesSingleton.getInstance();
-		HashSet<TrustAnchor> taList = validationPoliciesSingleton.getTrustAnchors(valPol.validationPolicyId);
+		HashSet<TrustAnchor> taList = policies.getTrustAnchors(valPol.validationPolicyId);
 		CertStoreParameters cparam = new CollectionCertStoreParameters(cert_list);
 		CertStore cstore = null;
 		try {
@@ -259,12 +271,12 @@ public class ValidatePKIX {
 		params.setPolicyMappingInhibited(valPol.inhibitPolicyMapping);
 		params.setExplicitPolicyRequired(valPol.requireExplicitPolicy);
 		params.setAnyPolicyInhibited(valPol.inhibitAnyPolicy);
-		params.setMaxPathLength(MAX_PATH_LENGTH);
+		params.setMaxPathLength(policies.getMaxPathLen());
 		params.addCertStore(cstore);
 		/*
 		 * Disable the following if trying to eliminate revocation checking in the provider.
 		 */
-		params.setRevocationEnabled(true);
+		params.setRevocationEnabled(policies.getRevocationEnabled());
 		/**
 		 * <pre>
 		 * 

@@ -1,0 +1,46 @@
+server:
+  port: '8443'
+  ssl:
+    bundle: server
+    enabled:
+      protocols: 'TLSv1.3,TLSv1.2'
+spring:
+  ssl:
+    bundle:
+      pem:
+        server:
+          keystore:
+            certificate: /opt/vss/ext/tls/cert.pem
+            private-key: /opt/vss/ext/tls/key.pem
+  application:
+    name: VSS
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+service:
+  policies:
+    uri: >-
+      https://raw.githubusercontent.com/grandamp/rest-service/refs/heads/main/configuration/policies.json
+  intermediates:
+    uri: >-
+      https://www.idmanagement.gov/implement/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b
+  validation:
+    pkix:
+      max-path-length: 7
+      aia-chase: true
+      revocation-enabled: true
+      revocation-ee-only: true
+      ocsp-enabled: true
+      crl-enabled: true
+logging:
+  structured:
+    format:
+      console: logstash
+      file: logstash
+  file:
+    name: /opt/vss/ext/logs/vss.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: 'vss-%d{yyyy-MM-dd}.%i.log'
+      max-file-size: 10MB
+      max-history: 7

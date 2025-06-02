@@ -12,11 +12,19 @@ import org.springframework.stereotype.Component;
 public class ServiceConfiguration {
 
 	private final static Logger LOG = LoggerFactory.getLogger(ServiceConfiguration.class);
-	
-	public ServiceConfiguration(@Value("${service.policies.uri}") String polUri, @Value("${service.intermediates.uri}") String intermediatesUri) {
+
+	public ServiceConfiguration(
+			@Value("${service.policies.uri}") String polUri, 
+			@Value("${service.intermediates.uri}") String intermediatesUri, 
+			@Value("${service.validation.pkix.max-path-length}") int maxPathLen, 
+			@Value("${service.validation.pkix.aia-chase}") boolean aiaChase, 
+			@Value("${service.validation.pkix.revocation-enabled}") boolean revocationEnabled, 
+			@Value("${service.validation.pkix.revocation-ee-only}") boolean revocationEeOnly, 
+			@Value("${service.validation.pkix.ocsp-enabled}") boolean ocspEnabled, 
+			@Value("${service.validation.pkix.crl-enabled}") boolean crlEnabled) {
 		/*
 		 * Update validation policies from defined policies URI
-		 * 
+		 *
 		 * Ensure `service.policies.uri` has been defined, and if not; terminate
 		 */
 		if (null == polUri) {
@@ -26,9 +34,15 @@ public class ServiceConfiguration {
 		LOG.info("Service Policies URI: " + polUri);
 		ValidationPoliciesSingleton policy = ValidationPoliciesSingleton.getInstance();
 		policy.updateValidationPolicies(polUri);
+		policy.setMaxPathLen(maxPathLen);
+		policy.setAiaChase(aiaChase);
+		policy.setRevocationEnabled(revocationEnabled);
+		policy.setRevocationEeOnly(revocationEeOnly);
+		policy.setOcspEnabled(ocspEnabled);
+		policy.setCrlEnabled(crlEnabled);
 		/*
 		 * Update intermediate cache from policy defined inventory URI
-		 * 
+		 *
 		 * Ensure `service.intermediates.uri` has been defined, and if not; terminate
 		 */
 		if (null == intermediatesUri) {
