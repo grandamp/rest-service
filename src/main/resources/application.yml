@@ -5,6 +5,8 @@ server:
     enabled:
       protocols: 'TLSv1.3,TLSv1.2'
 spring:
+  main:
+    banner-mode: OFF
   ssl:
     bundle:
       pem:
@@ -33,14 +35,16 @@ service:
       ocsp-enabled: true
       crl-enabled: true
 logging:
-  structured:
-    format:
-      console: logstash
-      file: logstash
+  pattern:
+    console: "{\"time\": \"%d\", \"level\": \"%p\", \"source\": \"%logger{63}:%L\", \"message\": %m}%n"
+  level:
+    org.apache.catalina.core: OFF
+    org.keysupport.api.RestServiceApplication: OFF
+    org.springframework: OFF
   file:
     name: /opt/vss/ext/logs/vss.log
   logback:
     rollingpolicy:
       file-name-pattern: 'vss-%d{yyyy-MM-dd}.%i.log'
       max-file-size: 10MB
-      max-history: 7
+      max-history: '7'

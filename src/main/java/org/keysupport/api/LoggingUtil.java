@@ -5,6 +5,9 @@ import java.io.PrintStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /*
  * The intent of this class is to redirect System.out and System.err to our
  * logging.
@@ -19,9 +22,9 @@ import org.slf4j.LoggerFactory;
  * 
  * - https://bugs.openjdk.org/browse/JDK-8202601
  */
-public class SystemLog {
+public class LoggingUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SystemLog.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoggingUtil.class);
 
     public static void logSystemOutAndErr() {
         System.setOut(loggingProxy(System.out));
@@ -34,5 +37,16 @@ public class SystemLog {
             	LOG.info(str);
             }
         };
+    }
+    
+    public static String pojoToJson(Object obj) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(obj);
+		} catch (JsonProcessingException e) {
+			LOG.error("Unable to convert object to JSON", e);
+			return null;
+		}
+
     }
 }
