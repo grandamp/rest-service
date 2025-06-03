@@ -36,11 +36,12 @@ service:
       crl-enabled: true
 logging:
   pattern:
-    console: "{\"time\": \"%d\", \"level\": \"%p\", \"source\": \"%logger{63}:%L\", \"message\": %m}%n"
+    console: "{\"time\": \"%d\", \"level\": \"%p\", \"class\": \"%logger{63}:%L\", \"message\": %m}%n"
+    file: "{\"time\": \"%d\", \"level\": \"%p\", \"class\": \"%logger{63}:%L\", \"message\": %m}%n"
   level:
     org.apache.catalina.core: OFF
-    org.keysupport.api.RestServiceApplication: OFF
     org.springframework: OFF
+    org.keysupport.api.controller.vss.V1RestController: OFF
   file:
     name: /opt/vss/ext/logs/vss.log
   logback:
