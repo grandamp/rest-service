@@ -7,6 +7,7 @@ server:
 spring:
   main:
     banner-mode: OFF
+    log-startup-info: OFF
   ssl:
     bundle:
       pem:

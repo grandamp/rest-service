@@ -9,8 +9,10 @@ import java.security.cert.X509Certificate;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.keysupport.api.LoggingUtil;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pojo.vss.JsonTrustAnchor;
 import org.keysupport.api.pojo.vss.ValidationPolicies;
@@ -58,15 +60,15 @@ public class ValidationPoliciesSingleton {
 		URI uri = URI.create(polUri);
 		String validationPoliciesJson = client.getText(uri);
 		if (null != validationPoliciesJson) {
-			LOG.info(validationPoliciesJson);
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 				validationPolicies = mapper.readValue(validationPoliciesJson, ValidationPolicies.class);
 			} catch (JsonMappingException e) {
-				LOG.error("Error converting JSON to POJO", e);
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error converting JSON to POJO", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			} catch (JsonProcessingException e) {
-				LOG.error("Error converting JSON to POJO", e);
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error converting JSON to POJO", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			}
+			LOG.info(LoggingUtil.pojoToJson(validationPolicies));
 			/*
 			 * Iterate through each ValidationPolicy, and initialize the
 			 * HashSet<TrustAnchor>
@@ -84,7 +86,7 @@ public class ValidationPoliciesSingleton {
 						try {
 							certBytes = Base64.getDecoder().decode(currentTa.x509Certificate);
 						} catch (Throwable e) {
-							LOG.error("Internal Validation Error", e);
+							LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
 							throw new ServiceException("Internal Validation Error");
 						}
 						if (null != certBytes) {
@@ -92,11 +94,11 @@ public class ValidationPoliciesSingleton {
 							bais = new ByteArrayInputStream(certBytes);
 							ta = (X509Certificate) cf.generateCertificate(bais);
 						} else {
-							LOG.error("Internal Validation Error, null certBytes");
+							LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Internal Validation Error, null certBytes")));
 							throw new ServiceException("Internal Validation Error");
 						}
 					} catch (CertificateException e) {
-						LOG.error("Internal Validation Error", e);
+						LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
 						throw new ServiceException("Internal Validation Error");
 					}
 					TrustAnchor anchor = new TrustAnchor(ta, null);
@@ -110,10 +112,10 @@ public class ValidationPoliciesSingleton {
 			 * mandatory policies.
 			 */
 			if (null != validationPolicies) {
-				LOG.warn("Failed to refresh ValidationPolicies JSON");
+				LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Failed to refresh ValidationPolicies JSON")));
 			} else {
-				LOG.error("FATAL: Failed to obtain initial ValidationPolicies JSON from \"" + uri.toASCIIString()
-						+ "\", shutting down!");
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "FATAL: Failed to obtain initial ValidationPolicies JSON from \"" + uri.toASCIIString()
+				+ "\", shutting down!")));
 				System.exit(0);
 			}
 		}

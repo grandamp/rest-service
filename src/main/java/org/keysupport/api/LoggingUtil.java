@@ -1,6 +1,8 @@
 package org.keysupport.api;
 
 import java.io.PrintStream;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,4 +51,11 @@ public class LoggingUtil {
 		}
 
     }
+    
+    public static String stackTraceToString(Throwable t) {
+    	return Stream.of(t.getStackTrace())
+                .map(StackTraceElement::toString)
+                .collect(Collectors.joining("\n"));
+    }
+
 }

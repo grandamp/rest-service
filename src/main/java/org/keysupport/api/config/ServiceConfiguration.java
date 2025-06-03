@@ -1,4 +1,7 @@
 package org.keysupport.api.config;
+import java.util.Map;
+
+import org.keysupport.api.LoggingUtil;
 import org.keysupport.api.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
@@ -27,11 +30,11 @@ public class ServiceConfiguration {
 		 *
 		 * Ensure `service.policies.uri` has been defined, and if not; terminate
 		 */
-		if (null == polUri) {
-			LOG.error("FATAL: \"service.policies.uri\" must not be null, shutting down!");
+		if (null == polUri) {				
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "service.policies.uri must not be null, shutting down!")));
 			System.exit(0);
 		}
-		LOG.info("Service Policies URI: " + polUri);
+		LOG.info(LoggingUtil.pojoToJson(Map.of("service.policies.uri", polUri)));
 		ValidationPoliciesSingleton policy = ValidationPoliciesSingleton.getInstance();
 		policy.updateValidationPolicies(polUri);
 		policy.setMaxPathLen(maxPathLen);
@@ -46,10 +49,10 @@ public class ServiceConfiguration {
 		 * Ensure `service.intermediates.uri` has been defined, and if not; terminate
 		 */
 		if (null == intermediatesUri) {
-			LOG.error("FATAL: \"service.intermediates.uri\" must not be null, shutting down!");
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "service.intermediates.uri must not be null, shutting down!")));
 			System.exit(0);
 		}
-		LOG.info("Service Intermediates URI: " + intermediatesUri);
+		LOG.info(LoggingUtil.pojoToJson(Map.of("service.intermediates.uri", intermediatesUri)));
 		IntermediateCacheSingleton cache = IntermediateCacheSingleton.getInstance();
 		cache.updateIntermediates(intermediatesUri);
 	}
