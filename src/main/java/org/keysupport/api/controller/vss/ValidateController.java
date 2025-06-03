@@ -1,7 +1,6 @@
 package org.keysupport.api.controller.vss;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -13,6 +12,7 @@ import java.util.Map;
 
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.keysupport.api.ApiError;
+import org.keysupport.api.LoggingUtil;
 import org.keysupport.api.config.ServiceValidationPolicies;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pkix.ValidatePKIX;
@@ -38,10 +38,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -66,7 +62,7 @@ public class ValidateController {
 
 	@Autowired
 	private VssResponse response;
-	
+
 	@PostMapping(path = "/vss/v2/validate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Certificate Validation Request", required = true, content = @Content(schema = @Schema(implementation = VssRequest.class), mediaType = MediaType.APPLICATION_JSON_VALUE, examples = {
 			@ExampleObject(name = "A validation request using a valid DoD Issuing CA certificate", value = "{\n"
@@ -105,7 +101,6 @@ public class ValidateController {
 	@ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class)))
 	@CrossOrigin(origins = "*")
 	ResponseEntity<VssResponse> validate(@RequestBody VssRequest request, @RequestHeader Map<String, String> headers) {
-		ObjectMapper mapper = new ObjectMapper();
 		ASN1ObjectIdentifier validationPolicyId = null;
 		X509Certificate clientCert = null;
 		CertificateFactory cf = null;
@@ -137,7 +132,7 @@ public class ValidateController {
 		 */
 		ValidationPolicy valPol = ServiceValidationPolicies.getPolicy(validationPolicyId.toString());
 		if (null == valPol) {
-			LOG.error("Invalid Policy Specified: " + validationPolicyId.toString());
+			LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Invalid Policy Specified: " + validationPolicyId.toString())));
 			throw new ServiceException("Invalid Policy Specified");
 		}
 
@@ -153,7 +148,7 @@ public class ValidateController {
 			try {
 				certBytes = Base64.getDecoder().decode(pemCert);
 			} catch (Throwable e) {
-				LOG.error("Error decoding certificate, returning SERVICEFAIL", e);
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
 				throw new ServiceException("Error decoding x509Certificate");
 			}
 			if (null != certBytes) {
@@ -165,7 +160,7 @@ public class ValidateController {
 				throw new ServiceException("Error decoding x509Certificate");
 			}
 		} catch (CertificateException e) {
-			LOG.error("Error decoding certificate, returning SERVICEFAIL", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			throw new ServiceException("Error decoding x509Certificate");
 		}
 
@@ -175,7 +170,7 @@ public class ValidateController {
 		x5tS256 = X509Util.x5tS256(clientCert);
 		/*
 		 * Derive requestId.
-		 * 
+		 *
 		 * The client can also derive the requestId in order to attempt a GET request,
 		 * before POST, *if* this implementation supports caching.
 		 *
@@ -196,16 +191,7 @@ public class ValidateController {
 		/*
 		 * Log the request in JSON
 		 */
-		try {
-			String output = mapper.writeValueAsString(request);
-			LOG.info("{\"ValidationRequest\":" + output + "}");
-		} catch (JsonGenerationException e) {
-			LOG.error("Error converting POJO to JSON", e);
-		} catch (JsonMappingException e) {
-			LOG.error("Error converting POJO to JSON", e);
-		} catch (IOException e) {
-			LOG.error("Error converting POJO to JSON", e);
-		}
+		LOG.info(LoggingUtil.pojoToJson(request));
 		/*
 		 * Validate, log, and; return the result
 		 */
@@ -237,28 +223,17 @@ public class ValidateController {
 				response.nextUpdate = null;
 			}
 		}
-		String output = null;
-		try {
-			output = mapper.writeValueAsString(response);
-			LOG.info("{\"ValidationResponse\":" + output + "}");
-			if (respResult != null) {
-				if (respResult instanceof Success) {
-					return ResponseEntity.ok().body(response);
-				} else if (respResult instanceof Fail) {
-					return ResponseEntity.ok().body(response);
-				} else {
-					ResponseEntity.badRequest();
-				}
+		if (respResult != null) {
+			if (respResult instanceof Success) {
+				return ResponseEntity.ok().body(response);
+			} else if (respResult instanceof Fail) {
+				return ResponseEntity.ok().body(response);
+			} else {
+				ResponseEntity.badRequest();
 			}
-		} catch (JsonGenerationException e) {
-			LOG.error("Error converting POJO to JSON", e);
-		} catch (JsonMappingException e) {
-			LOG.error("Error converting POJO to JSON", e);
-		} catch (IOException e) {
-			LOG.error("Error converting POJO to JSON", e);
 		}
+		LOG.info(LoggingUtil.pojoToJson(response));
 		return new ResponseEntity<>(response, HttpStatus.OK);
-
 	}
 
 	@ExceptionHandler({ Exception.class })

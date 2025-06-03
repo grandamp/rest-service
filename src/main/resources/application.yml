@@ -42,7 +42,7 @@ logging:
   level:
     org.apache.catalina.core: OFF
     org.springframework: OFF
-    org.keysupport.api.controller.vss.V1RestController: OFF
+    org.keysupport.api.controller.vss.V1RestController: ERROR
   file:
     name: /opt/vss/ext/logs/vss.log
   logback:

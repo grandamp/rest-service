@@ -109,10 +109,10 @@ public class V1RestController {
 		 */
 		if (null == request || null == request.validationPolicy || null == request.x509CertificateList
 				|| null == request.wantBackList) {
-			LOG.warn("Request is not a valid v1 request, returning SERVICEFAIL");
 			txResult.transactionResultToken = "SERVICEFAIL";
 			txResult.transactionResultText = "Request must include validationPolicy, wantBackList, and x509CertificateList";
 			response.transactionResult = txResult;
+			LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Request is not a valid v1 request, returning SERVICEFAIL")));
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 		boolean certPathWantBack = false;
@@ -144,10 +144,10 @@ public class V1RestController {
 			try {
 				v2Response = vc.validate(v2Request, headers).getBody();
 			} catch(ServiceException e) {
-				LOG.warn("Exception thrown via V2 endpoint, returning SERVICEFAIL");
 				txResult.transactionResultToken = "SERVICEFAIL";
 				txResult.transactionResultText = e.getMessage();
 				response.transactionResult = txResult;
+				LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Exception thrown via V2 endpoint, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			}
 			txResult.transactionResultToken = "SUCCESS";

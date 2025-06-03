@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -31,6 +32,7 @@ import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemWriter;
+import org.keysupport.api.LoggingUtil;
 import org.keysupport.api.pojo.vss.PKIXPolicyNode;
 import org.keysupport.api.pojo.vss.SANValue;
 import org.slf4j.Logger;
@@ -211,7 +213,7 @@ public class X509Util {
 			md.update(str.getBytes(StandardCharsets.UTF_8));
 			digest = md.digest();
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Invalid Algorithm", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		}
 		String strS256 = byteArrayToHexString(digest);
 		return strS256;
@@ -231,13 +233,13 @@ public class X509Util {
 			md.update(cert.getEncoded());
 			digest = md.digest();
 		} catch (NoSuchAlgorithmException | CertificateEncodingException e) {
-			e.printStackTrace();
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		}
 		String x5tS256 = null;
 		try {
 			x5tS256 = Base64.getUrlEncoder().encodeToString(digest).replace("=", "");
 		} catch (Throwable e) {
-			LOG.error("Error base64 encoding digest result", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error base64 encoding digest result", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		}
 		return x5tS256;
 	}
@@ -266,7 +268,7 @@ public class X509Util {
 		try {
 			d = dFormat.parse(dateString);
 		} catch (ParseException e) {
-			LOG.error("Unable to parse date", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Unable to parse date", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		}
 		return d;
 	}
@@ -299,7 +301,7 @@ public class X509Util {
 		try {
 			d = format.parse(headerDateValue);
 		} catch (ParseException e) {
-			LOG.error("Unable to parse date", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Unable to parse date", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		}
 		return d;
 	}
@@ -361,7 +363,7 @@ public class X509Util {
 			writer.flush();
 			writer.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Unable to encode PEM", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		}
 		sb.append(sw.getBuffer());
 		return sb.toString();
@@ -382,7 +384,7 @@ public class X509Util {
 			md.update(cert.getEncoded());
 			digest = md.digest();
 		} catch (NoSuchAlgorithmException | CertificateEncodingException e) {
-			e.printStackTrace();
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		}
 
 		return X509Util.byteArrayToHexString(digest);
