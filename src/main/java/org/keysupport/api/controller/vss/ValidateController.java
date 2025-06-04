@@ -132,7 +132,7 @@ public class ValidateController {
 		 */
 		ValidationPolicy valPol = ServiceValidationPolicies.getPolicy(validationPolicyId.toString());
 		if (null == valPol) {
-			LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Invalid Policy Specified: " + validationPolicyId.toString())));
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Invalid Policy Specified: " + validationPolicyId.toString())));
 			throw new ServiceException("Invalid Policy Specified");
 		}
 
