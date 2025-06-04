@@ -14,13 +14,14 @@ import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.keysupport.api.LoggingUtil;
 import org.keysupport.api.pkix.X509Util;
 import org.keysupport.api.pojo.vss.ExcludedIntermediate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -74,7 +75,7 @@ public class IntermediateCacheSingleton {
 			for (Certificate cmsCert : cmsCerts) {
 				certs.add((X509Certificate) cmsCert);
 			}
-			LOG.info("CMS object contains " + certs.size() + " certificates: " + uri.toASCIIString());
+			LOG.info(LoggingUtil.pojoToJson(Map.of("cms.numcerts", certs.size())));
 			/*
 			 * Filter the Intermediates we received using exclusion methods
 			 */
@@ -83,14 +84,14 @@ public class IntermediateCacheSingleton {
 					if (!filteredCerts.contains(cert)) {
 						filteredCerts.add(cert);
 					} else {
-						LOG.warn("Excluding Duplicate Cert: " + cert.getSubjectX500Principal().toString());
+						LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Excluding Duplicate Cert: " + cert.getSubjectX500Principal().toString())));
 					}
 				} else {
-					LOG.warn("Excluding Cert: " + cert.getSubjectX500Principal().toString());
+					LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Excluding Cert: " + cert.getSubjectX500Principal().toString())));
 				}
 			}
 		} else {
-			LOG.error("Skipping invalid CMS from: " + uri.toASCIIString());
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Skipping invalid CMS from: " + uri.toASCIIString())));
 		}
 		/*
 		 * Place certificates into a Collection CertStore, per `validationPolicyId`
@@ -100,11 +101,11 @@ public class IntermediateCacheSingleton {
 		try {
 			intermediates = CertStore.getInstance("Collection", cparam, "SUN");
 		} catch (InvalidAlgorithmParameterException e) {
-			LOG.error("Failed to create CertStore from CMS object", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Failed to create CertStore from CMS object", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		} catch (NoSuchAlgorithmException e) {
-			LOG.error("Failed to create CertStore from CMS object", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Failed to create CertStore from CMS object", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		} catch (NoSuchProviderException e) {
-			LOG.error("Failed to create CertStore from CMS object", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Failed to create CertStore from CMS object", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		}
 		intermediateStore = intermediates;
 	}
@@ -116,13 +117,7 @@ public class IntermediateCacheSingleton {
 		exclude.x509IssuerName = cert.getIssuerX500Principal().toString();
 		exclude.x509SubjectName = cert.getSubjectX500Principal().toString();
 		exclude.x5tS256 = x5tS256;
-		String loggedExclustion = null;
-		try {
-			loggedExclustion = mapper.writeValueAsString(exclude);
-		} catch (JsonProcessingException e1) {
-			LOG.error("Error mapping POJO to JSON", e1);
-		}
-		LOG.warn(loggedExclustion);
+		LOG.warn(LoggingUtil.pojoToJson(exclude));
 	}
 
 	private class SingletonHelper {

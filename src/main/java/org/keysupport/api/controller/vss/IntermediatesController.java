@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+import org.keysupport.api.LoggingUtil;
 import org.keysupport.api.pojo.vss.JsonX509Certificate;
 import org.keysupport.api.singletons.IntermediateCacheSingleton;
 import org.slf4j.Logger;
@@ -38,18 +40,18 @@ public class IntermediatesController {
 		try {
 			intermediateCerts = (Collection<X509Certificate>) intermediateStore.getCertificates(new X509CertSelector());
 		} catch (CertStoreException e) {
-			LOG.error("Error obtaining intermediates from CertStore", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error obtaining intermediates from CertStore", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		} catch (NullPointerException e) {
-			LOG.info("There are no intermediates cached!");
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "There are no intermediates cached!", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			return new ResponseEntity<>(intermediates, HttpStatus.NOT_FOUND);
 		}
 		for (X509Certificate cert: intermediateCerts) {
 			JsonX509Certificate bCert = new JsonX509Certificate();
 			try {
 				bCert.x509Certificate = Base64.getEncoder().encodeToString(cert.getEncoded());
-				LOG.debug("Intermediate Cert:\n" + cert.toString());
+				LOG.debug(LoggingUtil.pojoToJson(Map.of("intermediate.certificate", cert.toString())));
 			} catch (CertificateEncodingException e) {
-				LOG.error("Error Base64 encoding certificate from CertPath", e);
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error Base64 encoding certificate from CertPath", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			}
 			intermediates.add(bCert);
 		}

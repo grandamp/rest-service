@@ -5,14 +5,12 @@ import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.CertificateRevokedException;
+import java.util.Map;
 
 import org.keysupport.api.pojo.vss.ValidationEvent;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class RestServiceEventLogger {
 
@@ -22,8 +20,6 @@ public class RestServiceEventLogger {
 	 */
 
 	private final static Logger LOG = LoggerFactory.getLogger(RestServiceEventLogger.class);
-
-	private static ObjectMapper mapper = new ObjectMapper();
 
 	public static void logEvent(VssResponse vssResponse, CertPathBuilderException e) {
 		ValidationEvent event = new ValidationEvent();
@@ -37,18 +33,12 @@ public class RestServiceEventLogger {
 			if (t.getCause() instanceof CertificateRevokedException) {
 				event.message = t.getMessage();
 			} else {
-				LOG.error("TODO: Capture this exception cause: ", t);
-				LOG.error(t.getClass().getCanonicalName());
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "TODO: Capture this exception cause", "cause", t.getClass().getCanonicalName(),"stacktrace", LoggingUtil.stackTraceToString(e))));
 			}
 		} else {
 			event.message = e.getMessage();
 		}
-		try {
-			String eventStr = mapper.writeValueAsString(event);
-			LOG.warn(eventStr);
-		} catch (JsonProcessingException e1) {
-			LOG.error("Error writing validation event.  Looging stack trace: ", e);
-		}
+		LOG.warn(LoggingUtil.pojoToJson(event));
 	}
 
 	public static void logEvent(VssResponse vssResponse, CertificateExpiredException e) {
@@ -56,12 +46,7 @@ public class RestServiceEventLogger {
 		event.x5tS256 = vssResponse.x5tS256;
 		event.eventType = "VALPOL_FAIL";
 		event.message = e.getMessage();
-		try {
-			String eventStr = mapper.writeValueAsString(event);
-			LOG.warn(eventStr);
-		} catch (JsonProcessingException e1) {
-			LOG.error("Error writing validation event.  Looging stack trace: ", e);
-		}
+		LOG.warn(LoggingUtil.pojoToJson(event));
 	}
 
 	public static void logEvent(VssResponse vssResponse, CertificateNotYetValidException e) {
@@ -69,12 +54,7 @@ public class RestServiceEventLogger {
 		event.x5tS256 = vssResponse.x5tS256;
 		event.eventType = "VALPOL_FAIL";
 		event.message = e.getMessage();
-		try {
-			String eventStr = mapper.writeValueAsString(event);
-			LOG.warn(eventStr);
-		} catch (JsonProcessingException e1) {
-			LOG.error("Error writing validation event.  Looging stack trace: ", e);
-		}
+		LOG.warn(LoggingUtil.pojoToJson(event));
 	}
 
 	public static void logEvent(VssResponse vssResponse, CertPathValidatorException e) {
@@ -82,12 +62,7 @@ public class RestServiceEventLogger {
 		event.x5tS256 = vssResponse.x5tS256;
 		event.eventType = "VALPOL_FAIL";
 		event.message = e.getMessage();
-		try {
-			String eventStr = mapper.writeValueAsString(event);
-			LOG.warn(eventStr);
-		} catch (JsonProcessingException e1) {
-			LOG.error("Error writing validation event.  Looging stack trace: ", e);
-		}
+		LOG.warn(LoggingUtil.pojoToJson(event));
 	}
 
 }
