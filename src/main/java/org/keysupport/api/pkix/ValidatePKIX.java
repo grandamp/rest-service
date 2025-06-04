@@ -29,8 +29,10 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
+import org.keysupport.api.LoggingUtil;
 import org.keysupport.api.RestServiceEventLogger;
 import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pojo.vss.Fail;
@@ -218,7 +220,7 @@ public class ValidatePKIX {
 		try {
 			response.x509SubjectAltName = X509Util.getSubjectAlternativeNames(cert);
 		} catch (IOException e) {
-			LOG.error("Error parsing Certificate SAN.", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error parsing Certificate SAN", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		}
 		/*
 		 * Add x5t#S256, because we are checking temporal validity next.
@@ -255,14 +257,14 @@ public class ValidatePKIX {
 		try {
 			cstore = CertStore.getInstance("Collection", cparam, CERTPATH_PROVIDER);
 		} catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchProviderException e) {
-			LOG.error("Internal Validation Error", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			throw new ServiceException("Internal Validation Error");
 		}
 		PKIXBuilderParameters params = null;
 		try {
 			params = new PKIXBuilderParameters(taList, selector);
 		} catch (InvalidAlgorithmParameterException e) {
-			LOG.error("Internal Validation Error", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			throw new ServiceException("Internal Validation Error");
 		}
 		params.setSigProvider(JCE_PROVIDER);
@@ -295,14 +297,14 @@ public class ValidatePKIX {
 		try {
 			cpb = CertPathBuilder.getInstance(CERTPATH_ALGORITHM, CERTPATH_PROVIDER);
 		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-			LOG.error("Internal Validation Error", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			throw new ServiceException("Internal Validation Error");
 		}
 		PKIXCertPathBuilderResult result = null;
 		try {
 			result = (PKIXCertPathBuilderResult) cpb.build(params);
 		} catch (InvalidAlgorithmParameterException e) {
-			LOG.error("Error with CertPathBuilder", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error with CertPathBuilder", "stacktrace", LoggingUtil.stackTraceToString(e))));
 		} catch (CertPathBuilderException e) {
 			/*
 			 * Construct and return validation response.
@@ -346,7 +348,7 @@ public class ValidatePKIX {
 		try {
 			cpv = CertPathValidator.getInstance(CERTPATH_ALGORITHM);
 		} catch (NoSuchAlgorithmException e) {
-			LOG.error("Internal Validation Error", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			throw new ServiceException("Internal Validation Error");
 		}
 		PKIXCertPathValidatorResult pvr = null;
@@ -360,7 +362,7 @@ public class ValidatePKIX {
 			response.validationResult = fail;
 			return response;
 		} catch (InvalidAlgorithmParameterException e) {
-			LOG.error("Internal Validation Error", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			throw new ServiceException("Internal Validation Error");
 		}
 		/*
@@ -379,9 +381,9 @@ public class ValidatePKIX {
 			JsonX509Certificate bCert = new JsonX509Certificate();
 			try {
 				bCert.x509Certificate = Base64.getEncoder().encodeToString(currentCert.getEncoded());
-				LOG.debug("Path Cert:\n" + currentCert.toString());
+				LOG.debug(LoggingUtil.pojoToJson(Map.of("pkix.path.cert", currentCert.toString())));
 			} catch (CertificateEncodingException e) {
-				LOG.error("Error Base64 encoding certificate from CertPath", e);
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error Base64 encoding certificate from CertPath", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			}
 			x509CertificatePath.add(bCert);
 		}

@@ -13,14 +13,11 @@ import java.security.cert.CertificateFactory;
 import java.util.List;
 import java.util.Map;
 
+import org.keysupport.api.LoggingUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This class uses a singleton pattern to manage our HTTP client needs.
@@ -67,30 +64,20 @@ public class HTTPClientSingleton {
 			try {
 				response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
 			} catch (IOException e) {
-				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ": " + e.getCause().getMessage());
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", e.getCause().getMessage(), "uri", uri.toASCIIString(), "stacktrace", LoggingUtil.stackTraceToString(e))));
 				return null;
 			} catch (InterruptedException e) {
-				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ": " + e.getCause().getMessage());
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", e.getCause().getMessage(), "uri", uri.toASCIIString(), "stacktrace", LoggingUtil.stackTraceToString(e))));
 				return null;
 			} catch (IllegalArgumentException  e) {
-				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ": " + e.getCause().getMessage());
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", e.getCause().getMessage(), "uri", uri.toASCIIString(), "stacktrace", LoggingUtil.stackTraceToString(e))));
 				return null;
 			} catch (SecurityException e) {
-				LOG.error(e.getClass().getName() + " with GET request: " + uri.toASCIIString() + ": " + e.getCause().getMessage());
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", e.getCause().getMessage(), "uri", uri.toASCIIString(), "stacktrace", LoggingUtil.stackTraceToString(e))));
 				return null;
 			}
 			Map<String, List<String>> headers = response.headers().map();
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				String output = mapper.writeValueAsString(headers);
-				LOG.info("{\"ResponseHeaders\":" + output + "}");
-			} catch (JsonGenerationException e) {
-				LOG.error("Error converting POJO to JSON", e);
-			} catch (JsonMappingException e) {
-				LOG.error("Error converting POJO to JSON", e);
-			} catch (IOException e) {
-				LOG.error("Error converting POJO to JSON", e);
-			}
+			LOG.error(LoggingUtil.pojoToJson(headers));
 			/*
 			 * Cache the response, and return to the client, so long as we received a 200
 			 *
@@ -98,16 +85,16 @@ public class HTTPClientSingleton {
 			if (response.statusCode() == HttpStatus.OK.value()) {
 				byte[] responseBody = response.body();
 				if (null == responseBody) {
-					LOG.error("Received null entity from " + uri.toASCIIString());
+					LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Received null entity from " + uri.toASCIIString())));
 					return null;
 				} else if (responseBody.length >= MAX_ENTITY_SIZE) {
-					LOG.error("Entity from " + uri.toASCIIString() + " exceeds " + MAX_ENTITY_SIZE + "bytes");
+					LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Entity from " + uri.toASCIIString() + " exceeds " + MAX_ENTITY_SIZE + "bytes")));
 					return null;
 				} else {
 					return responseBody;
 				}
 			} else {
-				LOG.error("Received HTTP " + response.statusCode() + " status from " + uri.toASCIIString());
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Received HTTP " + response.statusCode() + " status from " + uri.toASCIIString())));
 				return null;
 			}
 	}
@@ -115,7 +102,7 @@ public class HTTPClientSingleton {
 	public CertPath getCms(URI uri) {
 		byte[] cmsBytes = getData(uri, mimeCms);
 		if (null == cmsBytes) {
-			LOG.error("CMS not received from: " + uri.toASCIIString());
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "CMS not received", "uri", uri.toASCIIString())));
 			return null;
 		}
 		CertPath cp = null;
@@ -123,12 +110,12 @@ public class HTTPClientSingleton {
 		try {
 			cf = CertificateFactory.getInstance("X.509");
 		} catch (CertificateException e) {
-			LOG.error("Failed to create CertificateFactory", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Failed to create CertificateFactory", "uri", uri.toASCIIString(), "stacktrace", LoggingUtil.stackTraceToString(e))));
 		}
 		try {
 			cp = cf.generateCertPath(new ByteArrayInputStream(cmsBytes), "PKCS7");
 		} catch (CertificateException e) {
-			LOG.error("Failed to parse CMS object", e);
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Failed to parse CMS object", "uri", uri.toASCIIString(), "stacktrace", LoggingUtil.stackTraceToString(e))));
 		}
 		return cp;
 	}
@@ -138,7 +125,7 @@ public class HTTPClientSingleton {
 		if (null != textBytes) {
 			return new String(textBytes, StandardCharsets.UTF_8);
 		} else {
-			LOG.error("Unexpected null response from: " + uri.toASCIIString());
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Unexpected null response", "uri", uri.toASCIIString())));
 			return null;
 		}
 	}

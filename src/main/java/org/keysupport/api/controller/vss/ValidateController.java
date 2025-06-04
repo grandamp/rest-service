@@ -156,7 +156,7 @@ public class ValidateController {
 				bais = new ByteArrayInputStream(certBytes);
 				clientCert = (X509Certificate) cf.generateCertificate(bais);
 			} else {
-				LOG.error("Error decoding certificate base64 (null result), returning SERVICEFAIL");
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate base64 (null result), returning SERVICEFAIL")));
 				throw new ServiceException("Error decoding x509Certificate");
 			}
 		} catch (CertificateException e) {
