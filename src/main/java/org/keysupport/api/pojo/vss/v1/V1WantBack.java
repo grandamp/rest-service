@@ -27,14 +27,6 @@ public class V1WantBack {
 	@JsonProperty("certPath")
 	public V1X509CertificateList certPath;
 
-	/**
-	 * Field revocationInfo.
-	 *
-	 * Base64 Encoded
-	 */
-	@JsonProperty("revocationInfo")
-	public V1OCSPResponseList revocationInfo;
-
 	/*
 	 * additionalProperties getter and setter allows us to ignore fields unknown or
 	 * undefined
