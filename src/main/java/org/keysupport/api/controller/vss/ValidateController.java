@@ -225,8 +225,10 @@ public class ValidateController {
 		}
 		if (respResult != null) {
 			if (respResult instanceof Success) {
+				LOG.info(LoggingUtil.pojoToJson(response));
 				return ResponseEntity.ok().body(response);
 			} else if (respResult instanceof Fail) {
+				LOG.info(LoggingUtil.pojoToJson(response));
 				return ResponseEntity.ok().body(response);
 			} else {
 				ResponseEntity.badRequest();
