@@ -77,7 +77,7 @@ public class HTTPClientSingleton {
 				return null;
 			}
 			Map<String, List<String>> headers = response.headers().map();
-			LOG.error(LoggingUtil.pojoToJson(headers));
+			LOG.info(LoggingUtil.pojoToJson(headers));
 			/*
 			 * Cache the response, and return to the client, so long as we received a 200
 			 *
