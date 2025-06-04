@@ -124,6 +124,7 @@ public class ValidateController {
 			try {
 				validationPolicyId = new ASN1ObjectIdentifier(request.validationPolicyId);
 			} catch (IllegalArgumentException e) {
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding Object Identifier", "validationPolicyId", request.validationPolicyId, "stacktrace", LoggingUtil.stackTraceToString(e))));
 				throw new ServiceException("validationPolicyId must be an Object Identifier");
 			}
 		}
@@ -135,7 +136,6 @@ public class ValidateController {
 			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Invalid Policy Specified: " + validationPolicyId.toString())));
 			throw new ServiceException("Invalid Policy Specified");
 		}
-
 		/*
 		 * Check the x509Certificate
 		 */
@@ -163,7 +163,6 @@ public class ValidateController {
 			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			throw new ServiceException("Error decoding x509Certificate");
 		}
-
 		/*
 		 * Derive x5t#S256
 		 */
@@ -182,7 +181,6 @@ public class ValidateController {
 		 * "<x5t#S256 Base64 Value>:<validationPolicyId>"
 		 */
 		requestId = X509Util.strS256HexString(x5tS256 + ":" + valPol.validationPolicyId);
-
 		/*
 		 * Add metadata to the request via `additionalProperties` so we can log it.
 		 */
