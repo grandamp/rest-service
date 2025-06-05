@@ -68,13 +68,7 @@ This service can implement such a policy using the service's following `validati
   ],
   "inhibitPolicyMapping": false,
   "requireExplicitPolicy": true,
-  "inhibitAnyPolicy": true,
-  "validCacheLifetime": 0,
-  "inValidCacheLifetime": 0,
-  "cmsIntermediateHintListUri": [
-    "https://www.idmanagement.gov/implement/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b"
-  ],
-  "excludeIntermediates": []
+  "inhibitAnyPolicy": true
 }
 ```
 
@@ -106,8 +100,6 @@ As a relying party, you can perform post-processing on the logs for:
 ## Building and Testing
 
 - See [Testing](/TESTING.md)
-
-- Advanced Test Case, see [mTLS Testing (please open an issue if this link fails, inclusive of a screenshot)](https://x509.keysupport.org/swagger-ui/index.html)
 
 ## Current API Documentation & API Example
 
