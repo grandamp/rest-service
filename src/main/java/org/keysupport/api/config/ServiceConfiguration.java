@@ -1,4 +1,7 @@
 package org.keysupport.api.config;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.Map;
 
 import org.keysupport.api.LoggingUtil;
@@ -20,6 +23,8 @@ public class ServiceConfiguration {
 			@Value("${service.policies.uri}") String polUri, 
 			@Value("${service.intermediates.uri}") String intermediatesUri, 
 			@Value("${service.validation.pkix.max-path-length}") int maxPathLen, 
+			@Value("${service.systemlog.enabled}") boolean systemLogEnabled, 
+			@Value("${service.systemlog.file:/opt/vss/ext/logs/system.log}") String systemLogFile, 
 			@Value("${service.validation.pkix.aia-chase}") boolean aiaChase, 
 			@Value("${service.validation.pkix.revocation-enabled}") boolean revocationEnabled, 
 			@Value("${service.validation.pkix.revocation-ee-only}") boolean revocationEeOnly, 
@@ -55,6 +60,20 @@ public class ServiceConfiguration {
 		LOG.info(LoggingUtil.pojoToJson(Map.of("service.intermediates.uri", intermediatesUri)));
 		IntermediateCacheSingleton cache = IntermediateCacheSingleton.getInstance();
 		cache.updateIntermediates(intermediatesUri);
+		/*
+		 * Redirect System.out and System.err to log to the trace log if defined
+		 */
+		if (systemLogEnabled) {
+			File traceLogFile = new File(systemLogFile);
+			PrintStream logStream = null;
+			try {
+				logStream = new PrintStream(traceLogFile);
+			} catch (FileNotFoundException e) {
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error accessing tracelog file: " + systemLogFile, "stacktrace", LoggingUtil.stackTraceToString(e))));
+			}
+	        System.setOut(logStream);
+	        System.setErr(logStream);
+		}
 	}
 
 }

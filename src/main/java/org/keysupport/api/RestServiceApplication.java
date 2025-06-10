@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 public class RestServiceApplication {
 
     public static void main(String[] args) {
-    	LoggingUtil.logSystemOutAndErr();
         SpringApplication app = new SpringApplication(RestServiceApplication.class);
         app.run(args);
    }
