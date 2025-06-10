@@ -56,3 +56,7 @@ logging:
       file-name-pattern: 'vss-%d{yyyy-MM-dd}.%i.log'
       max-file-size: 10MB
       max-history: 7
+springdoc:
+  swagger-ui:
+    enabled: true
+    use-root-path: true
