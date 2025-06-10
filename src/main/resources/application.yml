@@ -27,10 +27,15 @@ service:
   intermediates:
     uri: >-
       https://www.idmanagement.gov/implement/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b
+  systemlog:
+    enabled: false
+    file: /opt/vss/ext/logs/system.log
   validation:
     pkix:
+# If AIA Chase is enabled, `max-path-length` *might* be ignored
+# Otherwise, `max-path-length` will be enforced, and the only intermediates that will be considered will be certs in the CMS CERTS-ONLY file defined via `service.intermediates.uri`
+      aia-chase: false
       max-path-length: 7
-      aia-chase: true
       revocation-enabled: true
       revocation-ee-only: true
       ocsp-enabled: true
@@ -50,4 +55,4 @@ logging:
     rollingpolicy:
       file-name-pattern: 'vss-%d{yyyy-MM-dd}.%i.log'
       max-file-size: 10MB
-      max-history: '7'
+      max-history: 7
