@@ -335,6 +335,7 @@ public class ValidatePKIX {
 					Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			throw new ServiceException("Internal Validation Error");
 		}
+		@SuppressWarnings("unchecked")
 		List<X509Certificate> validPath = (List<X509Certificate>) cp.getCertificates();
 		/*
 		 * Intermediate Certificate Discovery
