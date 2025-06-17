@@ -232,11 +232,6 @@ public class ValidatePKIX {
 		params.setAnyPolicyInhibited(valPol.inhibitAnyPolicy);
 		params.setMaxPathLength(policies.getMaxPathLen());
 		params.addCertStore(cstore);
-		/*
-		 * Disable the following if trying to eliminate revocation checking in the
-		 * provider.
-		 */
-		params.setRevocationEnabled(policies.getRevocationEnabled());
 		/**
 		 * <pre>
 		 *
@@ -265,7 +260,10 @@ public class ValidatePKIX {
 		 */
 		if (policies.getRevocationEnabled() && policies.getRevocationEeOnly()) {
 			PKIXRevocationChecker rc = (PKIXRevocationChecker) cpb.getRevocationChecker();
-			rc.setOptions(EnumSet.of(PKIXRevocationChecker.Option.ONLY_END_ENTITY));
+			if (policies.getRevocationEeOnly()) {
+				rc.setOptions(EnumSet.of(PKIXRevocationChecker.Option.ONLY_END_ENTITY));
+			}
+			params.addCertPathChecker(rc);
 		}
 		PKIXCertPathBuilderResult result = null;
 		try {
