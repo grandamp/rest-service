@@ -258,7 +258,7 @@ public class ValidatePKIX {
 		/*
 		 * We will add revocation options during path construction here
 		 */
-		if (policies.getRevocationEnabled() && policies.getRevocationEeOnly()) {
+		if (policies.getRevocationEnabled()) {
 			PKIXRevocationChecker rc = (PKIXRevocationChecker) cpb.getRevocationChecker();
 			if (policies.getRevocationEeOnly()) {
 				rc.setOptions(EnumSet.of(PKIXRevocationChecker.Option.ONLY_END_ENTITY));
