@@ -300,11 +300,11 @@ public class ValidatePKIX {
 				if (t.getCause() instanceof CertificateRevokedException) {
 					fail.invalidityReasonText = t.getMessage();
 				} else {
-					fail.invalidityReasonText = t.getMessage();
+					fail.invalidityReasonText = e.getLocalizedMessage();
 				}
 			} else {
 				fail.isAffirmativelyInvalid = false;
-				fail.invalidityReasonText = e.getMessage();
+				fail.invalidityReasonText = e.getLocalizedMessage();
 			}
 			return response;
 		}
