@@ -232,11 +232,6 @@ public class ValidatePKIX {
 		params.setAnyPolicyInhibited(valPol.inhibitAnyPolicy);
 		params.setMaxPathLength(policies.getMaxPathLen());
 		params.addCertStore(cstore);
-		/*
-		 * Disable the following if trying to eliminate revocation checking in the
-		 * provider.
-		 */
-		params.setRevocationEnabled(policies.getRevocationEnabled());
 		/**
 		 * <pre>
 		 *
@@ -263,9 +258,12 @@ public class ValidatePKIX {
 		/*
 		 * We will add revocation options during path construction here
 		 */
-		if (policies.getRevocationEnabled() && policies.getRevocationEeOnly()) {
+		if (policies.getRevocationEnabled()) {
 			PKIXRevocationChecker rc = (PKIXRevocationChecker) cpb.getRevocationChecker();
-			rc.setOptions(EnumSet.of(PKIXRevocationChecker.Option.ONLY_END_ENTITY));
+			if (policies.getRevocationEeOnly()) {
+				rc.setOptions(EnumSet.of(PKIXRevocationChecker.Option.ONLY_END_ENTITY));
+			}
+			params.addCertPathChecker(rc);
 		}
 		PKIXCertPathBuilderResult result = null;
 		try {
@@ -300,11 +298,11 @@ public class ValidatePKIX {
 				if (t.getCause() instanceof CertificateRevokedException) {
 					fail.invalidityReasonText = t.getMessage();
 				} else {
-					fail.invalidityReasonText = t.getMessage();
+					fail.invalidityReasonText = e.getLocalizedMessage();
 				}
 			} else {
 				fail.isAffirmativelyInvalid = false;
-				fail.invalidityReasonText = e.getMessage();
+				fail.invalidityReasonText = e.getLocalizedMessage();
 			}
 			return response;
 		}

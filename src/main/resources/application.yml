@@ -48,7 +48,7 @@ logging:
     org.apache.catalina.core: OFF
     org.springframework: OFF
     org.springdoc.api.AbstractOpenApiResource: OFF
-    org.keysupport.api.controller.vss.V1RestController: ERROR
+    org.keysupport.api.controller.vss.ValidateController.validateV1: ERROR
   file:
     name: /opt/vss/ext/logs/vss.log
   logback:
