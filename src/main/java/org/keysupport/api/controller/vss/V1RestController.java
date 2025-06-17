@@ -46,7 +46,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "rest", description = "Validate a certificate based on the specified validation policy (v1 syntax)")
 public class V1RestController {
 
-	private final static Logger LOG = LoggerFactory.getLogger(V1RestController.class);
+	private final static Logger V1LOG = LoggerFactory.getLogger(V1RestController.class);
 
 	@PostMapping(path = "/vss/rest", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Certificate Validation Request", required = true, content = @Content(schema = @Schema(implementation = VssRequest.class), mediaType = MediaType.APPLICATION_JSON_VALUE, examples = {
@@ -98,7 +98,7 @@ public class V1RestController {
 		/*
 		 * Log the request
 		 */
-		LOG.info(LoggingUtil.pojoToJson(request));
+		V1LOG.info(LoggingUtil.pojoToJson(request));
 		/*
 		 * Process v1 request
 		 */
@@ -112,7 +112,7 @@ public class V1RestController {
 			txResult.transactionResultToken = "SERVICEFAIL";
 			txResult.transactionResultText = "Request must include validationPolicy, wantBackList, and x509CertificateList";
 			response.transactionResult = txResult;
-			LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Request is not a valid v1 request, returning SERVICEFAIL")));
+			V1LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Request is not a valid v1 request, returning SERVICEFAIL")));
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 		boolean certPathWantBack = false;
@@ -147,7 +147,7 @@ public class V1RestController {
 				txResult.transactionResultToken = "SERVICEFAIL";
 				txResult.transactionResultText = e.getMessage();
 				response.transactionResult = txResult;
-				LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Exception thrown via V2 endpoint, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
+				V1LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Exception thrown via V2 endpoint, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			}
 			txResult.transactionResultToken = "SUCCESS";
@@ -209,7 +209,7 @@ public class V1RestController {
 		/*
 		 * Log the response
 		 */
-		LOG.info(LoggingUtil.pojoToJson(response));
+		V1LOG.info(LoggingUtil.pojoToJson(response));
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
