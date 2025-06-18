@@ -99,13 +99,6 @@ public class ValidatePKIX {
 	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, Date now) {
 		ValidationPoliciesSingleton policies = ValidationPoliciesSingleton.getInstance();
 		/*
-		 * SUN JSSE Provider config for revocation checking, but; only for the EE cert
-		 * being validated
-		 */
-		if (policies.getRevocationEnabled() && policies.getRevocationEeOnly()) {
-			System.setProperty("com.sun.security.onlyCheckRevocationOfEECert", "true");
-		}
-		/*
 		 * Allow CRL
 		 */
 		if (policies.getRevocationEnabled() && policies.getCrlEnabled()) {
