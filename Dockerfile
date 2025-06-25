@@ -9,7 +9,7 @@ RUN /bin/rm -rf /opt/jboss
 RUN /usr/bin/mkdir /opt/vss
 ADD target/rest-service-eb.jar /opt/vss/lib/
 ADD keysupport_net_execute.sh /opt/vss/
-RUN /usr/bin/chown -R 1001 /opt/vss
+RUN /usr/bin/chown -R 1000 /opt/vss
 RUN /usr/bin/chmod 700 /opt/vss/keysupport_net_execute.sh
 USER 1000
 # Run App
