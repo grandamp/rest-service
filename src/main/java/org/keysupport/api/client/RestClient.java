@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.keysupport.api.pkix.X509Util;
+import org.keysupport.api.pojo.vss.Fail;
+import org.keysupport.api.pojo.vss.Success;
+import org.keysupport.api.pojo.vss.ValidationResult;
 import org.keysupport.api.pojo.vss.VssRequest;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.slf4j.Logger;
@@ -187,6 +190,30 @@ public class RestClient {
 			LOG.info(objectMapper.writeValueAsString(response));
 		} catch (JsonProcessingException e) {
 			LOG.error("Error converting POJO to JSON", e);
+		}
+		/*
+		 * Start processing the response data
+		 * 
+		 * First, we will check to see if the validation is a SUCCESS or Fail
+		 */
+		ValidationResult res = response.validationResult;
+		if (res instanceof Success) {
+			/*
+			 * We may not need the success data if we don't care about the `x509CertificatePath` or `policyTree`
+			 * 
+			 * If we do, then cast the result to a Success and fetch the objects:
+			 * 
+			 * Success success = (Success)res;
+			 */
+			/*
+			 * Get the SHA-256 digest of the certificate
+			 */
+			LOG.info("SHA-256 Digest (base64):" + response.x5tS256);
+			byte[] sha256Digest = Base64.getUrlDecoder().decode(response.x5tS256);
+			LOG.info("SHA-256 Digest (hex):" + X509Util.byteArrayToHexString(sha256Digest));
+		} else {
+			Fail fail = (Fail)res;
+			LOG.error("Certificate Validation Failed: " + fail.invalidityReasonText);
 		}
 	}
 
