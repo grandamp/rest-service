@@ -32,6 +32,8 @@ public class RestClient {
 
 	private final static Logger LOG = LoggerFactory.getLogger(RestClient.class);
 
+	private final static Logger LOGMAIN = LoggerFactory.getLogger(RestClient.class.getName().concat(".main()"));
+
 	public VssResponse vssRequest(final String url, final X509Certificate certificate, final String policy) throws RestClientException {
 		ObjectMapper mapper = new ObjectMapper();
 		/*
@@ -68,6 +70,7 @@ public class RestClient {
 			LOG.error("Error converting POJO to JSON", e);
 			throw new RestClientException("Error converting POJO to JSON", e);
 		}
+		LOG.info("VSSRequest: " + jsonRequest);
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Content-Type", "application/json")
 				.POST(HttpRequest.BodyPublishers.ofString(jsonRequest)).build();
 		HttpResponse<String> response = null;
@@ -91,7 +94,7 @@ public class RestClient {
 					+ ". Response Message = " + response.body());
 		}
 		String jsonString = response.body();
-		LOG.debug("VSSResponse: " + jsonString);
+		LOG.info("VSSResponse: " + jsonString);
 		/*
 		 * Render POJO Response
 		 */
@@ -112,6 +115,7 @@ public class RestClient {
 	}
 
 	public static void main(String args[]) {
+		Long start = System.currentTimeMillis();
 		/*
 		 * Test method which calls this client and validates a certificate against VSS
 		 */
@@ -175,7 +179,7 @@ public class RestClient {
 			bais = new ByteArrayInputStream(EE_CERT.getBytes());
 			certificate = (X509Certificate) cf.generateCertificate(bais);
 		} catch (CertificateException e) {
-			LOG.error("Error Decoding/Encoding Certificate", e);
+			LOGMAIN.error("Error Decoding/Encoding Certificate", e);
 		}
 		/*
 		 * Send the rest request
@@ -187,34 +191,46 @@ public class RestClient {
 		 */
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			LOG.info(objectMapper.writeValueAsString(response));
+			LOGMAIN.info(objectMapper.writeValueAsString(response));
 		} catch (JsonProcessingException e) {
-			LOG.error("Error converting POJO to JSON", e);
+			LOGMAIN.error("Error converting POJO to JSON", e);
 		}
 		/*
 		 * Start processing the response data
 		 * 
-		 * First, we will check to see if the validation is a SUCCESS or Fail
+		 * First, we will log the SHA-256 digest of the certificate in HEX and Base64
+		 */
+		LOGMAIN.info("SHA-256 Digest (x5t#S256):" + response.x5tS256);
+		byte[] sha256Digest = Base64.getUrlDecoder().decode(response.x5tS256);			
+		LOGMAIN.info("SHA-256 Digest (hex):" + X509Util.byteArrayToHexString(sha256Digest));
+		/*
+		 * Process result
 		 */
 		ValidationResult res = response.validationResult;
 		if (res instanceof Success) {
 			/*
+			 * If successful, indicate as much
 			 * We may not need the success data if we don't care about the `x509CertificatePath` or `policyTree`
 			 * 
 			 * If we do, then cast the result to a Success and fetch the objects:
 			 * 
 			 * Success success = (Success)res;
 			 */
-			/*
-			 * Get the SHA-256 digest of the certificate
-			 */
-			LOG.info("SHA-256 Digest (base64):" + response.x5tS256);
-			byte[] sha256Digest = Base64.getUrlDecoder().decode(response.x5tS256);
-			LOG.info("SHA-256 Digest (hex):" + X509Util.byteArrayToHexString(sha256Digest));
+			Success success = (Success)res;
+			LOGMAIN.error("Certificate Validation Success: " + response.x509SubjectName);
+			LOGMAIN.info("isCaCertificate" + response.isCA);
 		} else {
+			/*
+			 * If *not* successful, indicate as much
+			 */
 			Fail fail = (Fail)res;
-			LOG.error("Certificate Validation Failed: " + fail.invalidityReasonText);
+			LOGMAIN.error("Certificate Validation Failed: " + response.x509SubjectName + ": " + fail.invalidityReasonText);
+			LOGMAIN.info("isCaCertificate: " + response.isCA);
+			
 		}
+		Long end = System.currentTimeMillis();
+		Long duration = end - start;
+		LOGMAIN.info("Completed in " + duration + "ms");
 	}
 
 }
