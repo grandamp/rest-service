@@ -46,6 +46,7 @@ public class RestClient {
 		VssRequest vssRequest = new VssRequest();
 		vssRequest.validationPolicyId = policy;
 		byte[] certBytes = null;
+		String certDigestS256 = X509Util.x5tS256(certificate);
 		try {
 			certBytes = certificate.getEncoded();
 		} catch (CertificateEncodingException e) {
@@ -58,7 +59,7 @@ public class RestClient {
 		 * x5t#S256 is the SHA-256 digest value, encoded to Base64
 		 */
 		Map<String, String> metaData = new HashMap<>();
-		metaData.put("x5t#S256", X509Util.x5tS256(certificate));
+		metaData.put("x5t#S256", certDigestS256);
 		vssRequest.setAdditionalProperty("metaData", metaData);
 		/*
 		 * Post the JSON request, and obtain JSON Response
@@ -107,6 +108,14 @@ public class RestClient {
 		} catch (JsonProcessingException e) {
 			LOG.error("Error communicating with VSS", e);
 			throw new RestClientException("Error communicating with VSS", e);
+		}
+		/*
+		 * Ensure the certificate we requested (certDigestS256) matches the response (x5tS256)
+		 */
+		if (!certDigestS256.equals(vssResponse.x5tS256)) {
+			String reqResErr = "Requested cert digest (" + certDigestS256 + ") does not match the certificate digest in the response (" + vssResponse.x5tS256 + ")";
+			LOG.error(reqResErr);
+			throw new RestClientException(reqResErr);
 		}
 		/*
 		 * Return POJO Response
