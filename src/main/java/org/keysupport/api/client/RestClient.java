@@ -13,10 +13,12 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.keysupport.api.pkix.X509Util;
 import org.keysupport.api.pojo.vss.Fail;
+import org.keysupport.api.pojo.vss.SANValue;
 import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationResult;
 import org.keysupport.api.pojo.vss.VssRequest;
@@ -286,11 +288,16 @@ public class RestClient {
 			 * Success success = (Success)res;
 			 */
 			Success success = (Success)res;
-			LOGMAIN.error("Certificate Validation Success: " + response.x509SubjectName);
+			LOGMAIN.info("Certificate Validation Success: " + response.x509SubjectName);
 			LOGMAIN.info("isCaCertificate: " + response.isCA);
-			LOGMAIN.error("CLAIM: x509SubjectName: " + response.x509SubjectName);
-			LOGMAIN.error("CLAIM: x509IssuerName: " + response.x509IssuerName);
-			LOGMAIN.error("CLAIM: x509SerialNumber: " + response.x509SerialNumber);
+			LOGMAIN.info("CLAIM: x509SubjectName: " + response.x509SubjectName);
+			LOGMAIN.info("CLAIM: x509IssuerName: " + response.x509IssuerName);
+			LOGMAIN.info("CLAIM: x509SerialNumber: " + response.x509SerialNumber);
+			List<SANValue> sans = response.x509SubjectAltName;
+			// TODO: Some claims like `otherName:pivFASC-N` can be further parsed, and offered as additional claims
+			for (SANValue san: sans) {
+				LOGMAIN.info("CLAIM: " + san.type + ": " + san.value);
+			}
 		} else {
 			/*
 			 * If *not* successful, indicate as much
