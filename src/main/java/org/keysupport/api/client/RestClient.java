@@ -34,7 +34,7 @@ public class RestClient {
 
 	private final static Logger LOGMAIN = LoggerFactory.getLogger(RestClient.class.getName().concat(".main()"));
 
-	public VssResponse vssRequest(final String url, final X509Certificate certificate, final String policy) throws RestClientException {
+	public VssResponse vssRequest(final String url, final String policy, final X509Certificate certificate) throws RestClientException {
 		ObjectMapper mapper = new ObjectMapper();
 		/*
 		 * Create our JDK Native Client
@@ -124,7 +124,6 @@ public class RestClient {
 	}
 
 	public static void main(String args[]) {
-		Long start = System.currentTimeMillis();
 		/*
 		 * Test method which calls this client and validates a certificate against VSS
 		 */
@@ -133,7 +132,10 @@ public class RestClient {
 		 */
 		String VSS_URL = "https://home.keysupport.net/vss/v2/validate";
 		String VAL_POL = "2.16.840.1.101.10.2.18.2.1.4";
-		String EE_CERT = "-----BEGIN CERTIFICATE-----\n"
+		/*
+		 * An expired EE Certificate
+		 */
+		String EE_CERT1 = "-----BEGIN CERTIFICATE-----\n"
 				+ "MIIHuDCCBqCgAwIBAgIEWckNVjANBgkqhkiG9w0BAQsFADCBgjELMAkGA1UEBhMC\n"
 				+ "VVMxGDAWBgNVBAoTD1UuUy4gR292ZXJubWVudDEjMCEGA1UECxMaRGVwYXJ0bWVu\n"
 				+ "dCBvZiB0aGUgVHJlYXN1cnkxIjAgBgNVBAsTGUNlcnRpZmljYXRpb24gQXV0aG9y\n"
@@ -177,6 +179,64 @@ public class RestClient {
 				+ "sj7naroU9cBopwXLLcSIL9eEcKATpmfzjskE1NbehWEY/NnHuIJ5QdZ2gmIJvO7M\n"
 				+ "xFOdRh2ZAHxqrSYF\n"
 				+ "-----END CERTIFICATE-----";
+		mainValidate(VSS_URL, VAL_POL, EE_CERT1);
+		/*
+		 * *Possibly* valid EE Certificate
+		 */
+		String EE_CERT2 = "-----BEGIN CERTIFICATE-----\n"
+				+ "MIIIyDCCBrCgAwIBAgIEYk1z8jANBgkqhkiG9w0BAQsFADCBgjELMAkGA1UEBhMC\n"
+				+ "VVMxGDAWBgNVBAoTD1UuUy4gR292ZXJubWVudDEjMCEGA1UECxMaRGVwYXJ0bWVu\n"
+				+ "dCBvZiB0aGUgVHJlYXN1cnkxIjAgBgNVBAsTGUNlcnRpZmljYXRpb24gQXV0aG9y\n"
+				+ "aXRpZXMxEDAOBgNVBAsTB09DSU8gQ0EwHhcNMjUwMzIzMTcxODQ3WhcNMjcwODAx\n"
+				+ "MTc0NzE0WjCBrTELMAkGA1UEBhMCVVMxGDAWBgNVBAoTD1UuUy4gR292ZXJubWVu\n"
+				+ "dDEjMCEGA1UECxMaRGVwYXJ0bWVudCBvZiB0aGUgVHJlYXN1cnkxJTAjBgNVBAsT\n"
+				+ "HEJ1cmVhdSBvZiB0aGUgRmlzY2FsIFNlcnZpY2UxDzANBgNVBAsTBlBlb3BsZTEn\n"
+				+ "MA0GA1UEBRMGNDAzNjExMBYGA1UEAxMPVG9kZCBFLiBKb2huc29uMIIBIjANBgkq\n"
+				+ "hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq6iTFYh8wCmn5gedP2u+48qiqzdWQkMJ\n"
+				+ "okQS36O3hoULIWFT5GQyDk6DfdWhut8t9PuW0Pcxrw+y37c1C1usF8EKYiJPd6KW\n"
+				+ "F3PUwodgYMYFwtkc5w/YZhPXuxwEjYb1WkQ7WJKVtOv3u2Iv0ja6jSD601Z7Rl0M\n"
+				+ "HL5ZwTRbOeapA+PxG3l9vPtlYOOhT6HZqjubyoxifI/Cq9kIZ0uEw12rXDG2ouL/\n"
+				+ "jyP/0ine6BMAeYkrfiIEeTMFUXmydMqjIqQN+OvqjNcs6WtZDvn/pheojva2rjrg\n"
+				+ "FTqoc3KP/rgkWoXYACiIV3W+TNJ2KgCMyzAzpXuXsR7MOc9R/dSqAQIDAQABo4IE\n"
+				+ "FzCCBBMwDgYDVR0PAQH/BAQDAgeAMBcGA1UdIAQQMA4wDAYKYIZIAWUDAgEDDTAy\n"
+				+ "BgNVHSUEKzApBgorBgEEAYI3FAICBggrBgEFBQcDAgYHKwYBBQIDBAYIKwYBBQUH\n"
+				+ "AxUwEAYJYIZIAWUDBgkBBAMBAQAwggETBggrBgEFBQcBAQSCAQUwggEBMDMGCCsG\n"
+				+ "AQUFBzAChidodHRwOi8vcGtpLnRyZWFzdXJ5Lmdvdi90b2NhX2VlX2FpYS5wN2Mw\n"
+				+ "gaMGCCsGAQUFBzAChoGWbGRhcDovL2xkYXAudHJlYXN1cnkuZ292L291PU9DSU8l\n"
+				+ "MjBDQSxvdT1DZXJ0aWZpY2F0aW9uJTIwQXV0aG9yaXRpZXMsb3U9RGVwYXJ0bWVu\n"
+				+ "dCUyMG9mJTIwdGhlJTIwVHJlYXN1cnksbz1VLlMuJTIwR292ZXJubWVudCxjPVVT\n"
+				+ "P2NBQ2VydGlmaWNhdGU7YmluYXJ5MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC50\n"
+				+ "cmVhc3VyeS5nb3YwgbcGA1UdEQSBrzCBrKAwBgorBgEEAYI3FAIDoCIMIFRPREQu\n"
+				+ "Sk9ITlNPTkBGSVNDQUwuVFJFQVNVUlkuR09WgSBUb2RkLkpvaG5zb25AZmlzY2Fs\n"
+				+ "LnRyZWFzdXJ5LmdvdqAnBghghkgBZQMGBqAbBBnSAkRYIQts1DYBDaFoWgEIQ5IR\n"
+				+ "pIICEMPrhi11cm46dXVpZDoxYTM5ZjkxZC1hODNjLTRmNGUtYWViMy0yYzdhZWZk\n"
+				+ "YThkYWIwggGPBgNVHR8EggGGMIIBgjAqoCigJoYkaHR0cDovL3BraS50cmVhc3Vy\n"
+				+ "eS5nb3YvT0NJT19DQTYuY3JsMIIBUqCCAU6gggFKpIGXMIGUMQswCQYDVQQGEwJV\n"
+				+ "UzEYMBYGA1UEChMPVS5TLiBHb3Zlcm5tZW50MSMwIQYDVQQLExpEZXBhcnRtZW50\n"
+				+ "IG9mIHRoZSBUcmVhc3VyeTEiMCAGA1UECxMZQ2VydGlmaWNhdGlvbiBBdXRob3Jp\n"
+				+ "dGllczEQMA4GA1UECxMHT0NJTyBDQTEQMA4GA1UEAxMHQ1JMNDAyN4aBrWxkYXA6\n"
+				+ "Ly9sZGFwLnRyZWFzdXJ5Lmdvdi9jbj1DUkw0MDI3LG91PU9DSU8lMjBDQSxvdT1D\n"
+				+ "ZXJ0aWZpY2F0aW9uJTIwQXV0aG9yaXRpZXMsb3U9RGVwYXJ0bWVudCUyMG9mJTIw\n"
+				+ "dGhlJTIwVHJlYXN1cnksbz1VLlMuJTIwR292ZXJubWVudCxjPVVTP2NlcnRpZmlj\n"
+				+ "YXRlUmV2b2NhdGlvbkxpc3Q7YmluYXJ5MB8GA1UdIwQYMBaAFDiAH3dn6Zc1M+6w\n"
+				+ "XhsHJgiWJ0XaMB0GA1UdDgQWBBTQ0qoY95LSVqPnU53dXbgC3tFFLjANBgkqhkiG\n"
+				+ "9w0BAQsFAAOCAgEAF5xWY8+eDZZjzyyPfYSt7DRO+P8HaBTynux0YYz2UUnN+3kW\n"
+				+ "O6peLtVyv/K3CDj/I2+t1O1eSFTMFt1WDQLQXpKr1LLHzKWab9M0qeuAO1AaKJex\n"
+				+ "+lVNeBLXbjFxg5uY7aHDACWXxtGUKUIKuIM4PTZtq21ygy+UABpit083xlviUFhz\n"
+				+ "764v67vhEn96q7LxGE1z3MvdjB3IdDmkXBpCkDX/mKy1f8Hx1tJZAsyATgQ6MLi4\n"
+				+ "AL/gsC+ONi31eXQxYqB41MN8LiK8NIydGLbvYZiHIUhU0iO6t7p8XPzectP09zNJ\n"
+				+ "0RsLctG9cbWQr0t186kZNqCmqUrMnMLxGZpeHGeEgSuTpNyToiVRtyVXz+2C6+Xs\n"
+				+ "G7VjjtGPJnCa7w7WvpaqiQ5wQLEJUmUS/SyogMqkZYxmEEGLj+pldeQFHX6fLx/6\n"
+				+ "nzblSrvg5ignxVKmNjvm5mXyJh1p1VFHchtU26n+GCZTCcLzDraydxjSgW2z5lXW\n"
+				+ "9v32pX1GaSxdUW52132pE6F2OOGIDE0yMEdkCxzmK8RwUEWxGEghNCuBmkT996vd\n"
+				+ "XXhyRsX0ltPUHre0mapQCTafDmhcaFIe9EMC0jt5AfiGU1mkR4VMALV9j5hIR0KV\n"
+				+ "g6di2Q9V3TkYt0a25JlseH9RL7rKf+7R+0fcjygmT68sGEfRL4vx9Xu4Ezo=\n"
+				+ "-----END CERTIFICATE-----";
+		mainValidate(VSS_URL, VAL_POL, EE_CERT2);
+	}
+	
+	public static void mainValidate(String url, String policy, String pemCert) {
+		Long start = System.currentTimeMillis();
 		/*
 		 * Convert the certificate to an X509Certificate to ensure it is a valid X509Certificate
 		 */
@@ -185,7 +245,7 @@ public class RestClient {
 		X509Certificate certificate = null;
 		try {
 			cf = CertificateFactory.getInstance("X509");
-			bais = new ByteArrayInputStream(EE_CERT.getBytes());
+			bais = new ByteArrayInputStream(pemCert.getBytes());
 			certificate = (X509Certificate) cf.generateCertificate(bais);
 		} catch (CertificateException e) {
 			LOGMAIN.error("Error Decoding/Encoding Certificate", e);
@@ -194,7 +254,7 @@ public class RestClient {
 		 * Send the rest request
 		 */
 		RestClient client = new RestClient();
-		VssResponse response = client.vssRequest(VSS_URL, certificate, VAL_POL);
+		VssResponse response = client.vssRequest(url, policy, certificate);
 		/*
 		 * Convert the POJO response to JSON for logging
 		 */
@@ -227,7 +287,10 @@ public class RestClient {
 			 */
 			Success success = (Success)res;
 			LOGMAIN.error("Certificate Validation Success: " + response.x509SubjectName);
-			LOGMAIN.info("isCaCertificate" + response.isCA);
+			LOGMAIN.info("isCaCertificate: " + response.isCA);
+			LOGMAIN.error("CLAIM: x509SubjectName: " + response.x509SubjectName);
+			LOGMAIN.error("CLAIM: x509IssuerName: " + response.x509IssuerName);
+			LOGMAIN.error("CLAIM: x509SerialNumber: " + response.x509SerialNumber);
 		} else {
 			/*
 			 * If *not* successful, indicate as much
