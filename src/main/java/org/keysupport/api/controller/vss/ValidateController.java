@@ -74,10 +74,7 @@ public class ValidateController {
 	 * Field PEM_SIZE_LIMIT
 	 */
 	private final int PEM_SIZE_LIMIT = 8192;
-
-	@Autowired
-	private VssResponse response;
-
+	
 	@PostMapping(path = "/vss/v2/validate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Certificate Validation Request", required = true, content = @Content(schema = @Schema(implementation = VssRequest.class), mediaType = MediaType.APPLICATION_JSON_VALUE, examples = {
 			@ExampleObject(name = "A validation request using a valid DoD Issuing CA certificate", value = "{\n"
@@ -122,6 +119,7 @@ public class ValidateController {
 		ByteArrayInputStream bais = null;
 		String x5tS256 = null;
 		String requestId = null;
+	        VssResponse response;
 		/*
 		 * First, lets validate the request.
 		 *
