@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.boot.jackson.JsonComponent;
+import org.springframework.boot.jackson.JacksonComponent;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 /**
  * This class is a Java representation of the JSON Object validationResult.
  */
-@JsonComponent
+@JacksonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class V1ValidationResult {
 

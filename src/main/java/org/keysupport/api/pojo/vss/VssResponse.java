@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.boot.jackson.JsonComponent;
+import org.springframework.boot.jackson.JacksonComponent;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -18,7 +18,7 @@ import jakarta.validation.constraints.NotBlank;
 /**
  * This class is a Java representation of the JSON Object VssResponse.
  */
-@JsonComponent
+@JacksonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "requestId", "validationPolicyId", "x5t#S256", "x509SubjectName", "x509IssuerName",
 		"x509SerialNumber", "x509SubjectAltName", "subjectKeyIdentifer", "isCA", "validationTime", "nextUpdate",

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.boot.jackson.JsonComponent;
+import org.springframework.boot.jackson.JacksonComponent;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -20,7 +20,7 @@ import jakarta.validation.constraints.NotBlank;
  * 
  * No support for parent or policyQualifiers
  */
-@JsonComponent
+@JacksonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "depth", "critical", "expectedPolicies", "validPolicy", "children" })
 public class PKIXPolicyNode {
