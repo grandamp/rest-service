@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.keysupport.api.pojo.vss.JsonX509Certificate;
-import org.springframework.boot.jackson.JsonComponent;
+import org.springframework.boot.jackson.JacksonComponent;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * This class is a Java representation of the JSON request.
  */
-@JsonComponent
+@JacksonComponent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "validationPolicy", "wantBackList", "x509CertificateList" })
 public class V1VSSRequest {
