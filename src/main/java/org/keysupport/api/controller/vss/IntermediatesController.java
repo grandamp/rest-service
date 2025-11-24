@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,7 @@ public class IntermediatesController {
 
 	@SuppressWarnings("unchecked")
 	@GetMapping(path = "/vss/v2/intermediates", produces = MediaType.APPLICATION_JSON_VALUE)
+	@CrossOrigin(origins = "*")
 	ResponseEntity<List<JsonX509Certificate>> intermediates() {
 		List<JsonX509Certificate> intermediates = new ArrayList<JsonX509Certificate>();
 		IntermediateCacheSingleton intermediateCacheSingleton = IntermediateCacheSingleton.getInstance();
