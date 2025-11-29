@@ -1,19 +1,25 @@
-# Using `ubi9/openjdk-21-runtime`: https://catalog.redhat.com/software/containers/ubi9/openjdk-21-runtime/6501ce769a0d86945c422d5f
-FROM registry.access.redhat.com/ubi9/openjdk-21-runtime
-# Modify openssl.cnf to enable FIPS
+# Using `eclipse-temurin:25-jre-ubi10-minimal`: https://hub.docker.com/layers/library/eclipse-temurin/25-jre-ubi10-minimal/
+FROM eclipse-temurin:25-jre-ubi10-minimal
+
+# Switch to user 0
 USER 0
-RUN echo -e "\n[algorithm_sect]\ndefault_properties = fips=yes" >> /etc/pki/tls/openssl.cnf
-# Image contains `/opt/jboss`, which isn't needed.
-RUN /bin/rm -rf /opt/jboss
+
+# Modify openssl.cnf to enable FIPS - Uncomment when OpenSSL 3.5 FIPS is available in the base image to enforce FIPS
+# RUN echo -e "\n[algorithm_sect]\ndefault_properties = fips=yes" >> /etc/pki/tls/openssl.cnf
+
 # Setup App; copy code, install dependencies, set working dir
 RUN /usr/bin/mkdir /opt/vss
 ADD target/rest-service-eb.jar /opt/vss/lib/
 ADD keysupport_net_execute.sh /opt/vss/
 RUN /usr/bin/chown -R 1000 /opt/vss
 RUN /usr/bin/chmod 700 /opt/vss/keysupport_net_execute.sh
+
+# Switch to user 1000
 USER 1000
+
 # Run App
 ENTRYPOINT ["/opt/vss/keysupport_net_execute.sh"]
+
 # =================================
 # Container meta information
 # ---------------------------------
