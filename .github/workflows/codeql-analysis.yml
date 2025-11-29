@@ -1,0 +1,45 @@
+name: "CodeQL Analysis with Corretto 25 and Maven"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run CodeQL analysis on a schedule (e.g., every Monday at 3 AM)
+    - cron: '0 3 * * 1'
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Set up Amazon Corretto 25 JDK
+    - name: Set up JDK 25 with Corretto distribution
+      uses: actions/setup-java@v4
+      with:
+        java-version: '25'
+        distribution: 'corretto'
+        cache: 'maven' # Caches Maven dependencies for faster subsequent runs
+
+    # Initialize CodeQL analysis
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: java
+        # Use manual build mode since we are providing specific Maven commands
+        build-mode: manual
+
+    # Manually build the project using Maven (replace with your actual build command if different)
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+
+    # Perform the CodeQL analysis
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
