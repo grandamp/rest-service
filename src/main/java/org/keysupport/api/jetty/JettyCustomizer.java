@@ -99,35 +99,37 @@ public class JettyCustomizer {
             	for (Connector connector : server.getConnectors()) {
                     if (connector instanceof ServerConnector) {
                 		SslConnectionFactory ssl = ((ServerConnector) connector).getConnectionFactory(SslConnectionFactory.class);
-                    	SslContextFactory sslContextFactory = ssl.getSslContextFactory();
-                        /*
-                         *  Clear the default exclude protocols
-                         */
-                        sslContextFactory.setExcludeProtocols();
-                        /*
-                         *  Set TLS protocol explicitly
-                         */
-                        sslContextFactory.setIncludeProtocols(TLS_SERVER_PROTOCOLS);
-                        /*
-                         *  Clear the default exclude cipher suites
-                         */
-                        sslContextFactory.setExcludeCipherSuites();
-                        /*
-                         *  Set cipher suites explicitly
-                         */
-                        sslContextFactory.setIncludeCipherSuites(TLS_SERVER_CIPHERSUITES);
-                        /*
-                         * Globally Customize SunJSSE provider:
-                         *
-                         * - https://docs.oracle.com/en/java/javase/25/security/java-secure-socket-extension-jsse-reference-guide.html
-                         */
-                        System.setProperty("jdk.tls.server.disableExtensions", TLS_DISABLE_EXTENSIONS);
-                        System.setProperty("jdk.tls.client.disableExtensions", TLS_DISABLE_EXTENSIONS);
-                        System.setProperty("jdk.tls.namedGroups", TLS_NAMED_GROUPS);
-                        System.setProperty("jdk.tls.server.SignatureSchemes", TLS_SERVER_SIGNATURE_SCHEMES);
-                        System.setProperty("jdk.tls.client.SignatureSchemes", TLS_CLIENT_SIGNATURE_SCHEMES);
-                        System.setProperty("jdk.tls.server.sessionTicketTimeout", TLS_SERVER_SESSION_TIMEOUT);
-                        System.setProperty("javax.net.ssl.sessionCacheSize", TLS_SERVER_SESSION_CACHE_SIZE);
+                		if (null != ssl) {
+                			SslContextFactory sslContextFactory = ssl.getSslContextFactory();
+                			/*
+                			 *  Clear the default exclude protocols
+                			 */
+                			sslContextFactory.setExcludeProtocols();
+                			/*
+                			 *  Set TLS protocol explicitly
+                			 */
+                			sslContextFactory.setIncludeProtocols(TLS_SERVER_PROTOCOLS);
+                			/*
+                			 *  Clear the default exclude cipher suites
+                			 */
+                			sslContextFactory.setExcludeCipherSuites();
+                			/*
+                			 *  Set cipher suites explicitly
+                			 */
+                			sslContextFactory.setIncludeCipherSuites(TLS_SERVER_CIPHERSUITES);
+                			/*
+                			 * Globally Customize SunJSSE provider:
+                			 *
+                			 * - https://docs.oracle.com/en/java/javase/25/security/java-secure-socket-extension-jsse-reference-guide.html
+                			 */
+                			System.setProperty("jdk.tls.server.disableExtensions", TLS_DISABLE_EXTENSIONS);
+                			System.setProperty("jdk.tls.client.disableExtensions", TLS_DISABLE_EXTENSIONS);
+                			System.setProperty("jdk.tls.namedGroups", TLS_NAMED_GROUPS);
+                			System.setProperty("jdk.tls.server.SignatureSchemes", TLS_SERVER_SIGNATURE_SCHEMES);
+                			System.setProperty("jdk.tls.client.SignatureSchemes", TLS_CLIENT_SIGNATURE_SCHEMES);
+                			System.setProperty("jdk.tls.server.sessionTicketTimeout", TLS_SERVER_SESSION_TIMEOUT);
+                			System.setProperty("javax.net.ssl.sessionCacheSize", TLS_SERVER_SESSION_CACHE_SIZE);
+                		}
                     }
                 }
             });
