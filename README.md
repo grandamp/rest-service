@@ -3,6 +3,8 @@
 
 [![Build Status](https://github.com/grandamp/rest-service/actions/workflows/build.yml/badge.svg)](https://github.com/grandamp/rest-service/actions)
 
+[![CodeQL Analysis with Corretto 25 and Maven](https://github.com/grandamp/rest-service/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/grandamp/rest-service/actions/workflows/codeql-analysis.yml)
+
 A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-testing/blob/master/utilities/vss2/README.md), with something more modern.
 
 Why?  Many mTLS use-cases involve complex certificate validation in the application layer, which is *hard* to scale.
