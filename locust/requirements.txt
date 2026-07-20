@@ -1,2 +1,2 @@
-locust==2.45.0
+locust==2.46.0
 locust-plugins==5.0.3
