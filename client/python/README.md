@@ -2,6 +2,30 @@
 
 This is a quick and dirty Python client example.
 
+## FPKI Analysis Utility (`validate_fpki.py`)
+
+A command-line utility for validating all certificates found in the upstream federal `.p7b` file using the `rest-service` infrastructure.
+
+### Usage
+
+```bash
+# Ensure your virtual environment is active and dependencies are installed
+pip install -r requirements.txt
+
+# Run the script
+./validate_fpki.py
+```
+
+### Features
+
+- Automatically downloads the upstream `CACertificatesValidatingToFederalCommonPolicyG2.p7b`
+- Parses the PKCS7 data to extract all available certificates
+- Calls the Certificate Validation Service at `https://home.keysupport.org` for each certificate
+- Uses the `1.3.6.1.5.5.7.19.1` (Default) validation policy
+- Generates a neat command-line report separating Valid and Invalid certificates, with the failure reasons provided by the validation service.
+
+## Additional Notes
+
 *Break and Inspect Warning:* In the event the exampe below fails with an error similar to:
 
 ```TEXT

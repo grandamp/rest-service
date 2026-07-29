@@ -18,7 +18,7 @@ def intermediates(host: str, policy: str) -> typing.Dict:
     response = requests.get(apiEndpointUri)
     return response.json()
 
-def printPEM(base64str: str) -> str:
+def printPEM(base64str: str) -> None:
     line = []
     # Add PEM header
     line.append("-----BEGIN CERTIFICATE-----")

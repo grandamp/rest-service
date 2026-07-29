@@ -30,7 +30,7 @@ def loadCerts(file: str, type: FileEncoding) -> typing.List[x509.Certificate]:
     if type == FileEncoding.PEM:
         return x509.load_pem_x509_certificates(bytes)
     if type == FileEncoding.DER:
-        return x509.load_der_x509_certificate(bytes)
+        return [x509.load_der_x509_certificate(bytes)]
 
 def validate(host: str, policy: str, vssCert:str) -> typing.Dict:
     request = {"validationPolicyId":policy,"x509Certificate":vssCert}
@@ -41,7 +41,7 @@ def validate(host: str, policy: str, vssCert:str) -> typing.Dict:
     print("\nResponse:\n" + json.dumps(resJson, sort_keys=False, indent=4))
     return resJson
 
-def validateCert(certificate):
+def validateCert(certificate: x509.Certificate) -> None:
     vsscert = cert_to_base64(certificate)
     resJson = validate(host, policy, vsscert)
     x509IssuerName = resJson["x509IssuerName"]
@@ -51,10 +51,12 @@ def validateCert(certificate):
     sha256Thumbprint = resJson["x5t#S256"]
     sha256ThumbprintHex = base64.b64decode(sha256Thumbprint).hex()
     print("Thumbprint (SHA-256): " + sha256ThumbprintHex)
-    # TODO: Don't assume the certificate has a subjectKeyIdentifier value.  Use a Try statement.
-#    ski = certificate.extensions.get_extension_for_oid(ExtensionOID.SUBJECT_KEY_IDENTIFIER)
-#    kid = ski.value.key_identifier.hex()
-#   print("kid: " + kid)
+    try:
+        ski = certificate.extensions.get_extension_for_oid(ExtensionOID.SUBJECT_KEY_IDENTIFIER)
+        kid = ski.value.key_identifier.hex()
+        print("kid: " + kid)
+    except x509.ExtensionNotFound:
+        pass
     certResult = resJson["validationResult"]["result"]
     print("Validation Result: " + certResult)
     if certResult == "FAIL":
