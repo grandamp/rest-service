@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.keysupport.api</groupId>
 	<artifactId>rest-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>rest-service</name>
 	<description>Spring Boot Rest Service for api.keysupport.org</description>
 	<properties>
