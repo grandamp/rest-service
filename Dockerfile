@@ -1,5 +1,5 @@
-# Using `eclipse-temurin:25-jre-ubi10-minimal`: https://hub.docker.com/layers/library/eclipse-temurin/25-jre-ubi10-minimal/
-FROM eclipse-temurin:25-jre-ubi10-minimal
+# Using `eclipse-temurin:27-jre-ubi10-minimal`: https://hub.docker.com/layers/library/eclipse-temurin/27-jre-ubi10-minimal/
+FROM eclipse-temurin:27-jre-ubi10-minimal
 
 # Switch to user 0
 USER 0
