@@ -29,7 +29,10 @@ public class ServiceConfiguration {
 			@Value("${service.validation.pkix.revocation-enabled}") boolean revocationEnabled, 
 			@Value("${service.validation.pkix.revocation-ee-only}") boolean revocationEeOnly, 
 			@Value("${service.validation.pkix.ocsp-enabled}") boolean ocspEnabled, 
-			@Value("${service.validation.pkix.crl-enabled}") boolean crlEnabled) {
+			@Value("${service.validation.pkix.crl-enabled}") boolean crlEnabled,
+			@Value("${service.validation.pkix.crl-max-size:25}") int crlMaxSize,
+			@Value("${service.validation.pkix.certpath-provider:SUN}") String certPathProvider,
+			@Value("${service.validation.pkix.certpath-algorithm:PKIX}") String certPathAlgorithm) {
 		/*
 		 * Update validation policies from defined policies URI
 		 *
@@ -48,6 +51,14 @@ public class ServiceConfiguration {
 		policy.setRevocationEeOnly(revocationEeOnly);
 		policy.setOcspEnabled(ocspEnabled);
 		policy.setCrlEnabled(crlEnabled);
+		policy.setCrlMaxSize(crlMaxSize);
+		policy.setCertPathProvider(certPathProvider);
+		policy.setCertPathAlgorithm(certPathAlgorithm);
+		/*
+		 * Set the maximum CRL size for the SUN JSSE provider
+		 */
+		System.setProperty("com.sun.security.crl.maxSize", String.valueOf(crlMaxSize));
+		LOG.info(LoggingUtil.pojoToJson(Map.of("com.sun.security.crl.maxSize", crlMaxSize)));
 		/*
 		 * Update intermediate cache from policy defined inventory URI
 		 *

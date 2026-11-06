@@ -65,4 +65,14 @@ public class RestServiceEventLogger {
 		LOG.warn(LoggingUtil.pojoToJson(event));
 	}
 
+	public static void logCrlSizeWarning(String uri, long size, int maxSize) {
+		LOG.warn(LoggingUtil.pojoToJson(Map.of(
+			"eventType", "CRL_SIZE_WARNING",
+			"uri", uri,
+			"size", size,
+			"maxSize", maxSize,
+			"message", "CRL size is approaching maximum threshold"
+		)));
+	}
+
 }

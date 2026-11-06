@@ -60,37 +60,6 @@ public class ValidatePKIX {
 
 	private final static Logger LOG = LoggerFactory.getLogger(ValidatePKIX.class);
 
-	/**
-	 * <pre>
-	 *
-	 * For now, we will stick with the SUN PKIX provider since it can fetch CRL and
-	 * OCSP data.
-	 *
-	 * Changing CERTPATH_PROVIDER & CERTPATH_ALGORITHM will likely require the re-factoring of this class.
-	 *
-	 * https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/URICertStore.java
-	 *
-	 * If we were to create an internal variant of the SUN URICertStore, then we
-	 * could use it with the BC Certpath provider.
-	 *
-	 * Debug logging for CertPath can be enabled running the code via:
-	 *
-	 * - java -Djava.security.debug=certpath -jar target/rest-service-eb.jar
-	 *
-	 * The following Documentation may be helpful to unravel configuration options:
-	 *
-	 * - https://docs.oracle.com/en/java/javase/21/security/java-pki-programmers-guide.html
-	 * - https://docs.oracle.com/en/java/javase/21/security/troubleshooting-security.html
-	 * - https://openjdk.org/jeps/124
-	 * - https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/cert/PKIXRevocationChecker.html
-	 * - https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/cert/PKIXRevocationChecker.Option.html
-	 *
-	 * </pre>
-	 */
-	private final static String CERTPATH_PROVIDER = "SUN";
-
-	private final static String CERTPATH_ALGORITHM = "PKIX";
-
 	/*
 	 * This implementation will rely on BCFIPS for cryptographic compliance.
 	 */
@@ -203,7 +172,7 @@ public class ValidatePKIX {
 		CertStoreParameters cparam = new CollectionCertStoreParameters(cert_list);
 		CertStore cstore = null;
 		try {
-			cstore = CertStore.getInstance("Collection", cparam, CERTPATH_PROVIDER);
+			cstore = CertStore.getInstance("Collection", cparam, policies.getCertPathProvider());
 		} catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchProviderException e) {
 			LOG.error(LoggingUtil.pojoToJson(
 					Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
@@ -242,7 +211,7 @@ public class ValidatePKIX {
 		 */
 		CertPathBuilder cpb = null;
 		try {
-			cpb = CertPathBuilder.getInstance(CERTPATH_ALGORITHM, CERTPATH_PROVIDER);
+			cpb = CertPathBuilder.getInstance(policies.getCertPathAlgorithm(), policies.getCertPathProvider());
 		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
 			LOG.error(LoggingUtil.pojoToJson(
 					Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
@@ -305,7 +274,7 @@ public class ValidatePKIX {
 		 */
 		CertPathValidator cpv = null;
 		try {
-			cpv = CertPathValidator.getInstance(CERTPATH_ALGORITHM);
+			cpv = CertPathValidator.getInstance(policies.getCertPathAlgorithm());
 		} catch (NoSuchAlgorithmException e) {
 			LOG.error(LoggingUtil.pojoToJson(
 					Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
