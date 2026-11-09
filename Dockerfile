@@ -14,8 +14,9 @@ ADD keysupport_net_execute.sh /opt/vss/
 RUN /usr/bin/chown -R 1000 /opt/vss
 RUN /usr/bin/chmod 700 /opt/vss/keysupport_net_execute.sh
 
-# Switch to user 1000
+# Switch to user 1000 and set working directory
 USER 1000
+WORKDIR /opt/vss
 
 # Run App
 ENTRYPOINT ["/opt/vss/keysupport_net_execute.sh"]
