@@ -54,7 +54,7 @@ logging:
     name: /opt/vss/ext/logs/vss.log
   logback:
     rollingpolicy:
-      file-name-pattern: 'vss-%d{yyyy-MM-dd}.%i.log'
+      file-name-pattern: '/opt/vss/ext/logs/vss-%d{yyyy-MM-dd}.%i.log'
       max-file-size: 10MB
       max-history: 7
 springdoc:
