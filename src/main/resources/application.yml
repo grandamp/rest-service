@@ -40,6 +40,9 @@ service:
       revocation-ee-only: true
       ocsp-enabled: true
       crl-enabled: true
+      crl-max-size: 25
+      certpath-provider: SUN
+      certpath-algorithm: PKIX
 logging:
   pattern:
     console: "{\"time\": \"%d\", \"level\": \"%p\", \"class\": \"%logger{63}:%L\", \"message\": %m}%n"
