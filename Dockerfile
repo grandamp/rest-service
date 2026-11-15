@@ -28,6 +28,7 @@ ENTRYPOINT ["/opt/vss/entrypoint.sh"]
 # ---------------------------------
 ARG BUILD_DATE=unknown
 ARG PIPELINE_ID=unknown
+ENV PIPELINE_ID=$PIPELINE_ID
 LABEL build-date=$BUILD_DATE
 LABEL description="Validation Service"
 LABEL maintainer="Todd E. Johnson <todd@keysupport.net>"
