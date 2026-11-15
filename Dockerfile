@@ -10,16 +10,18 @@ USER 0
 # Setup App; copy code, install dependencies, set working dir
 RUN /usr/bin/mkdir /opt/vss
 ADD target/rest-service-eb.jar /opt/vss/lib/
-ADD keysupport_net_execute.sh /opt/vss/
+ADD entrypoint.sh /opt/vss/
 RUN /usr/bin/chown -R 1000 /opt/vss
-RUN /usr/bin/chmod 700 /opt/vss/keysupport_net_execute.sh
+RUN /usr/bin/chmod 700 /opt/vss/entrypoint.sh
 
 # Switch to user 1000 and set working directory
 USER 1000
 WORKDIR /opt/vss
 
+ENV BASE_URI=https://keysupport.net
+
 # Run App
-ENTRYPOINT ["/opt/vss/keysupport_net_execute.sh"]
+ENTRYPOINT ["/opt/vss/entrypoint.sh"]
 
 # =================================
 # Container meta information
