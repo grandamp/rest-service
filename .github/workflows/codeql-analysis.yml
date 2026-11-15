@@ -20,15 +20,15 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Setup Java Corretto 25
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         java-version: '25'
-        distribution: 'corretto'
+        distribution: 'temurin'
 
     - name: Set up Python latest
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12.3'
+        python-version: '3.14'
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
