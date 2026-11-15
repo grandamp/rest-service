@@ -26,6 +26,8 @@ ENTRYPOINT ["/opt/vss/entrypoint.sh"]
 # =================================
 # Container meta information
 # ---------------------------------
+ARG BUILD_DATE=unknown
+ARG PIPELINE_ID=unknown
 LABEL build-date=$BUILD_DATE
 LABEL description="Validation Service"
 LABEL maintainer="Todd E. Johnson <todd@keysupport.net>"
