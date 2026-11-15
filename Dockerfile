@@ -10,7 +10,7 @@ USER 0
 # Setup App; copy code, install dependencies, set working dir
 RUN /usr/bin/mkdir /opt/vss
 ADD target/rest-service-eb.jar /opt/vss/lib/
-ADD entrypoint.sh /opt/vss/
+ADD scripts/entrypoint.sh /opt/vss/
 RUN /usr/bin/chown -R 1000 /opt/vss
 RUN /usr/bin/chmod 700 /opt/vss/entrypoint.sh
 

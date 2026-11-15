@@ -10,8 +10,8 @@ I'm using the following to execute and test, but you mileage may vary depending 
 
 - Execute
 
-`./local_execute.sh`
+`./scripts/local_execute.sh`
 
 - Test (Via another terminal)
 
-`./current_tests.sh`
+`./scripts/current_tests.sh`
