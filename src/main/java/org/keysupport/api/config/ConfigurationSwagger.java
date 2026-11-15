@@ -23,8 +23,8 @@ public class ConfigurationSwagger {
 		return new OpenAPI().addServersItem(new Server().url(BASE_URI))
 				.info(new Info().title("Certificate Validation Service API")
 						.description("Current main branch of Spring Boot reference implementation for the Certificate Validation Service API")
-						.contact(new Contact().name("Todd E. Johnson").email("grandamp@gmail.com")
-								.url("https://app.ens.domains/name/tej.eth/details"))
+						.contact(new Contact().name("Todd E. Johnson").email("todd@keysupport.net")
+								.url("https://keysupport.net/contact/"))
 						.license(new License().name("CC0 1.0 Universal")
 								.url("https://creativecommons.org/publicdomain/zero/1.0/"))
 						.version("https://github.com/grandamp/rest-service/"));
