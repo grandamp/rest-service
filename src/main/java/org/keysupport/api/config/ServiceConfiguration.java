@@ -26,6 +26,7 @@ public class ServiceConfiguration {
 			@Value("${service.systemlog.enabled}") boolean systemLogEnabled, 
 			@Value("${service.systemlog.file:/opt/vss/ext/logs/system.log}") String systemLogFile, 
 			@Value("${service.validation.pkix.aia-chase}") boolean aiaChase, 
+			@Value("${service.validation.pkix.allowed-aia-locations:any}") String allowedAiaLocations, 
 			@Value("${service.validation.pkix.revocation-enabled}") boolean revocationEnabled, 
 			@Value("${service.validation.pkix.revocation-ee-only}") boolean revocationEeOnly, 
 			@Value("${service.validation.pkix.ocsp-enabled}") boolean ocspEnabled, 
@@ -47,6 +48,7 @@ public class ServiceConfiguration {
 		policy.updateValidationPolicies(polUri);
 		policy.setMaxPathLen(maxPathLen);
 		policy.setAiaChase(aiaChase);
+		policy.setAllowedAiaLocations(allowedAiaLocations);
 		policy.setRevocationEnabled(revocationEnabled);
 		policy.setRevocationEeOnly(revocationEeOnly);
 		policy.setOcspEnabled(ocspEnabled);
@@ -59,6 +61,13 @@ public class ServiceConfiguration {
 		 */
 		System.setProperty("com.sun.security.crl.maxSize", String.valueOf(crlMaxSize));
 		LOG.info(LoggingUtil.pojoToJson(Map.of("com.sun.security.crl.maxSize", crlMaxSize)));
+		/*
+		 * Set the allowed AIA locations for the SUN JSSE provider if AIA chase is enabled
+		 */
+		if (aiaChase) {
+			System.setProperty("com.sun.security.allowedAIALocations", allowedAiaLocations);
+			LOG.info(LoggingUtil.pojoToJson(Map.of("com.sun.security.allowedAIALocations", allowedAiaLocations)));
+		}
 		/*
 		 * Update intermediate cache from policy defined inventory URI
 		 *

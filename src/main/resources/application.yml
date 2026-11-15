@@ -35,6 +35,7 @@ service:
 # If AIA Chase is enabled, `max-path-length` *might* be ignored
 # Otherwise, `max-path-length` will be enforced, and the only intermediates that will be considered will be certs in the CMS CERTS-ONLY file defined via `service.intermediates.uri`
       aia-chase: false
+      allowed-aia-locations: any
       max-path-length: 7
       revocation-enabled: true
       revocation-ee-only: true

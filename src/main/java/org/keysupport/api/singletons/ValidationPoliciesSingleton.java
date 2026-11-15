@@ -37,6 +37,8 @@ public class ValidationPoliciesSingleton {
 	private int maxPathLen;
 	
 	private boolean aiaChase;
+
+	private String allowedAiaLocations;
 	
 	private boolean revocationEnabled;
 	
@@ -157,6 +159,14 @@ public class ValidationPoliciesSingleton {
 
 	public void setAiaChase(boolean aiaChase) {
 		this.aiaChase = aiaChase;
+	}
+
+	public String getAllowedAiaLocations() {
+		return allowedAiaLocations;
+	}
+
+	public void setAllowedAiaLocations(String allowedAiaLocations) {
+		this.allowedAiaLocations = allowedAiaLocations;
 	}
 
 	public boolean getRevocationEnabled() {
