@@ -46,6 +46,12 @@ public class ValidationPoliciesSingleton {
 	
 	private boolean crlEnabled;
 
+	private int crlMaxSize;
+
+	private String certPathProvider;
+
+	private String certPathAlgorithm;
+
 	/**
 	 * A map of TrustAnchor collections that correspond to each validation policy.
 	 */
@@ -183,6 +189,30 @@ public class ValidationPoliciesSingleton {
 
 	public void setCrlEnabled(boolean crlEnabled) {
 		this.crlEnabled = crlEnabled;
+	}
+
+	public int getCrlMaxSize() {
+		return crlMaxSize;
+	}
+
+	public void setCrlMaxSize(int crlMaxSize) {
+		this.crlMaxSize = crlMaxSize;
+	}
+
+	public String getCertPathProvider() {
+		return certPathProvider;
+	}
+
+	public void setCertPathProvider(String certPathProvider) {
+		this.certPathProvider = certPathProvider;
+	}
+
+	public String getCertPathAlgorithm() {
+		return certPathAlgorithm;
+	}
+
+	public void setCertPathAlgorithm(String certPathAlgorithm) {
+		this.certPathAlgorithm = certPathAlgorithm;
 	}
 
 }
