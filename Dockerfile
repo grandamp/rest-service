@@ -26,7 +26,7 @@ ENTRYPOINT ["/opt/vss/keysupport_net_execute.sh"]
 # ---------------------------------
 LABEL build-date=$BUILD_DATE
 LABEL description="Validation Service"
-LABEL maintainer="Todd E. Johnson <tejohnson@keysupport.net>"
+LABEL maintainer="Todd E. Johnson <todd@keysupport.net>"
 LABEL name="Validation Service"
 LABEL usage="https://github.com/grandamp/rest-service/blob/main/README.md"
 LABEL vcs-ref=$PIPELINE_ID
