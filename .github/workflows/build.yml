@@ -17,6 +17,11 @@ jobs:
       #Build
       - name: Build with Maven
         run: mvn clean package spring-boot:repackage
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rest-service-jar
+          path: target/rest-service-eb.jar
 
   docker:
     name: Build and Push GHCR
@@ -28,6 +33,11 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v5
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rest-service-jar
+          path: target
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
