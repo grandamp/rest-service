@@ -1,4 +1,4 @@
-name: "CodeQL Analysis with Corretto 25 and Maven"
+name: "CodeQL Analysis with Eclipse Temurin 25 and Maven"
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Setup Java Corretto 25
+    - name: Setup Java Eclipse Temurin 25
       uses: actions/setup-java@v5
       with:
         java-version: '25'
