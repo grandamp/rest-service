@@ -12,7 +12,7 @@
 	<artifactId>rest-service</artifactId>
 	<version>1.0</version>
 	<name>rest-service</name>
-	<description>Spring Boot Rest Service for api.keysupport.org</description>
+	<description>RESTful Validation Service (VSS) for efficient U.S. Federal PKI certificate path discovery and validation</description>
 	<properties>
 		<java.version>25</java.version>
 	</properties>
@@ -20,6 +20,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
     		<groupId>org.bouncycastle</groupId>
