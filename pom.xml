@@ -12,24 +12,60 @@
 	<artifactId>rest-service</artifactId>
 	<version>1.0</version>
 	<name>rest-service</name>
-	<description>Spring Boot Rest Service for api.keysupport.org</description>
+	<description>RESTful Validation Service (VSS) for efficient U.S. Federal PKI certificate path discovery and validation</description>
+	<url>https://keysupport.net</url>
+	<organization>
+		<name>keysupport.net</name>
+		<url>https://keysupport.net</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>CC0 1.0 Universal</name>
+			<url>https://creativecommons.org/publicdomain/zero/1.0/</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>grandamp</id>
+			<name>Todd E. Johnson</name>
+			<email>todd@keysupport.net</email>
+			<url>https://keysupport.net/contact/</url>
+		</developer>
+	</developers>
+	<scm>
+		<url>https://github.com/grandamp/rest-service</url>
+		<connection>scm:git:https://github.com/grandamp/rest-service.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/grandamp/rest-service.git</developerConnection>
+	</scm>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/grandamp/rest-service/issues</url>
+	</issueManagement>
 	<properties>
 		<java.version>25</java.version>
+		<project.build.outputTimestamp>1</project.build.outputTimestamp>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-    		<groupId>org.bouncycastle</groupId>
-    		<artifactId>bc-fips</artifactId>
-    		<version>2.1.3</version>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bc-fips</artifactId>
+			<version>2.1.3</version>
 		</dependency>
 		<dependency>
-    		<groupId>org.bouncycastle</groupId>
-    		<artifactId>bcpkix-fips</artifactId>
-    		<version>2.1.13</version>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-fips</artifactId>
+			<version>2.1.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -39,11 +75,6 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>3.2.0</version>
-		</dependency>
-   		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
@@ -60,13 +91,8 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>**/cloud/config/*.java</exclude>
-					</excludes>
-				</configuration>
+				<groupId>org.cyclonedx</groupId>
+				<artifactId>cyclonedx-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
