@@ -27,6 +27,9 @@ service:
   intermediates:
     uri: >-
       https://www.idmanagement.gov/implement/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b
+    validate-on-load: true
+    revocation-enabled: true
+    revalidate-interval-seconds: 3600
   systemlog:
     enabled: false
     file: /opt/vss/ext/logs/system.log

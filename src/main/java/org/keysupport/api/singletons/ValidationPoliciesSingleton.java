@@ -6,14 +6,16 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.keysupport.api.LoggingUtil;
-import org.keysupport.api.controller.ServiceException;
 import org.keysupport.api.pojo.vss.JsonTrustAnchor;
 import org.keysupport.api.pojo.vss.ValidationPolicies;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
@@ -21,112 +23,44 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * This class uses a singleton pattern to store the configured Validation
- * Policies with Trust Anchors.
+ * This class uses an efficient initialization-on-demand holder singleton
+ * pattern to store immutable Validation Policies and Trust Anchors loaded at
+ * service startup.
  */
 public class ValidationPoliciesSingleton {
 
-	private final Logger LOG = LoggerFactory.getLogger(ValidationPoliciesSingleton.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ValidationPoliciesSingleton.class);
+	private static final ObjectMapper MAPPER = new ObjectMapper();
+	private static final String DEFAULT_POLICY_OID = "1.3.6.1.5.5.7.19.1";
 
-	private ValidationPolicies validationPolicies = null;
+	private final Object initLock = new Object();
+	private final AtomicBoolean policiesLoaded = new AtomicBoolean(false);
+	private final AtomicBoolean configurationLocked = new AtomicBoolean(false);
 
-	private int maxPathLen;
-	
-	private boolean aiaChase;
-
-	private String allowedAiaLocations;
-	
-	private boolean revocationEnabled;
-	
-	private boolean revocationEeOnly;
-
-	private boolean ocspEnabled;	
-	
-	private boolean crlEnabled;
-
-	private int crlMaxSize;
-
-	private String certPathProvider;
-
-	private String certPathAlgorithm;
+	private volatile ValidationPolicies validationPolicies = null;
 
 	/**
-	 * A map of TrustAnchor collections that correspond to each validation policy.
+	 * Unmodifiable map of TrustAnchor sets keyed by validationPolicyId.
 	 */
-	private ConcurrentHashMap<String, HashSet<TrustAnchor>> trustAnchotMap = null;
+	private volatile Map<String, Set<TrustAnchor>> trustAnchorMap = Map.of();
+
+	private volatile int maxPathLen;
+	private volatile boolean aiaChase;
+	private volatile String allowedAiaLocations;
+	private volatile boolean revocationEnabled;
+	private volatile boolean revocationEeOnly;
+	private volatile boolean ocspEnabled;
+	private volatile boolean crlEnabled;
+	private volatile int crlMaxSize;
+	private volatile String certPathProvider;
+	private volatile String certPathAlgorithm;
+	private volatile boolean intermediateValidateOnLoad = true;
+	private volatile boolean intermediateRevocationEnabled = true;
 
 	private ValidationPoliciesSingleton() {
-		trustAnchotMap = new ConcurrentHashMap<String, HashSet<TrustAnchor>>();
-	}
-
-	public void updateValidationPolicies(String polUri) {
-		HTTPClientSingleton client = HTTPClientSingleton.getInstance();
-		URI uri = URI.create(polUri);
-		String validationPoliciesJson = client.getText(uri);
-		if (null != validationPoliciesJson) {
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				validationPolicies = mapper.readValue(validationPoliciesJson, ValidationPolicies.class);
-			} catch (JsonMappingException e) {
-				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error converting JSON to POJO", "stacktrace", LoggingUtil.stackTraceToString(e))));
-			} catch (JsonProcessingException e) {
-				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error converting JSON to POJO", "stacktrace", LoggingUtil.stackTraceToString(e))));
-			}
-			LOG.info(LoggingUtil.pojoToJson(validationPolicies));
-			/*
-			 * Iterate through each ValidationPolicy, and initialize the
-			 * HashSet<TrustAnchor>
-			 */
-			List<ValidationPolicy> policies = validationPolicies.validationPolicies;
-			for (ValidationPolicy policy : policies) {
-				HashSet<TrustAnchor> taList = new HashSet<TrustAnchor>();
-				List<JsonTrustAnchor> anchors = policy.trustAnchors;
-				for (JsonTrustAnchor currentTa : anchors) {
-					X509Certificate ta = null;
-					try {
-						byte[] certBytes = null;
-						CertificateFactory cf = null;
-						ByteArrayInputStream bais = null;
-						try {
-							certBytes = Base64.getDecoder().decode(currentTa.x509Certificate);
-						} catch (Throwable e) {
-							LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
-							throw new ServiceException("Internal Validation Error");
-						}
-						if (null != certBytes) {
-							cf = CertificateFactory.getInstance("X509");
-							bais = new ByteArrayInputStream(certBytes);
-							ta = (X509Certificate) cf.generateCertificate(bais);
-						} else {
-							LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Internal Validation Error, null certBytes")));
-							throw new ServiceException("Internal Validation Error");
-						}
-					} catch (CertificateException e) {
-						LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
-						throw new ServiceException("Internal Validation Error");
-					}
-					TrustAnchor anchor = new TrustAnchor(ta, null);
-					taList.add(anchor);
-				}
-				trustAnchotMap.put(policy.validationPolicyId, taList);
-			}
-		} else {
-			/*
-			 * Check to see if this failure is an update, or; an initial fetch of the
-			 * mandatory policies.
-			 */
-			if (null != validationPolicies) {
-				LOG.warn(LoggingUtil.pojoToJson(Map.of("error", "Failed to refresh ValidationPolicies JSON")));
-			} else {
-				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "FATAL: Failed to obtain initial ValidationPolicies JSON from \"" + uri.toASCIIString()
-				+ "\", shutting down!")));
-				System.exit(0);
-			}
-		}
 	}
 
 	private static class SingletonHelper {
@@ -137,12 +71,150 @@ public class ValidationPoliciesSingleton {
 		return SingletonHelper.INSTANCE;
 	}
 
+	/**
+	 * Load and freeze validation policies once at service startup. Any subsequent
+	 * call or invalid policy payload fails immediately.
+	 */
+	public void updateValidationPolicies(String polUri) {
+		synchronized (initLock) {
+			if (policiesLoaded.get()) {
+				String msg = "Validation policies are final once loaded at startup";
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", msg)));
+				throw new IllegalStateException(msg);
+			}
+			if (null == polUri || polUri.isBlank()) {
+				throw new IllegalStateException("Validation policy URI must not be null or blank");
+			}
+			URI uri = URI.create(polUri);
+			HTTPClientSingleton client = HTTPClientSingleton.getInstance();
+			String validationPoliciesJson = client.getText(uri);
+			if (null == validationPoliciesJson || validationPoliciesJson.isBlank()) {
+				String msg = "FATAL: Failed to obtain initial ValidationPolicies JSON from \"" + uri.toASCIIString()
+						+ "\", shutting down!";
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", msg)));
+				throw new IllegalStateException(msg);
+			}
+
+			ValidationPolicies parsed;
+			try {
+				parsed = MAPPER.readValue(validationPoliciesJson, ValidationPolicies.class);
+			} catch (JsonProcessingException e) {
+				String msg = "FATAL: Error converting ValidationPolicies JSON to POJO from \"" + uri.toASCIIString()
+						+ "\"";
+				LOG.error(LoggingUtil.pojoToJson(
+						Map.of("error", msg, "stacktrace", LoggingUtil.stackTraceToString(e))));
+				throw new IllegalStateException(msg, e);
+			}
+
+			if (null == parsed || null == parsed.validationPolicies || parsed.validationPolicies.isEmpty()) {
+				String msg = "FATAL: ValidationPolicies JSON contains no validationPolicies";
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", msg)));
+				throw new IllegalStateException(msg);
+			}
+
+			CertificateFactory cf;
+			try {
+				cf = CertificateFactory.getInstance("X.509");
+			} catch (CertificateException e) {
+				throw new IllegalStateException("Failed to initialize X.509 CertificateFactory", e);
+			}
+
+			Map<String, Set<TrustAnchor>> builtAnchors = new HashMap<>();
+			List<ValidationPolicy> immutablePolicies = new ArrayList<>(parsed.validationPolicies.size());
+
+			for (ValidationPolicy policy : parsed.validationPolicies) {
+				if (null == policy || null == policy.validationPolicyId || policy.validationPolicyId.isBlank()) {
+					throw new IllegalStateException("ValidationPolicy is missing validationPolicyId");
+				}
+				if (null == policy.trustAnchors || policy.trustAnchors.isEmpty()) {
+					throw new IllegalStateException(
+							"ValidationPolicy " + policy.validationPolicyId + " has no trustAnchors");
+				}
+				Set<TrustAnchor> taSet = new HashSet<>();
+				for (JsonTrustAnchor currentTa : policy.trustAnchors) {
+					if (null == currentTa || null == currentTa.x509Certificate || currentTa.x509Certificate.isBlank()) {
+						throw new IllegalStateException(
+								"TrustAnchor missing x509Certificate in policy " + policy.validationPolicyId);
+					}
+					X509Certificate ta;
+					try {
+						byte[] certBytes = Base64.getDecoder().decode(currentTa.x509Certificate);
+						ta = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certBytes));
+					} catch (IllegalArgumentException | CertificateException e) {
+						LOG.error(LoggingUtil.pojoToJson(Map.of(
+								"error", "Failed to decode TrustAnchor in policy " + policy.validationPolicyId,
+								"stacktrace", LoggingUtil.stackTraceToString(e))));
+						throw new IllegalStateException(
+								"Failed to decode TrustAnchor in policy " + policy.validationPolicyId, e);
+					}
+					taSet.add(new TrustAnchor(ta, null));
+				}
+
+				ValidationPolicy copy = new ValidationPolicy();
+				copy.validationPolicyId = policy.validationPolicyId;
+				copy.validationPolicyName = policy.validationPolicyName;
+				copy.validationPolicyDescription = policy.validationPolicyDescription;
+				copy.trustAnchors = List.copyOf(policy.trustAnchors);
+				copy.userPolicySet = null != policy.userPolicySet ? List.copyOf(policy.userPolicySet) : List.of();
+				copy.inhibitPolicyMapping = policy.inhibitPolicyMapping;
+				copy.requireExplicitPolicy = policy.requireExplicitPolicy;
+				copy.inhibitAnyPolicy = policy.inhibitAnyPolicy;
+				immutablePolicies.add(copy);
+
+				builtAnchors.put(policy.validationPolicyId, Set.copyOf(taSet));
+			}
+
+			ValidationPolicies immutableRoot = new ValidationPolicies();
+			immutableRoot.validationPolicies = List.copyOf(immutablePolicies);
+
+			this.trustAnchorMap = Map.copyOf(builtAnchors);
+			this.validationPolicies = immutableRoot;
+			this.policiesLoaded.set(true);
+			LOG.info(LoggingUtil.pojoToJson(this.validationPolicies));
+		}
+	}
+
+	/**
+	 * Lock PKIX policy configuration parameters after startup initialization so
+	 * policies and their enforcement rules remain final until JVM exit.
+	 */
+	public void lockConfiguration() {
+		configurationLocked.set(true);
+	}
+
+	private void ensureMutableConfig() {
+		if (configurationLocked.get()) {
+			throw new IllegalStateException("Validation policy configuration is final once initialized");
+		}
+	}
+
 	public ValidationPolicies getValidationPolicies() {
 		return validationPolicies;
 	}
 
-	public HashSet<TrustAnchor> getTrustAnchors(String validationPolicyId) {
-		return trustAnchotMap.get(validationPolicyId);
+	public Set<TrustAnchor> getTrustAnchors(String validationPolicyId) {
+		if (null == validationPolicyId) {
+			return null;
+		}
+		return trustAnchorMap.get(validationPolicyId);
+	}
+
+	public ValidationPolicy getDefaultPolicy() {
+		ValidationPolicies all = this.validationPolicies;
+		if (null == all || null == all.validationPolicies) {
+			return null;
+		}
+		for (ValidationPolicy policy : all.validationPolicies) {
+			if (DEFAULT_POLICY_OID.equalsIgnoreCase(policy.validationPolicyId)) {
+				return policy;
+			}
+		}
+		for (ValidationPolicy policy : all.validationPolicies) {
+			if ("default".equalsIgnoreCase(policy.validationPolicyName)) {
+				return policy;
+			}
+		}
+		return null;
 	}
 
 	public int getMaxPathLen() {
@@ -150,6 +222,7 @@ public class ValidationPoliciesSingleton {
 	}
 
 	public void setMaxPathLen(int maxPathLen) {
+		ensureMutableConfig();
 		this.maxPathLen = maxPathLen;
 	}
 
@@ -158,6 +231,7 @@ public class ValidationPoliciesSingleton {
 	}
 
 	public void setAiaChase(boolean aiaChase) {
+		ensureMutableConfig();
 		this.aiaChase = aiaChase;
 	}
 
@@ -166,6 +240,7 @@ public class ValidationPoliciesSingleton {
 	}
 
 	public void setAllowedAiaLocations(String allowedAiaLocations) {
+		ensureMutableConfig();
 		this.allowedAiaLocations = allowedAiaLocations;
 	}
 
@@ -174,6 +249,7 @@ public class ValidationPoliciesSingleton {
 	}
 
 	public void setRevocationEnabled(boolean revocationEnabled) {
+		ensureMutableConfig();
 		this.revocationEnabled = revocationEnabled;
 	}
 
@@ -182,6 +258,7 @@ public class ValidationPoliciesSingleton {
 	}
 
 	public void setRevocationEeOnly(boolean revocationEeOnly) {
+		ensureMutableConfig();
 		this.revocationEeOnly = revocationEeOnly;
 	}
 
@@ -190,6 +267,7 @@ public class ValidationPoliciesSingleton {
 	}
 
 	public void setOcspEnabled(boolean ocspEnabled) {
+		ensureMutableConfig();
 		this.ocspEnabled = ocspEnabled;
 	}
 
@@ -198,6 +276,7 @@ public class ValidationPoliciesSingleton {
 	}
 
 	public void setCrlEnabled(boolean crlEnabled) {
+		ensureMutableConfig();
 		this.crlEnabled = crlEnabled;
 	}
 
@@ -206,6 +285,7 @@ public class ValidationPoliciesSingleton {
 	}
 
 	public void setCrlMaxSize(int crlMaxSize) {
+		ensureMutableConfig();
 		this.crlMaxSize = crlMaxSize;
 	}
 
@@ -214,6 +294,7 @@ public class ValidationPoliciesSingleton {
 	}
 
 	public void setCertPathProvider(String certPathProvider) {
+		ensureMutableConfig();
 		this.certPathProvider = certPathProvider;
 	}
 
@@ -222,7 +303,26 @@ public class ValidationPoliciesSingleton {
 	}
 
 	public void setCertPathAlgorithm(String certPathAlgorithm) {
+		ensureMutableConfig();
 		this.certPathAlgorithm = certPathAlgorithm;
+	}
+
+	public boolean isIntermediateValidateOnLoad() {
+		return intermediateValidateOnLoad;
+	}
+
+	public void setIntermediateValidateOnLoad(boolean intermediateValidateOnLoad) {
+		ensureMutableConfig();
+		this.intermediateValidateOnLoad = intermediateValidateOnLoad;
+	}
+
+	public boolean isIntermediateRevocationEnabled() {
+		return intermediateRevocationEnabled;
+	}
+
+	public void setIntermediateRevocationEnabled(boolean intermediateRevocationEnabled) {
+		ensureMutableConfig();
+		this.intermediateRevocationEnabled = intermediateRevocationEnabled;
 	}
 
 }
