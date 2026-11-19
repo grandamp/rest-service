@@ -31,7 +31,7 @@ public class JsonTrustAnchor {
 	/**
 	 * Field X509SubjectName.
 	 */
-	@JsonProperty("x509SubjectName")
+	@JsonProperty("X509SubjectName")
 	public String x509SubjectName;
 
 	/**

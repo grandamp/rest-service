@@ -27,13 +27,13 @@ public class PoliciesController {
 	@GetMapping(path = "/vss/v2/policies/{validationPolicyId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin(origins = "*")
 	ResponseEntity<ValidationPolicy> policy(@PathVariable String validationPolicyId) {
-	    HttpHeaders headers = new HttpHeaders();
 		ValidationPolicy requestedPolicy = ServiceValidationPolicies.getPolicy(validationPolicyId);
 		if (null != requestedPolicy) {
-		    headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + validationPolicyId + ".json");
+			HttpHeaders headers = new HttpHeaders();
+			headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + validationPolicyId + ".json");
 			return new ResponseEntity<>(requestedPolicy, headers, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(requestedPolicy, HttpStatus.NOT_FOUND);
+			return ResponseEntity.notFound().build();
 		}
 	}
 
