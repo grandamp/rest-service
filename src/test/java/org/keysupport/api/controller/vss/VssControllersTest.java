@@ -13,14 +13,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.cert.CertStore;
-import java.security.cert.CertificateFactory;
 import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509Certificate;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -50,48 +47,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 class VssControllersTest {
 
-	private static final String DOD_ID_CA_65_B64 =
-			"MIIEuTCCA6GgAwIBAgICBUwwDQYJKoZIhvcNAQELBQAwWzELMAkGA1UEBhMCVVMx"
-			+ "GDAWBgNVBAoTD1UuUy4gR292ZXJubWVudDEMMAoGA1UECxMDRG9EMQwwCgYDVQQL"
-			+ "EwNQS0kxFjAUBgNVBAMTDURvRCBSb290IENBIDMwHhcNMjEwNjAxMTQxMTIzWhcN"
-			+ "MjcwNjAyMTQxMTIzWjBaMQswCQYDVQQGEwJVUzEYMBYGA1UEChMPVS5TLiBHb3Zl"
-			+ "cm5tZW50MQwwCgYDVQQLEwNEb0QxDDAKBgNVBAsTA1BLSTEVMBMGA1UEAxMMRE9E"
-			+ "IElEIENBLTY1MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnkK9OCQ+"
-			+ "D0b/7SLsEs0LCElhKIzGtiZDBw9VLqCaxTHlxaYEPV/B/X9NGoP5PE4ToBOSramL"
-			+ "CMPbwjadhNk8O0gEInZCuEzV17vvx6O4xg+FJ9OO76LU1KeXJnnvX1YnCKz3uxrn"
-			+ "3sw1jQugEEd1yPwKoHMjJ2Sr7Vgrm1e983EgiRint9lble7x/MDLvEZDELeeqhPZ"
-			+ "vRiz1qwVG+/p2ks980qFLFLl1INOUSPnSLIbafg7cWE9yTC5i99s4pJnP2ThyBv6"
-			+ "JsgFzbbj9FEYGyh75GjIMEv8ulcQ3ATOSBREUPzrd6sQmideeqvxXrDYxo8Qel6b"
-			+ "rZiti+5vEr3OzQIDAQABo4IBhjCCAYIwHwYDVR0jBBgwFoAUbIqUonexgHIdgXoW"
-			+ "qvLczmbuRcAwHQYDVR0OBBYEFGLgSDhWbW9rJb67w4hYsaycQ8lbMA4GA1UdDwEB"
-			+ "/wQEAwIBhjBnBgNVHSAEYDBeMAsGCWCGSAFlAgELJDALBglghkgBZQIBCycwCwYJ"
-			+ "YIZIAWUCAQsqMAsGCWCGSAFlAgELOzAMBgpghkgBZQMCAQMNMAwGCmCGSAFlAwIB"
-			+ "AxEwDAYKYIZIAWUDAgEDJzASBgNVHRMBAf8ECDAGAQH/AgEAMAwGA1UdJAQFMAOA"
-			+ "AQAwNwYDVR0fBDAwLjAsoCqgKIYmaHR0cDovL2NybC5kaXNhLm1pbC9jcmwvRE9E"
-			+ "Uk9PVENBMy5jcmwwbAYIKwYBBQUHAQEEYDBeMDoGCCsGAQUFBzAChi5odHRwOi8v"
-			+ "Y3JsLmRpc2EubWlsL2lzc3VlZHRvL0RPRFJPT1RDQTNfSVQucDdjMCAGCCsGAQUF"
-			+ "BzABhhRodHRwOi8vb2NzcC5kaXNhLm1pbDANBgkqhkiG9w0BAQsFAAOCAQEAF8Uj"
-			+ "33K0ZM9adtfd8IM2ebqwgbgRxi22Pb6bKkKOkGV2NU4wMckpuRpUrQGJmy6CIXZ8"
-			+ "4QWz9DZSNAU0nyHXB6PLbSV0jnzKygWO7IOv83M6dcnCG8QUP1o20V0NGhzNBEtK"
-			+ "jxWENZCYHEruxm+2rB+MBngPhkBgdni2npetHX2e1cmsgMS6G1PUh2idhZ8Mpdof"
-			+ "nr+V0GuKLpwiNz3hLnKehl2Bs6aHG2IIOm/PdzvsKCP2eiGzS3SiiCf6fukYoYBN"
-			+ "edL8fHfFNyM4UPNgc4eG+bu0GJK4wKPVjiX7xYDdGaYZ2m4Y++zrKuMq+Oar6DQG"
-			+ "q3SERMAZCDYsEt3z2g==";
-
 	private static final String AAL3_POLICY_ID = "2.16.840.1.101.10.2.18.2.1.4";
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 
 	private static ValidationPolicies policies;
 	private static ValidationPolicy aal3Policy;
+	private static CertFixture dodCa65Fixture;
 	private static X509Certificate dodCa65;
+	private static String dodCa65B64;
 
 	@BeforeAll
 	static void setUp() throws Exception {
 		policies = MAPPER.readValue(Files.readString(Path.of("configuration/policies.json")), ValidationPolicies.class);
 		aal3Policy = policies.validationPolicies.get(1);
-		CertificateFactory cf = CertificateFactory.getInstance("X.509");
-		dodCa65 = (X509Certificate) cf.generateCertificate(
-				new ByteArrayInputStream(Base64.getDecoder().decode(DOD_ID_CA_65_B64)));
+		dodCa65Fixture = CertFixtures.load("ca/dod-id-ca-65.pem");
+		dodCa65 = dodCa65Fixture.cert();
+		dodCa65B64 = dodCa65Fixture.base64Der();
 	}
 
 	@Test
@@ -135,7 +106,7 @@ class VssControllersTest {
 			mvc.perform(get("/vss/v2/intermediates"))
 					.andExpect(status().isOk())
 					.andExpect(jsonPath("$", hasSize(1)))
-					.andExpect(jsonPath("$[0].x509Certificate").value(DOD_ID_CA_65_B64));
+					.andExpect(jsonPath("$[0].x509Certificate").value(dodCa65B64));
 		}
 	}
 
@@ -160,7 +131,7 @@ class VssControllersTest {
 			// Unknown policy -> 400 ApiError
 			mvc.perform(post("/vss/v2/validate")
 							.contentType(MediaType.APPLICATION_JSON)
-							.content("{\"validationPolicyId\":\"1.2.3.4\",\"x509Certificate\":\"" + DOD_ID_CA_65_B64 + "\"}"))
+							.content("{\"validationPolicyId\":\"1.2.3.4\",\"x509Certificate\":\"" + dodCa65B64 + "\"}"))
 					.andExpect(status().isBadRequest())
 					.andExpect(jsonPath("$.message").value("Invalid Policy Specified"));
 
@@ -178,7 +149,7 @@ class VssControllersTest {
 			okResp.isCA = true;
 			Success success = new Success();
 			JsonX509Certificate pathCert = new JsonX509Certificate();
-			pathCert.x509Certificate = DOD_ID_CA_65_B64;
+			pathCert.x509Certificate = dodCa65B64;
 			success.x509CertificatePath = List.of(pathCert);
 			okResp.validationResult = success;
 
@@ -186,7 +157,7 @@ class VssControllersTest {
 
 			mvc.perform(post("/vss/v2/validate")
 							.contentType(MediaType.APPLICATION_JSON)
-							.content("{\"validationPolicyId\":\"" + AAL3_POLICY_ID + "\",\"x509Certificate\":\"" + DOD_ID_CA_65_B64 + "\"}"))
+							.content("{\"validationPolicyId\":\"" + AAL3_POLICY_ID + "\",\"x509Certificate\":\"" + dodCa65B64 + "\"}"))
 					.andExpect(status().isOk())
 					.andExpect(jsonPath("$.requestId").isNotEmpty())
 					.andExpect(jsonPath("$.validationTime").isNotEmpty())
@@ -207,7 +178,7 @@ class VssControllersTest {
 
 			mvc.perform(post("/vss/v2/validate")
 							.contentType(MediaType.APPLICATION_JSON)
-							.content("{\"validationPolicyId\":\"" + AAL3_POLICY_ID + "\",\"x509Certificate\":\"" + DOD_ID_CA_65_B64 + "\"}"))
+							.content("{\"validationPolicyId\":\"" + AAL3_POLICY_ID + "\",\"x509Certificate\":\"" + dodCa65B64 + "\"}"))
 					.andExpect(status().isOk())
 					.andExpect(jsonPath("$.nextUpdate").doesNotExist())
 					.andExpect(jsonPath("$.validationResult.result").value("FAIL"))
@@ -244,7 +215,7 @@ class VssControllersTest {
 			okResp.x509SerialNumber = "1356";
 			Success success = new Success();
 			JsonX509Certificate pathCert = new JsonX509Certificate();
-			pathCert.x509Certificate = DOD_ID_CA_65_B64;
+			pathCert.x509Certificate = dodCa65B64;
 			success.x509CertificatePath = List.of(pathCert);
 			okResp.validationResult = success;
 
@@ -262,7 +233,7 @@ class VssControllersTest {
 			String body = "{"
 					+ "\"validationPolicy\":\"" + AAL3_POLICY_ID + "\","
 					+ "\"wantBackList\":[{\"wantBackTypeToken\":\"certPath\"}],"
-					+ "\"x509CertificateList\":[{\"x509Certificate\":\"" + DOD_ID_CA_65_B64 + "\"},{\"x509Certificate\":\"" + DOD_ID_CA_65_B64 + "\"}]"
+					+ "\"x509CertificateList\":[{\"x509Certificate\":\"" + dodCa65B64 + "\"},{\"x509Certificate\":\"" + dodCa65B64 + "\"}]"
 					+ "}";
 
 			mvc.perform(post("/vss/rest")
@@ -273,7 +244,7 @@ class VssControllersTest {
 					.andExpect(jsonPath("$.validationResult.resultsByCertificateList", hasSize(2)))
 					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[0].resultByCertificate.vssCertId").value("010203"))
 					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[0].resultByCertificate.validationResultToken").value("SUCCESS"))
-					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[0].resultByCertificate.validationSuccessData.wantBackResultList[0].certPath.x509CertificateList[0].x509Certificate").value(DOD_ID_CA_65_B64))
+					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[0].resultByCertificate.validationSuccessData.wantBackResultList[0].certPath.x509CertificateList[0].x509Certificate").value(dodCa65B64))
 					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[1].resultByCertificate.validationResultToken").value("FAIL"))
 					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[1].resultByCertificate.validationFailureData.invalidityReasonList[0].invalidityReasonText").value("Revoked"));
 		}

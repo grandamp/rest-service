@@ -31,6 +31,14 @@ public final class CertFixtures {
 		return loadFrom(CERTS_ROOT);
 	}
 
+	public static CertFixture load(String relativePath) throws IOException, CertificateException {
+		Path path = CERTS_ROOT.resolve(relativePath);
+		if (!Files.isRegularFile(path)) {
+			throw new IOException("Certificate fixture not found: " + path.toAbsolutePath());
+		}
+		return loadOne(CERTS_ROOT, path, CertificateFactory.getInstance("X.509"));
+	}
+
 	public static Stream<CertFixture> allStream() throws IOException, CertificateException {
 		return loadAll().stream();
 	}
@@ -50,15 +58,20 @@ public final class CertFixtures {
 		}
 		List<CertFixture> fixtures = new ArrayList<>(files.size());
 		for (Path p : files) {
-			try (InputStream in = Files.newInputStream(p)) {
-				X509Certificate cert = (X509Certificate) cf.generateCertificate(in);
-				String b64 = Base64.getEncoder().encodeToString(cert.getEncoded());
-				boolean isCa = cert.getBasicConstraints() >= 0;
-				fixtures.add(new CertFixture(root.relativize(p).toString(), p, cert, b64, isCa));
-			} catch (CertificateEncodingException e) {
-				throw new CertificateException("Failed to encode fixture " + p, e);
-			}
+			fixtures.add(loadOne(root, p, cf));
 		}
 		return fixtures;
+	}
+
+	private static CertFixture loadOne(Path root, Path p, CertificateFactory cf)
+			throws IOException, CertificateException {
+		try (InputStream in = Files.newInputStream(p)) {
+			X509Certificate cert = (X509Certificate) cf.generateCertificate(in);
+			String b64 = Base64.getEncoder().encodeToString(cert.getEncoded());
+			boolean isCa = cert.getBasicConstraints() >= 0;
+			return new CertFixture(root.relativize(p).toString(), p, cert, b64, isCa);
+		} catch (CertificateEncodingException e) {
+			throw new CertificateException("Failed to encode fixture " + p, e);
+		}
 	}
 }
