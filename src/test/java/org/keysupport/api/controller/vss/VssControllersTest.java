@@ -128,6 +128,13 @@ class VssControllersTest {
 			polMock.when(() -> ServiceValidationPolicies.getPolicy(AAL3_POLICY_ID)).thenReturn(aal3Policy);
 			polMock.when(() -> ServiceValidationPolicies.getPolicy("1.2.3.4")).thenReturn(null);
 
+			// Malformed non-OID policy -> 400 ApiError (observed in production logs)
+			mvc.perform(post("/vss/v2/validate")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content("{\"validationPolicyId\":\"not-an-oid\",\"x509Certificate\":\"" + dodCa65B64 + "\"}"))
+					.andExpect(status().isBadRequest())
+					.andExpect(jsonPath("$.message").value("validationPolicyId must be an Object Identifier"));
+
 			// Unknown policy -> 400 ApiError
 			mvc.perform(post("/vss/v2/validate")
 							.contentType(MediaType.APPLICATION_JSON)
@@ -139,6 +146,13 @@ class VssControllersTest {
 			mvc.perform(post("/vss/v2/validate")
 							.contentType(MediaType.APPLICATION_JSON)
 							.content("{\"validationPolicyId\":\"" + AAL3_POLICY_ID + "\",\"x509Certificate\":\"not!valid!b64\"}"))
+					.andExpect(status().isBadRequest())
+					.andExpect(jsonPath("$.message").value("Error decoding x509Certificate"));
+
+			// Valid base64 but non-X.509 DER payload -> 400 ApiError (observed in production logs)
+			mvc.perform(post("/vss/v2/validate")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content("{\"validationPolicyId\":\"" + AAL3_POLICY_ID + "\",\"x509Certificate\":\"SGVsbG8gd29ybGQ=\"}"))
 					.andExpect(status().isBadRequest())
 					.andExpect(jsonPath("$.message").value("Error decoding x509Certificate"));
 
