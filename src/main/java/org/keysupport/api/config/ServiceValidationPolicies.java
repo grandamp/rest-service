@@ -8,9 +8,12 @@ import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 
 public class ServiceValidationPolicies {
 
+	private ServiceValidationPolicies() {
+	}
+
 	/**
-	 *
-	 * This method provides a way to internally obtain all certificate validation policies that have been configured.
+	 * This method provides a way to internally obtain all certificate validation
+	 * policies that have been configured.
 	 *
 	 * @return ValidationPolicies validationPolicies
 	 */
@@ -20,17 +23,23 @@ public class ServiceValidationPolicies {
 	}
 
 	/**
-	 *
-	 * This method provides a way to internally obtain a specific validation policy.
+	 * This method provides a way to internally obtain a specific validation
+	 * policy.
 	 *
 	 * @param policy
-	 * @return
+	 * @return ValidationPolicy matching policy, or null if not found
 	 */
 	public static ValidationPolicy getPolicy(String policy) {
+		if (null == policy) {
+			return null;
+		}
 		ValidationPolicies validationPolicies = ServiceValidationPolicies.getValidationPolicies();
+		if (null == validationPolicies || null == validationPolicies.validationPolicies) {
+			return null;
+		}
 		List<ValidationPolicy> valPols = validationPolicies.validationPolicies;
-		for (ValidationPolicy valPol: valPols) {
-			if (valPol.validationPolicyId.equalsIgnoreCase(policy)) {
+		for (ValidationPolicy valPol : valPols) {
+			if (null != valPol.validationPolicyId && valPol.validationPolicyId.equalsIgnoreCase(policy)) {
 				return valPol;
 			}
 		}

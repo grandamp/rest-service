@@ -1,25 +1,33 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import base64
-import sys
-import requests
 import json
+import sys
 import typing
-import cryptography
 
-from cryptography import x509 
-from cryptography.hazmat.primitives.serialization import Encoding
+import requests
 
-def cert_to_base64(cert: x509.Certificate) -> str:
-    return base64.b64encode(cert.public_bytes(Encoding.DER)).decode("utf-8")
 
-def policies(host: str, policy: str) -> typing.Dict:
-    apiEndpointUri = host + "/vss/v2/policies/" + policy
-    response = requests.get(apiEndpointUri)
+def policies(host: str, policy: str, timeout: int = 30) -> typing.Dict[str, typing.Any]:
+    api_endpoint_uri = f"{host.rstrip('/')}/vss/v2/policies/{policy}"
+    response = requests.get(api_endpoint_uri, timeout=timeout)
+    response.raise_for_status()
     return response.json()
 
+
+def main(argv: typing.Optional[typing.Sequence[str]] = None) -> int:
+    args = list(sys.argv[1:] if argv is None else argv)
+    if len(args) != 2:
+        print("Usage: policies.py <host> <policy>", file=sys.stderr)
+        return 2
+    host, policy = args
+    try:
+        res_json = policies(host, policy)
+    except Exception as exc:
+        print(f"Error fetching policy: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps(res_json, sort_keys=False, indent=4))
+    return 0
+
+
 if __name__ == "__main__":
-    host = sys.argv[1]
-    policy = sys.argv[2]
-    resJson = policies(host, policy)
-    print(json.dumps(resJson, sort_keys=False, indent=4))
+    sys.exit(main())
