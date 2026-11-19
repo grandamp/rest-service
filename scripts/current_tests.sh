@@ -3,7 +3,7 @@
 ##############################################################################
 # Testing against $BASEURI
 ##############################################################################
-BASEURI="https://home.keysupport.net"
+BASEURI="https://keysupport.net"
 # For localhost testing, comment out the line above, and use:
 #BASEURI="http://localhost:5000"
 

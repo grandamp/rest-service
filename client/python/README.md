@@ -20,46 +20,30 @@ pip install -r requirements.txt
 
 - Automatically downloads the upstream `CACertificatesValidatingToFederalCommonPolicyG2.p7b`
 - Parses the PKCS7 data to extract all available certificates
-- Calls the Certificate Validation Service at `https://home.keysupport.org` for each certificate
+- Calls the Certificate Validation Service at `https://keysupport.net` for each certificate
 - Uses the `1.3.6.1.5.5.7.19.1` (Default) validation policy
 - Generates a neat command-line report separating Valid and Invalid certificates, with the failure reasons provided by the validation service.
 
 ## Additional Notes
 
-*Break and Inspect Warning:* In the event the exampe below fails with an error similar to:
+*Exit Codes (`validate.py` and `validate_fpki.py`):*
+- `0`: All certificates returned `SUCCESS`
+- `1`: One or more certificates returned `FAIL` (or non-`SUCCESS`)
+- `2`: Usage, file/bundle parsing, HTTP, JSON, or `x5t#S256` digest-mismatch error
+
+*Break and Inspect Warning:* TLS server certificate verification is enabled by default. In the event the example below fails with an error similar to:
 
 ```TEXT
-requests.exceptions.SSLError: HTTPSConnectionPool(host='api.keysupport.org', port=443): Max retries exceeded with url: /vss/v2/policies/0f89456b-e336-3544-986c-6a42d982b239 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:997)')))
+requests.exceptions.SSLError: HTTPSConnectionPool(host='keysupport.net', port=443): Max retries exceeded with url: /vss/v2/policies/1.3.6.1.5.5.7.19.1 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:997)')))
 ```
 
-You can add the following to each Python example to allow the Break and Inspect signing certificaite in the file `bi.crt`:
+Set `REQUESTS_CA_BUNDLE` in your environment (or pass `--insecure` only for throwaway local dev testing):
 
 ```TEXT
-#
-# The following lines are needed due to Break & Inspect
-#
-import os
-os.environ['REQUESTS_CA_BUNDLE'] = './bi.crt'
+export REQUESTS_CA_BUNDLE=./bi.crt
 ```
 
-When using on the command line, you should be able to parse the following types of files to validate the enclosed certificates:
-
-- .p7c
--- May be 1 DER encoded CMS file containing multiple certificates
-- .p7b
--- May be 1 DER encoded CMS file containing multiple certificates
-- .p7s
--- May be 1 DER encoded CMS file containing multiple certificates
-- .p7m
--- May be 1 DER encoded CMS file containing multiple certificates
-- .pem
--- May be 1..N PEM encoded certificates
-- .cer
--- May be 1 DER encoded certificate
-- .crt
--- May be 1 DER encoded certificate
-- .der
--- May be 1 DER encoded certificate
+When using `validate.py` on the command line, format is detected automatically from file contents across PEM, DER, and PKCS#7/CMS bundles (`.p7c`, `.p7b`, `.p7s`, `.p7m`, `.pem`, `.cer`, `.crt`, `.der`).
 
 Example Usage:
 
@@ -68,7 +52,7 @@ Example Usage:
 
 /usr/bin/openssl pkcs7 -in /tmp/CACertificatesValidatingToFederalCommonPolicyG2.pem -outform DER -out /tmp/CACertificatesValidatingToFederalCommonPolicyG2.p7b
 
-./validate.py /tmp/CACertificatesValidatingToFederalCommonPolicyG2.p7b https://api.keysupport.org c21f969b-5f03-333d-83e0-4f8f136e7682
+./validate.py /tmp/CACertificatesValidatingToFederalCommonPolicyG2.p7b https://keysupport.net 1.3.6.1.5.5.7.19.1
 
 ```
 

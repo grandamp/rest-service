@@ -1,38 +1,40 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import base64
 import sys
-import requests
-import json
 import typing
-import cryptography
 
-from cryptography import x509 
-from cryptography.hazmat.primitives.serialization import Encoding
+import requests
 
-def cert_to_base64(cert: x509.Certificate) -> str:
-    return base64.b64encode(cert.public_bytes(Encoding.DER)).decode("utf-8")
 
-def intermediates(host: str, policy: str) -> typing.Dict:
-    apiEndpointUri = host + "/vss/v2/intermediates/" + policy
-    response = requests.get(apiEndpointUri)
+def intermediates(host: str, policy: str, timeout: int = 30) -> typing.List[typing.Dict[str, typing.Any]]:
+    api_endpoint_uri = f"{host.rstrip('/')}/vss/v2/intermediates/{policy}"
+    response = requests.get(api_endpoint_uri, timeout=timeout)
+    response.raise_for_status()
     return response.json()
 
+
 def printPEM(base64str: str) -> None:
-    line = []
-    # Add PEM header
-    line.append("-----BEGIN CERTIFICATE-----")
-    # Add Base64 DER string values, split at 64 chars
+    print("-----BEGIN CERTIFICATE-----")
     for i in range(0, len(base64str), 64):
-        line.append(base64str[i:i+64])
-    # Add PEM footer
-    line.append("-----END CERTIFICATE-----")
-    for x in line:
-        print(x)
+        print(base64str[i:i + 64])
+    print("-----END CERTIFICATE-----")
+
+
+def main(argv: typing.Optional[typing.Sequence[str]] = None) -> int:
+    args = list(sys.argv[1:] if argv is None else argv)
+    if len(args) != 2:
+        print("Usage: intermediates.py <host> <policy>", file=sys.stderr)
+        return 2
+    host, policy = args
+    try:
+        res_json = intermediates(host, policy)
+    except Exception as exc:
+        print(f"Error fetching intermediates: {exc}", file=sys.stderr)
+        return 2
+    for cert_entry in res_json:
+        printPEM(cert_entry["x509Certificate"])
+    return 0
+
 
 if __name__ == "__main__":
-    host = sys.argv[1]
-    policy = sys.argv[2]
-    resJson = intermediates(host, policy)
-    for x509Certificate in resJson:
-        printPEM(x509Certificate['x509Certificate'])
+    sys.exit(main())

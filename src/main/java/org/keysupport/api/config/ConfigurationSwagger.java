@@ -27,7 +27,7 @@ public class ConfigurationSwagger {
 			apiVersion = "ghcr.io/grandamp/rest-service:sha-" + shortSha;
 		}
 
-		return new OpenAPI().addServersItem(new Server().url(BASE_URI))
+		OpenAPI openApi = new OpenAPI()
 				.info(new Info().title("Certificate Validation Service API")
 						.description("Current main branch of Spring Boot reference implementation for the Certificate Validation Service API")
 						.contact(new Contact().name("Todd E. Johnson").email("todd@keysupport.net")
@@ -35,5 +35,9 @@ public class ConfigurationSwagger {
 						.license(new License().name("CC0 1.0 Universal")
 								.url("https://creativecommons.org/publicdomain/zero/1.0/"))
 						.version(apiVersion));
+		if (BASE_URI != null && !BASE_URI.isBlank()) {
+			openApi.addServersItem(new Server().url(BASE_URI));
+		}
+		return openApi;
 	}
 }

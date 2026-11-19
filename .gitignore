@@ -9,3 +9,5 @@
 terraform/*
 target/*
 /target/
+__pycache__/
+*.py[cod]
