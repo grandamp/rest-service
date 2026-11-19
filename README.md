@@ -105,12 +105,12 @@ As a relying party, you can perform post-processing on the logs for:
 
 ## Software Bill of Materials (SBOM)
 
-Every Maven build generates a CycloneDX JSON SBOM embedded inside `rest-service-eb.jar` at `BOOT-INF/classes/META-INF/sbom/application.cdx.json`, and uploads `application.cdx.json` as the `rest-service-sbom` GitHub Actions artifact.
+Every Maven build generates a CycloneDX JSON SBOM embedded inside `rest-service-eb.jar` at `META-INF/sbom/application.cdx.json`, and uploads `application.cdx.json` as the `rest-service-sbom` GitHub Actions artifact.
 
 To inspect the embedded SBOM from a packaged JAR:
 
 ```bash
-unzip -p target/rest-service-eb.jar BOOT-INF/classes/META-INF/sbom/application.cdx.json | jq
+unzip -p target/rest-service-eb.jar META-INF/sbom/application.cdx.json | jq
 ```
 
 Builds also set `project.build.outputTimestamp` so identical inputs produce deterministic JAR SHA-256 digests.
