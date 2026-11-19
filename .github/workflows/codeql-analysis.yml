@@ -1,12 +1,9 @@
 name: "CodeQL Analysis with Eclipse Temurin 25 and Maven"
 
 on:
-  push:
-    branches: [ "main", "develop" ]
-  pull_request:
-    branches: [ "main", "develop" ]
   schedule:
     - cron: '0 2 * * *' # Weekly scan
+  workflow_dispatch:
 
 jobs:
   analyze:

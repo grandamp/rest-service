@@ -7,7 +7,6 @@ import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -156,21 +155,16 @@ public class ValidateController {
 			if (pemCert.length() >= PEM_SIZE_LIMIT) {
 				throw new ServiceException("Size limit for x509Certificate exceeded");
 			}
-			byte[] certBytes = null;
+			byte[] certBytes;
 			try {
 				certBytes = Base64.getDecoder().decode(pemCert);
-			} catch (Throwable e) {
+			} catch (IllegalArgumentException e) {
 				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
 				throw new ServiceException("Error decoding x509Certificate");
 			}
-			if (null != certBytes) {
-				cf = CertificateFactory.getInstance("X509");
-				bais = new ByteArrayInputStream(certBytes);
-				clientCert = (X509Certificate) cf.generateCertificate(bais);
-			} else {
-				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate base64 (null result), returning SERVICEFAIL")));
-				throw new ServiceException("Error decoding x509Certificate");
-			}
+			cf = CertificateFactory.getInstance("X509");
+			bais = new ByteArrayInputStream(certBytes);
+			clientCert = (X509Certificate) cf.generateCertificate(bais);
 		} catch (CertificateException e) {
 			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			throw new ServiceException("Error decoding x509Certificate");
@@ -205,47 +199,26 @@ public class ValidateController {
 		/*
 		 * Validate, log, and; return the result
 		 */
-		Instant vNow = Instant.now();
-		long lNow = vNow.toEpochMilli();
-		Date dNow = new Date(lNow);
+		Date dNow = Date.from(Instant.now());
 		response = ValidatePKIX.validate(clientCert, x5tS256, valPol, dNow);
-		ValidationResult respResult = response.validationResult;
-		response.validationTime = X509Util.ISO8601DateString(dNow);
-		/*
-		 * nextUpdate is based on the validation policy.
-		 */
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(dNow);
-		response.nextUpdate = X509Util.ISO8601DateString(calendar.getTime());
 		String validationNow = X509Util.ISO8601DateString(dNow);
-		if (respResult != null) {
-			if (respResult instanceof Success) {
-				/*
-				 * validationTime should be used as Last-Modified
-				 */
-				response.requestId = requestId;
-				response.validationTime = validationNow;
-			} else {
-				/*
-				 * Set nextUpdate to null to inform the client that we will *not* perform any
-				 * more operations on this requestId
-				 */
-				response.nextUpdate = null;
-			}
-		}
-		if (respResult != null) {
-			if (respResult instanceof Success) {
-				LOG.info(LoggingUtil.pojoToJson(response));
-				return ResponseEntity.ok().body(response);
-			} else if (respResult instanceof Fail) {
-				LOG.info(LoggingUtil.pojoToJson(response));
-				return ResponseEntity.ok().body(response);
-			} else {
-				ResponseEntity.badRequest();
-			}
+		response.validationTime = validationNow;
+		ValidationResult respResult = response.validationResult;
+		if (respResult instanceof Success) {
+			/*
+			 * validationTime should be used as Last-Modified
+			 */
+			response.requestId = requestId;
+			response.nextUpdate = validationNow;
+		} else if (respResult != null) {
+			/*
+			 * Set nextUpdate to null to inform the client that we will *not* perform any
+			 * more operations on this requestId
+			 */
+			response.nextUpdate = null;
 		}
 		LOG.info(LoggingUtil.pojoToJson(response));
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		return ResponseEntity.ok().body(response);
 	}
 
 	/*
@@ -256,7 +229,7 @@ public class ValidateController {
 	private final static Logger V1LOG = LoggerFactory.getLogger(ValidateController.class.getName().concat(".validateV1"));
 
 	@PostMapping(path = "/vss/rest", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Certificate Validation Request", required = true, content = @Content(schema = @Schema(implementation = VssRequest.class), mediaType = MediaType.APPLICATION_JSON_VALUE, examples = {
+	@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Certificate Validation Request", required = true, content = @Content(schema = @Schema(implementation = V1VSSRequest.class), mediaType = MediaType.APPLICATION_JSON_VALUE, examples = {
 			@ExampleObject(name = "A validation request using a revoked Treasury OCIO CA end-entity certificate", value = "{\n"
 					+ "    \"validationPolicy\": \"2.16.840.1.101.10.2.18.2.1.4\",\n"
 					+ "    \"wantBackList\": [\n"
@@ -325,7 +298,7 @@ public class ValidateController {
 		boolean certPathWantBack = false;
 		List<V1WantBackTypeToken> wantBackList = request.wantBackList;
 		for (V1WantBackTypeToken wantBack: wantBackList) {
-			if (!wantBack.wantBackTypeToken.equalsIgnoreCase("certPath")) {
+			if (null == wantBack.wantBackTypeToken || !wantBack.wantBackTypeToken.equalsIgnoreCase("certPath")) {
 				txResult.transactionResultToken = "SERVICEFAIL";
 				txResult.transactionResultText = "Unsupported WantBack";
 				response.transactionResult = txResult;
