@@ -22,6 +22,11 @@ jobs:
         with:
           name: rest-service-jar
           path: target/rest-service-eb.jar
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rest-service-sbom
+          path: target/classes/META-INF/sbom/application.cdx.json
 
   docker:
     name: Build and Push GHCR
@@ -57,6 +62,8 @@ jobs:
         with:
           context: .
           push: true
+          provenance: true
+          sbom: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |

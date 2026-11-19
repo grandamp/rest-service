@@ -5,6 +5,8 @@
 
 [![CodeQL Analysis with Corretto 25 and Maven](https://github.com/grandamp/rest-service/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/grandamp/rest-service/actions/workflows/codeql-analysis.yml)
 
+[![SBOM](https://img.shields.io/badge/SBOM-CycloneDX-blue)](#software-bill-of-materials-sbom)
+
 A WIP to replace the [Treasury SCVP service](https://github.com/GSA/ficam-scvp-testing/blob/master/utilities/vss2/README.md), with something more modern.
 
 Why?  Many mTLS use-cases involve complex certificate validation in the application layer, which is *hard* to scale.
@@ -15,7 +17,7 @@ Here is a way to instrument some [basic performance information](./locust/agent.
 
 ## Example Implementation
 
-- [https://home.keysupport.net Swagger UI](https://home.keysupport.net/swagger-ui/index.html)
+- [https://keysupport.net Swagger UI](https://keysupport.net/swagger-ui/index.html)
 
 ## Example use/business-case (mTLS Client Certificate Validation)
 
@@ -76,7 +78,7 @@ To validate a certificate that was presented by the client against this policy, 
 
 ```text
 curl -v -X 'POST' \
-'https://home.keysupport.net/vss/v2/validate' \
+'https://keysupport.net/vss/v2/validate' \
 -H 'accept: application/json' \
 -H 'Content-Type: application/json' \
 -d '{
@@ -101,9 +103,21 @@ As a relying party, you can perform post-processing on the logs for:
 
 - See [Testing](/TESTING.md)
 
+## Software Bill of Materials (SBOM)
+
+Every Maven build generates a CycloneDX JSON SBOM embedded inside `rest-service-eb.jar` at `BOOT-INF/classes/META-INF/sbom/application.cdx.json`, and uploads `application.cdx.json` as the `rest-service-sbom` GitHub Actions artifact.
+
+To inspect the embedded SBOM from a packaged JAR:
+
+```bash
+unzip -p target/rest-service-eb.jar BOOT-INF/classes/META-INF/sbom/application.cdx.json | jq
+```
+
+Builds also set `project.build.outputTimestamp` so identical inputs produce deterministic JAR SHA-256 digests.
+
 ## Current API Documentation & API Example
 
-- See/Try the operational example via [this Swagger-UI](https://home.keysupport.net/swagger-ui/index.html)
+- See/Try the operational example via [this Swagger-UI](https://keysupport.net/swagger-ui/index.html)
 - [Current issues](https://github.com/grandamp/rest-service/issues) apply to example above
 
 ## How to Contribute
