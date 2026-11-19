@@ -150,7 +150,7 @@ public class RestClient {
 	static int runCli(String[] args, RestClient client, PrintStream out, PrintStream err) {
 		if (null == args || args.length != 3) {
 			err.println("Usage: RestClient <validateUrl> <policyOid> <certFile>");
-			err.println("  validateUrl  e.g. https://home.keysupport.net/vss/v2/validate");
+			err.println("  validateUrl  e.g. https://keysupport.net/vss/v2/validate");
 			err.println("  policyOid    e.g. 1.3.6.1.5.5.7.19.1 or 2.16.840.1.101.10.2.18.2.1.4");
 			err.println("  certFile     Path to .pem, .der, .cer, .crt, .p7b, or .p7c file");
 			return 2;

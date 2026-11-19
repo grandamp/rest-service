@@ -12,7 +12,7 @@ from cryptography import x509
 from cryptography.hazmat.primitives.serialization import Encoding, pkcs7
 
 P7B_URL = "https://www.idmanagement.gov/implement/tools/CACertificatesValidatingToFederalCommonPolicyG2.p7b"
-VSS_HOST = "https://home.keysupport.org"
+VSS_HOST = "https://keysupport.net"
 VSS_POLICY = "1.3.6.1.5.5.7.19.1"
 
 

@@ -184,7 +184,7 @@ def build_parser() -> argparse.ArgumentParser:
         description="Validate X.509 certificates (.pem, .der, .cer, .crt, .p7b, .p7c) against a VSS v2 service."
     )
     parser.add_argument("cert_file", help="Path to certificate or PKCS#7 bundle")
-    parser.add_argument("host", help="Base VSS service URL, e.g. https://home.keysupport.org")
+    parser.add_argument("host", help="Base VSS service URL, e.g. https://keysupport.net")
     parser.add_argument("policy", help="Validation policy OID or ID, e.g. 1.3.6.1.5.5.7.19.1")
     parser.add_argument(
         "-q",

@@ -20,7 +20,7 @@ pip install -r requirements.txt
 
 - Automatically downloads the upstream `CACertificatesValidatingToFederalCommonPolicyG2.p7b`
 - Parses the PKCS7 data to extract all available certificates
-- Calls the Certificate Validation Service at `https://home.keysupport.org` for each certificate
+- Calls the Certificate Validation Service at `https://keysupport.net` for each certificate
 - Uses the `1.3.6.1.5.5.7.19.1` (Default) validation policy
 - Generates a neat command-line report separating Valid and Invalid certificates, with the failure reasons provided by the validation service.
 
@@ -34,7 +34,7 @@ pip install -r requirements.txt
 *Break and Inspect Warning:* TLS server certificate verification is enabled by default. In the event the example below fails with an error similar to:
 
 ```TEXT
-requests.exceptions.SSLError: HTTPSConnectionPool(host='home.keysupport.org', port=443): Max retries exceeded with url: /vss/v2/policies/1.3.6.1.5.5.7.19.1 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:997)')))
+requests.exceptions.SSLError: HTTPSConnectionPool(host='keysupport.net', port=443): Max retries exceeded with url: /vss/v2/policies/1.3.6.1.5.5.7.19.1 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:997)')))
 ```
 
 Set `REQUESTS_CA_BUNDLE` in your environment (or pass `--insecure` only for throwaway local dev testing):
@@ -52,7 +52,7 @@ Example Usage:
 
 /usr/bin/openssl pkcs7 -in /tmp/CACertificatesValidatingToFederalCommonPolicyG2.pem -outform DER -out /tmp/CACertificatesValidatingToFederalCommonPolicyG2.p7b
 
-./validate.py /tmp/CACertificatesValidatingToFederalCommonPolicyG2.p7b https://home.keysupport.org 1.3.6.1.5.5.7.19.1
+./validate.py /tmp/CACertificatesValidatingToFederalCommonPolicyG2.p7b https://keysupport.net 1.3.6.1.5.5.7.19.1
 
 ```
 
