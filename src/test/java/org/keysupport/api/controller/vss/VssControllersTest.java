@@ -22,11 +22,15 @@ import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.keysupport.api.config.ServiceValidationPolicies;
 import org.keysupport.api.pkix.ValidatePKIX;
+import org.keysupport.api.pkix.X509Util;
 import org.keysupport.api.pojo.vss.Fail;
 import org.keysupport.api.pojo.vss.JsonX509Certificate;
 import org.keysupport.api.pojo.vss.Success;
@@ -34,6 +38,8 @@ import org.keysupport.api.pojo.vss.ValidationPolicies;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.keysupport.api.singletons.IntermediateCacheSingleton;
+import org.keysupport.api.testutil.CertFixtures;
+import org.keysupport.api.testutil.CertFixtures.CertFixture;
 import org.mockito.MockedStatic;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -270,6 +276,114 @@ class VssControllersTest {
 					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[0].resultByCertificate.validationSuccessData.wantBackResultList[0].certPath.x509CertificateList[0].x509Certificate").value(DOD_ID_CA_65_B64))
 					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[1].resultByCertificate.validationResultToken").value("FAIL"))
 					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[1].resultByCertificate.validationFailureData.invalidityReasonList[0].invalidityReasonText").value("Revoked"));
+		}
+	}
+
+	static Stream<CertFixture> pemFixtures() throws Exception {
+		return CertFixtures.allStream();
+	}
+
+	@ParameterizedTest(name = "PEM fixture v2 validate & intermediates: {0}")
+	@MethodSource("pemFixtures")
+	void pemFixture_v2ValidateAndIntermediatesRoundTrip(CertFixture fixture) throws Exception {
+		MockMvc intermediatesMvc = MockMvcBuilders.standaloneSetup(new IntermediatesController()).build();
+		IntermediateCacheSingleton cache = mock(IntermediateCacheSingleton.class);
+		CertStore store = CertStore.getInstance("Collection",
+				new CollectionCertStoreParameters(List.of(fixture.cert())));
+
+		try (MockedStatic<IntermediateCacheSingleton> mocked = mockStatic(IntermediateCacheSingleton.class)) {
+			mocked.when(IntermediateCacheSingleton::getInstance).thenReturn(cache);
+			when(cache.getIntermediates()).thenReturn(store);
+
+			intermediatesMvc.perform(get("/vss/v2/intermediates"))
+					.andExpect(status().isOk())
+					.andExpect(jsonPath("$", hasSize(1)))
+					.andExpect(jsonPath("$[0].x509Certificate").value(fixture.base64Der()));
+		}
+
+		MockMvc validateMvc = MockMvcBuilders.standaloneSetup(new ValidateController()).build();
+		try (MockedStatic<ServiceValidationPolicies> polMock = mockStatic(ServiceValidationPolicies.class);
+				MockedStatic<ValidatePKIX> pkixMock = mockStatic(ValidatePKIX.class)) {
+
+			polMock.when(() -> ServiceValidationPolicies.getPolicy(AAL3_POLICY_ID)).thenReturn(aal3Policy);
+
+			String expectedX5t = X509Util.x5tS256(fixture.cert());
+			String expectedSerial = fixture.cert().getSerialNumber().toString();
+
+			VssResponse resp = new VssResponse();
+			resp.x5tS256 = expectedX5t;
+			resp.x509SerialNumber = expectedSerial;
+			resp.isCA = fixture.isCa();
+			Success success = new Success();
+			JsonX509Certificate pathCert = new JsonX509Certificate();
+			pathCert.x509Certificate = fixture.base64Der();
+			success.x509CertificatePath = List.of(pathCert);
+			resp.validationResult = success;
+
+			pkixMock.when(() -> ValidatePKIX.validate(any(), any(), eq(aal3Policy), any())).thenReturn(resp);
+
+			validateMvc.perform(post("/vss/v2/validate")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content("{\"validationPolicyId\":\"" + AAL3_POLICY_ID + "\",\"x509Certificate\":\""
+									+ fixture.base64Der() + "\"}"))
+					.andExpect(status().isOk())
+					.andExpect(jsonPath("$.x5t#S256").value(expectedX5t))
+					.andExpect(jsonPath("$.x509SerialNumber").value(expectedSerial))
+					.andExpect(jsonPath("$.isCA").value(fixture.isCa()))
+					.andExpect(jsonPath("$.validationResult.result").value("SUCCESS"));
+		}
+	}
+
+	@Test
+	void pemFixtures_v1BatchProcessesAllDirectoryCerts() throws Exception {
+		List<CertFixture> fixtures = CertFixtures.loadAll();
+		MockMvc mvc = MockMvcBuilders.standaloneSetup(new ValidateController()).build();
+
+		try (MockedStatic<ServiceValidationPolicies> polMock = mockStatic(ServiceValidationPolicies.class);
+				MockedStatic<ValidatePKIX> pkixMock = mockStatic(ValidatePKIX.class)) {
+
+			polMock.when(() -> ServiceValidationPolicies.getPolicy(AAL3_POLICY_ID)).thenReturn(aal3Policy);
+
+			VssResponse[] responses = fixtures.stream().map(f -> {
+				VssResponse r = new VssResponse();
+				r.x5tS256 = X509Util.x5tS256(f.cert());
+				r.x509SerialNumber = f.cert().getSerialNumber().toString();
+				r.isCA = f.isCa();
+				Success s = new Success();
+				JsonX509Certificate c = new JsonX509Certificate();
+				c.x509Certificate = f.base64Der();
+				s.x509CertificatePath = List.of(c);
+				r.validationResult = s;
+				return r;
+			}).toArray(VssResponse[]::new);
+
+			pkixMock.when(() -> ValidatePKIX.validate(any(), any(), eq(aal3Policy), any()))
+					.thenAnswer(inv -> {
+						X509Certificate cert = inv.getArgument(0);
+						String serial = cert.getSerialNumber().toString();
+						for (VssResponse r : responses) {
+							if (serial.equals(r.x509SerialNumber)) {
+								return r;
+							}
+						}
+						return responses[0];
+					});
+
+			List<String> certEntries = fixtures.stream()
+					.map(f -> "{\"x509Certificate\":\"" + f.base64Der() + "\"}")
+					.toList();
+			String body = "{"
+					+ "\"validationPolicy\":\"" + AAL3_POLICY_ID + "\","
+					+ "\"wantBackList\":[{\"wantBackTypeToken\":\"certPath\"}],"
+					+ "\"x509CertificateList\":[" + String.join(",", certEntries) + "]"
+					+ "}";
+
+			mvc.perform(post("/vss/rest")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(body))
+					.andExpect(status().isOk())
+					.andExpect(jsonPath("$.transactionResult.transactionResultToken").value("SUCCESS"))
+					.andExpect(jsonPath("$.validationResult.resultsByCertificateList", hasSize(fixtures.size())));
 		}
 	}
 }

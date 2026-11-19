@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
@@ -40,8 +41,12 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.keysupport.api.pojo.vss.PKIXPolicyNode;
 import org.keysupport.api.pojo.vss.SANValue;
+import org.keysupport.api.testutil.CertFixtures;
+import org.keysupport.api.testutil.CertFixtures.CertFixture;
 
 class X509UtilTest {
 
@@ -303,6 +308,32 @@ class X509UtilTest {
 		assertTrue(jsonLeaf.critical);
 		assertEquals(1, jsonLeaf.depth);
 		assertNull(jsonLeaf.children);
+	}
+
+	static Stream<CertFixture> pemFixtures() throws Exception {
+		return CertFixtures.allStream();
+	}
+
+	@ParameterizedTest(name = "PEM fixture X509Util checks: {0}")
+	@MethodSource("pemFixtures")
+	void pemFixture_x5tAndSubjectAlternativeNames(CertFixture fixture) throws Exception {
+		X509Certificate cert = fixture.cert();
+
+		String x5t = X509Util.x5tS256(cert);
+		assertNotNull(x5t);
+		assertEquals(43, x5t.length());
+		assertFalse(x5t.contains("="));
+		byte[] expectedDigest = MessageDigest.getInstance("SHA-256").digest(cert.getEncoded());
+		assertEquals(X509Util.byteArrayToHexString(expectedDigest),
+				X509Util.byteArrayToHexString(Base64.getUrlDecoder().decode(x5t)));
+
+		List<SANValue> sans = X509Util.getSubjectAlternativeNames(cert);
+		assertNotNull(sans);
+		if (cert.getSubjectAlternativeNames() != null) {
+			assertEquals(cert.getSubjectAlternativeNames().size(), sans.size());
+		} else {
+			assertTrue(sans.isEmpty());
+		}
 	}
 
 	private record StubPolicyNode(
