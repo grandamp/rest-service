@@ -1,38 +1,150 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
+"""
+Locust load test for the KeySupport Validation Service (VSS).
 
-import time
-from locust import task
-from locust.contrib.fasthttp import FastHttpUser
-from time import gmtime, strftime
-import random
+Loads test-harness certificates from src/test/resources/certs/ (and any
+optional PEM files under locust/corpus/valid/ or locust/corpus/invalid/)
+and exercises /vss/v2/validate, /vss/v2/policies, and /vss/v2/intermediates.
+"""
 
-import requests
-requests.packages.urllib3.disable_warnings()
-
+import glob
+import os
 import resource
+from pathlib import Path
+from time import gmtime, strftime
 
-resource.setrlimit(resource.RLIMIT_NOFILE, (999999, 999999))
+from locust import FastHttpUser, between, task
 
-class FastUser(FastHttpUser):
+# Raise open-file soft limit safely without exceeding the OS hard limit
+try:
+    soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+    target = min(65535, hard) if hard != resource.RLIM_INFINITY else 65535
+    if soft < target:
+        resource.setrlimit(resource.RLIMIT_NOFILE, (target, hard))
+except (ValueError, OSError):
+    pass
 
-    @task
-    def validateTreasuryValid(self):
-        time = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime())
-        with self.client.post("/vss/v2/validate", data=None, json={"validationPolicyId": "2.16.840.1.101.10.2.18.2.1.4","x509Certificate":"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","clientMetadata":{"client":"Locust Test %s" % time}}, verify=False, timeout=(30, 30),
-        catch_response=True) as response:
-            if response.status_code == 0:
-                print("Empty Response")
-                response.failure(response)
+REPO_ROOT = Path(__file__).resolve().parent.parent
+CERTS_DIR = REPO_ROOT / "src" / "test" / "resources" / "certs"
+CORPUS_DIR = Path(__file__).resolve().parent / "corpus"
+DEFAULT_POLICY = os.environ.get("VSS_POLICY_ID", "1.3.6.1.5.5.7.19.1")
+
+
+def _load_pem_b64(path: Path) -> str:
+    lines = [
+        line.strip()
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.startswith("-----")
+    ]
+    return "".join(lines)
+
+
+def _discover_certs():
+    valid_ca = [
+        (p.name, _load_pem_b64(p))
+        for p in sorted((CERTS_DIR / "ca").glob("*.pem"))
+    ]
+
+    valid_ee_names = {"xtec-pivi-dea-uuid.pem"}
+    valid_ee = []
+    negative_ee = []
+    for p in sorted((CERTS_DIR / "ee").glob("*.pem")):
+        entry = (p.name, _load_pem_b64(p))
+        if p.name in valid_ee_names:
+            valid_ee.append(entry)
+        else:
+            negative_ee.append(entry)
+
+    # Optional harvested telemetry corpus (gitignored)
+    for p in sorted(glob.glob(str(CORPUS_DIR / "valid" / "*.pem"))):
+        path = Path(p)
+        valid_ee.append((path.name, _load_pem_b64(path)))
+    for p in sorted(glob.glob(str(CORPUS_DIR / "invalid" / "*.pem"))):
+        path = Path(p)
+        negative_ee.append((path.name, _load_pem_b64(path)))
+
+    return valid_ca, valid_ee, negative_ee
+
+
+VALID_CA_CERTS, VALID_EE_CERTS, NEGATIVE_EE_CERTS = _discover_certs()
+
+
+class VssUser(FastHttpUser):
+    insecure = True
+    wait_time = between(
+        float(os.environ.get("VSS_WAIT_MIN", "0.1")),
+        float(os.environ.get("VSS_WAIT_MAX", "0.5")),
+    )
+
+    def _validate(self, name: str, b64_cert: str, expected_result: str, idx: int):
+        ts = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime())
+        payload = {
+            "validationPolicyId": DEFAULT_POLICY,
+            "x509Certificate": b64_cert,
+            "clientMetadata": {"client": f"Locust {name} {ts}"},
+        }
+        with self.client.post(
+            "/vss/v2/validate",
+            json=payload,
+            name=f"POST /vss/v2/validate ({expected_result})",
+            catch_response=True,
+        ) as response:
+            if response.status_code != 200:
+                response.failure(f"{name}: HTTP {response.status_code}")
+                return
+            try:
+                body = response.json()
+                actual = body.get("validationResult", {}).get("result")
+            except Exception as exc:
+                response.failure(f"{name}: invalid JSON ({exc})")
+                return
+            if actual != expected_result:
+                reason = body.get("validationResult", {}).get("invalidityReasonText", "")
+                response.failure(f"{name}: expected {expected_result}, got {actual} ({reason})")
             else:
                 response.success()
 
-    @task
-    def validateTreasuryRevoked(self):
-        time = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime())
-        with self.client.post("/vss/v2/validate", data=None, json={"validationPolicyId": "2.16.840.1.101.10.2.18.2.1.4","x509Certificate":"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","clientMetadata":{"client":"Locust Test %s" % time}}, verify=False, timeout=(30, 30),
-        catch_response=True) as response:
-            if response.status_code == 0:
-                print("Empty Response")
-                response.failure(response)
+    def on_start(self):
+        self._ca_idx = 0
+        self._ee_idx = 0
+        self._neg_idx = 0
+
+    @task(5)
+    def validate_valid_ee(self):
+        if not VALID_EE_CERTS:
+            return
+        name, b64 = VALID_EE_CERTS[self._ee_idx % len(VALID_EE_CERTS)]
+        self._ee_idx += 1
+        self._validate(name, b64, "SUCCESS", self._ee_idx)
+
+    @task(3)
+    def validate_valid_ca(self):
+        if not VALID_CA_CERTS:
+            return
+        name, b64 = VALID_CA_CERTS[self._ca_idx % len(VALID_CA_CERTS)]
+        self._ca_idx += 1
+        self._validate(name, b64, "SUCCESS", self._ca_idx)
+
+    @task(2)
+    def validate_negative_ee(self):
+        if not NEGATIVE_EE_CERTS:
+            return
+        name, b64 = NEGATIVE_EE_CERTS[self._neg_idx % len(NEGATIVE_EE_CERTS)]
+        self._neg_idx += 1
+        self._validate(name, b64, "FAIL", self._neg_idx)
+
+    @task(1)
+    def get_policies(self):
+        with self.client.get("/vss/v2/policies", name="GET /vss/v2/policies", catch_response=True) as r:
+            if r.status_code == 200:
+                r.success()
             else:
-                response.success()
+                r.failure(f"HTTP {r.status_code}")
+
+    @task(1)
+    def get_intermediates(self):
+        with self.client.get("/vss/v2/intermediates", name="GET /vss/v2/intermediates", catch_response=True) as r:
+            if r.status_code == 200:
+                r.success()
+            else:
+                r.failure(f"HTTP {r.status_code}")
