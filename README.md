@@ -57,7 +57,7 @@ mvn clean test
 mvn clean package spring-boot:repackage
 ```
 
-See [TESTING.md](./TESTING.md) for local execution scripts and [locust/agent.py](./locust/agent.py) for load-testing instrumentation.
+See [TESTING.md](./TESTING.md) for local execution scripts and [locust/README.md](./locust/README.md) for reference sizing, Locust benchmarks (**1,047 req/s**, **≤ 857 ms** max latency on 4c/8t i7 + 30 GiB RAM), and PDF certificate harvesting.
 
 ### 3. Included Clients
 
