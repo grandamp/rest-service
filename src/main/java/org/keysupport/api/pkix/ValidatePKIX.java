@@ -59,35 +59,15 @@ public class ValidatePKIX {
 
 	private final static Logger LOG = LoggerFactory.getLogger(ValidatePKIX.class);
 
-	/**
-	 * <pre>
+	/*
+	 * Although certpath-provider and certpath-algorithm are configurable (defaulting
+	 * to "SUN" and "PKIX"), using anything other than the "SUN" provider may lead
+	 * to inconsistent results because the service currently relies on SUN-specific
+	 * properties (such as com.sun.security.crl.maxSize, enableCRLDP, and
+	 * enableAIAcaIssuers).
 	 *
-	 * For now, we will stick with the SUN PKIX provider since it can fetch CRL and
-	 * OCSP data.
-	 *
-	 * Changing certpath-provider & certpath-algorithm (configured in application.yml,
-	 * defaulting to "SUN" and "PKIX") will likely require the re-factoring of this class.
-	 * Switching to the "BC" provider may lead to unpredictable results based on the rest
-	 * of the configuration, such as com.sun.security.crl.maxSize.
-	 *
-	 * https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/URICertStore.java
-	 *
-	 * If we were to create an internal variant of the SUN URICertStore, then we
-	 * could use it with the BC Certpath provider.
-	 *
-	 * Debug logging for CertPath can be enabled running the code via:
-	 *
-	 * - java -Djava.security.debug=certpath -jar target/rest-service-eb.jar
-	 *
-	 * The following Documentation may be helpful to unravel configuration options:
-	 *
-	 * - https://docs.oracle.com/en/java/javase/21/security/java-pki-programmers-guide.html
-	 * - https://docs.oracle.com/en/java/javase/21/security/troubleshooting-security.html
-	 * - https://openjdk.org/jeps/124
-	 * - https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/cert/PKIXRevocationChecker.html
-	 * - https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/cert/PKIXRevocationChecker.Option.html
-	 *
-	 * </pre>
+	 * TODO: Consider refactoring to make this implementation friendly for use with
+	 * another provider, such as BouncyCastle (BC/BCFIPS).
 	 */
 
 	/*
