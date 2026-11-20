@@ -53,7 +53,8 @@ service:
       certpath-algorithm: PKIX
     cache:
       enabled: true
-      ttl-seconds: 300
+      success-ttl-seconds: 900
+      affirmatively-invalid-ttl-seconds: 86400
       max-entries: 10000
 logging:
   pattern:

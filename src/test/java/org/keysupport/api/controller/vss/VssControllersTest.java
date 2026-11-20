@@ -66,7 +66,8 @@ class VssControllersTest {
 		cache.clear();
 		cache.configure(
 				ValidationCacheSingleton.DEFAULT_ENABLED,
-				ValidationCacheSingleton.DEFAULT_TTL_SECONDS,
+				ValidationCacheSingleton.DEFAULT_SUCCESS_TTL_SECONDS,
+				ValidationCacheSingleton.DEFAULT_AFFIRMATIVELY_INVALID_TTL_SECONDS,
 				ValidationCacheSingleton.DEFAULT_MAX_ENTRIES);
 	}
 
@@ -234,7 +235,7 @@ class VssControllersTest {
 				.andExpect(jsonPath("$.transactionResult.transactionResultToken").value("SERVICEFAIL"))
 				.andExpect(jsonPath("$.transactionResult.transactionResultText").value("Unsupported WantBack"));
 
-		ValidationCacheSingleton.getInstance().configure(false, 0L, 100);
+		ValidationCacheSingleton.getInstance().configure(false, 0L, 0L, 100);
 		try (MockedStatic<ServiceValidationPolicies> polMock = mockStatic(ServiceValidationPolicies.class);
 				MockedStatic<ValidatePKIX> pkixMock = mockStatic(ValidatePKIX.class)) {
 

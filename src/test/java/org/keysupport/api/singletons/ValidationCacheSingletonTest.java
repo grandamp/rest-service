@@ -25,7 +25,7 @@ class ValidationCacheSingletonTest {
 	void setUp() {
 		cache = ValidationCacheSingleton.getInstance();
 		cache.clear();
-		cache.configure(true, 300L, 100);
+		cache.configure(true, 900L, 86_400L, 100);
 	}
 
 	@AfterEach
@@ -33,7 +33,8 @@ class ValidationCacheSingletonTest {
 		cache.clear();
 		cache.configure(
 				ValidationCacheSingleton.DEFAULT_ENABLED,
-				ValidationCacheSingleton.DEFAULT_TTL_SECONDS,
+				ValidationCacheSingleton.DEFAULT_SUCCESS_TTL_SECONDS,
+				ValidationCacheSingleton.DEFAULT_AFFIRMATIVELY_INVALID_TTL_SECONDS,
 				ValidationCacheSingleton.DEFAULT_MAX_ENTRIES);
 	}
 
@@ -44,43 +45,45 @@ class ValidationCacheSingletonTest {
 		return r;
 	}
 
-	private static VssResponse failResponse(String id) {
+	private static VssResponse failResponse(String id, Boolean affirmativelyInvalid) {
 		VssResponse r = new VssResponse();
 		r.requestId = id;
 		Fail f = new Fail();
-		f.invalidityReasonText = "revoked";
+		f.isAffirmativelyInvalid = affirmativelyInvalid;
+		f.invalidityReasonText = "invalid";
 		r.validationResult = f;
 		return r;
 	}
 
 	@Test
-	void cachesSuccessAndFailAndTracksHitMissCounts() {
+	void cachesSuccessFor15MinAndAffirmativelyInvalidFailLongTerm() {
 		long t0 = 1_000_000L;
-		assertNull(cache.get("req-1", t0));
+		assertNull(cache.get("req-ok", t0));
 		assertEquals(1L, cache.getMissCount());
-		assertEquals(0L, cache.getHitCount());
 
-		VssResponse ok = successResponse("req-1");
-		VssResponse fail = failResponse("req-2");
-		cache.put("req-1", ok, new Date(t0 + 600_000L), t0);
-		cache.put("req-2", fail, new Date(t0 + 600_000L), t0);
+		VssResponse ok = successResponse("req-ok");
+		VssResponse affInvalid = failResponse("req-fail-aff", Boolean.TRUE);
+		VssResponse nonAffInvalid = failResponse("req-fail-non", Boolean.FALSE);
+		VssResponse nullAffInvalid = failResponse("req-fail-null", null);
+
+		cache.put("req-ok", ok, new Date(t0 + 2_000_000L), t0);
+		// Expired cert with isAffirmativelyInvalid=true is still cached long-term
+		cache.put("req-fail-aff", affInvalid, new Date(t0 - 10_000L), t0);
+		// Indeterminate failures (isAffirmativelyInvalid=false/null) are NOT cached
+		cache.put("req-fail-non", nonAffInvalid, null, t0);
+		cache.put("req-fail-null", nullAffInvalid, null, t0);
+
 		assertEquals(2, cache.size());
+		assertSame(ok, cache.get("req-ok", t0 + 899_999L));
+		assertNull(cache.get("req-ok", t0 + 900_000L));
 
-		assertSame(ok, cache.get("req-1", t0 + 1_000L));
-		assertSame(fail, cache.get("req-2", t0 + 1_000L));
-		assertEquals(2L, cache.getHitCount());
+		assertSame(affInvalid, cache.get("req-fail-aff", t0 + 86_399_999L));
+		assertNull(cache.get("req-fail-aff", t0 + 86_400_000L));
 	}
 
 	@Test
-	void expiresAfterTtlOrCertNotAfter() {
+	void clampsSuccessTtlToCertNotAfter() {
 		long t0 = 2_000_000L;
-		VssResponse ok = successResponse("req-ttl");
-		cache.put("req-ttl", ok, new Date(t0 + 600_000L), t0);
-
-		assertNotNull(cache.get("req-ttl", t0 + 299_999L));
-		assertNull(cache.get("req-ttl", t0 + 300_000L));
-		assertEquals(0, cache.size());
-
 		VssResponse shortCert = successResponse("req-notafter");
 		cache.put("req-notafter", shortCert, new Date(t0 + 5_000L), t0);
 		assertNotNull(cache.get("req-notafter", t0 + 4_999L));
@@ -89,29 +92,28 @@ class ValidationCacheSingletonTest {
 
 	@Test
 	void enforcesMaxEntriesAndDisabledState() {
-		cache.configure(true, 300L, 2);
+		cache.configure(true, 900L, 86_400L, 2);
 		long t0 = 3_000_000L;
 		cache.put("a", successResponse("a"), null, t0);
 		cache.put("b", successResponse("b"), null, t0);
 		cache.put("c", successResponse("c"), null, t0);
 		assertEquals(2, cache.size());
 
-		// Non-Success/Fail validationResult is ignored
 		VssResponse unknown = new VssResponse();
 		unknown.validationResult = new ValidationResult() {};
 		cache.put("unknown", unknown, null, t0);
 		assertEquals(2, cache.size());
 
-		// Disabling clears cache
-		cache.configure(false, 300L, 100);
+		cache.configure(false, 900L, 86_400L, 100);
 		assertFalse(cache.isEnabled());
 		assertEquals(0, cache.size());
 		cache.put("d", successResponse("d"), null, t0);
 		assertNull(cache.get("d", t0));
 
-		cache.configure(true, 60L, 50);
+		cache.configure(true, 60L, 3600L, 50);
 		assertTrue(cache.isEnabled());
-		assertEquals(60L, cache.getTtlSeconds());
+		assertEquals(60L, cache.getSuccessTtlSeconds());
+		assertEquals(3600L, cache.getAffirmativelyInvalidTtlSeconds());
 		assertEquals(50, cache.getMaxEntries());
 	}
 }
