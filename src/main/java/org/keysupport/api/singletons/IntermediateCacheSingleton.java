@@ -415,7 +415,7 @@ public class IntermediateCacheSingleton {
 			builderResult = (PKIXCertPathBuilderResult) cpb.build(params);
 		} catch (CertPathBuilderException e) {
 			Throwable cause = e.getCause();
-			if (null != cause && null != cause.getCause()) {
+			if (null != cause && null != cause.getMessage()) {
 				return cause.getMessage();
 			}
 			return e.getLocalizedMessage();

@@ -44,7 +44,8 @@ service:
       revocation-ee-only: true
       ocsp-enabled: true
       crl-enabled: true
-      crl-max-size: 50
+      # Maximum downloadable CRL size in bytes (50 MiB; OpenJDK default is 20971520)
+      crl-max-size: 52428800
       certpath-provider: SUN
       certpath-algorithm: PKIX
 logging:
