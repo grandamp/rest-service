@@ -11,23 +11,28 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class LoggingUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LoggingUtil.class);
-    
-    public static String pojoToJson(Object obj) {
-		ObjectMapper mapper = new ObjectMapper();
+	private static final Logger LOG = LoggerFactory.getLogger(LoggingUtil.class);
+	private static final ObjectMapper MAPPER = new ObjectMapper();
+
+	private LoggingUtil() {
+	}
+
+	public static String pojoToJson(Object obj) {
 		try {
-			return mapper.writeValueAsString(obj);
+			return MAPPER.writeValueAsString(obj);
 		} catch (JsonProcessingException e) {
 			LOG.error("Unable to convert object to JSON", e);
 			return null;
 		}
+	}
 
-    }
-    
-    public static String stackTraceToString(Throwable t) {
-    	return Stream.of(t.getStackTrace())
-                .map(StackTraceElement::toString)
-                .collect(Collectors.joining("\n"));
-    }
+	public static String stackTraceToString(Throwable t) {
+		if (null == t) {
+			return "";
+		}
+		return Stream.of(t.getStackTrace())
+				.map(StackTraceElement::toString)
+				.collect(Collectors.joining("\n"));
+	}
 
 }

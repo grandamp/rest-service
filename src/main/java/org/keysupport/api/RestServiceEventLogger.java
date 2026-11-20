@@ -14,55 +14,70 @@ import org.slf4j.LoggerFactory;
 
 public class RestServiceEventLogger {
 
-	/*
-	 * At the moment, we are logging validation failures, but; the intent is to log
-	 * all major events.
-	 */
+	private static final Logger LOG = LoggerFactory.getLogger(RestServiceEventLogger.class);
 
-	private final static Logger LOG = LoggerFactory.getLogger(RestServiceEventLogger.class);
+	private RestServiceEventLogger() {
+	}
 
 	public static void logEvent(VssResponse vssResponse, CertPathBuilderException e) {
-		ValidationEvent event = new ValidationEvent();
-		event.x5tS256 = vssResponse.x5tS256;
-		event.eventType = "VALPOL_FAIL";
-		/*
-		 * Check and see if this CertPathBuilderException contains a cause
-		 */
-		Throwable t = e.getCause();
-		if (null != t) {
-			if (t.getCause() instanceof CertificateRevokedException) {
-				event.message = t.getMessage();
+		ValidationEvent event = baseEvent(vssResponse);
+		if (null != e) {
+			Throwable cause = e.getCause();
+			if (null != cause) {
+				CertificateRevokedException revoked = findCause(cause, CertificateRevokedException.class);
+				if (null != revoked) {
+					event.message = null != cause.getMessage() ? cause.getMessage() : revoked.getMessage();
+				} else {
+					String detail = null != cause.getMessage() ? cause.getMessage() : e.getMessage();
+					event.message = cause.getClass().getSimpleName()
+							+ (null != detail ? ": " + detail : "");
+					LOG.error(LoggingUtil.pojoToJson(Map.of(
+							"error", "CertPathBuilderException cause",
+							"cause", cause.getClass().getCanonicalName(),
+							"message", null != detail ? detail : "",
+							"stacktrace", LoggingUtil.stackTraceToString(e))));
+				}
 			} else {
-				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "TODO: Capture this exception cause", "cause", t.getClass().getCanonicalName(),"stacktrace", LoggingUtil.stackTraceToString(e))));
+				event.message = e.getMessage();
 			}
-		} else {
-			event.message = e.getMessage();
 		}
 		LOG.warn(LoggingUtil.pojoToJson(event));
 	}
 
 	public static void logEvent(VssResponse vssResponse, CertificateExpiredException e) {
-		ValidationEvent event = new ValidationEvent();
-		event.x5tS256 = vssResponse.x5tS256;
-		event.eventType = "VALPOL_FAIL";
-		event.message = e.getMessage();
+		ValidationEvent event = baseEvent(vssResponse);
+		event.message = null != e ? e.getMessage() : null;
 		LOG.warn(LoggingUtil.pojoToJson(event));
 	}
 
 	public static void logEvent(VssResponse vssResponse, CertificateNotYetValidException e) {
-		ValidationEvent event = new ValidationEvent();
-		event.x5tS256 = vssResponse.x5tS256;
-		event.eventType = "VALPOL_FAIL";
-		event.message = e.getMessage();
+		ValidationEvent event = baseEvent(vssResponse);
+		event.message = null != e ? e.getMessage() : null;
 		LOG.warn(LoggingUtil.pojoToJson(event));
 	}
 
 	public static void logEvent(VssResponse vssResponse, CertPathValidatorException e) {
-		ValidationEvent event = new ValidationEvent();
-		event.x5tS256 = vssResponse.x5tS256;
-		event.eventType = "VALPOL_FAIL";
-		event.message = e.getMessage();
+		ValidationEvent event = baseEvent(vssResponse);
+		event.message = null != e ? e.getMessage() : null;
 		LOG.warn(LoggingUtil.pojoToJson(event));
+	}
+
+	private static ValidationEvent baseEvent(VssResponse vssResponse) {
+		ValidationEvent event = new ValidationEvent();
+		event.x5tS256 = null != vssResponse ? vssResponse.x5tS256 : null;
+		event.eventType = "VALPOL_FAIL";
+		return event;
+	}
+
+	private static <T extends Throwable> T findCause(Throwable error, Class<T> targetType) {
+		Throwable current = error;
+		while (null != current) {
+			if (targetType.isInstance(current)) {
+				return targetType.cast(current);
+			}
+			current = current.getCause();
+		}
+		return null;
 	}
 
 }
