@@ -313,11 +313,8 @@ public class ValidatePKIX {
 		/*
 		 * Intermediate Certificate Discovery
 		 *
-		 * The intent of this logic is to see if the intermediates in the built path
-		 * exist in our intermediate cache.
-		 *
-		 * If the certificate does not exist, then we will print a warning message
-		 * suggesting the certificate addition.
+		 * If AIA chase is enabled and a CA intermediate in the built path is not yet
+		 * in our intermediate cache, admit it into IntermediateCacheSingleton.
 		 */
 		if (policies.getAiaChase()) {
 			for (X509Certificate intermediate : validPath) {
@@ -333,14 +330,11 @@ public class ValidatePKIX {
 										"stacktrace", LoggingUtil.stackTraceToString(e))));
 					}
 					if (null != cachedPathCerts && cachedPathCerts.isEmpty()) {
-						try {
-							LOG.warn(LoggingUtil.pojoToJson(Map.of("warning",
-									"Discovered Intermediate! (not present in cache, consider adding)",
-									"x509Certificate", Base64.getEncoder().encodeToString(intermediate.getEncoded()))));
-						} catch (CertificateEncodingException e) {
-							LOG.error(LoggingUtil
-									.pojoToJson(Map.of("error", "Error Base64 encoding certificate from CertPath",
-											"stacktrace", LoggingUtil.stackTraceToString(e))));
+						if (intermediateCacheSingleton.addIntermediate(intermediate)) {
+							LOG.info(LoggingUtil.pojoToJson(Map.of(
+									"info", "Added discovered intermediate to cache",
+									"x5t#S256", X509Util.x5tS256(intermediate),
+									"x509SubjectName", intermediate.getSubjectX500Principal().toString())));
 						}
 					}
 				}

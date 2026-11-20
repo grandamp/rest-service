@@ -212,12 +212,13 @@ class ValidatePKIXTest {
 			Fail unkFail = assertInstanceOf(Fail.class, unknown.validationResult);
 			assertFalse(unkFail.isAffirmativelyInvalid);
 
-			// 6. Intermediate discovery warning when intermediateStore does not contain intermediate
+			// 6. Intermediate discovery adds missing CA intermediate to IntermediateCacheSingleton
 			// (also verifies isCA=true path)
 			when(cacheMock.getIntermediates()).thenReturn(emptyStore);
 			VssResponse caMissingFromStore = ValidatePKIX.validate(interCert, "x5t-ca", valPol, validNow);
 			assertTrue(caMissingFromStore.isCA);
 			assertInstanceOf(Success.class, caMissingFromStore.validationResult);
+			org.mockito.Mockito.verify(cacheMock).addIntermediate(interCert);
 		}
 	}
 
