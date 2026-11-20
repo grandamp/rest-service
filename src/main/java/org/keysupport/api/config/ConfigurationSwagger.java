@@ -16,16 +16,22 @@ import io.swagger.v3.oas.models.servers.Server;
 public class ConfigurationSwagger {
 
 	private final String BASE_URI = System.getenv("BASE_URI");
-	private final String PIPELINE_ID = System.getenv("PIPELINE_ID");
+
+	public static String resolveVersion() {
+		return resolveVersion(System.getenv("PIPELINE_ID"));
+	}
+
+	public static String resolveVersion(String pipelineId) {
+		if (pipelineId != null && !pipelineId.isBlank() && !"unknown".equalsIgnoreCase(pipelineId)) {
+			String shortSha = pipelineId.length() > 7 ? pipelineId.substring(0, 7) : pipelineId;
+			return "ghcr.io/grandamp/rest-service:sha-" + shortSha;
+		}
+		return "https://github.com/grandamp/rest-service/";
+	}
 
 	@Bean
 	public OpenAPI springShopOpenAPI() {
-
-		String apiVersion = "https://github.com/grandamp/rest-service/";
-		if (PIPELINE_ID != null && !PIPELINE_ID.isBlank() && !"unknown".equalsIgnoreCase(PIPELINE_ID)) {
-			String shortSha = PIPELINE_ID.length() > 7 ? PIPELINE_ID.substring(0, 7) : PIPELINE_ID;
-			apiVersion = "ghcr.io/grandamp/rest-service:sha-" + shortSha;
-		}
+		String apiVersion = resolveVersion();
 
 		OpenAPI openApi = new OpenAPI()
 				.info(new Info().title("Certificate Validation Service API")

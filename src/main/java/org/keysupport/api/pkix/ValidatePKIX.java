@@ -34,6 +34,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 import org.keysupport.api.LoggingUtil;
@@ -119,7 +120,9 @@ public class ValidatePKIX {
 		/*
 		 * This implementation will rely on BCFIPS for cryptographic compliance.
 		 */
-		Security.addProvider(new BouncyCastleFipsProvider());
+		if (null == Security.getProvider(JCE_PROVIDER)) {
+			Security.addProvider(new BouncyCastleFipsProvider());
+		}
 		/*
 		 * Process the request
 		 */
@@ -199,7 +202,7 @@ public class ValidatePKIX {
 		 * Initialize the TrustAnchor via the ValidationPolicy.
 		 */
 		List<Certificate> cert_list = new ArrayList<>();
-		HashSet<TrustAnchor> taList = policies.getTrustAnchors(valPol.validationPolicyId);
+		Set<TrustAnchor> taList = policies.getTrustAnchors(valPol.validationPolicyId);
 		CertStoreParameters cparam = new CollectionCertStoreParameters(cert_list);
 		CertStore cstore = null;
 		try {

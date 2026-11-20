@@ -33,6 +33,8 @@ class ConfigTests {
 	void clearSystemProperties() {
 		System.clearProperty("com.sun.security.crl.maxSize");
 		System.clearProperty("com.sun.security.allowedAIALocations");
+		System.clearProperty("com.sun.security.enableCRLDP");
+		System.clearProperty("com.sun.security.enableAIAcaIssuers");
 	}
 
 	@Test
@@ -43,6 +45,10 @@ class ConfigTests {
 		assertNotNull(api.getInfo());
 		assertEquals("Certificate Validation Service API", api.getInfo().getTitle());
 		assertTrue(api.getInfo().getVersion() != null && !api.getInfo().getVersion().isBlank());
+		assertEquals("https://github.com/grandamp/rest-service/", ConfigurationSwagger.resolveVersion(null));
+		assertEquals("https://github.com/grandamp/rest-service/", ConfigurationSwagger.resolveVersion("unknown"));
+		assertEquals("ghcr.io/grandamp/rest-service:sha-f9de467",
+				ConfigurationSwagger.resolveVersion("f9de467187fac1d8f79bb66df84f0697880f7403"));
 	}
 
 	@Test
@@ -111,7 +117,11 @@ class ConfigTests {
 			verify(polSingleton).setCrlMaxSize(64);
 			verify(polSingleton).setCertPathProvider("SUN");
 			verify(polSingleton).setCertPathAlgorithm("PKIX");
+			verify(polSingleton).setIntermediateValidateOnLoad(true);
+			verify(polSingleton).setIntermediateRevocationEnabled(true);
+			verify(polSingleton).lockConfiguration();
 			verify(cacheSingleton).updateIntermediates("https://example.test/intermediates.p7b");
+			verify(cacheSingleton).startPeriodicRevalidation(3600L);
 
 			assertEquals("64", System.getProperty("com.sun.security.crl.maxSize"));
 			assertEquals("http://crl.example.test", System.getProperty("com.sun.security.allowedAIALocations"));

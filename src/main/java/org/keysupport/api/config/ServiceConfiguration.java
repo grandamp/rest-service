@@ -3,6 +3,7 @@ package org.keysupport.api.config;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.security.Security;
 import java.util.Map;
 
 import org.keysupport.api.LoggingUtil;
@@ -11,6 +12,7 @@ import org.keysupport.api.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +20,29 @@ import org.springframework.context.annotation.Configuration;
 public class ServiceConfiguration {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ServiceConfiguration.class);
+	private static final long DEFAULT_REVALIDATE_INTERVAL_SECONDS = 3600L;
 
+	public ServiceConfiguration(
+			String polUri,
+			String intermediatesUri,
+			int maxPathLen,
+			boolean systemLogEnabled,
+			String systemLogFile,
+			boolean aiaChase,
+			String allowedAiaLocations,
+			boolean revocationEnabled,
+			boolean revocationEeOnly,
+			boolean ocspEnabled,
+			boolean crlEnabled,
+			int crlMaxSize,
+			String certPathProvider,
+			String certPathAlgorithm) {
+		this(polUri, intermediatesUri, maxPathLen, systemLogEnabled, systemLogFile, aiaChase, allowedAiaLocations,
+				revocationEnabled, revocationEeOnly, ocspEnabled, crlEnabled, crlMaxSize, certPathProvider,
+				certPathAlgorithm, true, true, DEFAULT_REVALIDATE_INTERVAL_SECONDS);
+	}
+
+	@Autowired
 	public ServiceConfiguration(
 			@Value("${service.policies.uri}") String polUri,
 			@Value("${service.intermediates.uri}") String intermediatesUri,
@@ -33,7 +57,10 @@ public class ServiceConfiguration {
 			@Value("${service.validation.pkix.crl-enabled}") boolean crlEnabled,
 			@Value("${service.validation.pkix.crl-max-size:50}") int crlMaxSize,
 			@Value("${service.validation.pkix.certpath-provider:SUN}") String certPathProvider,
-			@Value("${service.validation.pkix.certpath-algorithm:PKIX}") String certPathAlgorithm) {
+			@Value("${service.validation.pkix.certpath-algorithm:PKIX}") String certPathAlgorithm,
+			@Value("${service.intermediates.validate-on-load:true}") boolean intermediateValidateOnLoad,
+			@Value("${service.intermediates.revocation-enabled:true}") boolean intermediateRevocationEnabled,
+			@Value("${service.intermediates.revalidate-interval-seconds:3600}") long revalidateIntervalSeconds) {
 		/*
 		 * Ensure PQC/FIPS JSSE properties are initialized before any outbound HTTPS fetches
 		 */
@@ -59,15 +86,22 @@ public class ServiceConfiguration {
 		policy.setCrlMaxSize(crlMaxSize);
 		policy.setCertPathProvider(certPathProvider);
 		policy.setCertPathAlgorithm(certPathAlgorithm);
+		policy.setIntermediateValidateOnLoad(intermediateValidateOnLoad);
+		policy.setIntermediateRevocationEnabled(intermediateRevocationEnabled);
+		policy.lockConfiguration();
 		/*
-		 * Set the maximum CRL size for the SUN JSSE provider
+		 * Set revocation & AIA JSSE properties before populating the intermediate cache
 		 */
+		if ((revocationEnabled || intermediateRevocationEnabled) && crlEnabled) {
+			System.setProperty("com.sun.security.enableCRLDP", "true");
+		}
+		if ((revocationEnabled || intermediateRevocationEnabled) && ocspEnabled) {
+			Security.setProperty("ocsp.enable", "true");
+		}
 		System.setProperty("com.sun.security.crl.maxSize", String.valueOf(crlMaxSize));
 		LOG.info(LoggingUtil.pojoToJson(Map.of("com.sun.security.crl.maxSize", crlMaxSize)));
-		/*
-		 * Set the allowed AIA locations for the SUN JSSE provider if AIA chase is enabled
-		 */
 		if (aiaChase) {
+			System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
 			System.setProperty("com.sun.security.allowedAIALocations", allowedAiaLocations);
 			LOG.info(LoggingUtil.pojoToJson(Map.of("com.sun.security.allowedAIALocations", allowedAiaLocations)));
 		}
@@ -82,6 +116,7 @@ public class ServiceConfiguration {
 		LOG.info(LoggingUtil.pojoToJson(Map.of("service.intermediates.uri", intermediatesUri)));
 		IntermediateCacheSingleton cache = IntermediateCacheSingleton.getInstance();
 		cache.updateIntermediates(intermediatesUri);
+		cache.startPeriodicRevalidation(revalidateIntervalSeconds);
 		/*
 		 * Redirect System.out and System.err to log to the trace log if defined
 		 */
