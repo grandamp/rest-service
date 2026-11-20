@@ -149,43 +149,27 @@ public class ValidateController {
 			throw new ServiceException("Invalid Policy Specified");
 		}
 		/*
-		 * Check the x509Certificate
+		 * Decode Base64 certificate bytes and derive x5t#S256 + requestId before
+		 * incurring X.509 ASN.1 parsing so cache hits skip CertificateFactory.
 		 */
 		String pemCert = request.x509Certificate;
+		if (pemCert.length() >= PEM_SIZE_LIMIT) {
+			throw new ServiceException("Size limit for x509Certificate exceeded");
+		}
+		byte[] certBytes;
 		try {
-			if (pemCert.length() >= PEM_SIZE_LIMIT) {
-				throw new ServiceException("Size limit for x509Certificate exceeded");
-			}
-			byte[] certBytes;
-			try {
-				certBytes = Base64.getDecoder().decode(pemCert);
-			} catch (IllegalArgumentException e) {
-				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
-				throw new ServiceException("Error decoding x509Certificate");
-			}
-			cf = CertificateFactory.getInstance("X509");
-			bais = new ByteArrayInputStream(certBytes);
-			clientCert = (X509Certificate) cf.generateCertificate(bais);
-		} catch (CertificateException e) {
+			certBytes = Base64.getDecoder().decode(pemCert);
+		} catch (IllegalArgumentException e) {
 			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			throw new ServiceException("Error decoding x509Certificate");
 		}
-		/*
-		 * Derive x5t#S256
-		 */
-		x5tS256 = X509Util.x5tS256(clientCert);
+		x5tS256 = X509Util.x5tS256(certBytes);
 		/*
 		 * Derive requestId.
 		 *
-		 * The client can also derive the requestId in order to attempt a GET request,
-		 * before POST, *if* this implementation supports caching.
-		 *
-		 * This would yield a much faster response from the cache, or; a 404 if not
-		 * cached.
-		 *
-		 * - Client derives s5t#S256, which is the base64 encoded, SHA-256 digest of the
-		 * certificate. - Client digests the UTF-8 value of of the String:
-		 * "<x5t#S256 Base64 Value>:<validationPolicyId>"
+		 * - Client derives x5t#S256, which is the base64url encoded SHA-256 digest of
+		 * the certificate. - Client digests the UTF-8 value of the String:
+		 * "<x5t#S256 Base64Url Value>:<validationPolicyId>"
 		 */
 		requestId = X509Util.strS256HexString(x5tS256 + ":" + valPol.validationPolicyId);
 		/*
@@ -198,7 +182,7 @@ public class ValidateController {
 		 */
 		LOG.info(LoggingUtil.pojoToJson(request));
 		/*
-		 * Check short-TTL validation response cache before running PKIX/revocation I/O
+		 * Check short-TTL validation response cache before parsing X.509 or running PKIX/revocation I/O
 		 */
 		long nowMillis = System.currentTimeMillis();
 		ValidationCacheSingleton cache = ValidationCacheSingleton.getInstance();
@@ -206,6 +190,14 @@ public class ValidateController {
 		if (null != cachedResponse) {
 			LOG.info(LoggingUtil.pojoToJson(cachedResponse));
 			return ResponseEntity.ok().body(cachedResponse);
+		}
+		try {
+			cf = CertificateFactory.getInstance("X509");
+			bais = new ByteArrayInputStream(certBytes);
+			clientCert = (X509Certificate) cf.generateCertificate(bais);
+		} catch (CertificateException e) {
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
+			throw new ServiceException("Error decoding x509Certificate");
 		}
 		/*
 		 * Validate, log, cache, and return the result
