@@ -5,6 +5,9 @@ server:
     enabled:
       protocols: 'TLSv1.3'
 spring:
+  threads:
+    virtual:
+      enabled: true
   main:
     banner-mode: OFF
     log-startup-info: OFF
@@ -48,6 +51,10 @@ service:
       crl-max-size: 52428800
       certpath-provider: SUN
       certpath-algorithm: PKIX
+    cache:
+      enabled: true
+      ttl-seconds: 300
+      max-entries: 10000
 logging:
   pattern:
     console: "{\"time\": \"%d\", \"level\": \"%p\", \"class\": \"%logger{63}:%L\", \"message\": %m}%n"

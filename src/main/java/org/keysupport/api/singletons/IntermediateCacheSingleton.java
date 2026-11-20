@@ -449,6 +449,7 @@ public class IntermediateCacheSingleton {
 		ValidationPoliciesSingleton policies = ValidationPoliciesSingleton.getInstance();
 		this.intermediateStore = createCertStore(certs, policies);
 		this.cachedCerts = List.copyOf(certs);
+		ValidationCacheSingleton.getInstance().clear();
 	}
 
 	private CertStore createCertStore(List<X509Certificate> certs, ValidationPoliciesSingleton policies) {

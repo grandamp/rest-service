@@ -21,7 +21,9 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -35,6 +37,7 @@ import org.keysupport.api.pojo.vss.ValidationPolicies;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.keysupport.api.singletons.IntermediateCacheSingleton;
+import org.keysupport.api.singletons.ValidationCacheSingleton;
 import org.keysupport.api.testutil.CertFixtures;
 import org.keysupport.api.testutil.CertFixtures.CertFixture;
 import org.mockito.MockedStatic;
@@ -55,6 +58,17 @@ class VssControllersTest {
 	private static CertFixture dodCa65Fixture;
 	private static X509Certificate dodCa65;
 	private static String dodCa65B64;
+
+	@BeforeEach
+	@AfterEach
+	void clearValidationCache() {
+		ValidationCacheSingleton cache = ValidationCacheSingleton.getInstance();
+		cache.clear();
+		cache.configure(
+				ValidationCacheSingleton.DEFAULT_ENABLED,
+				ValidationCacheSingleton.DEFAULT_TTL_SECONDS,
+				ValidationCacheSingleton.DEFAULT_MAX_ENTRIES);
+	}
 
 	@BeforeAll
 	static void setUp() throws Exception {
@@ -189,6 +203,7 @@ class VssControllersTest {
 			failResp.validationResult = fail;
 
 			pkixMock.when(() -> ValidatePKIX.validate(any(), any(), eq(aal3Policy), any())).thenReturn(failResp);
+			ValidationCacheSingleton.getInstance().clear();
 
 			mvc.perform(post("/vss/v2/validate")
 							.contentType(MediaType.APPLICATION_JSON)
@@ -219,6 +234,7 @@ class VssControllersTest {
 				.andExpect(jsonPath("$.transactionResult.transactionResultToken").value("SERVICEFAIL"))
 				.andExpect(jsonPath("$.transactionResult.transactionResultText").value("Unsupported WantBack"));
 
+		ValidationCacheSingleton.getInstance().configure(false, 0L, 100);
 		try (MockedStatic<ServiceValidationPolicies> polMock = mockStatic(ServiceValidationPolicies.class);
 				MockedStatic<ValidatePKIX> pkixMock = mockStatic(ValidatePKIX.class)) {
 
@@ -261,6 +277,34 @@ class VssControllersTest {
 					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[0].resultByCertificate.validationSuccessData.wantBackResultList[0].certPath.x509CertificateList[0].x509Certificate").value(dodCa65B64))
 					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[1].resultByCertificate.validationResultToken").value("FAIL"))
 					.andExpect(jsonPath("$.validationResult.resultsByCertificateList[1].resultByCertificate.validationFailureData.invalidityReasonList[0].invalidityReasonText").value("Revoked"));
+		}
+	}
+
+	@Test
+	void validateController_v2_cacheHitSkipsValidatePkix() throws Exception {
+		MockMvc mvc = MockMvcBuilders.standaloneSetup(new ValidateController()).build();
+		try (MockedStatic<ServiceValidationPolicies> polMock = mockStatic(ServiceValidationPolicies.class);
+				MockedStatic<ValidatePKIX> pkixMock = mockStatic(ValidatePKIX.class)) {
+
+			polMock.when(() -> ServiceValidationPolicies.getPolicy(AAL3_POLICY_ID)).thenReturn(aal3Policy);
+
+			VssResponse okResp = new VssResponse();
+			okResp.x5tS256 = "abc123";
+			okResp.x509SerialNumber = "1356";
+			okResp.isCA = true;
+			okResp.validationResult = new Success();
+
+			pkixMock.when(() -> ValidatePKIX.validate(any(), any(), eq(aal3Policy), any())).thenReturn(okResp);
+
+			String body = "{\"validationPolicyId\":\"" + AAL3_POLICY_ID + "\",\"x509Certificate\":\"" + dodCa65B64 + "\"}";
+			mvc.perform(post("/vss/v2/validate").contentType(MediaType.APPLICATION_JSON).content(body))
+					.andExpect(status().isOk())
+					.andExpect(jsonPath("$.validationResult.result").value("SUCCESS"));
+			mvc.perform(post("/vss/v2/validate").contentType(MediaType.APPLICATION_JSON).content(body))
+					.andExpect(status().isOk())
+					.andExpect(jsonPath("$.validationResult.result").value("SUCCESS"));
+
+			pkixMock.verify(() -> ValidatePKIX.validate(any(), any(), eq(aal3Policy), any()), org.mockito.Mockito.times(1));
 		}
 	}
 
