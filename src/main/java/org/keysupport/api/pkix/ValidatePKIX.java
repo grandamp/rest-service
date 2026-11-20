@@ -12,13 +12,11 @@ import java.security.cert.CertPathValidator;
 import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertStore;
 import java.security.cert.CertStoreException;
-import java.security.cert.CertStoreParameters;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.CertificateRevokedException;
-import java.security.cert.CollectionCertStoreParameters;
 import java.security.cert.PKIXBuilderParameters;
 import java.security.cert.PKIXCertPathBuilderResult;
 import java.security.cert.PKIXCertPathValidatorResult;
@@ -61,35 +59,15 @@ public class ValidatePKIX {
 
 	private final static Logger LOG = LoggerFactory.getLogger(ValidatePKIX.class);
 
-	/**
-	 * <pre>
+	/*
+	 * Although certpath-provider and certpath-algorithm are configurable (defaulting
+	 * to "SUN" and "PKIX"), using anything other than the "SUN" provider may lead
+	 * to inconsistent results because the service currently relies on SUN-specific
+	 * properties (such as com.sun.security.crl.maxSize, enableCRLDP, and
+	 * enableAIAcaIssuers).
 	 *
-	 * For now, we will stick with the SUN PKIX provider since it can fetch CRL and
-	 * OCSP data.
-	 *
-	 * Changing certpath-provider & certpath-algorithm (configured in application.yml,
-	 * defaulting to "SUN" and "PKIX") will likely require the re-factoring of this class.
-	 * Switching to the "BC" provider may lead to unpredictable results based on the rest
-	 * of the configuration, such as com.sun.security.crl.maxSize.
-	 *
-	 * https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/security/provider/certpath/URICertStore.java
-	 *
-	 * If we were to create an internal variant of the SUN URICertStore, then we
-	 * could use it with the BC Certpath provider.
-	 *
-	 * Debug logging for CertPath can be enabled running the code via:
-	 *
-	 * - java -Djava.security.debug=certpath -jar target/rest-service-eb.jar
-	 *
-	 * The following Documentation may be helpful to unravel configuration options:
-	 *
-	 * - https://docs.oracle.com/en/java/javase/21/security/java-pki-programmers-guide.html
-	 * - https://docs.oracle.com/en/java/javase/21/security/troubleshooting-security.html
-	 * - https://openjdk.org/jeps/124
-	 * - https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/cert/PKIXRevocationChecker.html
-	 * - https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/cert/PKIXRevocationChecker.Option.html
-	 *
-	 * </pre>
+	 * TODO: Consider refactoring to make this implementation friendly for use with
+	 * another provider, such as BouncyCastle (BC/BCFIPS).
 	 */
 
 	/*
@@ -97,32 +75,17 @@ public class ValidatePKIX {
 	 */
 	private final static String JCE_PROVIDER = "BCFIPS";
 
-	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, Date now) {
-		ValidationPoliciesSingleton policies = ValidationPoliciesSingleton.getInstance();
-		/*
-		 * Allow CRL
-		 */
-		if (policies.getRevocationEnabled() && policies.getCrlEnabled()) {
-			System.setProperty("com.sun.security.enableCRLDP", "true");
-		}
-		/*
-		 * Allow OCSP
-		 */
-		if (policies.getRevocationEnabled() && policies.getOcspEnabled()) {
-			Security.setProperty("ocsp.enable", "true");
-		}
-		/*
-		 * Allow AIA chase
-		 */
-		if (policies.getAiaChase()) {
-			System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
-		}
-		/*
-		 * This implementation will rely on BCFIPS for cryptographic compliance.
-		 */
+	static {
 		if (null == Security.getProvider(JCE_PROVIDER)) {
 			Security.addProvider(new BouncyCastleFipsProvider());
 		}
+	}
+
+	private ValidatePKIX() {
+	}
+
+	public static VssResponse validate(X509Certificate cert, String x5tS256, ValidationPolicy valPol, Date now) {
+		ValidationPoliciesSingleton policies = ValidationPoliciesSingleton.getInstance();
 		/*
 		 * Process the request
 		 */
@@ -180,7 +143,11 @@ public class ValidatePKIX {
 		 */
 		response.x5tS256 = x5tS256;
 		try {
-			cert.checkValidity();
+			if (null != now) {
+				cert.checkValidity(now);
+			} else {
+				cert.checkValidity();
+			}
 		} catch (CertificateExpiredException e) {
 			RestServiceEventLogger.logEvent(response, e);
 			Fail fail = new Fail();
@@ -201,17 +168,7 @@ public class ValidatePKIX {
 		/*
 		 * Initialize the TrustAnchor via the ValidationPolicy.
 		 */
-		List<Certificate> cert_list = new ArrayList<>();
 		Set<TrustAnchor> taList = policies.getTrustAnchors(valPol.validationPolicyId);
-		CertStoreParameters cparam = new CollectionCertStoreParameters(cert_list);
-		CertStore cstore = null;
-		try {
-			cstore = CertStore.getInstance("Collection", cparam, policies.getCertPathProvider());
-		} catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchProviderException e) {
-			LOG.error(LoggingUtil.pojoToJson(
-					Map.of("error", "Internal Validation Error", "stacktrace", LoggingUtil.stackTraceToString(e))));
-			throw new ServiceException("Internal Validation Error");
-		}
 		PKIXBuilderParameters params = null;
 		try {
 			params = new PKIXBuilderParameters(taList, selector);
@@ -227,7 +184,6 @@ public class ValidatePKIX {
 		params.setExplicitPolicyRequired(valPol.requireExplicitPolicy);
 		params.setAnyPolicyInhibited(valPol.inhibitAnyPolicy);
 		params.setMaxPathLength(policies.getMaxPathLen());
-		params.addCertStore(cstore);
 		/**
 		 * <pre>
 		 *
@@ -260,6 +216,8 @@ public class ValidatePKIX {
 				rc.setOptions(EnumSet.of(PKIXRevocationChecker.Option.ONLY_END_ENTITY));
 			}
 			params.addCertPathChecker(rc);
+		} else {
+			params.setRevocationEnabled(false);
 		}
 		PKIXCertPathBuilderResult result = null;
 		try {
@@ -267,6 +225,7 @@ public class ValidatePKIX {
 		} catch (InvalidAlgorithmParameterException e) {
 			LOG.error(LoggingUtil.pojoToJson(
 					Map.of("error", "Error with CertPathBuilder", "stacktrace", LoggingUtil.stackTraceToString(e))));
+			throw new ServiceException("Internal Validation Error");
 		} catch (CertPathBuilderException e) {
 			/*
 			 * Construct and return validation response.
@@ -334,11 +293,8 @@ public class ValidatePKIX {
 		/*
 		 * Intermediate Certificate Discovery
 		 *
-		 * The intent of this logic is to see if the intermediates in the built path
-		 * exist in our intermediate cache.
-		 *
-		 * If the certificate does not exist, then we will print a warning message
-		 * suggesting the certificate addition.
+		 * If AIA chase is enabled and a CA intermediate in the built path is not yet
+		 * in our intermediate cache, admit it into IntermediateCacheSingleton.
 		 */
 		if (policies.getAiaChase()) {
 			for (X509Certificate intermediate : validPath) {
@@ -353,15 +309,12 @@ public class ValidatePKIX {
 								.pojoToJson(Map.of("error", "Internal Intermediate Certificate Discovery Error",
 										"stacktrace", LoggingUtil.stackTraceToString(e))));
 					}
-					if (cachedPathCerts.isEmpty()) {
-						try {
-							LOG.warn(LoggingUtil.pojoToJson(Map.of("warning",
-									"Discovered Intermediate! (not present in cache, consider adding)",
-									"x509Certificate", Base64.getEncoder().encodeToString(intermediate.getEncoded()))));
-						} catch (CertificateEncodingException e) {
-							LOG.error(LoggingUtil
-									.pojoToJson(Map.of("error", "Error Base64 encoding certificate from CertPath",
-											"stacktrace", LoggingUtil.stackTraceToString(e))));
+					if (null != cachedPathCerts && cachedPathCerts.isEmpty()) {
+						if (intermediateCacheSingleton.addIntermediate(intermediate)) {
+							LOG.info(LoggingUtil.pojoToJson(Map.of(
+									"info", "Added discovered intermediate to cache",
+									"x5t#S256", X509Util.x5tS256(intermediate),
+									"x509SubjectName", intermediate.getSubjectX500Principal().toString())));
 						}
 					}
 				}
@@ -383,7 +336,9 @@ public class ValidatePKIX {
 			JsonX509Certificate bCert = new JsonX509Certificate();
 			try {
 				bCert.x509Certificate = Base64.getEncoder().encodeToString(currentCert.getEncoded());
-				LOG.debug(LoggingUtil.pojoToJson(Map.of("pkix.path.cert", currentCert.toString())));
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(LoggingUtil.pojoToJson(Map.of("pkix.path.cert", currentCert.toString())));
+				}
 			} catch (CertificateEncodingException e) {
 				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error Base64 encoding certificate from CertPath",
 						"stacktrace", LoggingUtil.stackTraceToString(e))));
