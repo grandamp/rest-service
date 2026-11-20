@@ -64,7 +64,9 @@ public class ServiceConfiguration {
 		this(polUri, intermediatesUri, maxPathLen, systemLogEnabled, systemLogFile, aiaChase, allowedAiaLocations,
 				revocationEnabled, revocationEeOnly, ocspEnabled, crlEnabled, crlMaxSize, certPathProvider,
 				certPathAlgorithm, intermediateValidateOnLoad, intermediateRevocationEnabled, revalidateIntervalSeconds,
-				ValidationCacheSingleton.DEFAULT_ENABLED, ValidationCacheSingleton.DEFAULT_TTL_SECONDS,
+				ValidationCacheSingleton.DEFAULT_ENABLED,
+				ValidationCacheSingleton.DEFAULT_SUCCESS_TTL_SECONDS,
+				ValidationCacheSingleton.DEFAULT_AFFIRMATIVELY_INVALID_TTL_SECONDS,
 				ValidationCacheSingleton.DEFAULT_MAX_ENTRIES);
 	}
 
@@ -88,7 +90,8 @@ public class ServiceConfiguration {
 			@Value("${service.intermediates.revocation-enabled:true}") boolean intermediateRevocationEnabled,
 			@Value("${service.intermediates.revalidate-interval-seconds:3600}") long revalidateIntervalSeconds,
 			@Value("${service.validation.cache.enabled:true}") boolean validationCacheEnabled,
-			@Value("${service.validation.cache.ttl-seconds:300}") long validationCacheTtlSeconds,
+			@Value("${service.validation.cache.success-ttl-seconds:900}") long validationCacheSuccessTtlSeconds,
+			@Value("${service.validation.cache.affirmatively-invalid-ttl-seconds:86400}") long validationCacheInvalidTtlSeconds,
 			@Value("${service.validation.cache.max-entries:10000}") int validationCacheMaxEntries) {
 		/*
 		 * Ensure PQC/FIPS JSSE properties are initialized before any outbound HTTPS fetches
@@ -119,10 +122,14 @@ public class ServiceConfiguration {
 		policy.setIntermediateRevocationEnabled(intermediateRevocationEnabled);
 		policy.lockConfiguration();
 		ValidationCacheSingleton.getInstance().configure(
-				validationCacheEnabled, validationCacheTtlSeconds, validationCacheMaxEntries);
+				validationCacheEnabled,
+				validationCacheSuccessTtlSeconds,
+				validationCacheInvalidTtlSeconds,
+				validationCacheMaxEntries);
 		LOG.info(LoggingUtil.pojoToJson(Map.of(
 				"service.validation.cache.enabled", validationCacheEnabled,
-				"service.validation.cache.ttl-seconds", validationCacheTtlSeconds,
+				"service.validation.cache.success-ttl-seconds", validationCacheSuccessTtlSeconds,
+				"service.validation.cache.affirmatively-invalid-ttl-seconds", validationCacheInvalidTtlSeconds,
 				"service.validation.cache.max-entries", validationCacheMaxEntries)));
 		/*
 		 * Set revocation & AIA JSSE properties before populating the intermediate cache
