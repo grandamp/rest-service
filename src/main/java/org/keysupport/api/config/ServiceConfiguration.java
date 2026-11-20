@@ -9,6 +9,7 @@ import java.util.Map;
 import org.keysupport.api.LoggingUtil;
 import org.keysupport.api.jetty.JettyCustomizer;
 import org.keysupport.api.singletons.IntermediateCacheSingleton;
+import org.keysupport.api.singletons.ValidationCacheSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,6 @@ public class ServiceConfiguration {
 				certPathAlgorithm, true, true, DEFAULT_REVALIDATE_INTERVAL_SECONDS);
 	}
 
-	@Autowired
 	public ServiceConfiguration(
 			@Value("${service.policies.uri}") String polUri,
 			@Value("${service.intermediates.uri}") String intermediatesUri,
@@ -61,6 +61,35 @@ public class ServiceConfiguration {
 			@Value("${service.intermediates.validate-on-load:true}") boolean intermediateValidateOnLoad,
 			@Value("${service.intermediates.revocation-enabled:true}") boolean intermediateRevocationEnabled,
 			@Value("${service.intermediates.revalidate-interval-seconds:3600}") long revalidateIntervalSeconds) {
+		this(polUri, intermediatesUri, maxPathLen, systemLogEnabled, systemLogFile, aiaChase, allowedAiaLocations,
+				revocationEnabled, revocationEeOnly, ocspEnabled, crlEnabled, crlMaxSize, certPathProvider,
+				certPathAlgorithm, intermediateValidateOnLoad, intermediateRevocationEnabled, revalidateIntervalSeconds,
+				ValidationCacheSingleton.DEFAULT_ENABLED, ValidationCacheSingleton.DEFAULT_TTL_SECONDS,
+				ValidationCacheSingleton.DEFAULT_MAX_ENTRIES);
+	}
+
+	@Autowired
+	public ServiceConfiguration(
+			@Value("${service.policies.uri}") String polUri,
+			@Value("${service.intermediates.uri}") String intermediatesUri,
+			@Value("${service.validation.pkix.max-path-length}") int maxPathLen,
+			@Value("${service.systemlog.enabled}") boolean systemLogEnabled,
+			@Value("${service.systemlog.file:/opt/vss/ext/logs/system.log}") String systemLogFile,
+			@Value("${service.validation.pkix.aia-chase}") boolean aiaChase,
+			@Value("${service.validation.pkix.allowed-aia-locations:any}") String allowedAiaLocations,
+			@Value("${service.validation.pkix.revocation-enabled}") boolean revocationEnabled,
+			@Value("${service.validation.pkix.revocation-ee-only}") boolean revocationEeOnly,
+			@Value("${service.validation.pkix.ocsp-enabled}") boolean ocspEnabled,
+			@Value("${service.validation.pkix.crl-enabled}") boolean crlEnabled,
+			@Value("${service.validation.pkix.crl-max-size:52428800}") int crlMaxSize,
+			@Value("${service.validation.pkix.certpath-provider:SUN}") String certPathProvider,
+			@Value("${service.validation.pkix.certpath-algorithm:PKIX}") String certPathAlgorithm,
+			@Value("${service.intermediates.validate-on-load:true}") boolean intermediateValidateOnLoad,
+			@Value("${service.intermediates.revocation-enabled:true}") boolean intermediateRevocationEnabled,
+			@Value("${service.intermediates.revalidate-interval-seconds:3600}") long revalidateIntervalSeconds,
+			@Value("${service.validation.cache.enabled:true}") boolean validationCacheEnabled,
+			@Value("${service.validation.cache.ttl-seconds:300}") long validationCacheTtlSeconds,
+			@Value("${service.validation.cache.max-entries:10000}") int validationCacheMaxEntries) {
 		/*
 		 * Ensure PQC/FIPS JSSE properties are initialized before any outbound HTTPS fetches
 		 */
@@ -89,6 +118,12 @@ public class ServiceConfiguration {
 		policy.setIntermediateValidateOnLoad(intermediateValidateOnLoad);
 		policy.setIntermediateRevocationEnabled(intermediateRevocationEnabled);
 		policy.lockConfiguration();
+		ValidationCacheSingleton.getInstance().configure(
+				validationCacheEnabled, validationCacheTtlSeconds, validationCacheMaxEntries);
+		LOG.info(LoggingUtil.pojoToJson(Map.of(
+				"service.validation.cache.enabled", validationCacheEnabled,
+				"service.validation.cache.ttl-seconds", validationCacheTtlSeconds,
+				"service.validation.cache.max-entries", validationCacheMaxEntries)));
 		/*
 		 * Set revocation & AIA JSSE properties before populating the intermediate cache
 		 */

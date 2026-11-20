@@ -25,6 +25,7 @@ import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.ValidationResult;
 import org.keysupport.api.pojo.vss.VssRequest;
 import org.keysupport.api.pojo.vss.VssResponse;
+import org.keysupport.api.singletons.ValidationCacheSingleton;
 import org.keysupport.api.pojo.vss.v1.V1InvalidityReason;
 import org.keysupport.api.pojo.vss.v1.V1ResultByCertificate;
 import org.keysupport.api.pojo.vss.v1.V1ResultByCertificateData;
@@ -197,9 +198,19 @@ public class ValidateController {
 		 */
 		LOG.info(LoggingUtil.pojoToJson(request));
 		/*
-		 * Validate, log, and; return the result
+		 * Check short-TTL validation response cache before running PKIX/revocation I/O
 		 */
-		Date dNow = Date.from(Instant.now());
+		long nowMillis = System.currentTimeMillis();
+		ValidationCacheSingleton cache = ValidationCacheSingleton.getInstance();
+		VssResponse cachedResponse = cache.get(requestId, nowMillis);
+		if (null != cachedResponse) {
+			LOG.info(LoggingUtil.pojoToJson(cachedResponse));
+			return ResponseEntity.ok().body(cachedResponse);
+		}
+		/*
+		 * Validate, log, cache, and return the result
+		 */
+		Date dNow = Date.from(Instant.ofEpochMilli(nowMillis));
 		response = ValidatePKIX.validate(clientCert, x5tS256, valPol, dNow);
 		String validationNow = X509Util.ISO8601DateString(dNow);
 		response.validationTime = validationNow;
@@ -210,12 +221,14 @@ public class ValidateController {
 			 */
 			response.requestId = requestId;
 			response.nextUpdate = validationNow;
+			cache.put(requestId, response, clientCert.getNotAfter(), nowMillis);
 		} else if (respResult != null) {
 			/*
 			 * Set nextUpdate to null to inform the client that we will *not* perform any
 			 * more operations on this requestId
 			 */
 			response.nextUpdate = null;
+			cache.put(requestId, response, clientCert.getNotAfter(), nowMillis);
 		}
 		LOG.info(LoggingUtil.pojoToJson(response));
 		return ResponseEntity.ok().body(response);
