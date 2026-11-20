@@ -16,12 +16,16 @@ import org.keysupport.api.pojo.vss.JsonX509Certificate;
 import org.keysupport.api.singletons.IntermediateCacheSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -30,6 +34,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class IntermediatesController {
 
 	private final static Logger LOG = LoggerFactory.getLogger(IntermediatesController.class);
+	private static final CacheControl CACHE_CONTROL = CacheControl.maxAge(60, TimeUnit.SECONDS).cachePublic();
+
+	private volatile CertStore cachedStoreRef;
+	private volatile List<JsonX509Certificate> cachedIntermediates;
 
 	@SuppressWarnings("unchecked")
 	@GetMapping(path = "/vss/v2/intermediates", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,6 +48,10 @@ public class IntermediatesController {
 		if (null == intermediateStore) {
 			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "There are no intermediates cached!")));
 			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+		}
+		List<JsonX509Certificate> snapshot = cachedIntermediates;
+		if (intermediateStore == cachedStoreRef && null != snapshot) {
+			return ResponseEntity.ok().cacheControl(CACHE_CONTROL).body(snapshot);
 		}
 		Collection<X509Certificate> intermediateCerts;
 		try {
@@ -61,6 +73,9 @@ public class IntermediatesController {
 				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error Base64 encoding certificate from CertPath", "stacktrace", LoggingUtil.stackTraceToString(e))));
 			}
 		}
-		return new ResponseEntity<>(intermediates, HttpStatus.OK);
+		List<JsonX509Certificate> immutable = Collections.unmodifiableList(intermediates);
+		this.cachedStoreRef = intermediateStore;
+		this.cachedIntermediates = immutable;
+		return ResponseEntity.ok().cacheControl(CACHE_CONTROL).body(immutable);
 	}
 }

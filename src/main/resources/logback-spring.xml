@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<springProperty scope="context" name="LOG_FILE" source="logging.file.name" defaultValue="/opt/vss/ext/logs/vss.log"/>
+	<springProperty scope="context" name="LOG_FILE_PATTERN" source="logging.logback.rollingpolicy.file-name-pattern" defaultValue="/opt/vss/ext/logs/vss-%d{yyyy-MM-dd}.%i.log"/>
+	<springProperty scope="context" name="LOG_MAX_FILE_SIZE" source="logging.logback.rollingpolicy.max-file-size" defaultValue="10MB"/>
+	<springProperty scope="context" name="LOG_MAX_HISTORY" source="logging.logback.rollingpolicy.max-history" defaultValue="7"/>
+	<springProperty scope="context" name="JSON_PATTERN" source="logging.pattern.file" defaultValue='{"time": "%d", "level": "%p", "class": "%logger{63}:%L", "message": %m}%n'/>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${JSON_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_FILE}</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_FILE_PATTERN}</fileNamePattern>
+			<maxFileSize>${LOG_MAX_FILE_SIZE}</maxFileSize>
+			<maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${JSON_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>8192</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<neverBlock>true</neverBlock>
+		<includeCallerData>true</includeCallerData>
+		<appender-ref ref="CONSOLE"/>
+	</appender>
+
+	<appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>8192</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<neverBlock>true</neverBlock>
+		<includeCallerData>true</includeCallerData>
+		<appender-ref ref="FILE"/>
+	</appender>
+
+	<root level="INFO">
+		<appender-ref ref="ASYNC_CONSOLE"/>
+		<appender-ref ref="ASYNC_FILE"/>
+	</root>
+</configuration>

@@ -215,18 +215,29 @@ public class X509Util {
 	 * @return
 	 */
 	public static String x5tS256(X509Certificate cert) {
-		byte[] digest = null;
-		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-256");
-			md.update(cert.getEncoded());
-			digest = md.digest();
-		} catch (NoSuchAlgorithmException | CertificateEncodingException e) {
-			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate", "stacktrace", LoggingUtil.stackTraceToString(e))));
-		}
-		if (digest == null) {
+		if (null == cert) {
 			return null;
 		}
-		return Base64.getUrlEncoder().withoutPadding().encodeToString(digest);
+		try {
+			return x5tS256(cert.getEncoded());
+		} catch (CertificateEncodingException e) {
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate", "stacktrace", LoggingUtil.stackTraceToString(e))));
+			return null;
+		}
+	}
+
+	public static String x5tS256(byte[] derBytes) {
+		if (null == derBytes) {
+			return null;
+		}
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(derBytes);
+			return Base64.getUrlEncoder().withoutPadding().encodeToString(md.digest());
+		} catch (NoSuchAlgorithmException e) {
+			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error hashing certificate", "stacktrace", LoggingUtil.stackTraceToString(e))));
+			return null;
+		}
 	}
 
 	public static String ISO8601DateString(Date date) {
