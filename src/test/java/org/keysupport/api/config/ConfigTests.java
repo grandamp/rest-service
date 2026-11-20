@@ -102,7 +102,7 @@ class ConfigTests {
 					true,
 					true,
 					true,
-					64,
+					52428800,
 					"SUN",
 					"PKIX");
 
@@ -114,7 +114,7 @@ class ConfigTests {
 			verify(polSingleton).setRevocationEeOnly(true);
 			verify(polSingleton).setOcspEnabled(true);
 			verify(polSingleton).setCrlEnabled(true);
-			verify(polSingleton).setCrlMaxSize(64);
+			verify(polSingleton).setCrlMaxSize(52428800);
 			verify(polSingleton).setCertPathProvider("SUN");
 			verify(polSingleton).setCertPathAlgorithm("PKIX");
 			verify(polSingleton).setIntermediateValidateOnLoad(true);
@@ -123,7 +123,7 @@ class ConfigTests {
 			verify(cacheSingleton).updateIntermediates("https://example.test/intermediates.p7b");
 			verify(cacheSingleton).startPeriodicRevalidation(3600L);
 
-			assertEquals("64", System.getProperty("com.sun.security.crl.maxSize"));
+			assertEquals("52428800", System.getProperty("com.sun.security.crl.maxSize"));
 			assertEquals("http://crl.example.test", System.getProperty("com.sun.security.allowedAIALocations"));
 			assertTrue(Files.exists(sysLog));
 		} finally {
@@ -150,7 +150,7 @@ class ConfigTests {
 
 			assertThrows(IllegalStateException.class, () -> new ServiceConfiguration(
 					"https://example.test/policies.json", "", 7, false, "",
-					false, "any", true, true, true, true, 50, "SUN", "PKIX"));
+					false, "any", true, true, true, true, 52428800, "SUN", "PKIX"));
 
 			Path missingDirFile = tempDir.resolve("nonexistent-dir").resolve("system.log");
 			new ServiceConfiguration(
@@ -168,6 +168,8 @@ class ConfigTests {
 					50,
 					"SUN",
 					"PKIX");
+
+			assertEquals("50", System.getProperty("com.sun.security.crl.maxSize"));
 
 			assertNotNull(System.out);
 			assertNotNull(System.err);

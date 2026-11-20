@@ -55,7 +55,7 @@ public class ServiceConfiguration {
 			@Value("${service.validation.pkix.revocation-ee-only}") boolean revocationEeOnly,
 			@Value("${service.validation.pkix.ocsp-enabled}") boolean ocspEnabled,
 			@Value("${service.validation.pkix.crl-enabled}") boolean crlEnabled,
-			@Value("${service.validation.pkix.crl-max-size:50}") int crlMaxSize,
+			@Value("${service.validation.pkix.crl-max-size:52428800}") int crlMaxSize,
 			@Value("${service.validation.pkix.certpath-provider:SUN}") String certPathProvider,
 			@Value("${service.validation.pkix.certpath-algorithm:PKIX}") String certPathAlgorithm,
 			@Value("${service.intermediates.validate-on-load:true}") boolean intermediateValidateOnLoad,
@@ -100,6 +100,12 @@ public class ServiceConfiguration {
 		}
 		System.setProperty("com.sun.security.crl.maxSize", String.valueOf(crlMaxSize));
 		LOG.info(LoggingUtil.pojoToJson(Map.of("com.sun.security.crl.maxSize", crlMaxSize)));
+		if (crlMaxSize > 0 && crlMaxSize < 1024) {
+			LOG.warn(LoggingUtil.pojoToJson(Map.of(
+					"warning",
+					"service.validation.pkix.crl-max-size is in bytes; value " + crlMaxSize
+							+ " is under 1024 bytes and may discard real CRLs")));
+		}
 		if (aiaChase) {
 			System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
 			System.setProperty("com.sun.security.allowedAIALocations", allowedAiaLocations);
