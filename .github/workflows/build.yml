@@ -20,6 +20,8 @@ jobs:
       #Build & Test
       - name: Build with Maven
         run: mvn clean package spring-boot:repackage
+      - name: Test observability service
+        run: python3 -m unittest discover -s observability -p "test_*.py" -v
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
@@ -78,6 +80,8 @@ jobs:
           path: target
       - name: Build local smoke image
         run: docker build -t rest-service-smoke:test .
+      - name: Build observability smoke image
+        run: docker build -t vss-observability-smoke:test -f observability/Dockerfile observability
       - name: Run container smoke test
         run: |
           set -euo pipefail
@@ -88,7 +92,7 @@ jobs:
           cp src/main/resources/application.yml "$EXT_DIR/conf/vss.yml"
           sed -i '/^  intermediates:/,/^  systemlog:/ s/revocation-enabled: true/revocation-enabled: false/' "$EXT_DIR/conf/vss.yml"
           chmod 644 "$EXT_DIR/conf/vss.yml"
-          openssl req -x509 -newkey rsa:2048 -nodes -days 1 \
+          openssl req -x509 -newkey rsa:3072 -sha384 -nodes -days 1 \
             -keyout "$EXT_DIR/tls/key.pem" \
             -out "$EXT_DIR/tls/cert.pem" \
             -subj "/CN=localhost"
@@ -98,24 +102,48 @@ jobs:
             -v "$EXT_DIR:/opt/vss/ext" \
             rest-service-smoke:test
 
+          docker run -d --name vss-obs-smoke --network host \
+            -e PORT=8099 \
+            -e VSS_BASE_URL=https://localhost:8443 \
+            -e VSS_TLS_VERIFY=false \
+            vss-observability-smoke:test
+
           cleanup() {
-            docker rm -f vss-smoke >/dev/null 2>&1 || true
+            docker rm -f vss-obs-smoke vss-smoke >/dev/null 2>&1 || true
             rm -rf "$EXT_DIR"
           }
           trap cleanup EXIT
 
+          READY=0
           for i in $(seq 1 60); do
             if curl -kfsS https://localhost:8443/actuator/health/readiness | grep -q '"status":"UP"'; then
-              curl -kfsS https://localhost:8443/vss/v2/policies | grep -q 'validationPolicies'
-              echo "Container smoke test passed on attempt $i"
-              exit 0
+              READY=1
+              echo "vss-smoke ready on attempt $i"
+              break
             fi
             sleep 2
           done
 
-          echo "Container failed readiness check; logs:"
-          docker logs vss-smoke || true
-          exit 1
+          if [ "$READY" -ne 1 ]; then
+            echo "Container failed readiness check; logs:"
+            docker logs vss-smoke || true
+            docker logs vss-obs-smoke || true
+            exit 1
+          fi
+
+          if ! (
+            curl -kfsS https://localhost:8443/vss/v2/policies | grep -q 'validationPolicies' &&
+            curl -fsS http://127.0.0.1:8099/healthz | python3 -c "import sys,json; assert json.load(sys.stdin)['status']=='UP'" &&
+            curl -fsS http://127.0.0.1:8099/api/status | tee /tmp/obs-status.json &&
+            python3 -c "import json; d=json.load(open('/tmp/obs-status.json')); assert d['readiness']=='UP' and d['liveness']=='UP', d" &&
+            curl -fsS http://127.0.0.1:8099/api/graph | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['telemetrySource']=='actuator/vssgraph' and d['nodeCount']>0, d"
+          ); then
+            echo "Smoke assertion failed; logs:"
+            docker logs vss-smoke || true
+            docker logs vss-obs-smoke || true
+            exit 1
+          fi
+          echo "Both rest-service and observability smoke checks passed!"
 
   docker:
     name: Build and Push GHCR
@@ -158,3 +186,21 @@ jobs:
           build-args: |
             BUILD_DATE=${{ github.event.head_commit.timestamp }}
             PIPELINE_ID=${{ github.sha }}
+      - name: Extract metadata for Observability Docker
+        id: obs_meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/observability
+          tags: |
+            type=raw,value=latest
+            type=sha
+      - name: Build and push Observability Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./observability
+          file: ./observability/Dockerfile
+          push: true
+          provenance: true
+          sbom: true
+          tags: ${{ steps.obs_meta.outputs.tags }}
+          labels: ${{ steps.obs_meta.outputs.labels }}
