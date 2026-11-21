@@ -24,6 +24,7 @@ import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.singletons.IntermediateCacheSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.mockito.MockedStatic;
+import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 
 import io.swagger.v3.oas.models.OpenAPI;
 
@@ -179,5 +180,14 @@ class ConfigTests {
 			System.setOut(origOut);
 			System.setErr(origErr);
 		}
+	}
+
+	@Test
+	void serviceConfiguration_hasSingleAutowiredConstructor() {
+		AutowiredAnnotationBeanPostProcessor processor = new AutowiredAnnotationBeanPostProcessor();
+		var ctors = processor.determineCandidateConstructors(ServiceConfiguration.class, "serviceConfiguration");
+		assertNotNull(ctors);
+		assertEquals(1, ctors.length);
+		assertEquals(22, ctors[0].getParameterCount());
 	}
 }
