@@ -114,22 +114,35 @@ jobs:
           }
           trap cleanup EXIT
 
+          READY=0
           for i in $(seq 1 60); do
             if curl -kfsS https://localhost:8443/actuator/health/readiness | grep -q '"status":"UP"'; then
-              curl -kfsS https://localhost:8443/vss/v2/policies | grep -q 'validationPolicies'
-              curl -fsS http://127.0.0.1:8099/healthz | grep -q '"status":"UP"'
-              curl -fsS http://127.0.0.1:8099/api/status | grep -q '"readiness":"UP"'
-              curl -fsS http://127.0.0.1:8099/api/graph | grep -q '"telemetrySource":"actuator/vssgraph"'
-              echo "Container smoke test passed on attempt $i"
-              exit 0
+              READY=1
+              echo "vss-smoke ready on attempt $i"
+              break
             fi
             sleep 2
           done
 
-          echo "Container failed readiness check; logs:"
-          docker logs vss-smoke || true
-          docker logs vss-obs-smoke || true
-          exit 1
+          if [ "$READY" -ne 1 ]; then
+            echo "Container failed readiness check; logs:"
+            docker logs vss-smoke || true
+            docker logs vss-obs-smoke || true
+            exit 1
+          fi
+
+          if ! (
+            curl -kfsS https://localhost:8443/vss/v2/policies | grep -q 'validationPolicies' &&
+            curl -fsS http://127.0.0.1:8099/healthz | python3 -c "import sys,json; assert json.load(sys.stdin)['status']=='UP'" &&
+            curl -fsS http://127.0.0.1:8099/api/status | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['readiness']=='UP' and d['liveness']=='UP'" &&
+            curl -fsS http://127.0.0.1:8099/api/graph | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['telemetrySource']=='actuator/vssgraph' and d['nodeCount']>0"
+          ); then
+            echo "Smoke assertion failed; logs:"
+            docker logs vss-smoke || true
+            docker logs vss-obs-smoke || true
+            exit 1
+          fi
+          echo "Both rest-service and observability smoke checks passed!"
 
   docker:
     name: Build and Push GHCR
