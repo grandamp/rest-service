@@ -57,6 +57,7 @@ public class IntermediateCacheSingleton {
 
 	private volatile CertStore intermediateStore = null;
 	private volatile List<X509Certificate> cachedCerts = List.of();
+	private volatile List<ExcludedIntermediate> lastExcludedCerts = List.of();
 	private volatile ScheduledExecutorService revalidationScheduler = null;
 
 	private IntermediateCacheSingleton() {
@@ -85,6 +86,14 @@ public class IntermediateCacheSingleton {
 		return cachedCerts.size();
 	}
 
+	public List<X509Certificate> getCachedCerts() {
+		return cachedCerts;
+	}
+
+	public List<ExcludedIntermediate> getLastExcludedCerts() {
+		return lastExcludedCerts;
+	}
+
 	/**
 	 * Fetch intermediates from {@code intermediatesUri}, validate each candidate
 	 * against the default policy in an order-independent fixed-point loop, and
@@ -100,6 +109,7 @@ public class IntermediateCacheSingleton {
 		var cp = client.getCms(uri);
 
 		synchronized (updateLock) {
+			List<ExcludedIntermediate> excludedCollector = new ArrayList<>();
 			if (null == cp) {
 				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Skipping invalid CMS from: " + uri.toASCIIString())));
 				if (null == intermediateStore) {
@@ -122,10 +132,10 @@ public class IntermediateCacheSingleton {
 					continue;
 				}
 				if (!seen.add(cert)) {
-					logExcluded(cert, "Duplicate certificate in CMS bundle");
+					logExcluded(cert, "Duplicate certificate in CMS bundle", excludedCollector);
 					continue;
 				}
-				if (!isEligibleCaCandidate(cert, now)) {
+				if (!isEligibleCaCandidate(cert, now, excludedCollector)) {
 					continue;
 				}
 				uniqueCandidates.add(cert);
@@ -135,6 +145,7 @@ public class IntermediateCacheSingleton {
 			if (!policies.isIntermediateValidateOnLoad()) {
 				LOG.warn(LoggingUtil.pojoToJson(Map.of(
 						"warning", "service.intermediates.validate-on-load is false; skipping default policy validation")));
+				this.lastExcludedCerts = List.copyOf(excludedCollector);
 				swapStore(uniqueCandidates);
 				LOG.info(LoggingUtil.pojoToJson(Map.of("cache.numcerts", uniqueCandidates.size())));
 				return;
@@ -144,14 +155,16 @@ public class IntermediateCacheSingleton {
 				LOG.error(LoggingUtil.pojoToJson(
 						Map.of("error", "No default validation policy available; refusing to cache unvalidated intermediates")));
 				for (X509Certificate candidate : uniqueCandidates) {
-					logExcluded(candidate, "No default validation policy configured");
+					logExcluded(candidate, "No default validation policy configured", excludedCollector);
 				}
+				this.lastExcludedCerts = List.copyOf(excludedCollector);
 				swapStore(List.of());
 				return;
 			}
 
 			List<X509Certificate> accepted = validateCandidatesFixedPoint(
-					uniqueCandidates, List.of(defaultPolicy), policies, now);
+					uniqueCandidates, List.of(defaultPolicy), policies, now, excludedCollector);
+			this.lastExcludedCerts = List.copyOf(excludedCollector);
 			swapStore(accepted);
 			LOG.info(LoggingUtil.pojoToJson(Map.of("cache.numcerts", accepted.size())));
 		}
@@ -257,9 +270,10 @@ public class IntermediateCacheSingleton {
 		}
 
 		Date now = new Date();
+		List<ExcludedIntermediate> excludedCollector = new ArrayList<>();
 		List<X509Certificate> eligible = new ArrayList<>(current.size());
 		for (X509Certificate cert : current) {
-			if (isEligibleCaCandidate(cert, now)) {
+			if (isEligibleCaCandidate(cert, now, excludedCollector)) {
 				eligible.add(cert);
 			}
 		}
@@ -268,13 +282,18 @@ public class IntermediateCacheSingleton {
 		List<ValidationPolicy> activePolicies = orderedPolicies(policies);
 		if (activePolicies.isEmpty()) {
 			for (X509Certificate cert : eligible) {
-				logExcluded(cert, "No validation policies defined");
+				logExcluded(cert, "No validation policies defined", excludedCollector);
 			}
+			this.lastExcludedCerts = List.copyOf(excludedCollector);
 			swapStore(List.of());
 			return current.size();
 		}
 
-		List<X509Certificate> survivors = validateCandidatesFixedPoint(eligible, activePolicies, policies, now);
+		List<X509Certificate> survivors = validateCandidatesFixedPoint(
+				eligible, activePolicies, policies, now, excludedCollector);
+		if (!excludedCollector.isEmpty()) {
+			this.lastExcludedCerts = List.copyOf(excludedCollector);
+		}
 		swapStore(survivors);
 		return current.size() - survivors.size();
 	}
@@ -306,7 +325,8 @@ public class IntermediateCacheSingleton {
 			List<X509Certificate> candidates,
 			List<ValidationPolicy> targetPolicies,
 			ValidationPoliciesSingleton policies,
-			Date now) {
+			Date now,
+			List<ExcludedIntermediate> excludedCollector) {
 		List<X509Certificate> pending = new ArrayList<>(candidates);
 
 		while (!pending.isEmpty()) {
@@ -318,7 +338,7 @@ public class IntermediateCacheSingleton {
 				if (null == failureReason) {
 					survivors.add(candidate);
 				} else {
-					logExcluded(candidate, failureReason);
+					logExcluded(candidate, failureReason, excludedCollector);
 				}
 			}
 			if (survivors.size() == pending.size()) {
@@ -435,18 +455,22 @@ public class IntermediateCacheSingleton {
 		}
 	}
 
-	private boolean isEligibleCaCandidate(X509Certificate cert, Date now) {
+	private boolean isEligibleCaCandidate(X509Certificate cert, Date now, List<ExcludedIntermediate> collector) {
 		try {
 			cert.checkValidity(now);
 		} catch (CertificateExpiredException | CertificateNotYetValidException e) {
-			logExcluded(cert, "Temporal Exclude: " + e.getLocalizedMessage());
+			logExcluded(cert, "Temporal Exclude: " + e.getLocalizedMessage(), collector);
 			return false;
 		}
 		if (cert.getBasicConstraints() == -1) {
-			logExcluded(cert, "Non-CA Exclude: BasicConstraints is -1");
+			logExcluded(cert, "Non-CA Exclude: BasicConstraints is -1", collector);
 			return false;
 		}
 		return true;
+	}
+
+	private boolean isEligibleCaCandidate(X509Certificate cert, Date now) {
+		return isEligibleCaCandidate(cert, now, null);
 	}
 
 	private void swapStore(List<X509Certificate> certs) {
@@ -473,12 +497,19 @@ public class IntermediateCacheSingleton {
 	}
 
 	private void logExcluded(X509Certificate cert, String reason) {
+		logExcluded(cert, reason, null);
+	}
+
+	private void logExcluded(X509Certificate cert, String reason, List<ExcludedIntermediate> collector) {
 		String x5tS256 = X509Util.x5tS256(cert);
 		ExcludedIntermediate exclude = new ExcludedIntermediate();
 		exclude.excludeReason = reason;
 		exclude.x509IssuerName = cert.getIssuerX500Principal().toString();
 		exclude.x509SubjectName = cert.getSubjectX500Principal().toString();
 		exclude.x5tS256 = x5tS256;
+		if (null != collector) {
+			collector.add(exclude);
+		}
 		LOG.warn(LoggingUtil.pojoToJson(exclude));
 	}
 
