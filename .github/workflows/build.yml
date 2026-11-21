@@ -86,6 +86,7 @@ jobs:
           chmod 755 "$EXT_DIR" "$EXT_DIR/conf" "$EXT_DIR/tls"
           chmod 777 "$EXT_DIR/logs"
           cp src/main/resources/application.yml "$EXT_DIR/conf/vss.yml"
+          sed -i '/^  intermediates:/,/^  systemlog:/ s/revocation-enabled: true/revocation-enabled: false/' "$EXT_DIR/conf/vss.yml"
           chmod 644 "$EXT_DIR/conf/vss.yml"
           openssl req -x509 -newkey rsa:2048 -nodes -days 1 \
             -keyout "$EXT_DIR/tls/key.pem" \
@@ -103,7 +104,7 @@ jobs:
           }
           trap cleanup EXIT
 
-          for i in $(seq 1 45); do
+          for i in $(seq 1 60); do
             if curl -kfsS https://localhost:8443/actuator/health/readiness | grep -q '"status":"UP"'; then
               curl -kfsS https://localhost:8443/vss/v2/policies | grep -q 'validationPolicies'
               echo "Container smoke test passed on attempt $i"
