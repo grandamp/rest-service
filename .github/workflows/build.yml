@@ -83,8 +83,10 @@ jobs:
           set -euo pipefail
           EXT_DIR="$(mktemp -d)"
           mkdir -p "$EXT_DIR/conf" "$EXT_DIR/tls" "$EXT_DIR/logs"
+          chmod 755 "$EXT_DIR" "$EXT_DIR/conf" "$EXT_DIR/tls"
           chmod 777 "$EXT_DIR/logs"
           cp src/main/resources/application.yml "$EXT_DIR/conf/vss.yml"
+          chmod 644 "$EXT_DIR/conf/vss.yml"
           openssl req -x509 -newkey rsa:2048 -nodes -days 1 \
             -keyout "$EXT_DIR/tls/key.pem" \
             -out "$EXT_DIR/tls/cert.pem" \
