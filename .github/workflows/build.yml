@@ -20,6 +20,8 @@ jobs:
       #Build & Test
       - name: Build with Maven
         run: mvn clean package spring-boot:repackage
+      - name: Test observability service
+        run: python3 -m unittest discover -s observability -p "test_*.py" -v
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
@@ -78,6 +80,8 @@ jobs:
           path: target
       - name: Build local smoke image
         run: docker build -t rest-service-smoke:test .
+      - name: Build observability smoke image
+        run: docker build -t vss-observability-smoke:test -f observability/Dockerfile observability
       - name: Run container smoke test
         run: |
           set -euo pipefail
@@ -98,8 +102,14 @@ jobs:
             -v "$EXT_DIR:/opt/vss/ext" \
             rest-service-smoke:test
 
+          docker run -d --name vss-obs-smoke --network host \
+            -e PORT=8099 \
+            -e VSS_BASE_URL=https://127.0.0.1:8443 \
+            -e VSS_TLS_VERIFY=false \
+            vss-observability-smoke:test
+
           cleanup() {
-            docker rm -f vss-smoke >/dev/null 2>&1 || true
+            docker rm -f vss-obs-smoke vss-smoke >/dev/null 2>&1 || true
             rm -rf "$EXT_DIR"
           }
           trap cleanup EXIT
@@ -107,6 +117,9 @@ jobs:
           for i in $(seq 1 60); do
             if curl -kfsS https://localhost:8443/actuator/health/readiness | grep -q '"status":"UP"'; then
               curl -kfsS https://localhost:8443/vss/v2/policies | grep -q 'validationPolicies'
+              curl -fsS http://127.0.0.1:8099/healthz | grep -q '"status":"UP"'
+              curl -fsS http://127.0.0.1:8099/api/status | grep -q '"readiness":"UP"'
+              curl -fsS http://127.0.0.1:8099/api/graph | grep -q '"telemetrySource":"actuator/vssgraph"'
               echo "Container smoke test passed on attempt $i"
               exit 0
             fi
@@ -115,6 +128,7 @@ jobs:
 
           echo "Container failed readiness check; logs:"
           docker logs vss-smoke || true
+          docker logs vss-obs-smoke || true
           exit 1
 
   docker:
@@ -158,3 +172,21 @@ jobs:
           build-args: |
             BUILD_DATE=${{ github.event.head_commit.timestamp }}
             PIPELINE_ID=${{ github.sha }}
+      - name: Extract metadata for Observability Docker
+        id: obs_meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/observability
+          tags: |
+            type=raw,value=latest
+            type=sha
+      - name: Build and push Observability Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./observability
+          file: ./observability/Dockerfile
+          push: true
+          provenance: true
+          sbom: true
+          tags: ${{ steps.obs_meta.outputs.tags }}
+          labels: ${{ steps.obs_meta.outputs.labels }}
