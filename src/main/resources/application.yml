@@ -78,3 +78,15 @@ springdoc:
   swagger-ui:
     enabled: true
     use-root-path: true
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState,validationPolicies,intermediateCache
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics

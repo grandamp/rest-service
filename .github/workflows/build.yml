@@ -65,9 +65,61 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
 
+  docker-smoke:
+    name: Docker Smoke Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rest-service-jar
+          path: target
+      - name: Build local smoke image
+        run: docker build -t rest-service-smoke:test .
+      - name: Run container smoke test
+        run: |
+          set -euo pipefail
+          EXT_DIR="$(mktemp -d)"
+          mkdir -p "$EXT_DIR/conf" "$EXT_DIR/tls" "$EXT_DIR/logs"
+          chmod 755 "$EXT_DIR" "$EXT_DIR/conf" "$EXT_DIR/tls"
+          chmod 777 "$EXT_DIR/logs"
+          cp src/main/resources/application.yml "$EXT_DIR/conf/vss.yml"
+          sed -i '/^  intermediates:/,/^  systemlog:/ s/revocation-enabled: true/revocation-enabled: false/' "$EXT_DIR/conf/vss.yml"
+          chmod 644 "$EXT_DIR/conf/vss.yml"
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1 \
+            -keyout "$EXT_DIR/tls/key.pem" \
+            -out "$EXT_DIR/tls/cert.pem" \
+            -subj "/CN=localhost"
+          chmod 644 "$EXT_DIR/tls/cert.pem" "$EXT_DIR/tls/key.pem"
+
+          docker run -d --name vss-smoke --network host \
+            -v "$EXT_DIR:/opt/vss/ext" \
+            rest-service-smoke:test
+
+          cleanup() {
+            docker rm -f vss-smoke >/dev/null 2>&1 || true
+            rm -rf "$EXT_DIR"
+          }
+          trap cleanup EXIT
+
+          for i in $(seq 1 60); do
+            if curl -kfsS https://localhost:8443/actuator/health/readiness | grep -q '"status":"UP"'; then
+              curl -kfsS https://localhost:8443/vss/v2/policies | grep -q 'validationPolicies'
+              echo "Container smoke test passed on attempt $i"
+              exit 0
+            fi
+            sleep 2
+          done
+
+          echo "Container failed readiness check; logs:"
+          docker logs vss-smoke || true
+          exit 1
+
   docker:
     name: Build and Push GHCR
-    needs: [build, analyze]
+    needs: [build, analyze, docker-smoke]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:

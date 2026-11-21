@@ -81,6 +81,10 @@ public class IntermediateCacheSingleton {
 		return intermediateStore;
 	}
 
+	public int getCachedIntermediateCount() {
+		return cachedCerts.size();
+	}
+
 	/**
 	 * Fetch intermediates from {@code intermediatesUri}, validate each candidate
 	 * against the default policy in an order-independent fixed-point loop, and
