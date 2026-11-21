@@ -92,7 +92,7 @@ jobs:
           cp src/main/resources/application.yml "$EXT_DIR/conf/vss.yml"
           sed -i '/^  intermediates:/,/^  systemlog:/ s/revocation-enabled: true/revocation-enabled: false/' "$EXT_DIR/conf/vss.yml"
           chmod 644 "$EXT_DIR/conf/vss.yml"
-          openssl req -x509 -newkey rsa:2048 -nodes -days 1 \
+          openssl req -x509 -newkey rsa:3072 -sha384 -nodes -days 1 \
             -keyout "$EXT_DIR/tls/key.pem" \
             -out "$EXT_DIR/tls/cert.pem" \
             -subj "/CN=localhost"
@@ -134,8 +134,9 @@ jobs:
           if ! (
             curl -kfsS https://localhost:8443/vss/v2/policies | grep -q 'validationPolicies' &&
             curl -fsS http://127.0.0.1:8099/healthz | python3 -c "import sys,json; assert json.load(sys.stdin)['status']=='UP'" &&
-            curl -fsS http://127.0.0.1:8099/api/status | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['readiness']=='UP' and d['liveness']=='UP'" &&
-            curl -fsS http://127.0.0.1:8099/api/graph | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['telemetrySource']=='actuator/vssgraph' and d['nodeCount']>0"
+            curl -fsS http://127.0.0.1:8099/api/status | tee /tmp/obs-status.json &&
+            python3 -c "import json; d=json.load(open('/tmp/obs-status.json')); assert d['readiness']=='UP' and d['liveness']=='UP', d" &&
+            curl -fsS http://127.0.0.1:8099/api/graph | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['telemetrySource']=='actuator/vssgraph' and d['nodeCount']>0, d"
           ); then
             echo "Smoke assertion failed; logs:"
             docker logs vss-smoke || true

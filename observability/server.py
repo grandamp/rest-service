@@ -9,6 +9,7 @@ import html
 import json
 import os
 import ssl
+import sys
 import threading
 import time
 import urllib.error
@@ -61,18 +62,22 @@ def collect_status(base_url=None, force=False):
             if _STATUS_CACHE["data"] is not None and (now - _STATUS_CACHE["ts"]) < STATUS_CACHE_SECONDS:
                 return _STATUS_CACHE["data"]
 
+    errors = []
     try:
         liveness = fetch_json(target, "/actuator/health/liveness", timeout=4).get("status", "UNKNOWN")
-    except Exception:
+    except Exception as exc:
         liveness = "UNKNOWN"
+        errors.append(f"liveness: {exc}")
+        print(f"[observability] liveness fetch error ({target}): {exc}", file=sys.stderr, flush=True)
 
     try:
         readiness = fetch_json(target, "/actuator/health/readiness", timeout=4).get("status", "UNKNOWN")
-    except Exception:
+    except Exception as exc:
         readiness = "UNKNOWN"
+        errors.append(f"readiness: {exc}")
+        print(f"[observability] readiness fetch error ({target}): {exc}", file=sys.stderr, flush=True)
 
     metrics = {}
-    errors = []
     for name in METRICS_NAMES:
         try:
             payload = fetch_json(target, f"/actuator/metrics/{name}", timeout=4)
@@ -87,8 +92,10 @@ def collect_status(base_url=None, force=False):
         "metrics": metrics,
         "collectedAt": int(now),
     }
-    if errors and not metrics:
-        data["error"] = "; ".join(errors)
+    if errors:
+        data["upstreamErrors"] = errors
+        if not metrics:
+            data["error"] = "; ".join(errors)
 
     if base_url is None:
         with _CACHE_LOCK:
