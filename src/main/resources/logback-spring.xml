@@ -4,7 +4,7 @@
 	<springProperty scope="context" name="LOG_FILE_PATTERN" source="logging.logback.rollingpolicy.file-name-pattern" defaultValue="/opt/vss/ext/logs/vss-%d{yyyy-MM-dd}.%i.log"/>
 	<springProperty scope="context" name="LOG_MAX_FILE_SIZE" source="logging.logback.rollingpolicy.max-file-size" defaultValue="10MB"/>
 	<springProperty scope="context" name="LOG_MAX_HISTORY" source="logging.logback.rollingpolicy.max-history" defaultValue="7"/>
-	<springProperty scope="context" name="JSON_PATTERN" source="logging.pattern.file" defaultValue='{"time": "%d", "level": "%p", "class": "%logger{63}:%L", "message": %m}%n'/>
+	<springProperty scope="context" name="JSON_PATTERN" source="logging.pattern.file" defaultValue='{"time": "%d", "level": "%p", "class": "%logger{63}", "message": %m}%n'/>
 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
@@ -28,7 +28,7 @@
 		<queueSize>8192</queueSize>
 		<discardingThreshold>0</discardingThreshold>
 		<neverBlock>true</neverBlock>
-		<includeCallerData>true</includeCallerData>
+		<includeCallerData>false</includeCallerData>
 		<appender-ref ref="CONSOLE"/>
 	</appender>
 
@@ -36,7 +36,7 @@
 		<queueSize>8192</queueSize>
 		<discardingThreshold>0</discardingThreshold>
 		<neverBlock>true</neverBlock>
-		<includeCallerData>true</includeCallerData>
+		<includeCallerData>false</includeCallerData>
 		<appender-ref ref="FILE"/>
 	</appender>
 
