@@ -19,9 +19,18 @@ All benchmarks below were measured against the public `keysupport.net` reference
 
 Workload (`locust/locustfile.py`, `FastHttpUser`) across 17 valid CA certificates, 4 valid end-entity (EE) certificates, 15 negative EE/OCSP certificates, plus `/vss/v2/policies` and `/vss/v2/intermediates`.
 
-### 1. Paced Baseline (50 Users, `wait_time` 0.1–0.5s, 30s)
+### 1. Stage-by-Stage Progression Since `v2.0` (100 Zero-Wait Users, 15s)
 
-| Metric | Initial Uncached Baseline | Current Optimized Stack (`08f7589`) | Improvement |
+| Stage | Key Changes | QPS | Error Rate | `validate (SUCCESS)` p50 / p95 / p99 | Overall Max | Meets ≤ 1s Ceiling? |
+| --- | --- | ---: | ---: | --- | ---: | --- |
+| **`v2.0` Baseline** (`97724fc`) | Uncached `CertPathBuilder` + live OCSP/CRL on every request; platform threads; sync logging | 592.60 req/s | 0.00% | 140 / 830 / 1,100 ms | 1,509 ms | No |
+| **+ Cache & Virtual Threads** (`PR #1018`) | In-memory `ValidationCacheSingleton` + Java 25 virtual threads | 1,047.39 req/s | 0.00% | 52 / 84 / 110 ms | 857 ms | Yes (**+76.7%**) |
+| **+ Policy-Aware TTLs, Async Logback, Pre-Parse Cache, Controller Cache & ZGC** (`PR #1019`, `PR #1021`) | 15m `Success` / 24h `isAffirmativelyInvalid` TTLs; `AsyncAppender`; pre-parse `x5t#S256(byte[])` lookup; `IntermediatesController` `CertStore` cache; `-XX:+UseZGC` | **1,147.21 req/s** | 0.00% | **50 / 80 / 110 ms** | **830 ms** | Yes (**+93.6%**) |
+| **+ No-Stack-Walk Logging, Pre-Serialized JSON, Single-Flight & Proxy Keepalive** (`PR #1023`, `PR #1024`, `08f7589`) | Removed `:%L` / `includeCallerData=false`; pre-serialized JSON in `CacheEntry`; `compact-audit-logging`; single-flight miss coalescing; proxy `worker_processes auto` + `keepalive 128` | 1,016.18 req/s | 0.00% | 52 / 94 / 140 ms | 846 ms | Yes (**+71.5%**) |
+
+### 2. Paced Baseline (50 Users, `wait_time` 0.1–0.5s, 30s)
+
+| Metric | `v2.0` Uncached (`97724fc`) | Current Optimized Stack (`08f7589`) | Improvement |
 | --- | ---: | ---: | --- |
 | **Aggregated Throughput** | 119.17 req/s (3,534 reqs) | **152.55 req/s** (4,516 reqs) | **+28.0%** |
 | **Error Rate** | 0.00% | **0.00%** | — |
@@ -30,7 +39,7 @@ Workload (`locust/locustfile.py`, `FastHttpUser`) across 17 valid CA certificate
 | **`POST /vss/v2/validate (SUCCESS)` p99** | 370 ms | **38 ms** | **9.7x faster** |
 | **Overall Max Response Time** | 650 ms | **187 ms** | **3.5x lower** |
 
-### 2. Full-Throughput Saturation Sweep (Zero-Wait, 15s Runs)
+### 3. Full-Throughput Saturation Sweep (Zero-Wait, 15s Runs on `08f7589`)
 
 | Concurrency (`VSS_WAIT_MIN=0`, `VSS_WAIT_MAX=0`) | Aggregated QPS | # Reqs | # Fails | Aggregated p50 / p95 / p99 | Overall Max |
 | --- | ---: | ---: | ---: | --- | ---: |
@@ -39,8 +48,9 @@ Workload (`locust/locustfile.py`, `FastHttpUser`) across 17 valid CA certificate
 | **150 users** | 971.94 req/s | 14,359 | 0 (0.00%) | 74 / 120 / 620 ms | 2,228 ms |
 | **200 users** | 932.29 req/s | 13,817 | 0 (0.00%) | 93 / 140 / 1,600 ms | 2,850 ms |
 
-- **Peak throughput under the ≤ 1 second max latency ceiling:** **~1,016–1,147 req/s** at **100 concurrent zero-wait users** (`830–846 ms` max, `0.00%` failures; uncached baseline at 100 users was `592.60 req/s` with `1,509 ms` max).
+- **Peak throughput under the ≤ 1 second max latency ceiling:** **~1,016–1,147 req/s** at **100 concurrent zero-wait users** (`830–846 ms` max, `0.00%` failures; uncached `v2.0` baseline at 100 users was `592.60 req/s` with `1,509 ms` max).
 - **20-user warm-up (5s):** `827.92 req/s`, `12 ms` p50, `35 ms` p95, `523 ms` max, `0.00%` failures.
+- **Cold-cache note:** On an initially cold cache at 100 zero-wait users (`1,041.94 req/s`, `0.00%` failures), initial live OCSP/CRL fetches produce a `1,689 ms` p99.99 tail while warming; once warm, all requests stay under **830–846 ms**.
 - **Bottleneck beyond 100 zero-wait users:** On this single 4-core/8-thread 1 Gbps host, TLS 1.3 + ML-KEM proxy encryption, 1 Gbps NIC bandwidth (especially `GET /vss/v2/intermediates` payloads), and single-process Locust client contention cap throughput around ~1,000–1,150 req/s and push tail latency above 1 second at 120+ concurrent zero-wait clients.
 
 ## Running the Load Test
