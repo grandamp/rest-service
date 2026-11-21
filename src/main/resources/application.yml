@@ -56,10 +56,11 @@ service:
       success-ttl-seconds: 900
       affirmatively-invalid-ttl-seconds: 86400
       max-entries: 10000
+      compact-audit-logging: true
 logging:
   pattern:
-    console: "{\"time\": \"%d\", \"level\": \"%p\", \"class\": \"%logger{63}:%L\", \"message\": %m}%n"
-    file: "{\"time\": \"%d\", \"level\": \"%p\", \"class\": \"%logger{63}:%L\", \"message\": %m}%n"
+    console: "{\"time\": \"%d\", \"level\": \"%p\", \"class\": \"%logger{63}\", \"message\": %m}%n"
+    file: "{\"time\": \"%d\", \"level\": \"%p\", \"class\": \"%logger{63}\", \"message\": %m}%n"
   level:
     org.apache.catalina.core: OFF
     org.springframework: OFF

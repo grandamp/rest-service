@@ -111,14 +111,15 @@ public class ValidateController {
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = VssResponse.class)))
 	@ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class)))
 	@CrossOrigin(origins = "*")
-	ResponseEntity<VssResponse> validate(@RequestBody VssRequest request, @RequestHeader Map<String, String> headers) {
+	ResponseEntity<String> validate(@RequestBody VssRequest request, @RequestHeader Map<String, String> headers) {
+		ValidationCacheSingleton.CacheEntry entry = validateV2Core(request, headers);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(entry.serializedJson);
+	}
+
+	private ValidationCacheSingleton.CacheEntry validateV2Core(VssRequest request, Map<String, String> headers) {
 		ASN1ObjectIdentifier validationPolicyId = null;
-		X509Certificate clientCert = null;
-		CertificateFactory cf = null;
-		ByteArrayInputStream bais = null;
 		String x5tS256 = null;
 		String requestId = null;
-	        VssResponse response;
 		/*
 		 * First, lets validate the request.
 		 *
@@ -173,57 +174,84 @@ public class ValidateController {
 		 */
 		requestId = X509Util.strS256HexString(x5tS256 + ":" + valPol.validationPolicyId);
 		/*
-		 * Add metadata to the request via `additionalProperties` so we can log it.
-		 */
-		request.setAdditionalProperty("requestHeaders", headers);
-		request.requestId = requestId;
-		/*
-		 * Log the request in JSON
-		 */
-		LOG.info(LoggingUtil.pojoToJson(request));
-		/*
-		 * Check short-TTL validation response cache before parsing X.509 or running PKIX/revocation I/O
+		 * Check short-TTL validation response cache before full audit logging,
+		 * X.509 parsing, or running PKIX/revocation I/O.
 		 */
 		long nowMillis = System.currentTimeMillis();
 		ValidationCacheSingleton cache = ValidationCacheSingleton.getInstance();
-		VssResponse cachedResponse = cache.get(requestId, nowMillis);
-		if (null != cachedResponse) {
-			LOG.info(LoggingUtil.pojoToJson(cachedResponse));
-			return ResponseEntity.ok().body(cachedResponse);
+		ValidationCacheSingleton.CacheEntry cachedEntry = cache.getEntry(requestId, nowMillis);
+		if (null != cachedEntry) {
+			logCacheHit(request, headers, requestId, x5tS256, valPol.validationPolicyId, cachedEntry, cache.isCompactAuditLogging());
+			return cachedEntry;
 		}
-		try {
-			cf = CertificateFactory.getInstance("X509");
-			bais = new ByteArrayInputStream(certBytes);
-			clientCert = (X509Certificate) cf.generateCertificate(bais);
-		} catch (CertificateException e) {
-			LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
-			throw new ServiceException("Error decoding x509Certificate");
-		}
-		/*
-		 * Validate, log, cache, and return the result
-		 */
-		Date dNow = Date.from(Instant.ofEpochMilli(nowMillis));
-		response = ValidatePKIX.validate(clientCert, x5tS256, valPol, dNow);
-		String validationNow = X509Util.ISO8601DateString(dNow);
-		response.validationTime = validationNow;
-		ValidationResult respResult = response.validationResult;
-		if (respResult instanceof Success) {
+		final String finalRequestId = requestId;
+		final String finalX5tS256 = x5tS256;
+		return cache.executeSingleFlight(finalRequestId, () -> {
+			long missNowMillis = System.currentTimeMillis();
+			ValidationCacheSingleton.CacheEntry rechecked = cache.getEntry(finalRequestId, missNowMillis);
+			if (null != rechecked) {
+				logCacheHit(request, headers, finalRequestId, finalX5tS256, valPol.validationPolicyId, rechecked, cache.isCompactAuditLogging());
+				return rechecked;
+			}
+			X509Certificate clientCert;
+			try {
+				CertificateFactory cf = CertificateFactory.getInstance("X509");
+				ByteArrayInputStream bais = new ByteArrayInputStream(certBytes);
+				clientCert = (X509Certificate) cf.generateCertificate(bais);
+			} catch (CertificateException e) {
+				LOG.error(LoggingUtil.pojoToJson(Map.of("error", "Error decoding certificate, returning SERVICEFAIL", "stacktrace", LoggingUtil.stackTraceToString(e))));
+				throw new ServiceException("Error decoding x509Certificate");
+			}
 			/*
-			 * validationTime should be used as Last-Modified
+			 * Add metadata to the request via `additionalProperties` so we can log it.
 			 */
-			response.requestId = requestId;
-			response.nextUpdate = validationNow;
-			cache.put(requestId, response, clientCert.getNotAfter(), nowMillis);
-		} else if (respResult != null) {
+			request.setAdditionalProperty("requestHeaders", headers);
+			request.requestId = finalRequestId;
+			LOG.info(LoggingUtil.pojoToJson(request));
 			/*
-			 * Set nextUpdate to null to inform the client that we will *not* perform any
-			 * more operations on this requestId
+			 * Validate, serialize once, log, cache, and return the result
 			 */
-			response.nextUpdate = null;
-			cache.put(requestId, response, clientCert.getNotAfter(), nowMillis);
+			Date dNow = Date.from(Instant.ofEpochMilli(missNowMillis));
+			VssResponse response = ValidatePKIX.validate(clientCert, finalX5tS256, valPol, dNow);
+			String validationNow = X509Util.ISO8601DateString(dNow);
+			response.validationTime = validationNow;
+			ValidationResult respResult = response.validationResult;
+			if (respResult instanceof Success) {
+				/*
+				 * validationTime should be used as Last-Modified
+				 */
+				response.requestId = finalRequestId;
+				response.nextUpdate = validationNow;
+			} else if (respResult != null) {
+				/*
+				 * Set nextUpdate to null to inform the client that we will *not* perform any
+				 * more operations on this requestId
+				 */
+				response.nextUpdate = null;
+			}
+			String serializedJson = LoggingUtil.pojoToJson(response);
+			LOG.info(serializedJson);
+			return cache.put(finalRequestId, response, serializedJson, clientCert.getNotAfter(), missNowMillis);
+		});
+	}
+
+	private void logCacheHit(VssRequest request, Map<String, String> headers, String requestId, String x5tS256,
+			String validationPolicyId, ValidationCacheSingleton.CacheEntry cachedEntry, boolean compactAuditLogging) {
+		if (compactAuditLogging) {
+			String resultStr = (cachedEntry.response.validationResult instanceof Success) ? "SUCCESS"
+					: (cachedEntry.response.validationResult instanceof Fail) ? "FAIL" : "UNKNOWN";
+			LOG.info(LoggingUtil.pojoToJson(Map.of(
+					"requestId", requestId,
+					"x5t#S256", x5tS256,
+					"validationPolicyId", validationPolicyId,
+					"result", resultStr,
+					"cached", true)));
+		} else {
+			request.setAdditionalProperty("requestHeaders", headers);
+			request.requestId = requestId;
+			LOG.info(LoggingUtil.pojoToJson(request));
+			LOG.info(cachedEntry.serializedJson);
 		}
-		LOG.info(LoggingUtil.pojoToJson(response));
-		return ResponseEntity.ok().body(response);
 	}
 
 	/*
@@ -327,7 +355,7 @@ public class ValidateController {
 			v2Request.x509Certificate = toValidate.x509Certificate;
 			VssResponse v2Response = null;
 			try {
-				v2Response = validate(v2Request, headers).getBody();
+				v2Response = validateV2Core(v2Request, headers).response;
 			} catch(ServiceException e) {
 				txResult.transactionResultToken = "SERVICEFAIL";
 				txResult.transactionResultText = e.getMessage();
