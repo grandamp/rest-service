@@ -1,7 +1,6 @@
 # rest-service (Validation Service / VSS)
 
 [![Build Pipeline](https://github.com/grandamp/rest-service/actions/workflows/build.yml/badge.svg)](https://github.com/grandamp/rest-service/actions/workflows/build.yml)
-[![CodeQL Analysis with Temurin 25 and Maven](https://github.com/grandamp/rest-service/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/grandamp/rest-service/actions/workflows/codeql-analysis.yml)
 [![SBOM](https://img.shields.io/badge/SBOM-CycloneDX-blue)](#software-bill-of-materials-sbom)
 
 A modern, policy-driven RESTful **Validation Service (VSS)** for X.509 certificate path discovery, revocation checking, and policy validation—originally built to replace the legacy [Treasury SCVP service](https://github.com/GSA/ficam-scvp-testing/blob/master/utilities/vss2/README.md).
@@ -20,6 +19,7 @@ VSS centralizes certificate validation behind a lightweight JSON/REST API:
 ## Live Reference Instance & API Docs
 
 - **Swagger UI:** [https://keysupport.net/swagger-ui/index.html](https://keysupport.net/swagger-ui/index.html)
+- **Observability & FPKI Graph:** [https://keysupport.net/observability/](https://keysupport.net/observability/)
 - **Open Issues:** [github.com/grandamp/rest-service/issues](https://github.com/grandamp/rest-service/issues)
 
 ## API Endpoints
@@ -57,7 +57,7 @@ mvn clean test
 mvn clean package spring-boot:repackage
 ```
 
-See [TESTING.md](./TESTING.md) for local execution scripts and [locust/README.md](./locust/README.md) for reference sizing, Locust benchmarks (**1,047 req/s**, **≤ 857 ms** max latency on 4c/8t i7 + 30 GiB RAM), and PDF certificate harvesting.
+See [TESTING.md](./TESTING.md) for local execution scripts and [locust/README.md](./locust/README.md) for reference sizing, Locust benchmarks (**3 ms** paced median latency, **> 1,000 req/s** zero-wait peak on 4c/8t i7 + 30 GiB RAM), and PDF certificate harvesting.
 
 ### 3. Included Clients
 
@@ -66,6 +66,10 @@ See [TESTING.md](./TESTING.md) for local execution scripts and [locust/README.md
   - `policies.py` — inspect active validation policies
   - `intermediates.py` — inspect cached intermediate CAs
 - **Java CLI** ([`client/java/`](./client/java) / `org.keysupport.api.client.RestClient`): standalone `java.net.http` client with SHA-256 `x5t#S256` verification.
+
+### 4. Observability & FPKI Graph UI
+
+A lightweight, unprivileged companion container (`ghcr.io/grandamp/rest-service/observability:latest`) is included under [`observability/`](./observability/README.md) to visualize Actuator health probes, Micrometer cache metrics, and the interactive per-policy FPKI Trust Graph + Certificate Policy OID breakdown (`/actuator/vssgraph`).
 
 ## Configuration
 
