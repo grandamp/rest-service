@@ -71,7 +71,6 @@ public class ServiceConfiguration {
 				ValidationCacheSingleton.DEFAULT_COMPACT_AUDIT_LOGGING);
 	}
 
-	@Autowired
 	public ServiceConfiguration(
 			@Value("${service.policies.uri}") String polUri,
 			@Value("${service.intermediates.uri}") String intermediatesUri,
