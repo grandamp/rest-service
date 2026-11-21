@@ -14,6 +14,8 @@ import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertStore;
 import java.security.cert.PKIXBuilderParameters;
 import java.security.cert.PKIXCertPathBuilderResult;
+import java.security.cert.PKIXCertPathValidatorResult;
+import java.security.cert.PolicyNode;
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
@@ -208,22 +210,31 @@ public class VssGraphEndpoint {
 
 		Set<String> reachableIds = new LinkedHashSet<>(anchorIds);
 		List<Map<String, String>> excludedForPolicy = new ArrayList<>();
+		Map<String, List<String>> validPolicyOidsByNode = new LinkedHashMap<>();
+		Map<String, List<Map<String, Object>>> policyLeavesByNode = new LinkedHashMap<>();
+
+		for (String anchorId : anchorIds) {
+			List<String> anchorPolicies = null != policy.userPolicySet ? List.copyOf(policy.userPolicySet) : List.of();
+			validPolicyOidsByNode.put(anchorId, anchorPolicies);
+		}
 
 		for (X509Certificate cert : cachedCerts) {
 			String certId = X509Util.x5tS256(cert);
 			if (anchorIds.contains(certId)) {
 				continue;
 			}
-			String failure = validateStructuralPath(cert, taList, policy, store, policiesSingleton, now);
-			if (null == failure) {
+			PathValidationOutcome outcome = validateStructuralPath(cert, taList, policy, store, policiesSingleton, now);
+			if (null == outcome.failureReason()) {
 				reachableIds.add(certId);
+				validPolicyOidsByNode.put(certId, outcome.validPolicyOids());
+				policyLeavesByNode.put(certId, outcome.policyLeaves());
 			} else {
 				Map<String, Object> meta = nodes.get(certId);
 				String label = null != meta ? String.valueOf(meta.get("label")) : certId;
 				excludedForPolicy.add(Map.of(
 						"id", certId,
 						"label", label,
-						"reason", failure));
+						"reason", outcome.failureReason()));
 			}
 		}
 
@@ -246,10 +257,18 @@ public class VssGraphEndpoint {
 		pg.put("reachableNodes", new ArrayList<>(reachableIds));
 		pg.put("edges", policyEdges);
 		pg.put("excludedForPolicy", excludedForPolicy);
+		pg.put("validPolicyOids", validPolicyOidsByNode);
+		pg.put("policyLeaves", policyLeavesByNode);
 		return pg;
 	}
 
-	private String validateStructuralPath(
+	private record PathValidationOutcome(
+			String failureReason,
+			List<String> validPolicyOids,
+			List<Map<String, Object>> policyLeaves) {
+	}
+
+	private PathValidationOutcome validateStructuralPath(
 			X509Certificate cert,
 			Set<TrustAnchor> taList,
 			ValidationPolicy policy,
@@ -257,7 +276,7 @@ public class VssGraphEndpoint {
 			ValidationPoliciesSingleton policies,
 			Date now) {
 		if (null == taList || taList.isEmpty()) {
-			return "Policy has no trust anchors";
+			return new PathValidationOutcome("Policy has no trust anchors", List.of(), List.of());
 		}
 		String provider = null != policies.getCertPathProvider() && !policies.getCertPathProvider().isBlank()
 				? policies.getCertPathProvider()
@@ -273,7 +292,7 @@ public class VssGraphEndpoint {
 		try {
 			params = new PKIXBuilderParameters(taList, selector);
 		} catch (InvalidAlgorithmParameterException e) {
-			return "Invalid PKIX parameters: " + e.getLocalizedMessage();
+			return new PathValidationOutcome("Invalid PKIX parameters: " + e.getLocalizedMessage(), List.of(), List.of());
 		}
 
 		params.setSigProvider(JCE_PROVIDER);
@@ -294,14 +313,51 @@ public class VssGraphEndpoint {
 			CertPathBuilder cpb = CertPathBuilder.getInstance(algorithm, provider);
 			CertPathValidator cpv = CertPathValidator.getInstance(algorithm, provider);
 			PKIXCertPathBuilderResult res = (PKIXCertPathBuilderResult) cpb.build(params);
-			cpv.validate(res.getCertPath(), params);
-			return null;
+			PKIXCertPathValidatorResult pvr = (PKIXCertPathValidatorResult) cpv.validate(res.getCertPath(), params);
+			int targetDepth = res.getCertPath().getCertificates().size();
+			List<String> validOids = new ArrayList<>();
+			List<Map<String, Object>> leaves = new ArrayList<>();
+			collectPolicyLeaves(pvr.getPolicyTree(), targetDepth, validOids, leaves);
+			return new PathValidationOutcome(null, List.copyOf(validOids), List.copyOf(leaves));
 		} catch (CertPathBuilderException e) {
 			Throwable cause = e.getCause();
-			return (null != cause && null != cause.getMessage()) ? cause.getMessage() : e.getLocalizedMessage();
+			String msg = (null != cause && null != cause.getMessage()) ? cause.getMessage() : e.getLocalizedMessage();
+			return new PathValidationOutcome(msg, List.of(), List.of());
 		} catch (CertPathValidatorException | InvalidAlgorithmParameterException | NoSuchAlgorithmException
 				| NoSuchProviderException e) {
-			return e.getLocalizedMessage();
+			return new PathValidationOutcome(e.getLocalizedMessage(), List.of(), List.of());
+		}
+	}
+
+	private static void collectPolicyLeaves(
+			PolicyNode node,
+			int targetDepth,
+			List<String> validOids,
+			List<Map<String, Object>> leaves) {
+		if (null == node) {
+			return;
+		}
+		var children = node.getChildren();
+		if (!children.hasNext()) {
+			if (targetDepth == 0 || node.getDepth() == targetDepth) {
+				String oid = node.getValidPolicy();
+				if (null != oid && !validOids.contains(oid)) {
+					validOids.add(oid);
+				}
+				List<String> expected = null != node.getExpectedPolicies()
+						? new ArrayList<>(node.getExpectedPolicies())
+						: List.of();
+				Collections.sort(expected);
+				Map<String, Object> leaf = new LinkedHashMap<>();
+				leaf.put("validPolicy", oid);
+				leaf.put("expectedPolicies", expected);
+				leaf.put("critical", node.isCritical());
+				leaves.add(Collections.unmodifiableMap(leaf));
+			}
+			return;
+		}
+		while (children.hasNext()) {
+			collectPolicyLeaves(children.next(), targetDepth, validOids, leaves);
 		}
 	}
 

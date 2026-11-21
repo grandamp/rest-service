@@ -107,6 +107,12 @@ class VssGraphEndpointTest {
 			assertTrue(reachableDefault.contains(dhsId));
 			assertFalse(reachableDefault.contains(dodId));
 
+			Map<String, List<String>> validPolicyOids = (Map<String, List<String>>) defaultGraph.get("validPolicyOids");
+			assertNotNull(validPolicyOids.get(ocioId));
+			assertFalse(validPolicyOids.get(ocioId).isEmpty());
+			Map<String, List<Map<String, Object>>> policyLeaves = (Map<String, List<Map<String, Object>>>) defaultGraph.get("policyLeaves");
+			assertFalse(policyLeaves.get(ocioId).isEmpty());
+
 			List<Map<String, String>> excludedDefault = (List<Map<String, String>>) defaultGraph.get("excludedForPolicy");
 			assertEquals(1, excludedDefault.size());
 			assertEquals(dodId, excludedDefault.get(0).get("id"));
