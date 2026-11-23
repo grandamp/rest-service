@@ -1,6 +1,6 @@
 # Performance & Load Testing (`locust/`)
 
-This directory contains the [Locust](https://locust.io/) load-testing harness and two certificate-harvesting pipelines used to benchmark the KeySupport Validation Service (`rest-service`).
+This directory contains the [Locust](https://locust.io/) load-testing harness and three certificate-harvesting pipelines used to benchmark the KeySupport Validation Service (`rest-service`).
 
 ## Reference Instance Sizing (`https://keysupport.net`)
 
@@ -78,7 +78,7 @@ docker run --rm --network host \
 
 ## Harvesting Additional Test Certificates
 
-`locust/locustfile.py` automatically loads any `.pem` certificates placed under `locust/corpus/valid/` and `locust/corpus/invalid/` (both gitignored). Two complementary harvesting use cases are provided under `locust/` to build and refresh that corpus. Generated `.txt` URL lists under `locust/` (other than `requirements.txt`) and `locust/corpus/` are gitignored.
+`locust/locustfile.py` automatically loads any `.pem` certificates placed under `locust/corpus/valid/` and `locust/corpus/invalid/` (both gitignored). Three complementary harvesting use cases are provided under `locust/` to build and refresh that corpus. Generated `.txt` URL lists under `locust/` (other than `requirements.txt`) and `locust/corpus/` are gitignored.
 
 ---
 
@@ -159,3 +159,28 @@ Useful flags:
 - `--reclassify`: revalidate and move/overwrite certificates already present in `locust/corpus/`.
 - `--file-glob "vss*.log*"`: customize log filename matching inside local or remote directories.
 - `--ca-bundle <path>` / `-k`: custom TLS trust or insecure verification when calling `--vss`.
+
+---
+
+### Use Case 3: Mining Historical FPKI Intermediate Bundles (`locust/fpki-intermediate-mine/`)
+
+[`fpki-intermediate-mine/mine_fpki_intermediates.py`](./fpki-intermediate-mine/mine_fpki_intermediates.py) retrieves the last `N` GitHub commits (default `50`) of `GSA/idmanagement.gov`'s `CACertificatesValidatingToFederalCommonPolicyG2.p7b` bundle, extracts every unique CA/intermediate certificate across those revisions (including expired, revoked, and decommissioned CAs), and classifies them into `locust/corpus/{valid,invalid,unclassified}/`.
+
+```bash
+# Mine the last 50 bundle revisions and classify live against VSS
+python3 locust/fpki-intermediate-mine/mine_fpki_intermediates.py \
+  --vss https://keysupport.net \
+  --out locust/corpus
+
+# Mine a custom revision count or target .p7b file without live classification
+python3 locust/fpki-intermediate-mine/mine_fpki_intermediates.py \
+  --versions 50 \
+  --out locust/corpus
+```
+
+Useful flags:
+- `--versions <N>`: number of recent GitHub commits to scan (default: `50`).
+- `--repo`, `--branch`, `--path`: override the GitHub repository, branch, or `.p7b` path.
+- `--ca-only`: skip non-CA certificates if any end-entity certs appear in a bundle.
+- `--reclassify`: revalidate and move/overwrite certificates already present in `locust/corpus/`.
+- `--token`: optional GitHub API token (defaults to `GITHUB_TOKEN` / `GH_TOKEN`).
