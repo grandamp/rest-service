@@ -22,7 +22,7 @@ spring:
     name: VSS
   mvc:
     pathmatch:
-      matching-strategy: ANT_PATH_MATCHER
+      matching-strategy: PATH_PATTERN_PARSER
 service:
   policies:
     uri: >-
