@@ -90,20 +90,38 @@ public class ValidationCacheSingleton {
 	}
 
 	public CacheEntry getEntry(String requestId, long nowMillis) {
+		return lookupEntry(requestId, nowMillis, true);
+	}
+
+	/**
+	 * Checks the cache without recording hit or miss metrics (for example, the
+	 * double-checked re-read inside {@link #executeSingleFlight}).
+	 */
+	public CacheEntry peekEntry(String requestId, long nowMillis) {
+		return lookupEntry(requestId, nowMillis, false);
+	}
+
+	private CacheEntry lookupEntry(String requestId, long nowMillis, boolean recordMetrics) {
 		if (!enabled || null == requestId || requestId.isBlank()) {
 			return null;
 		}
 		CacheEntry entry = cache.get(requestId);
 		if (null == entry) {
-			misses.incrementAndGet();
+			if (recordMetrics) {
+				misses.incrementAndGet();
+			}
 			return null;
 		}
 		if (nowMillis >= entry.expiresAtMillis) {
 			cache.remove(requestId, entry);
-			misses.incrementAndGet();
+			if (recordMetrics) {
+				misses.incrementAndGet();
+			}
 			return null;
 		}
-		hits.incrementAndGet();
+		if (recordMetrics) {
+			hits.incrementAndGet();
+		}
 		return entry;
 	}
 

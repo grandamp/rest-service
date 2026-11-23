@@ -188,7 +188,7 @@ public class ValidateController {
 		final String finalX5tS256 = x5tS256;
 		return cache.executeSingleFlight(finalRequestId, () -> {
 			long missNowMillis = System.currentTimeMillis();
-			ValidationCacheSingleton.CacheEntry rechecked = cache.getEntry(finalRequestId, missNowMillis);
+			ValidationCacheSingleton.CacheEntry rechecked = cache.peekEntry(finalRequestId, missNowMillis);
 			if (null != rechecked) {
 				logCacheHit(request, headers, finalRequestId, finalX5tS256, valPol.validationPolicyId, rechecked, cache.isCompactAuditLogging());
 				return rechecked;
