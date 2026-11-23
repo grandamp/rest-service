@@ -1,6 +1,6 @@
 # Performance & Load Testing (`locust/`)
 
-This directory contains the [Locust](https://locust.io/) load-testing harness and PDF certificate harvester used to benchmark the KeySupport Validation Service (`rest-service`).
+This directory contains the [Locust](https://locust.io/) load-testing harness and two certificate-harvesting pipelines used to benchmark the KeySupport Validation Service (`rest-service`).
 
 ## Reference Instance Sizing (`https://keysupport.net`)
 
@@ -76,63 +76,86 @@ docker run --rm --network host \
   --headless -u 100 -r 50 -t 15s --only-summary
 ```
 
-## Harvesting Additional Test Certificates (`locust/` Data Mining)
+## Harvesting Additional Test Certificates
 
-`locust/locustfile.py` automatically includes any `.pem` certificates placed under `locust/corpus/valid/` and `locust/corpus/invalid/` (both gitignored). Three scripts are provided to discover, download, and classify real-world X.509 certificates from publicly available signed PDFs:
+`locust/locustfile.py` automatically loads any `.pem` certificates placed under `locust/corpus/valid/` and `locust/corpus/invalid/` (both gitignored). Two complementary harvesting use cases are provided under `locust/` to build and refresh that corpus. Generated `.txt` URL lists under `locust/` (other than `requirements.txt`) and `locust/corpus/` are gitignored.
+
+---
+
+### Use Case 1: Mining Publicly Available Signed PDFs (`locust/public-pdf-mining/`)
+
+Discover public signed PDFs (for example, `.gov` FPKI/PIV-signed documents), extract their CMS/PKCS#7 X.509 certificates, and classify them against a VSS instance:
 
 | Script | Purpose |
 | --- | --- |
-| [`crawl_federal_pdfs.py`](./crawl_federal_pdfs.py) | Zero-API-key crawler that extracts direct `.pdf` links from federal index pages and XML sitemaps, deduplicating against existing URL lists. |
-| [`batch_harvest_pdf_certs.py`](./batch_harvest_pdf_certs.py) | Bulk downloader/extractor that reads PDF paths or URLs from `-f <file>` / stdin (`-`) / positional args, retries transient errors, extracts CMS/PKCS#7 certs, and classifies them via VSS. |
-| [`harvest_pdf_certs.py`](./harvest_pdf_certs.py) | Lightweight single/multi-input extractor for local PDF files or direct URLs. |
+| [`public-pdf-mining/crawl_federal_pdfs.py`](./public-pdf-mining/crawl_federal_pdfs.py) | Zero-API-key crawler that extracts direct `.pdf` links from federal index pages and XML sitemaps, deduplicating against existing URL lists. |
+| [`public-pdf-mining/batch_harvest_pdf_certs.py`](./public-pdf-mining/batch_harvest_pdf_certs.py) | Bulk downloader/extractor that reads PDF paths or URLs from `-f <file>` / stdin (`-`) / positional args, retries transient errors, extracts CMS/PKCS#7 certs, and classifies them via VSS. |
+| [`public-pdf-mining/harvest_pdf_certs.py`](./public-pdf-mining/harvest_pdf_certs.py) | Lightweight single/multi-input extractor for local PDF files or direct URLs. |
 
-All three scripts support `--ca-bundle <path>` (a PEM file or directory of `*.pem`/`*.crt`/`*.cer` CAs) and `-k` / `--insecure` for legacy/PKI-gated federal hosts. Generated `.txt` URL lists under `locust/` (other than `requirements.txt`) and `locust/corpus/` are gitignored.
-
-### 1. Crawl Federal Pages or Sitemaps for Signed PDFs
+All three scripts support `--ca-bundle <path>` (a PEM file or directory of `*.pem`/`*.crt`/`*.cer` CAs) and `-k` / `--insecure` for legacy or PKI-gated hosts.
 
 ```bash
-# Crawl default federal deviation/CMA indexes (depth 1) and deduplicate
-python3 locust/crawl_federal_pdfs.py \
+# 1. Crawl default federal deviation/CMA indexes (depth 1) and deduplicate
+python3 locust/public-pdf-mining/crawl_federal_pdfs.py \
   --depth 1 \
   --out locust/urls_crawled.txt
 
-# Crawl a specific index (e.g., OSD class deviations) using custom CAs or -k
-python3 locust/crawl_federal_pdfs.py \
+# 2. Crawl a specific index using a custom CA bundle or -k
+python3 locust/public-pdf-mining/crawl_federal_pdfs.py \
   --seed https://www.acq.osd.mil/dpap/dars/class_deviations.html \
   --depth 1 \
   -k \
   --exclude-from locust/urls_crawled.txt \
   --out locust/mil_crawled.txt
 
-# Crawl an XML sitemap with a regex path filter
-python3 locust/crawl_federal_pdfs.py \
+# 3. Crawl an XML sitemap with a regex path filter
+python3 locust/public-pdf-mining/crawl_federal_pdfs.py \
   --sitemap https://nasa.gov \
   --match "/saa/" \
   --out locust/nasa_saa.txt
-```
 
-### 2. Batch-Harvest & Classify Certificates via VSS
-
-```bash
-# Harvest from a URL list file and classify into locust/corpus/{valid,invalid}
-python3 locust/batch_harvest_pdf_certs.py \
+# 4. Batch-harvest from a URL list file and classify into locust/corpus/{valid,invalid}
+python3 locust/public-pdf-mining/batch_harvest_pdf_certs.py \
   --out locust/corpus \
   --vss https://keysupport.net \
   -f locust/urls_crawled.txt
 
-# Stream URLs via stdin with a custom CA bundle (or -k for legacy hosts)
-cat locust/mil_crawled.txt | python3 locust/batch_harvest_pdf_certs.py \
-  --out locust/corpus \
-  --vss https://keysupport.net \
-  --ca-bundle /path/to/dod-or-identrust-bundle.pem \
-  -f -
-```
-
-### 3. Quick Single-PDF Harvest
-
-```bash
-python3 locust/harvest_pdf_certs.py \
+# 5. Or harvest a single PDF directly
+python3 locust/public-pdf-mining/harvest_pdf_certs.py \
   --vss https://keysupport.net \
   --out locust/corpus \
   https://www.idmanagement.gov/docs/fpki-fpkima-audit-letter.pdf
 ```
+
+---
+
+### Use Case 2: Mining Observed Certificates from VSS Service Logs (`locust/vss-log-mining/`)
+
+[`vss-log-mining/mine_vss_logs.py`](./vss-log-mining/mine_vss_logs.py) streams local or remote (`--ssh`) VSS JSON/text service logs (including rotated `.log` and `.gz` files), extracts every unique Base64 DER X.509 certificate observed in v1 (`/vss/rest`) and v2 (`/vss/v2/validate`) requests/responses, deduplicates by SHA-256 fingerprint, and files them into `locust/corpus/{valid,invalid,unclassified}/`.
+
+```bash
+# Mine local log directory and classify live against VSS
+python3 locust/vss-log-mining/mine_vss_logs.py \
+  /path/to/vss/logs \
+  --vss https://keysupport.net \
+  --out locust/corpus
+
+# Stream matching certificate lines over SSH from a remote deployment (no full log download)
+python3 locust/vss-log-mining/mine_vss_logs.py \
+  --ssh user@vss-host:/opt/vss/ext/logs \
+  --ssh-identity ~/.ssh/id_rsa \
+  --vss https://keysupport.net \
+  --out locust/corpus
+
+# Offline mode: classify using the validationResult already recorded in the logs
+python3 locust/vss-log-mining/mine_vss_logs.py \
+  /path/to/vss/logs \
+  --use-log-result \
+  --out locust/corpus
+```
+
+Useful flags:
+- `--include-ca`: include CA certificates in addition to end-entity/OCSP leaf certificates (CAs are skipped by default).
+- `--reclassify`: revalidate and move/overwrite certificates already present in `locust/corpus/`.
+- `--file-glob "vss*.log*"`: customize log filename matching inside local or remote directories.
+- `--ca-bundle <path>` / `-k`: custom TLS trust or insecure verification when calling `--vss`.
