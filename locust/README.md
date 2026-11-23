@@ -181,6 +181,5 @@ python3 locust/fpki-intermediate-mine/mine_fpki_intermediates.py \
 Useful flags:
 - `--versions <N>`: number of recent GitHub commits to scan (default: `50`).
 - `--repo`, `--branch`, `--path`: override the GitHub repository, branch, or `.p7b` path.
-- `--ca-only`: skip non-CA certificates if any end-entity certs appear in a bundle.
 - `--reclassify`: revalidate and move/overwrite certificates already present in `locust/corpus/`.
 - `--token`: optional GitHub API token (defaults to `GITHUB_TOKEN` / `GH_TOKEN`).

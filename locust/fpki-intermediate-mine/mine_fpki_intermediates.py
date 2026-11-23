@@ -140,14 +140,6 @@ def extract_certs_from_bundle(raw_bytes: bytes) -> list[x509.Certificate]:
         return []
 
 
-def is_ca(cert: x509.Certificate) -> bool:
-    try:
-        bc = cert.extensions.get_extension_for_class(x509.BasicConstraints).value
-        return bc.ca
-    except (x509.ExtensionNotFound, ValueError):
-        return False
-
-
 def validate_vss(
     vss_base: str,
     policy_id: str,
@@ -190,7 +182,6 @@ def main() -> None:
     ap.add_argument("--out", default="locust/corpus", help="Output corpus directory (default: locust/corpus)")
     ap.add_argument("--vss", default="", help="Optional VSS base URL to classify valid/invalid")
     ap.add_argument("--policy", default="1.3.6.1.5.5.7.19.1", help="Validation policy OID")
-    ap.add_argument("--ca-only", action="store_true", help="Skip non-CA certificates (e.g., end-entity certs)")
     ap.add_argument(
         "--reclassify",
         action="store_true",
@@ -290,16 +281,12 @@ def main() -> None:
         "failed_fetches": failed_fetches,
         "unique_certs": len(unique_certs),
         "skipped_existing": 0,
-        "skipped_non_ca": 0,
         "valid": 0,
         "invalid": 0,
         "unclassified": 0,
     }
 
     for fp, cert in unique_certs.items():
-        if args.ca_only and not is_ca(cert):
-            stats["skipped_non_ca"] += 1
-            continue
         if not args.reclassify and fp in existing_on_disk:
             stats["skipped_existing"] += 1
             continue
@@ -331,8 +318,7 @@ def main() -> None:
         f"commits={stats['commits']} (failed={stats['failed_fetches']}), "
         f"unique={stats['unique_certs']}, "
         f"added(valid={stats['valid']}, invalid={stats['invalid']}, unclassified={stats['unclassified']}), "
-        f"skipped_existing={stats['skipped_existing']}, "
-        f"skipped_non_ca={stats['skipped_non_ca']}"
+        f"skipped_existing={stats['skipped_existing']}"
     )
 
 
