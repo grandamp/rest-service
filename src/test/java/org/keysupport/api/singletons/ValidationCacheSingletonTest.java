@@ -125,6 +125,28 @@ class ValidationCacheSingletonTest {
 	}
 
 	@Test
+	void peekEntryDoesNotIncrementHitOrMissCounters() {
+		long t0 = 5_000_000L;
+		assertNull(cache.peekEntry("req-peek", t0));
+		assertEquals(0L, cache.getHitCount());
+		assertEquals(0L, cache.getMissCount());
+
+		VssResponse ok = successResponse("req-peek");
+		cache.put("req-peek", ok, null, new Date(t0 + 60_000L), t0);
+		ValidationCacheSingleton.CacheEntry entry = cache.peekEntry("req-peek", t0 + 1_000L);
+		assertNotNull(entry);
+		assertSame(ok, entry.response);
+		assertEquals(0L, cache.getHitCount());
+		assertEquals(0L, cache.getMissCount());
+
+		// Expired entry is evicted by peekEntry without recording a miss
+		assertNull(cache.peekEntry("req-peek", t0 + 900_000L));
+		assertEquals(0L, cache.size());
+		assertEquals(0L, cache.getHitCount());
+		assertEquals(0L, cache.getMissCount());
+	}
+
+	@Test
 	void preSerializesJsonAndCoalescesConcurrentMisses() throws Exception {
 		long t0 = 4_000_000L;
 		AtomicInteger loaderCalls = new AtomicInteger();

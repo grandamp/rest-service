@@ -2,6 +2,7 @@ package org.keysupport.api.controller.vss;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -297,13 +298,19 @@ class VssControllersTest {
 
 			pkixMock.when(() -> ValidatePKIX.validate(any(), any(), eq(aal3Policy), any())).thenReturn(okResp);
 
+			ValidationCacheSingleton cache = ValidationCacheSingleton.getInstance();
 			String body = "{\"validationPolicyId\":\"" + AAL3_POLICY_ID + "\",\"x509Certificate\":\"" + dodCa65B64 + "\"}";
 			mvc.perform(post("/vss/v2/validate").contentType(MediaType.APPLICATION_JSON).content(body))
 					.andExpect(status().isOk())
 					.andExpect(jsonPath("$.validationResult.result").value("SUCCESS"));
+			assertEquals(0L, cache.getHitCount());
+			assertEquals(1L, cache.getMissCount());
+
 			mvc.perform(post("/vss/v2/validate").contentType(MediaType.APPLICATION_JSON).content(body))
 					.andExpect(status().isOk())
 					.andExpect(jsonPath("$.validationResult.result").value("SUCCESS"));
+			assertEquals(1L, cache.getHitCount());
+			assertEquals(1L, cache.getMissCount());
 
 			pkixMock.verify(() -> ValidatePKIX.validate(any(), any(), eq(aal3Policy), any()), org.mockito.Mockito.times(1));
 		}
