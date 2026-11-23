@@ -2,11 +2,16 @@ package org.keysupport.api.pkix;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.security.cert.PolicyNode;
 import java.security.cert.X509Certificate;
+import javax.security.auth.x500.X500Principal;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -276,5 +281,33 @@ public class X509Util {
 			pkixPolicyNode.children = children;
 		}
 		return pkixPolicyNode;
+	}
+
+	/**
+	 * Returns {@code true} if the certificate has a non-empty Subject DN equal to
+	 * its Issuer DN and its signature cryptographically verifies under its own
+	 * public key. Self-issued key-rollover certificates (signed by a previous CA
+	 * key) return {@code false}.
+	 */
+	public static boolean isSelfSigned(X509Certificate cert, String jceProvider) {
+		if (null == cert) {
+			return false;
+		}
+		X500Principal subject = cert.getSubjectX500Principal();
+		X500Principal issuer = cert.getIssuerX500Principal();
+		if (null == subject || null == issuer || subject.getName().isEmpty() || !subject.equals(issuer)) {
+			return false;
+		}
+		try {
+			if (null != jceProvider && !jceProvider.isBlank()) {
+				cert.verify(cert.getPublicKey(), jceProvider);
+			} else {
+				cert.verify(cert.getPublicKey());
+			}
+			return true;
+		} catch (CertificateException | NoSuchAlgorithmException | InvalidKeyException | NoSuchProviderException
+				| SignatureException e) {
+			return false;
+		}
 	}
 }

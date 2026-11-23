@@ -215,6 +215,20 @@ class ValidatePKIXTest {
 			Fail unkFail = assertInstanceOf(Fail.class, unknown.validationResult);
 			assertFalse(unkFail.isAffirmativelyInvalid);
 
+			// 5b. Untrusted self-signed cert -> CertPathBuilderException with null cause -> isAffirmativelyInvalid=true
+			X509Certificate untrustedSelfSigned = signCert(rogueDn, rogueKp, rogueDn, rogueKp, BigInteger.valueOf(5),
+					notBefore, notAfter, false, CERT_POLICY_OID, null);
+			VssResponse selfSignedFailResp = ValidatePKIX.validate(untrustedSelfSigned, "x5t-self", valPol, validNow);
+			Fail selfSignedFail = assertInstanceOf(Fail.class, selfSignedFailResp.validationResult);
+			assertTrue(selfSignedFail.isAffirmativelyInvalid);
+
+			// 5c. Self-issued rollover cert (Subject == Issuer, signed by different key) -> isAffirmativelyInvalid=false
+			X509Certificate selfIssuedRollover = signCert(rogueDn, rogueKp, rogueDn, eeKp, BigInteger.valueOf(6),
+					notBefore, notAfter, true, CERT_POLICY_OID, null);
+			VssResponse rolloverResp = ValidatePKIX.validate(selfIssuedRollover, "x5t-rollover", valPol, validNow);
+			Fail rolloverFail = assertInstanceOf(Fail.class, rolloverResp.validationResult);
+			assertFalse(rolloverFail.isAffirmativelyInvalid);
+
 			// 6. Intermediate discovery adds missing CA intermediate to IntermediateCacheSingleton
 			// (also verifies isCA=true path)
 			when(cacheMock.getIntermediates()).thenReturn(emptyStore);
@@ -223,10 +237,10 @@ class ValidatePKIXTest {
 			assertInstanceOf(Success.class, caMissingFromStore.validationResult);
 			org.mockito.Mockito.verify(cacheMock).addIntermediate(interCert);
 
-			// Expired & not-yet-valid fail before discovery; 2 valid paths + 2 discovery failures ran
+			// Expired & not-yet-valid fail before discovery; 2 valid paths + 4 discovery failures ran
 			assertEquals(2L, pkixMetrics.getDiscoverySuccessCount());
-			assertEquals(2L, pkixMetrics.getDiscoveryFailCount());
-			assertEquals(4L, pkixMetrics.getDiscoveryCount());
+			assertEquals(4L, pkixMetrics.getDiscoveryFailCount());
+			assertEquals(6L, pkixMetrics.getDiscoveryCount());
 			assertTrue(pkixMetrics.getDiscoveryTotalNanos() > 0L);
 			assertEquals(2L, pkixMetrics.getValidationSuccessCount());
 			assertEquals(0L, pkixMetrics.getValidationFailCount());
