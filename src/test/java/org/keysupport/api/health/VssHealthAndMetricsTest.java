@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.keysupport.api.pojo.vss.ValidationPolicies;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.singletons.IntermediateCacheSingleton;
+import org.keysupport.api.singletons.PkixMetricsSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.mockito.MockedStatic;
 import org.springframework.boot.health.contributor.Health;
@@ -75,5 +76,24 @@ class VssHealthAndMetricsTest {
 		assertNotNull(registry.find("vss.validation.cache.misses").functionCounter());
 		assertNotNull(registry.find("vss.intermediates.cached").gauge());
 		assertNotNull(registry.find("vss.policies.loaded").gauge());
+		assertNotNull(registry.find(PkixMetricsSingleton.METRIC_PATH_DISCOVERY).tag("outcome", "success").timer());
+		assertNotNull(registry.find(PkixMetricsSingleton.METRIC_PATH_DISCOVERY).tag("outcome", "fail").timer());
+		assertNotNull(registry.find(PkixMetricsSingleton.METRIC_PATH_VALIDATION).tag("outcome", "success").timer());
+		assertNotNull(registry.find(PkixMetricsSingleton.METRIC_PATH_VALIDATION).tag("outcome", "fail").timer());
+
+		PkixMetricsSingleton metrics = PkixMetricsSingleton.getInstance();
+		try {
+			metrics.recordDiscovery(12_000_000L, true);
+			metrics.recordDiscovery(5_000_000L, false);
+			metrics.recordValidation(3_000_000L, true);
+			metrics.recordValidation(1_000_000L, false);
+
+			assertEquals(1L, registry.find(PkixMetricsSingleton.METRIC_PATH_DISCOVERY).tag("outcome", "success").timer().count());
+			assertEquals(1L, registry.find(PkixMetricsSingleton.METRIC_PATH_DISCOVERY).tag("outcome", "fail").timer().count());
+			assertEquals(1L, registry.find(PkixMetricsSingleton.METRIC_PATH_VALIDATION).tag("outcome", "success").timer().count());
+			assertEquals(1L, registry.find(PkixMetricsSingleton.METRIC_PATH_VALIDATION).tag("outcome", "fail").timer().count());
+		} finally {
+			metrics.unbind(registry);
+		}
 	}
 }

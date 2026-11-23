@@ -45,6 +45,7 @@ import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.keysupport.api.singletons.IntermediateCacheSingleton;
+import org.keysupport.api.singletons.PkixMetricsSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,6 +164,8 @@ public class ValidatePKIX {
 			response.validationResult = fail;
 			return response;
 		}
+		PkixMetricsSingleton pkixMetrics = PkixMetricsSingleton.getInstance();
+		final long discoveryStartNanos = System.nanoTime();
 		X509CertSelector selector = new X509CertSelector();
 		selector.setCertificate(cert);
 		/*
@@ -259,8 +262,11 @@ public class ValidatePKIX {
 				fail.isAffirmativelyInvalid = false;
 				fail.invalidityReasonText = e.getLocalizedMessage();
 			}
+			pkixMetrics.recordDiscovery(System.nanoTime() - discoveryStartNanos, false);
 			return response;
 		}
+		pkixMetrics.recordDiscovery(System.nanoTime() - discoveryStartNanos, true);
+		final long validationStartNanos = System.nanoTime();
 		CertPath cp = result.getCertPath();
 		/*
 		 * Validate the certificate path, return result if invalid
@@ -282,6 +288,7 @@ public class ValidatePKIX {
 			fail.isAffirmativelyInvalid = true;
 			fail.invalidityReasonText = e.getLocalizedMessage();
 			response.validationResult = fail;
+			pkixMetrics.recordValidation(System.nanoTime() - validationStartNanos, false);
 			return response;
 		} catch (InvalidAlgorithmParameterException e) {
 			LOG.error(LoggingUtil.pojoToJson(
@@ -352,6 +359,7 @@ public class ValidatePKIX {
 		PKIXPolicyNode policyTree = X509Util.policyNodeToJSON(pvr.getPolicyTree());
 		success.policyTree = policyTree;
 		response.validationResult = success;
+		pkixMetrics.recordValidation(System.nanoTime() - validationStartNanos, true);
 		return response;
 	}
 

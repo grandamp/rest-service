@@ -54,6 +54,7 @@ import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.keysupport.api.singletons.IntermediateCacheSingleton;
+import org.keysupport.api.singletons.PkixMetricsSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.mockito.MockedStatic;
 
@@ -136,6 +137,8 @@ class ValidatePKIXTest {
 
 	@Test
 	void validate_validChainAndTemporalFailuresAndPolicyFailures() throws Exception {
+		PkixMetricsSingleton pkixMetrics = PkixMetricsSingleton.getInstance();
+		pkixMetrics.resetCountersForTesting();
 		long nowMs = System.currentTimeMillis();
 		Date notBefore = new Date(nowMs - 86_400_000L);
 		Date notAfter = new Date(nowMs + 86_400_000L * 30L);
@@ -219,6 +222,16 @@ class ValidatePKIXTest {
 			assertTrue(caMissingFromStore.isCA);
 			assertInstanceOf(Success.class, caMissingFromStore.validationResult);
 			org.mockito.Mockito.verify(cacheMock).addIntermediate(interCert);
+
+			// Expired & not-yet-valid fail before discovery; 2 valid paths + 2 discovery failures ran
+			assertEquals(2L, pkixMetrics.getDiscoverySuccessCount());
+			assertEquals(2L, pkixMetrics.getDiscoveryFailCount());
+			assertEquals(4L, pkixMetrics.getDiscoveryCount());
+			assertTrue(pkixMetrics.getDiscoveryTotalNanos() > 0L);
+			assertEquals(2L, pkixMetrics.getValidationSuccessCount());
+			assertEquals(0L, pkixMetrics.getValidationFailCount());
+			assertEquals(2L, pkixMetrics.getValidationCount());
+			assertTrue(pkixMetrics.getValidationTotalNanos() > 0L);
 		}
 	}
 

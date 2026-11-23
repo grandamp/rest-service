@@ -17,6 +17,69 @@ class MockVssHandler(BaseHTTPRequestHandler):
             "/actuator/metrics/vss.validation.cache.entries": {"measurements": [{"value": 12.0}]},
             "/actuator/metrics/vss.validation.cache.hits": {"measurements": [{"value": 100.0}]},
             "/actuator/metrics/vss.validation.cache.misses": {"measurements": [{"value": 5.0}]},
+            "/actuator/metrics/vss.pkix.path.discovery": {
+                "measurements": [
+                    {"statistic": "COUNT", "value": 10.0},
+                    {"statistic": "TOTAL_TIME", "value": 0.900},
+                    {"statistic": "MAX", "value": 0.250},
+                ]
+            },
+            "/actuator/metrics/vss.pkix.path.discovery?tag=outcome:success": {
+                "measurements": [
+                    {"statistic": "COUNT", "value": 8.0},
+                    {"statistic": "TOTAL_TIME", "value": 0.720},
+                    {"statistic": "MAX", "value": 0.250},
+                ]
+            },
+            "/actuator/metrics/vss.pkix.path.discovery?tag=outcome:fail": {
+                "measurements": [
+                    {"statistic": "COUNT", "value": 2.0},
+                    {"statistic": "TOTAL_TIME", "value": 0.180},
+                    {"statistic": "MAX", "value": 0.120},
+                ]
+            },
+            "/actuator/metrics/vss.pkix.path.discovery.percentile?tag=outcome:success&tag=phi:0.5": {
+                "measurements": [{"value": 0.080}]
+            },
+            "/actuator/metrics/vss.pkix.path.discovery.percentile?tag=outcome:success&tag=phi:0.95": {
+                "measurements": [{"value": 0.210}]
+            },
+            "/actuator/metrics/vss.pkix.path.discovery.percentile?tag=outcome:success&tag=phi:0.99": {
+                "measurements": [{"value": 0.245}]
+            },
+            "/actuator/metrics/vss.pkix.path.discovery.percentile?tag=outcome:fail&tag=phi:0.95": {
+                "measurements": [{"value": 0.115}]
+            },
+            "/actuator/metrics/vss.pkix.path.validation": {
+                "measurements": [
+                    {"statistic": "COUNT", "value": 8.0},
+                    {"statistic": "TOTAL_TIME", "value": 0.100},
+                    {"statistic": "MAX", "value": 0.025},
+                ]
+            },
+            "/actuator/metrics/vss.pkix.path.validation?tag=outcome:success": {
+                "measurements": [
+                    {"statistic": "COUNT", "value": 8.0},
+                    {"statistic": "TOTAL_TIME", "value": 0.100},
+                    {"statistic": "MAX", "value": 0.025},
+                ]
+            },
+            "/actuator/metrics/vss.pkix.path.validation?tag=outcome:fail": {
+                "measurements": [
+                    {"statistic": "COUNT", "value": 0.0},
+                    {"statistic": "TOTAL_TIME", "value": 0.0},
+                    {"statistic": "MAX", "value": 0.0},
+                ]
+            },
+            "/actuator/metrics/vss.pkix.path.validation.percentile?tag=outcome:success&tag=phi:0.5": {
+                "measurements": [{"value": 0.010}]
+            },
+            "/actuator/metrics/vss.pkix.path.validation.percentile?tag=outcome:success&tag=phi:0.95": {
+                "measurements": [{"value": 0.022}]
+            },
+            "/actuator/metrics/vss.pkix.path.validation.percentile?tag=outcome:success&tag=phi:0.99": {
+                "measurements": [{"value": 0.025}]
+            },
             "/actuator/vssgraph": {
                 "nodeCount": 2,
                 "edgeCount": 1,
@@ -52,6 +115,7 @@ class ObservabilityServerTest(unittest.TestCase):
         obs_server.VSS_BASE_URL = f"http://127.0.0.1:{cls.mock_vss.server_port}"
         obs_server._GRAPH_CACHE["data"] = None
         obs_server._STATUS_CACHE["data"] = None
+        obs_server._PKIX_PREV.clear()
 
         cls.ui_server = ThreadingHTTPServer(("127.0.0.1", 0), obs_server.Handler)
         cls.ui_thread = threading.Thread(target=cls.ui_server.serve_forever, daemon=True)
@@ -74,6 +138,7 @@ class ObservabilityServerTest(unittest.TestCase):
             html_body = r.read().decode()
             self.assertIn("./api/status", html_body)
             self.assertIn("./api/graph", html_body)
+            self.assertIn("PKIX Path Discovery vs. Path Validation", html_body)
 
     def test_status_and_graph_subpath_endpoints(self):
         with urllib.request.urlopen(f"{self.base}/observability/api/status") as r:
@@ -81,6 +146,16 @@ class ObservabilityServerTest(unittest.TestCase):
             self.assertEqual("UP", status["readiness"])
             self.assertEqual("UP", status["liveness"])
             self.assertEqual(141.0, status["metrics"]["vss.intermediates.cached"])
+            pkix = status["pkix"]
+            self.assertTrue(pkix["available"])
+            self.assertEqual(10, pkix["discovery"]["count"])
+            self.assertEqual(90.0, pkix["discovery"]["avgMs"])
+            self.assertEqual(90.0, pkix["discovery"]["sharePct"])
+            self.assertEqual(210.0, pkix["discovery"]["success"]["p95Ms"])
+            self.assertEqual(8, pkix["validation"]["count"])
+            self.assertEqual(12.5, pkix["validation"]["avgMs"])
+            self.assertEqual(10.0, pkix["validation"]["sharePct"])
+            self.assertEqual(22.0, pkix["validation"]["success"]["p95Ms"])
 
         with urllib.request.urlopen(f"{self.base}/observability/api/graph") as r:
             graph = json.loads(r.read().decode())

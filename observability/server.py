@@ -7,6 +7,7 @@ and serves a radial per-policy FPKI Graph and live cache/readiness dashboard.
 """
 import html
 import json
+import math
 import os
 import ssl
 import sys
@@ -36,6 +37,12 @@ METRICS_NAMES = (
 _CACHE_LOCK = threading.Lock()
 _GRAPH_CACHE = {"ts": 0.0, "data": None}
 _STATUS_CACHE = {"ts": 0.0, "data": None}
+_PKIX_PREV = {}
+
+PKIX_TIMER_METRICS = {
+    "discovery": "vss.pkix.path.discovery",
+    "validation": "vss.pkix.path.validation",
+}
 
 
 def _ssl_context():
@@ -52,6 +59,124 @@ def fetch_json(base_url, path, timeout=8):
     req = urllib.request.Request(url, headers={"Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=timeout, context=_ssl_context()) as resp:
         return json.loads(resp.read().decode("utf-8"))
+
+
+def _finite_ms(seconds_val):
+    try:
+        val = float(seconds_val) * 1000.0
+    except (TypeError, ValueError):
+        return None
+    return round(val, 3) if math.isfinite(val) else None
+
+
+def _parse_timer_payload(payload):
+    stats = {}
+    for item in payload.get("measurements") or []:
+        stat = item.get("statistic")
+        if stat:
+            try:
+                val = float(item.get("value", 0.0))
+            except (TypeError, ValueError):
+                val = 0.0
+            stats[stat] = val if math.isfinite(val) else 0.0
+    count = int(round(stats.get("COUNT", 0.0)))
+    total_ms = stats.get("TOTAL_TIME", 0.0) * 1000.0
+    max_ms = stats.get("MAX", 0.0) * 1000.0
+    avg_ms = (total_ms / count) if count > 0 else 0.0
+    return {
+        "count": count,
+        "totalTimeMs": round(total_ms, 3),
+        "avgMs": round(avg_ms, 3),
+        "maxMs": round(max_ms, 3),
+    }
+
+
+def _fetch_optional_json(base_url, path, timeout=4):
+    try:
+        return fetch_json(base_url, path, timeout=timeout)
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            return None
+        raise
+
+
+def _fetch_percentile_ms(base_url, metric_name, outcome, phi):
+    payload = _fetch_optional_json(
+        base_url,
+        f"/actuator/metrics/{metric_name}.percentile?tag=outcome:{outcome}&tag=phi:{phi}",
+        timeout=4,
+    )
+    if not payload:
+        return None
+    measurements = payload.get("measurements") or []
+    if not measurements:
+        return None
+    return _finite_ms(measurements[0].get("value"))
+
+
+def collect_pkix_timers(target, track_interval=True):
+    phases = {}
+    available = False
+    for phase_key, metric_name in PKIX_TIMER_METRICS.items():
+        agg_payload = _fetch_optional_json(target, f"/actuator/metrics/{metric_name}", timeout=4)
+        if agg_payload is None:
+            continue
+        available = True
+        phase_data = _parse_timer_payload(agg_payload)
+        for outcome in ("success", "fail"):
+            out_payload = _fetch_optional_json(
+                target, f"/actuator/metrics/{metric_name}?tag=outcome:{outcome}", timeout=4
+            )
+            if out_payload is not None:
+                out_data = _parse_timer_payload(out_payload)
+                if out_data["count"] > 0:
+                    phis = ("0.5", "0.95", "0.99") if outcome == "success" else ("0.95",)
+                    for phi in phis:
+                        p_ms = _fetch_percentile_ms(target, metric_name, outcome, phi)
+                        if p_ms is not None:
+                            out_data[f"p{int(round(float(phi) * 100))}Ms"] = p_ms
+                phase_data[outcome] = out_data
+        phases[phase_key] = phase_data
+
+    if not available:
+        return {"available": False}
+
+    disc = phases.get("discovery", {"count": 0, "totalTimeMs": 0.0, "avgMs": 0.0, "maxMs": 0.0})
+    val = phases.get("validation", {"count": 0, "totalTimeMs": 0.0, "avgMs": 0.0, "maxMs": 0.0})
+    combined_ms = disc["totalTimeMs"] + val["totalTimeMs"]
+    if combined_ms > 0:
+        disc["sharePct"] = round((disc["totalTimeMs"] / combined_ms) * 100.0, 1)
+        val["sharePct"] = round((val["totalTimeMs"] / combined_ms) * 100.0, 1)
+    else:
+        disc["sharePct"] = 0.0
+        val["sharePct"] = 0.0
+
+    if track_interval:
+        with _CACHE_LOCK:
+            for key, pdata in (("discovery", disc), ("validation", val)):
+                prev = _PKIX_PREV.get(key)
+                cur_count = pdata["count"]
+                cur_total = pdata["totalTimeMs"]
+                if prev is not None and cur_count > prev["count"]:
+                    delta_c = cur_count - prev["count"]
+                    delta_ms = max(0.0, cur_total - prev["totalTimeMs"])
+                    interval_avg = round(delta_ms / delta_c, 3)
+                elif prev is not None and cur_count == prev["count"]:
+                    interval_avg = prev.get("intervalAvgMs")
+                else:
+                    interval_avg = None
+                pdata["intervalAvgMs"] = interval_avg
+                _PKIX_PREV[key] = {
+                    "count": cur_count,
+                    "totalTimeMs": cur_total,
+                    "intervalAvgMs": interval_avg,
+                }
+
+    return {
+        "available": True,
+        "discovery": disc,
+        "validation": val,
+    }
 
 
 def collect_status(base_url=None, force=False):
@@ -86,10 +211,17 @@ def collect_status(base_url=None, force=False):
         except Exception as exc:
             errors.append(f"{name}: {exc}")
 
+    try:
+        pkix = collect_pkix_timers(target, track_interval=(base_url is None))
+    except Exception as exc:
+        pkix = {"available": False}
+        errors.append(f"pkix: {exc}")
+
     data = {
         "liveness": liveness,
         "readiness": readiness,
         "metrics": metrics,
+        "pkix": pkix,
         "collectedAt": int(now),
     }
     if errors:
@@ -419,6 +551,18 @@ HTML_TEMPLATE = r"""<!doctype html>
       border-radius: 8px; padding: 14px 16px; margin-bottom: 14px;
     }
     .card h2 { margin: 0 0 10px; font-size: 1rem; }
+    .pkix-bar {
+      display: flex; height: 14px; border-radius: 999px; overflow: hidden;
+      background: #e7eef1; margin: 8px 0 12px; border: 1px solid var(--line);
+    }
+    .pkix-bar-disc { background: var(--accent); transition: width .25s ease; }
+    .pkix-bar-val { background: var(--ok); transition: width .25s ease; }
+    .pkix-legend {
+      display: flex; flex-wrap: wrap; gap: 16px; font-size: .84rem; color: var(--muted);
+      margin-bottom: 10px; align-items: center;
+    }
+    .pkix-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+    .pkix-note { font-size: .78rem; color: var(--muted); margin-top: 8px; }
     table { width: 100%; border-collapse: collapse; font-size: .86rem; }
     th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
     th { color: var(--muted); font-weight: 700; font-size: .78rem; text-transform: uppercase; }
@@ -449,6 +593,7 @@ HTML_TEMPLATE = r"""<!doctype html>
       <div class="kpi"><div class="kpi-label">Cache Entries</div><div class="kpi-val" id="cacheEntries">-</div></div>
       <div class="kpi"><div class="kpi-label">Cache Hit Ratio</div><div class="kpi-val" id="hitRatio">-</div></div>
       <div class="kpi"><div class="kpi-label">Hits / Misses</div><div class="kpi-val" id="hitsMisses" style="font-size:1rem">-</div></div>
+      <div class="kpi"><div class="kpi-label">Discovery / Validation</div><div class="kpi-val" id="pkixSplit" style="font-size:1rem">-</div></div>
     </section>
 
     <section id="tab-graph">
@@ -521,6 +666,38 @@ HTML_TEMPLATE = r"""<!doctype html>
     </section>
 
     <section id="tab-metrics" hidden>
+      <div class="card">
+        <h2>PKIX Path Discovery vs. Path Validation (Cache Misses)</h2>
+        <div class="pkix-legend" id="pkixLegend">Waiting for PKIX phase telemetry…</div>
+        <div class="pkix-bar" aria-label="PKIX phase time split">
+          <div class="pkix-bar-disc" id="pkixBarDisc" style="width:0%"></div>
+          <div class="pkix-bar-val" id="pkixBarVal" style="width:0%"></div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Outcome</th>
+              <th>Count</th>
+              <th>Time Share</th>
+              <th>Avg (ms)</th>
+              <th>Recent Avg (ms)</th>
+              <th>p50 (ms)</th>
+              <th>p95 (ms)</th>
+              <th>p99 (ms)</th>
+              <th>Max (ms)</th>
+            </tr>
+          </thead>
+          <tbody id="pkixTable"></tbody>
+        </table>
+        <div class="pkix-note">
+          Measured inside <code>ValidatePKIX.validate(...)</code> on cache misses.
+          <strong>Path Discovery</strong> covers <code>CertPathBuilder</code>, OCSP/CRL revocation, and AIA chases;
+          <strong>Path Validation</strong> covers <code>CertPathValidator</code> and response rendering.
+          Expired or not-yet-valid certificates fail before discovery.
+        </div>
+      </div>
+
       <div class="card">
         <h2>Actuator &amp; Micrometer Telemetry</h2>
         <table>
@@ -656,6 +833,75 @@ HTML_TEMPLATE = r"""<!doctype html>
       return `<span class="badge ${status === 'UP' || status === 'VALID' ? 'up' : 'down'}">${esc(status)}</span>`;
     }
 
+    function fmtMs(v) {
+      return v === null || v === undefined ? '—' : Number(v).toFixed(2);
+    }
+
+    function renderPkixTelemetry(pkix) {
+      const kpiEl = document.getElementById('pkixSplit');
+      const legendEl = document.getElementById('pkixLegend');
+      const barDisc = document.getElementById('pkixBarDisc');
+      const barVal = document.getElementById('pkixBarVal');
+      const tbody = document.getElementById('pkixTable');
+
+      if (!pkix || !pkix.available) {
+        kpiEl.textContent = 'n/a';
+        legendEl.textContent = 'PKIX phase timers are not exposed by the upstream instance.';
+        barDisc.style.width = '0%';
+        barVal.style.width = '0%';
+        tbody.innerHTML = '<tr><td colspan="10" style="color:var(--muted)">No PKIX phase metrics available.</td></tr>';
+        return;
+      }
+
+      const d = pkix.discovery || {};
+      const v = pkix.validation || {};
+      kpiEl.textContent = (d.count || v.count)
+        ? `${fmtMs(d.avgMs)}ms / ${fmtMs(v.avgMs)}ms`
+        : '0 / 0';
+
+      barDisc.style.width = `${d.sharePct || 0}%`;
+      barVal.style.width = `${v.sharePct || 0}%`;
+      legendEl.innerHTML = `
+        <span><span class="pkix-dot" style="background:var(--accent)"></span><strong>Path Discovery:</strong> ${esc(d.sharePct || 0)}% (${fmtMs(d.avgMs)} ms avg · ${(d.count || 0).toLocaleString()} runs)</span>
+        <span><span class="pkix-dot" style="background:var(--ok)"></span><strong>Path Validation:</strong> ${esc(v.sharePct || 0)}% (${fmtMs(v.avgMs)} ms avg · ${(v.count || 0).toLocaleString()} runs)</span>
+      `;
+
+      const rows = [];
+      const addPhaseRows = (label, data) => {
+        rows.push(`<tr>
+          <td><strong>${esc(label)}</strong></td>
+          <td>All</td>
+          <td>${(data.count || 0).toLocaleString()}</td>
+          <td>${esc(data.sharePct ?? 0)}%</td>
+          <td>${fmtMs(data.avgMs)}</td>
+          <td>${fmtMs(data.intervalAvgMs)}</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>${fmtMs(data.maxMs)}</td>
+        </tr>`);
+        for (const outcome of ['success', 'fail']) {
+          const sub = data[outcome];
+          if (!sub) continue;
+          rows.push(`<tr>
+            <td style="padding-left:20px;color:var(--muted)">↳ ${esc(label)}</td>
+            <td>${outcome === 'success' ? badge('VALID').replace('VALID', 'success') : '<span class="badge down">fail</span>'}</td>
+            <td>${(sub.count || 0).toLocaleString()}</td>
+            <td>—</td>
+            <td>${fmtMs(sub.avgMs)}</td>
+            <td>—</td>
+            <td>${fmtMs(sub.p50Ms)}</td>
+            <td>${fmtMs(sub.p95Ms)}</td>
+            <td>${fmtMs(sub.p99Ms)}</td>
+            <td>${fmtMs(sub.maxMs)}</td>
+          </tr>`);
+        }
+      };
+      addPhaseRows('Path Discovery', d);
+      addPhaseRows('Path Validation', v);
+      tbody.innerHTML = rows.join('');
+    }
+
     async function refreshStatus() {
       try {
         const res = await fetch('./api/status', { cache: 'no-store' });
@@ -674,6 +920,7 @@ HTML_TEMPLATE = r"""<!doctype html>
         document.getElementById('cacheEntries').textContent = Math.round(m['vss.validation.cache.entries'] || 0);
         document.getElementById('hitRatio').textContent = pct;
         document.getElementById('hitsMisses').textContent = `${hits.toLocaleString()} / ${misses.toLocaleString()}`;
+        renderPkixTelemetry(d.pkix);
         document.getElementById('metricsTable').innerHTML = Object.entries(m)
           .map(([k, v]) => `<tr><td><code>${esc(k)}</code></td><td>${esc(v)}</td></tr>`).join('');
         document.getElementById('updated').textContent = `Live · Auto-refresh 5s · Updated ${new Date().toLocaleTimeString()}`;

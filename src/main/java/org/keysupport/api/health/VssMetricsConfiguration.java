@@ -2,6 +2,7 @@ package org.keysupport.api.health;
 
 import org.keysupport.api.pojo.vss.ValidationPolicies;
 import org.keysupport.api.singletons.IntermediateCacheSingleton;
+import org.keysupport.api.singletons.PkixMetricsSingleton;
 import org.keysupport.api.singletons.ValidationCacheSingleton;
 import org.keysupport.api.singletons.ValidationPoliciesSingleton;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +44,8 @@ public class VssMetricsConfiguration {
 						? policies.validationPolicies.size()
 						: 0;
 			}).description("Number of loaded validation policies").register(registry);
+
+			PkixMetricsSingleton.getInstance().bindTo(registry);
 		};
 	}
 }
