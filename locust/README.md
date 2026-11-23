@@ -183,3 +183,23 @@ Useful flags:
 - `--repo`, `--branch`, `--path`: override the GitHub repository, branch, or `.p7b` path.
 - `--reclassify`: revalidate and move/overwrite certificates already present in `locust/corpus/`.
 - `--token`: optional GitHub API token (defaults to `GITHUB_TOKEN` / `GH_TOKEN`).
+
+---
+
+### Verifying & Cleaning the Corpus (`locust/revalidate_corpus.py`)
+
+Because previously valid certificates can expire or be revoked over time (causing `locustfile.py` assertions to fail), [`revalidate_corpus.py`](./revalidate_corpus.py) re-validates every file under `locust/corpus/{valid,invalid,unclassified}/` against a known-good VSS instance at the current time:
+
+- Moves newly expired or revoked certificates from `valid/` → `invalid/` (and promotes newly valid certificates from `invalid/` or `unclassified/` → `valid/`).
+- Canonicalizes filenames to `<sha256[:16]>.pem` and removes duplicate or unparseable files.
+
+```bash
+# Preview any corpus drift or cleanup actions without modifying files
+python3 locust/revalidate_corpus.py --vss https://keysupport.net --dry-run
+
+# Revalidate, move expired/revoked certs, deduplicate, and clean locust/corpus/
+python3 locust/revalidate_corpus.py --vss https://keysupport.net --corpus locust/corpus
+
+# Strict check mode (exits non-zero if any drift or corrupt/duplicate files exist)
+python3 locust/revalidate_corpus.py --vss https://keysupport.net --check
+```
