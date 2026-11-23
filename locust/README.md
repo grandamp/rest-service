@@ -10,16 +10,56 @@ All benchmarks below were measured against the public `keysupport.net` reference
 | --- | --- |
 | **CPU** | 11th Gen Intel Core i7-1165G7 @ 2.80 GHz (4 cores / 8 threads) |
 | **Host Memory** | 30 GiB RAM |
-| **Container Footprint** | ~334 MiB steady-state RAM (141 cached FPKI intermediates + validation cache) |
+| **Container Footprint** | ~334 MiB steady-state RAM (142 cached FPKI intermediates + 517 validation cache entries) |
 | **Network & Proxy** | 1 Gbps full-duplex Ethernet (`1000Mb/s`), behind a TLS 1.3 / ML-KEM reverse proxy (`worker_processes auto;`, `worker_connections 4096;`, HTTP/1.1 `keepalive 128` upstream pool) |
-| **Runtime** | `eclipse-temurin:25-jre-ubi10-minimal` (`Temurin-25.0.5.1+2-LTS`), Spring Boot 4.1.2, Jetty 12, `bc-fips` 2.1.3, `-XX:+UseZGC -XX:MaxRAMPercentage=75.0` |
+| **Runtime** | `eclipse-temurin:25-jre-ubi10-minimal` (`Temurin-25.0.5.1+2-LTS`), Spring Boot 4.2.0, Jetty 12, `bc-fips` 2.1.3, `-XX:+UseZGC -XX:MaxRAMPercentage=75.0` |
 | **Concurrency & Cache** | Java 25 virtual threads (`spring.threads.virtual.enabled: true`), `ValidationCacheSingleton` (`success-ttl-seconds: 900`, `affirmatively-invalid-ttl-seconds: 86400`, `max-entries: 10000`, `compact-audit-logging: true`), single-flight miss coalescing, Async Logback (`%logger{63}`, `includeCallerData=false`) |
 
 ## Benchmark Results (`locustio/locust:2.47.0`)
 
-Workload (`locust/locustfile.py`, `FastHttpUser`) across 17 valid CA certificates, 4 valid end-entity (EE) certificates, 15 negative EE/OCSP certificates, plus `/vss/v2/policies` and `/vss/v2/intermediates`.
+### Current Expanded-Corpus Baseline (`a0dabf0`, Spring Boot 4.2.0)
 
-### 1. Stage-by-Stage Progression Since `v2.0` (100 Zero-Wait Users, 15s)
+Measured after harvesting real-world federal/FPKI certificates across public `.gov` PDFs, production VSS service logs, and 50 historical FPKI intermediate bundle revisions (`528` harvested certificates under `locust/corpus/` plus `25` repo test fixtures = **`553` certificates** / **`517` unique cached entries**).
+
+#### Test Corpus Overview (`locust/corpus/` + `src/test/resources/certs/`)
+
+| Source / Subdirectory | Total | CA Certs | End-Entity (EE) | OCSP Signers | Self-Signed | Key / Failure Highlights |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `locust/corpus/valid/` | **226** | 150 | 72 | 4 | 5 | Active FPKI, DoD, Treasury, NASA, Entrust, DigiCert, WidePoint, IdenTrust, XTec (`RSA-2048/3072/4096`, `SHA-256/384`) |
+| `locust/corpus/invalid/` | **302** | 48 | 141 | 113 | 16 | `259` expired (`NotAfter`), `24` revoked (CRL/OCSP), `11` untrusted/no path, `8` self-signed untrusted (`RSA-1024/2048/3072/4096`, `EC P-256`, `SHA-1/256/384`) |
+| `locust/corpus/unclassified/` | **0** | 0 | 0 | 0 | 0 | Clean (`revalidate_corpus.py` verified `0` errors) |
+| `src/test/resources/certs/` | **25** | 17 | 5 | 3 | 3 | Built-in test fixtures (`17` valid CA, `1` valid EE, `7` negative EE/OCSP) |
+| **Combined Workload** | **553** | **215** | **218** | **120** | **24** | **`517` unique cacheable entries** in `ValidationCacheSingleton` (`0` cache misses across warm sweep) |
+
+#### 1. Paced Baseline (`50` Users, `wait_time` 0.1–0.5s, 30s)
+
+| Endpoint | # Reqs | Error Rate | p50 | p95 | p99 | Max | QPS |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `POST /vss/v2/validate (SUCCESS)` | 2,955 | 0.00% | **3 ms** | **10 ms** | **51 ms** | 236 ms | 99.88 req/s |
+| `POST /vss/v2/validate (FAIL)` | 760 | 0.00% | **2 ms** | **12 ms** | **82 ms** | 204 ms | 25.69 req/s |
+| `GET /vss/v2/policies` | 365 | 0.00% | 2 ms | 13 ms | 45 ms | 270 ms | 12.34 req/s |
+| `GET /vss/v2/intermediates` | 372 | 0.00% | 22 ms | 26 ms | 110 ms | 263 ms | 12.57 req/s |
+| **Aggregated** | **4,452** | **0.00%** | **3 ms** | **22 ms** | **77 ms** | **270 ms** | **150.48 req/s** |
+
+#### 2. Full-Throughput Saturation Sweep (Zero-Wait, 15s Runs)
+
+| Concurrency (`VSS_WAIT_MIN=0`, `VSS_WAIT_MAX=0`) | Aggregated QPS | # Reqs | # Fails | Aggregated p50 / p95 / p99 | `validate (SUCCESS)` p50 / p95 / p99 | Overall Max | Meets ≤ 1s Ceiling? |
+| --- | ---: | ---: | ---: | --- | --- | ---: | --- |
+| **100 users (peak ≤ 1s)** | **950.04 req/s** | 14,027 | 0 (0.00%) | 56 / 96 / 150 ms | 55 / 87 / 140 ms | **842 ms** | Yes |
+| **120 users** | **1,008.17 req/s** | 14,863 | 0 (0.00%) | 61 / 110 / 170 ms | 59 / 97 / 140 ms | 1,691 ms | No |
+| **150 users** | 981.48 req/s | 14,458 | 0 (0.00%) | 73 / 120 / 630 ms | 71 / 110 / 530 ms | 2,223 ms | No |
+| **200 users** | 815.07 req/s | 12,062 | 0 (0.00%) | 100 / 160 / 1,800 ms | 100 / 150 / 1,800 ms | 2,933 ms | No |
+
+- **Cold-cache warm-up (`25` users 20s + `50` users 25s):** `10,008` reqs (`516.75 req/s`, `0.00%` failures) and `18,360` reqs (`743.88 req/s`, `0.00%` failures) while populating the cache via live PKIX discovery (`71.2%` of PKIX time across `408` runs) and validation (`28.8%` across `286` runs).
+- **Warm-cache stability:** Once all `517` unique validation entries were populated, **all 59,862 requests** across the 50u–200u benchmark runs completed with **`0.00%` errors** and **0 cache misses** (`69,953` hits).
+
+---
+
+### Historical Progression Since `v2.0` (36-Cert Baseline)
+
+Early benchmarks (`locust/locustfile.py`, `FastHttpUser`) across 17 valid CA certificates, 4 valid end-entity (EE) certificates, 15 negative EE/OCSP certificates, plus `/vss/v2/policies` and `/vss/v2/intermediates`.
+
+#### 1. Stage-by-Stage Progression (`v2.0` → `08f7589`, 100 Zero-Wait Users, 15s)
 
 | Stage | Key Changes | QPS | Error Rate | `validate (SUCCESS)` p50 / p95 / p99 | Overall Max | Meets ≤ 1s Ceiling? |
 | --- | --- | ---: | ---: | --- | ---: | --- |
@@ -28,7 +68,7 @@ Workload (`locust/locustfile.py`, `FastHttpUser`) across 17 valid CA certificate
 | **+ Policy-Aware TTLs, Async Logback, Pre-Parse Cache, Controller Cache & ZGC** (`PR #1019`, `PR #1021`) | 15m `Success` / 24h `isAffirmativelyInvalid` TTLs; `AsyncAppender`; pre-parse `x5t#S256(byte[])` lookup; `IntermediatesController` `CertStore` cache; `-XX:+UseZGC` | **1,147.21 req/s** | 0.00% | **50 / 80 / 110 ms** | **830 ms** | Yes (**+93.6%**) |
 | **+ No-Stack-Walk Logging, Pre-Serialized JSON, Single-Flight & Proxy Keepalive** (`PR #1023`, `PR #1024`, `08f7589`) | Removed `:%L` / `includeCallerData=false`; pre-serialized JSON in `CacheEntry`; `compact-audit-logging`; single-flight miss coalescing; proxy `worker_processes auto` + `keepalive 128` | 1,016.18 req/s | 0.00% | 52 / 94 / 140 ms | 846 ms | Yes (**+71.5%**) |
 
-### 2. Paced Baseline (50 Users, `wait_time` 0.1–0.5s, 30s)
+#### 2. Paced Baseline (50 Users, `wait_time` 0.1–0.5s, 30s)
 
 | Metric | `v2.0` Uncached (`97724fc`) | Current Optimized Stack (`08f7589`) | Improvement |
 | --- | ---: | ---: | --- |
@@ -39,7 +79,7 @@ Workload (`locust/locustfile.py`, `FastHttpUser`) across 17 valid CA certificate
 | **`POST /vss/v2/validate (SUCCESS)` p99** | 370 ms | **38 ms** | **9.7x faster** |
 | **Overall Max Response Time** | 650 ms | **187 ms** | **3.5x lower** |
 
-### 3. Full-Throughput Saturation Sweep (Zero-Wait, 15s Runs on `08f7589`)
+#### 3. Full-Throughput Saturation Sweep (Zero-Wait, 15s Runs on `08f7589`)
 
 | Concurrency (`VSS_WAIT_MIN=0`, `VSS_WAIT_MAX=0`) | Aggregated QPS | # Reqs | # Fails | Aggregated p50 / p95 / p99 | Overall Max |
 | --- | ---: | ---: | ---: | --- | ---: |
