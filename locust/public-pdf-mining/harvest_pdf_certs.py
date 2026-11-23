@@ -5,7 +5,7 @@ Extract X.509 signer (and bundled CA) certificates from signed PDF files
 optionally validate them against a VSS endpoint.
 
 Usage:
-  python3 locust/harvest_pdf_certs.py --out locust/corpus --vss https://keysupport.net file1.pdf https://example.gov/signed.pdf
+  python3 locust/public-pdf-mining/harvest_pdf_certs.py --out locust/corpus --vss https://keysupport.net file1.pdf https://example.gov/signed.pdf
 """
 
 import argparse

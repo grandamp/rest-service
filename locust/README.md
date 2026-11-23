@@ -1,6 +1,6 @@
 # Performance & Load Testing (`locust/`)
 
-This directory contains the [Locust](https://locust.io/) load-testing harness and PDF certificate harvester used to benchmark the KeySupport Validation Service (`rest-service`).
+This directory contains the [Locust](https://locust.io/) load-testing harness and three certificate-harvesting pipelines used to benchmark the KeySupport Validation Service (`rest-service`).
 
 ## Reference Instance Sizing (`https://keysupport.net`)
 
@@ -10,16 +10,56 @@ All benchmarks below were measured against the public `keysupport.net` reference
 | --- | --- |
 | **CPU** | 11th Gen Intel Core i7-1165G7 @ 2.80 GHz (4 cores / 8 threads) |
 | **Host Memory** | 30 GiB RAM |
-| **Container Footprint** | ~334 MiB steady-state RAM (141 cached FPKI intermediates + validation cache) |
+| **Container Footprint** | ~334 MiB steady-state RAM (142 cached FPKI intermediates + 517 validation cache entries) |
 | **Network & Proxy** | 1 Gbps full-duplex Ethernet (`1000Mb/s`), behind a TLS 1.3 / ML-KEM reverse proxy (`worker_processes auto;`, `worker_connections 4096;`, HTTP/1.1 `keepalive 128` upstream pool) |
-| **Runtime** | `eclipse-temurin:25-jre-ubi10-minimal` (`Temurin-25.0.5.1+2-LTS`), Spring Boot 4.1.2, Jetty 12, `bc-fips` 2.1.3, `-XX:+UseZGC -XX:MaxRAMPercentage=75.0` |
+| **Runtime** | `eclipse-temurin:25-jre-ubi10-minimal` (`Temurin-25.0.5.1+2-LTS`), Spring Boot 4.2.0, Jetty 12, `bc-fips` 2.1.3, `-XX:+UseZGC -XX:MaxRAMPercentage=75.0` |
 | **Concurrency & Cache** | Java 25 virtual threads (`spring.threads.virtual.enabled: true`), `ValidationCacheSingleton` (`success-ttl-seconds: 900`, `affirmatively-invalid-ttl-seconds: 86400`, `max-entries: 10000`, `compact-audit-logging: true`), single-flight miss coalescing, Async Logback (`%logger{63}`, `includeCallerData=false`) |
 
 ## Benchmark Results (`locustio/locust:2.47.0`)
 
-Workload (`locust/locustfile.py`, `FastHttpUser`) across 17 valid CA certificates, 4 valid end-entity (EE) certificates, 15 negative EE/OCSP certificates, plus `/vss/v2/policies` and `/vss/v2/intermediates`.
+### Current Expanded-Corpus Baseline (`a0dabf0`, Spring Boot 4.2.0)
 
-### 1. Stage-by-Stage Progression Since `v2.0` (100 Zero-Wait Users, 15s)
+Measured after harvesting real-world federal/FPKI certificates across public `.gov` PDFs, production VSS service logs, and 50 historical FPKI intermediate bundle revisions (`528` harvested certificates under `locust/corpus/` plus `25` repo test fixtures = **`553` certificates** / **`517` unique cached entries**).
+
+#### Test Corpus Overview (`locust/corpus/` + `src/test/resources/certs/`)
+
+| Source / Subdirectory | Total | CA Certs | End-Entity (EE) | OCSP Signers | Self-Signed | Key / Failure Highlights |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `locust/corpus/valid/` | **226** | 150 | 72 | 4 | 5 | Active FPKI, DoD, Treasury, NASA, Entrust, DigiCert, WidePoint, IdenTrust, XTec (`RSA-2048/3072/4096`, `SHA-256/384`) |
+| `locust/corpus/invalid/` | **302** | 48 | 141 | 113 | 16 | `259` expired (`NotAfter`), `24` revoked (CRL/OCSP), `11` untrusted/no path, `8` self-signed untrusted (`RSA-1024/2048/3072/4096`, `EC P-256`, `SHA-1/256/384`) |
+| `locust/corpus/unclassified/` | **0** | 0 | 0 | 0 | 0 | Clean (`revalidate_corpus.py` verified `0` errors) |
+| `src/test/resources/certs/` | **25** | 17 | 5 | 3 | 3 | Built-in test fixtures (`17` valid CA, `1` valid EE, `7` negative EE/OCSP) |
+| **Combined Workload** | **553** | **215** | **218** | **120** | **24** | **`517` unique cacheable entries** in `ValidationCacheSingleton` (`0` cache misses across warm sweep) |
+
+#### 1. Paced Baseline (`50` Users, `wait_time` 0.1–0.5s, 30s)
+
+| Endpoint | # Reqs | Error Rate | p50 | p95 | p99 | Max | QPS |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `POST /vss/v2/validate (SUCCESS)` | 2,955 | 0.00% | **3 ms** | **10 ms** | **51 ms** | 236 ms | 99.88 req/s |
+| `POST /vss/v2/validate (FAIL)` | 760 | 0.00% | **2 ms** | **12 ms** | **82 ms** | 204 ms | 25.69 req/s |
+| `GET /vss/v2/policies` | 365 | 0.00% | 2 ms | 13 ms | 45 ms | 270 ms | 12.34 req/s |
+| `GET /vss/v2/intermediates` | 372 | 0.00% | 22 ms | 26 ms | 110 ms | 263 ms | 12.57 req/s |
+| **Aggregated** | **4,452** | **0.00%** | **3 ms** | **22 ms** | **77 ms** | **270 ms** | **150.48 req/s** |
+
+#### 2. Full-Throughput Saturation Sweep (Zero-Wait, 15s Runs)
+
+| Concurrency (`VSS_WAIT_MIN=0`, `VSS_WAIT_MAX=0`) | Aggregated QPS | # Reqs | # Fails | Aggregated p50 / p95 / p99 | `validate (SUCCESS)` p50 / p95 / p99 | Overall Max | Meets ≤ 1s Ceiling? |
+| --- | ---: | ---: | ---: | --- | --- | ---: | --- |
+| **100 users (peak ≤ 1s)** | **950.04 req/s** | 14,027 | 0 (0.00%) | 56 / 96 / 150 ms | 55 / 87 / 140 ms | **842 ms** | Yes |
+| **120 users** | **1,008.17 req/s** | 14,863 | 0 (0.00%) | 61 / 110 / 170 ms | 59 / 97 / 140 ms | 1,691 ms | No |
+| **150 users** | 981.48 req/s | 14,458 | 0 (0.00%) | 73 / 120 / 630 ms | 71 / 110 / 530 ms | 2,223 ms | No |
+| **200 users** | 815.07 req/s | 12,062 | 0 (0.00%) | 100 / 160 / 1,800 ms | 100 / 150 / 1,800 ms | 2,933 ms | No |
+
+- **Cold-cache warm-up (`25` users 20s + `50` users 25s):** `10,008` reqs (`516.75 req/s`, `0.00%` failures) and `18,360` reqs (`743.88 req/s`, `0.00%` failures) while populating the cache via live PKIX discovery (`71.2%` of PKIX time across `408` runs) and validation (`28.8%` across `286` runs).
+- **Warm-cache stability:** Once all `517` unique validation entries were populated, **all 59,862 requests** across the 50u–200u benchmark runs completed with **`0.00%` errors** and **0 cache misses** (`69,953` hits).
+
+---
+
+### Historical Progression Since `v2.0` (36-Cert Baseline)
+
+Early benchmarks (`locust/locustfile.py`, `FastHttpUser`) across 17 valid CA certificates, 4 valid end-entity (EE) certificates, 15 negative EE/OCSP certificates, plus `/vss/v2/policies` and `/vss/v2/intermediates`.
+
+#### 1. Stage-by-Stage Progression (`v2.0` → `08f7589`, 100 Zero-Wait Users, 15s)
 
 | Stage | Key Changes | QPS | Error Rate | `validate (SUCCESS)` p50 / p95 / p99 | Overall Max | Meets ≤ 1s Ceiling? |
 | --- | --- | ---: | ---: | --- | ---: | --- |
@@ -28,7 +68,7 @@ Workload (`locust/locustfile.py`, `FastHttpUser`) across 17 valid CA certificate
 | **+ Policy-Aware TTLs, Async Logback, Pre-Parse Cache, Controller Cache & ZGC** (`PR #1019`, `PR #1021`) | 15m `Success` / 24h `isAffirmativelyInvalid` TTLs; `AsyncAppender`; pre-parse `x5t#S256(byte[])` lookup; `IntermediatesController` `CertStore` cache; `-XX:+UseZGC` | **1,147.21 req/s** | 0.00% | **50 / 80 / 110 ms** | **830 ms** | Yes (**+93.6%**) |
 | **+ No-Stack-Walk Logging, Pre-Serialized JSON, Single-Flight & Proxy Keepalive** (`PR #1023`, `PR #1024`, `08f7589`) | Removed `:%L` / `includeCallerData=false`; pre-serialized JSON in `CacheEntry`; `compact-audit-logging`; single-flight miss coalescing; proxy `worker_processes auto` + `keepalive 128` | 1,016.18 req/s | 0.00% | 52 / 94 / 140 ms | 846 ms | Yes (**+71.5%**) |
 
-### 2. Paced Baseline (50 Users, `wait_time` 0.1–0.5s, 30s)
+#### 2. Paced Baseline (50 Users, `wait_time` 0.1–0.5s, 30s)
 
 | Metric | `v2.0` Uncached (`97724fc`) | Current Optimized Stack (`08f7589`) | Improvement |
 | --- | ---: | ---: | --- |
@@ -39,7 +79,7 @@ Workload (`locust/locustfile.py`, `FastHttpUser`) across 17 valid CA certificate
 | **`POST /vss/v2/validate (SUCCESS)` p99** | 370 ms | **38 ms** | **9.7x faster** |
 | **Overall Max Response Time** | 650 ms | **187 ms** | **3.5x lower** |
 
-### 3. Full-Throughput Saturation Sweep (Zero-Wait, 15s Runs on `08f7589`)
+#### 3. Full-Throughput Saturation Sweep (Zero-Wait, 15s Runs on `08f7589`)
 
 | Concurrency (`VSS_WAIT_MIN=0`, `VSS_WAIT_MAX=0`) | Aggregated QPS | # Reqs | # Fails | Aggregated p50 / p95 / p99 | Overall Max |
 | --- | ---: | ---: | ---: | --- | ---: |
@@ -76,63 +116,130 @@ docker run --rm --network host \
   --headless -u 100 -r 50 -t 15s --only-summary
 ```
 
-## Harvesting Additional Test Certificates (`locust/` Data Mining)
+## Harvesting Additional Test Certificates
 
-`locust/locustfile.py` automatically includes any `.pem` certificates placed under `locust/corpus/valid/` and `locust/corpus/invalid/` (both gitignored). Three scripts are provided to discover, download, and classify real-world X.509 certificates from publicly available signed PDFs:
+`locust/locustfile.py` automatically loads any `.pem` certificates placed under `locust/corpus/valid/` and `locust/corpus/invalid/` (both gitignored). Three complementary harvesting use cases are provided under `locust/` to build and refresh that corpus. Generated `.txt` URL lists under `locust/` (other than `requirements.txt`) and `locust/corpus/` are gitignored.
+
+---
+
+### Use Case 1: Mining Publicly Available Signed PDFs (`locust/public-pdf-mining/`)
+
+Discover public signed PDFs (for example, `.gov` FPKI/PIV-signed documents), extract their CMS/PKCS#7 X.509 certificates, and classify them against a VSS instance:
 
 | Script | Purpose |
 | --- | --- |
-| [`crawl_federal_pdfs.py`](./crawl_federal_pdfs.py) | Zero-API-key crawler that extracts direct `.pdf` links from federal index pages and XML sitemaps, deduplicating against existing URL lists. |
-| [`batch_harvest_pdf_certs.py`](./batch_harvest_pdf_certs.py) | Bulk downloader/extractor that reads PDF paths or URLs from `-f <file>` / stdin (`-`) / positional args, retries transient errors, extracts CMS/PKCS#7 certs, and classifies them via VSS. |
-| [`harvest_pdf_certs.py`](./harvest_pdf_certs.py) | Lightweight single/multi-input extractor for local PDF files or direct URLs. |
+| [`public-pdf-mining/crawl_federal_pdfs.py`](./public-pdf-mining/crawl_federal_pdfs.py) | Zero-API-key crawler that extracts direct `.pdf` links from federal index pages and XML sitemaps, deduplicating against existing URL lists. |
+| [`public-pdf-mining/batch_harvest_pdf_certs.py`](./public-pdf-mining/batch_harvest_pdf_certs.py) | Bulk downloader/extractor that reads PDF paths or URLs from `-f <file>` / stdin (`-`) / positional args, retries transient errors, extracts CMS/PKCS#7 certs, and classifies them via VSS. |
+| [`public-pdf-mining/harvest_pdf_certs.py`](./public-pdf-mining/harvest_pdf_certs.py) | Lightweight single/multi-input extractor for local PDF files or direct URLs. |
 
-All three scripts support `--ca-bundle <path>` (a PEM file or directory of `*.pem`/`*.crt`/`*.cer` CAs) and `-k` / `--insecure` for legacy/PKI-gated federal hosts. Generated `.txt` URL lists under `locust/` (other than `requirements.txt`) and `locust/corpus/` are gitignored.
-
-### 1. Crawl Federal Pages or Sitemaps for Signed PDFs
+All three scripts support `--ca-bundle <path>` (a PEM file or directory of `*.pem`/`*.crt`/`*.cer` CAs) and `-k` / `--insecure` for legacy or PKI-gated hosts.
 
 ```bash
-# Crawl default federal deviation/CMA indexes (depth 1) and deduplicate
-python3 locust/crawl_federal_pdfs.py \
+# 1. Crawl default federal deviation/CMA indexes (depth 1) and deduplicate
+python3 locust/public-pdf-mining/crawl_federal_pdfs.py \
   --depth 1 \
   --out locust/urls_crawled.txt
 
-# Crawl a specific index (e.g., OSD class deviations) using custom CAs or -k
-python3 locust/crawl_federal_pdfs.py \
+# 2. Crawl a specific index using a custom CA bundle or -k
+python3 locust/public-pdf-mining/crawl_federal_pdfs.py \
   --seed https://www.acq.osd.mil/dpap/dars/class_deviations.html \
   --depth 1 \
   -k \
   --exclude-from locust/urls_crawled.txt \
   --out locust/mil_crawled.txt
 
-# Crawl an XML sitemap with a regex path filter
-python3 locust/crawl_federal_pdfs.py \
+# 3. Crawl an XML sitemap with a regex path filter
+python3 locust/public-pdf-mining/crawl_federal_pdfs.py \
   --sitemap https://nasa.gov \
   --match "/saa/" \
   --out locust/nasa_saa.txt
-```
 
-### 2. Batch-Harvest & Classify Certificates via VSS
-
-```bash
-# Harvest from a URL list file and classify into locust/corpus/{valid,invalid}
-python3 locust/batch_harvest_pdf_certs.py \
+# 4. Batch-harvest from a URL list file and classify into locust/corpus/{valid,invalid}
+python3 locust/public-pdf-mining/batch_harvest_pdf_certs.py \
   --out locust/corpus \
   --vss https://keysupport.net \
   -f locust/urls_crawled.txt
 
-# Stream URLs via stdin with a custom CA bundle (or -k for legacy hosts)
-cat locust/mil_crawled.txt | python3 locust/batch_harvest_pdf_certs.py \
-  --out locust/corpus \
-  --vss https://keysupport.net \
-  --ca-bundle /path/to/dod-or-identrust-bundle.pem \
-  -f -
-```
-
-### 3. Quick Single-PDF Harvest
-
-```bash
-python3 locust/harvest_pdf_certs.py \
+# 5. Or harvest a single PDF directly
+python3 locust/public-pdf-mining/harvest_pdf_certs.py \
   --vss https://keysupport.net \
   --out locust/corpus \
   https://www.idmanagement.gov/docs/fpki-fpkima-audit-letter.pdf
+```
+
+---
+
+### Use Case 2: Mining Observed Certificates from VSS Service Logs (`locust/vss-log-mining/`)
+
+[`vss-log-mining/mine_vss_logs.py`](./vss-log-mining/mine_vss_logs.py) streams local or remote (`--ssh`) VSS JSON/text service logs (including rotated `.log` and `.gz` files), extracts every unique Base64 DER X.509 certificate observed in v1 (`/vss/rest`) and v2 (`/vss/v2/validate`) requests/responses, deduplicates by SHA-256 fingerprint, and files them into `locust/corpus/{valid,invalid,unclassified}/`.
+
+```bash
+# Mine local log directory and classify live against VSS
+python3 locust/vss-log-mining/mine_vss_logs.py \
+  /path/to/vss/logs \
+  --vss https://keysupport.net \
+  --out locust/corpus
+
+# Stream matching certificate lines over SSH from a remote deployment (no full log download)
+python3 locust/vss-log-mining/mine_vss_logs.py \
+  --ssh user@vss-host:/opt/vss/ext/logs \
+  --ssh-identity ~/.ssh/id_rsa \
+  --vss https://keysupport.net \
+  --out locust/corpus
+
+# Offline mode: classify using the validationResult already recorded in the logs
+python3 locust/vss-log-mining/mine_vss_logs.py \
+  /path/to/vss/logs \
+  --use-log-result \
+  --out locust/corpus
+```
+
+Useful flags:
+- `--include-ca`: include CA certificates in addition to end-entity/OCSP leaf certificates (CAs are skipped by default).
+- `--reclassify`: revalidate and move/overwrite certificates already present in `locust/corpus/`.
+- `--file-glob "vss*.log*"`: customize log filename matching inside local or remote directories.
+- `--ca-bundle <path>` / `-k`: custom TLS trust or insecure verification when calling `--vss`.
+
+---
+
+### Use Case 3: Mining Historical FPKI Intermediate Bundles (`locust/fpki-intermediate-mine/`)
+
+[`fpki-intermediate-mine/mine_fpki_intermediates.py`](./fpki-intermediate-mine/mine_fpki_intermediates.py) retrieves the last `N` GitHub commits (default `50`) of `GSA/idmanagement.gov`'s `CACertificatesValidatingToFederalCommonPolicyG2.p7b` bundle, extracts every unique CA/intermediate certificate across those revisions (including expired, revoked, and decommissioned CAs), and classifies them into `locust/corpus/{valid,invalid,unclassified}/`.
+
+```bash
+# Mine the last 50 bundle revisions and classify live against VSS
+python3 locust/fpki-intermediate-mine/mine_fpki_intermediates.py \
+  --vss https://keysupport.net \
+  --out locust/corpus
+
+# Mine a custom revision count or target .p7b file without live classification
+python3 locust/fpki-intermediate-mine/mine_fpki_intermediates.py \
+  --versions 50 \
+  --out locust/corpus
+```
+
+Useful flags:
+- `--versions <N>`: number of recent GitHub commits to scan (default: `50`).
+- `--repo`, `--branch`, `--path`: override the GitHub repository, branch, or `.p7b` path.
+- `--reclassify`: revalidate and move/overwrite certificates already present in `locust/corpus/`.
+- `--token`: optional GitHub API token (defaults to `GITHUB_TOKEN` / `GH_TOKEN`).
+
+---
+
+### Verifying & Cleaning the Corpus (`locust/revalidate_corpus.py`)
+
+Because previously valid certificates can expire or be revoked over time (causing `locustfile.py` assertions to fail), [`revalidate_corpus.py`](./revalidate_corpus.py) re-validates every file under `locust/corpus/{valid,invalid,unclassified}/` against a known-good VSS instance at the current time:
+
+- Moves newly expired or revoked certificates from `valid/` → `invalid/` (and promotes newly valid certificates from `invalid/` or `unclassified/` → `valid/`).
+- Canonicalizes filenames to `<sha256[:16]>.pem` and removes duplicate or unparseable files.
+
+```bash
+# Preview any corpus drift or cleanup actions without modifying files
+python3 locust/revalidate_corpus.py --vss https://keysupport.net --dry-run
+
+# Revalidate, move expired/revoked certs, deduplicate, and clean locust/corpus/
+python3 locust/revalidate_corpus.py --vss https://keysupport.net --corpus locust/corpus
+
+# Strict check mode (exits non-zero if any drift or corrupt/duplicate files exist)
+python3 locust/revalidate_corpus.py --vss https://keysupport.net --check
 ```

@@ -4,9 +4,9 @@ Zero-API-key crawler that extracts direct .pdf links from public federal
 index pages and XML sitemaps, deduplicating against existing URL lists.
 
 Usage:
-  python3 locust/crawl_federal_pdfs.py --out locust/urls_crawled.txt --depth 1
-  python3 locust/crawl_federal_pdfs.py --seed https://www.acq.osd.mil/dpap/dars/class_deviations.html --depth 1 --out locust/mil_crawled.txt
-  python3 locust/crawl_federal_pdfs.py --sitemap https://nasa.gov --match "/saa/" --out locust/nasa_saa.txt
+  python3 locust/public-pdf-mining/crawl_federal_pdfs.py --out locust/urls_crawled.txt --depth 1
+  python3 locust/public-pdf-mining/crawl_federal_pdfs.py --seed https://www.acq.osd.mil/dpap/dars/class_deviations.html --depth 1 --out locust/mil_crawled.txt
+  python3 locust/public-pdf-mining/crawl_federal_pdfs.py --sitemap https://nasa.gov --match "/saa/" --out locust/nasa_saa.txt
 """
 
 import argparse
