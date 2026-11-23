@@ -246,7 +246,9 @@ public class ValidatePKIX {
 			 *
 			 * To be safe, we will flag `isAffirmativelyInvalid` as `true` for any
 			 * CertPathBuilderException that has an explicit
-			 * CertPathBuilderException.getCause().
+			 * CertPathBuilderException.getCause(), or when path building failed for a
+			 * cryptographically self-signed certificate (which can never chain to an
+			 * external issuer or intermediate CA).
 			 *
 			 * Otherwise, we should assume the possibility that our cache is out of date.
 			 */
@@ -259,7 +261,7 @@ public class ValidatePKIX {
 					fail.invalidityReasonText = e.getLocalizedMessage();
 				}
 			} else {
-				fail.isAffirmativelyInvalid = false;
+				fail.isAffirmativelyInvalid = X509Util.isSelfSigned(cert, JCE_PROVIDER);
 				fail.invalidityReasonText = e.getLocalizedMessage();
 			}
 			pkixMetrics.recordDiscovery(System.nanoTime() - discoveryStartNanos, false);

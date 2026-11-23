@@ -220,6 +220,47 @@ class X509UtilTest {
 		}
 	}
 
+	@Test
+	void isSelfSigned_distinguishesSelfSignedFromSelfIssuedAndNonSelfSigned() throws Exception {
+		KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", BouncyCastleFipsProvider.PROVIDER_NAME);
+		kpg.initialize(2048);
+		KeyPair kp1 = kpg.generateKeyPair();
+		KeyPair kp2 = kpg.generateKeyPair();
+		Date nb = new Date(System.currentTimeMillis() - 60_000L);
+		Date na = new Date(System.currentTimeMillis() + 86_400_000L);
+		X500Name dn = new X500Name("CN=Self Test CA, O=KeySupport Test, C=US");
+		ContentSigner signer1 = new JcaContentSignerBuilder("SHA256withRSA")
+				.setProvider(BouncyCastleFipsProvider.PROVIDER_NAME).build(kp1.getPrivate());
+
+		// Self-signed: Subject == Issuer and signed with its own key
+		X509Certificate selfSigned = new JcaX509CertificateConverter()
+				.setProvider(BouncyCastleFipsProvider.PROVIDER_NAME)
+				.getCertificate(new JcaX509v3CertificateBuilder(dn, BigInteger.ONE, nb, na, dn, kp1.getPublic())
+						.build(signer1));
+		assertTrue(X509Util.isSelfSigned(selfSigned, BouncyCastleFipsProvider.PROVIDER_NAME));
+
+		// Self-issued rollover: Subject == Issuer, but signed by kp1 while cert carries kp2
+		X509Certificate selfIssuedRollover = new JcaX509CertificateConverter()
+				.setProvider(BouncyCastleFipsProvider.PROVIDER_NAME)
+				.getCertificate(new JcaX509v3CertificateBuilder(dn, BigInteger.TWO, nb, na, dn, kp2.getPublic())
+						.build(signer1));
+		assertFalse(X509Util.isSelfSigned(selfIssuedRollover, BouncyCastleFipsProvider.PROVIDER_NAME));
+
+		// Empty DN: must not match as self-signed
+		X500Name emptyDn = new X500Name(new org.bouncycastle.asn1.x500.RDN[0]);
+		X509Certificate emptyDnCert = new JcaX509CertificateConverter()
+				.setProvider(BouncyCastleFipsProvider.PROVIDER_NAME)
+				.getCertificate(new JcaX509v3CertificateBuilder(emptyDn, BigInteger.TEN, nb, na, emptyDn, kp1.getPublic())
+						.build(signer1));
+		assertFalse(X509Util.isSelfSigned(emptyDnCert, BouncyCastleFipsProvider.PROVIDER_NAME));
+
+		// Normal CA-issued cert and real self-signed ECC fixture
+		assertFalse(X509Util.isSelfSigned(dodIdCa65, BouncyCastleFipsProvider.PROVIDER_NAME));
+		X509Certificate eccSelfSigned = CertFixtures.load("ee/keysupport-piv-pop-ecc-test.pem").cert();
+		assertTrue(X509Util.isSelfSigned(eccSelfSigned, BouncyCastleFipsProvider.PROVIDER_NAME));
+		assertFalse(X509Util.isSelfSigned(null, BouncyCastleFipsProvider.PROVIDER_NAME));
+	}
+
 	private record StubPolicyNode(
 			PolicyNode parent,
 			String validPolicy,
