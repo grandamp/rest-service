@@ -76,9 +76,59 @@ docker run --rm --network host \
   --headless -u 100 -r 50 -t 15s --only-summary
 ```
 
-## Harvesting Additional Test Certificates
+## Harvesting Additional Test Certificates (`locust/` Data Mining)
 
-[`harvest_pdf_certs.py`](./harvest_pdf_certs.py) extracts CMS/PKCS#7 X.509 certificates from signed PDFs (for example, public `.gov` FPKI documents) and optionally classifies them against a VSS instance into `locust/corpus/valid/` and `locust/corpus/invalid/` (gitignored):
+`locust/locustfile.py` automatically includes any `.pem` certificates placed under `locust/corpus/valid/` and `locust/corpus/invalid/` (both gitignored). Three scripts are provided to discover, download, and classify real-world X.509 certificates from publicly available signed PDFs:
+
+| Script | Purpose |
+| --- | --- |
+| [`crawl_federal_pdfs.py`](./crawl_federal_pdfs.py) | Zero-API-key crawler that extracts direct `.pdf` links from federal index pages and XML sitemaps, deduplicating against existing URL lists. |
+| [`batch_harvest_pdf_certs.py`](./batch_harvest_pdf_certs.py) | Bulk downloader/extractor that reads PDF paths or URLs from `-f <file>` / stdin (`-`) / positional args, retries transient errors, extracts CMS/PKCS#7 certs, and classifies them via VSS. |
+| [`harvest_pdf_certs.py`](./harvest_pdf_certs.py) | Lightweight single/multi-input extractor for local PDF files or direct URLs. |
+
+All three scripts support `--ca-bundle <path>` (a PEM file or directory of `*.pem`/`*.crt`/`*.cer` CAs) and `-k` / `--insecure` for legacy/PKI-gated federal hosts. Generated `.txt` URL lists under `locust/` (other than `requirements.txt`) and `locust/corpus/` are gitignored.
+
+### 1. Crawl Federal Pages or Sitemaps for Signed PDFs
+
+```bash
+# Crawl default federal deviation/CMA indexes (depth 1) and deduplicate
+python3 locust/crawl_federal_pdfs.py \
+  --depth 1 \
+  --out locust/urls_crawled.txt
+
+# Crawl a specific index (e.g., OSD class deviations) using custom CAs or -k
+python3 locust/crawl_federal_pdfs.py \
+  --seed https://www.acq.osd.mil/dpap/dars/class_deviations.html \
+  --depth 1 \
+  -k \
+  --exclude-from locust/urls_crawled.txt \
+  --out locust/mil_crawled.txt
+
+# Crawl an XML sitemap with a regex path filter
+python3 locust/crawl_federal_pdfs.py \
+  --sitemap https://nasa.gov \
+  --match "/saa/" \
+  --out locust/nasa_saa.txt
+```
+
+### 2. Batch-Harvest & Classify Certificates via VSS
+
+```bash
+# Harvest from a URL list file and classify into locust/corpus/{valid,invalid}
+python3 locust/batch_harvest_pdf_certs.py \
+  --out locust/corpus \
+  --vss https://keysupport.net \
+  -f locust/urls_crawled.txt
+
+# Stream URLs via stdin with a custom CA bundle (or -k for legacy hosts)
+cat locust/mil_crawled.txt | python3 locust/batch_harvest_pdf_certs.py \
+  --out locust/corpus \
+  --vss https://keysupport.net \
+  --ca-bundle /path/to/dod-or-identrust-bundle.pem \
+  -f -
+```
+
+### 3. Quick Single-PDF Harvest
 
 ```bash
 python3 locust/harvest_pdf_certs.py \

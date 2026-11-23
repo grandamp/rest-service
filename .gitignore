@@ -13,3 +13,5 @@ __pycache__/
 *.py[cod]
 locust/.venv/
 locust/corpus/
+locust/**/*.txt
+!locust/requirements.txt

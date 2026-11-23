@@ -13,14 +13,38 @@ import base64
 import hashlib
 import json
 import re
+import ssl
+import sys
 import urllib.request
 from pathlib import Path
+from typing import Optional
 
 from cryptography import x509
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.serialization import pkcs7
 
 CONTENTS_RE = re.compile(rb"/Contents\s*<([0-9A-Fa-f\s]+)>")
+
+
+def build_ssl_context(ca_bundle: Optional[str], insecure: bool) -> ssl.SSLContext:
+    ctx = ssl.create_default_context()
+    if insecure:
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        return ctx
+    if ca_bundle:
+        ca_path = Path(ca_bundle)
+        if not ca_path.exists():
+            raise FileNotFoundError(f"CA bundle path not found: {ca_bundle}")
+        if ca_path.is_dir():
+            ctx.load_verify_locations(capath=str(ca_path))
+            for pattern in ("*.pem", "*.crt", "*.cer"):
+                for cert_file in sorted(ca_path.glob(pattern)):
+                    if cert_file.is_file():
+                        ctx.load_verify_locations(cafile=str(cert_file))
+        else:
+            ctx.load_verify_locations(cafile=str(ca_path))
+    return ctx
 
 
 def extract_certs_from_pdf_bytes(pdf_bytes: bytes) -> list[x509.Certificate]:
@@ -53,7 +77,12 @@ def is_ca(cert: x509.Certificate) -> bool:
     try:
         bc = cert.extensions.get_extension_for_class(x509.BasicConstraints).value
         return bc.ca
-    except x509.ExtensionNotFound:
+    except (x509.ExtensionNotFound, ValueError) as e:
+        if isinstance(e, ValueError):
+            print(
+                f"  [WARN] Malformed extension while checking BasicConstraints: {e}",
+                file=sys.stderr,
+            )
         return False
 
 
@@ -79,7 +108,23 @@ def main():
     ap.add_argument("--vss", default="", help="Optional VSS base URL to classify valid/invalid")
     ap.add_argument("--policy", default="1.3.6.1.5.5.7.19.1", help="Validation policy OID")
     ap.add_argument("--include-ca", action="store_true", help="Also save CA certificates")
+    ap.add_argument(
+        "--ca-bundle",
+        default=None,
+        help="Optional PEM bundle or directory of extra trusted CAs (e.g., DoD roots)",
+    )
+    ap.add_argument(
+        "-k",
+        "--insecure",
+        action="store_true",
+        help="Disable TLS verification when fetching PDFs from legacy hosts",
+    )
     args = ap.parse_args()
+
+    try:
+        ssl_ctx = build_ssl_context(args.ca_bundle, args.insecure)
+    except FileNotFoundError as e:
+        ap.error(str(e))
 
     out_dir = Path(args.out)
     (out_dir / "valid").mkdir(parents=True, exist_ok=True)
@@ -89,7 +134,7 @@ def main():
     for src in args.inputs:
         if src.startswith(("http://", "https://")):
             req = urllib.request.Request(src, headers={"User-Agent": "rest-service-harvest/1.0"})
-            with urllib.request.urlopen(req, timeout=30) as r:
+            with urllib.request.urlopen(req, timeout=30, context=ssl_ctx) as r:
                 pdf_bytes = r.read()
         else:
             pdf_bytes = Path(src).read_bytes()
