@@ -30,7 +30,7 @@ import org.keysupport.api.pojo.vss.Success;
 import org.keysupport.api.pojo.vss.VssResponse;
 import org.keysupport.api.testutil.CertFixtures;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpServer;
 
 class RestClientTest {

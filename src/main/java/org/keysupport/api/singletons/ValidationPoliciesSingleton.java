@@ -22,8 +22,8 @@ import org.keysupport.api.pojo.vss.ValidationPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * This class uses an efficient initialization-on-demand holder singleton
@@ -98,7 +98,7 @@ public class ValidationPoliciesSingleton {
 			ValidationPolicies parsed;
 			try {
 				parsed = MAPPER.readValue(validationPoliciesJson, ValidationPolicies.class);
-			} catch (JsonProcessingException e) {
+			} catch (JacksonException e) {
 				String msg = "FATAL: Error converting ValidationPolicies JSON to POJO from \"" + uri.toASCIIString()
 						+ "\"";
 				LOG.error(LoggingUtil.pojoToJson(

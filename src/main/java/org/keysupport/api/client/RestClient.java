@@ -33,8 +33,8 @@ import org.keysupport.api.pojo.vss.VssResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 public class RestClient {
 
@@ -84,7 +84,7 @@ public class RestClient {
 		String jsonRequest;
 		try {
 			jsonRequest = MAPPER.writeValueAsString(vssRequest);
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			LOG.error("Error converting POJO to JSON", e);
 			throw new RestClientException("Error converting POJO to JSON", e);
 		}
@@ -121,7 +121,7 @@ public class RestClient {
 		VssResponse vssResponse;
 		try {
 			vssResponse = MAPPER.readValue(jsonString, VssResponse.class);
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			LOG.error("Error parsing VSS response JSON", e);
 			throw new RestClientException("Error parsing VSS response JSON", e);
 		}
