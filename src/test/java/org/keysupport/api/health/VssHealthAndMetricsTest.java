@@ -80,6 +80,9 @@ class VssHealthAndMetricsTest {
 		assertNotNull(registry.find(PkixMetricsSingleton.METRIC_PATH_DISCOVERY).tag("outcome", "fail").timer());
 		assertNotNull(registry.find(PkixMetricsSingleton.METRIC_PATH_VALIDATION).tag("outcome", "success").timer());
 		assertNotNull(registry.find(PkixMetricsSingleton.METRIC_PATH_VALIDATION).tag("outcome", "fail").timer());
+		for (String cat : PkixMetricsSingleton.KNOWN_INDETERMINATE_CATEGORIES) {
+			assertNotNull(registry.find(PkixMetricsSingleton.METRIC_INDETERMINATE_FAILURES).tag("category", cat).counter());
+		}
 
 		PkixMetricsSingleton metrics = PkixMetricsSingleton.getInstance();
 		try {
@@ -87,11 +90,19 @@ class VssHealthAndMetricsTest {
 			metrics.recordDiscovery(5_000_000L, false);
 			metrics.recordValidation(3_000_000L, true);
 			metrics.recordValidation(1_000_000L, false);
+			metrics.recordIndeterminateFailure(PkixMetricsSingleton.CATEGORY_NO_TRUST_PATH_EE);
+			metrics.recordIndeterminateFailure(PkixMetricsSingleton.CATEGORY_NO_TRUST_PATH_CA);
 
 			assertEquals(1L, registry.find(PkixMetricsSingleton.METRIC_PATH_DISCOVERY).tag("outcome", "success").timer().count());
 			assertEquals(1L, registry.find(PkixMetricsSingleton.METRIC_PATH_DISCOVERY).tag("outcome", "fail").timer().count());
 			assertEquals(1L, registry.find(PkixMetricsSingleton.METRIC_PATH_VALIDATION).tag("outcome", "success").timer().count());
 			assertEquals(1L, registry.find(PkixMetricsSingleton.METRIC_PATH_VALIDATION).tag("outcome", "fail").timer().count());
+			assertEquals(1.0,
+					registry.find(PkixMetricsSingleton.METRIC_INDETERMINATE_FAILURES)
+							.tag("category", PkixMetricsSingleton.CATEGORY_NO_TRUST_PATH_EE).counter().count());
+			assertEquals(1.0,
+					registry.find(PkixMetricsSingleton.METRIC_INDETERMINATE_FAILURES)
+							.tag("category", PkixMetricsSingleton.CATEGORY_NO_TRUST_PATH_CA).counter().count());
 		} finally {
 			metrics.unbind(registry);
 		}

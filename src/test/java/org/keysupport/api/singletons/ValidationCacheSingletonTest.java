@@ -41,7 +41,9 @@ class ValidationCacheSingletonTest {
 				ValidationCacheSingleton.DEFAULT_ENABLED,
 				ValidationCacheSingleton.DEFAULT_SUCCESS_TTL_SECONDS,
 				ValidationCacheSingleton.DEFAULT_AFFIRMATIVELY_INVALID_TTL_SECONDS,
-				ValidationCacheSingleton.DEFAULT_MAX_ENTRIES);
+				ValidationCacheSingleton.DEFAULT_INDETERMINATE_FAIL_TTL_SECONDS,
+				ValidationCacheSingleton.DEFAULT_MAX_ENTRIES,
+				ValidationCacheSingleton.DEFAULT_COMPACT_AUDIT_LOGGING);
 	}
 
 	private static VssResponse successResponse(String id) {
@@ -62,7 +64,7 @@ class ValidationCacheSingletonTest {
 	}
 
 	@Test
-	void cachesSuccessFor15MinAndAffirmativelyInvalidFailLongTerm() {
+	void cachesSuccessFor15MinAffirmativelyInvalidLongTermAndIndeterminateShortTerm() {
 		long t0 = 1_000_000L;
 		assertNull(cache.get("req-ok", t0));
 		assertEquals(1L, cache.getMissCount());
@@ -75,16 +77,27 @@ class ValidationCacheSingletonTest {
 		cache.put("req-ok", ok, new Date(t0 + 2_000_000L), t0);
 		// Expired cert with isAffirmativelyInvalid=true is still cached long-term
 		cache.put("req-fail-aff", affInvalid, new Date(t0 - 10_000L), t0);
-		// Indeterminate failures (isAffirmativelyInvalid=false/null) are NOT cached
-		cache.put("req-fail-non", nonAffInvalid, null, t0);
+		// Indeterminate failures (isAffirmativelyInvalid=false/null) are cached short-term (default 120s)
+		cache.put("req-fail-non", nonAffInvalid, new Date(t0 + 2_000_000L), t0);
 		cache.put("req-fail-null", nullAffInvalid, null, t0);
 
-		assertEquals(2, cache.size());
+		assertEquals(4, cache.size());
 		assertSame(ok, cache.get("req-ok", t0 + 899_999L));
 		assertNull(cache.get("req-ok", t0 + 900_000L));
 
 		assertSame(affInvalid, cache.get("req-fail-aff", t0 + 86_399_999L));
 		assertNull(cache.get("req-fail-aff", t0 + 86_400_000L));
+
+		assertSame(nonAffInvalid, cache.get("req-fail-non", t0 + 119_999L));
+		assertNull(cache.get("req-fail-non", t0 + 120_000L));
+
+		assertSame(nullAffInvalid, cache.get("req-fail-null", t0 + 119_999L));
+		assertNull(cache.get("req-fail-null", t0 + 120_000L));
+
+		// Setting indeterminateFailTtlSeconds=0 disables negative caching for indeterminate failures
+		cache.configure(true, 900L, 86_400L, 0L, 100, true);
+		cache.put("req-fail-uncached", nonAffInvalid, null, t0);
+		assertNull(cache.get("req-fail-uncached", t0));
 	}
 
 	@Test
@@ -116,10 +129,11 @@ class ValidationCacheSingletonTest {
 		cache.put("d", successResponse("d"), null, t0);
 		assertNull(cache.get("d", t0));
 
-		cache.configure(true, 60L, 3600L, 50, false);
+		cache.configure(true, 60L, 3600L, 180L, 50, false);
 		assertTrue(cache.isEnabled());
 		assertEquals(60L, cache.getSuccessTtlSeconds());
 		assertEquals(3600L, cache.getAffirmativelyInvalidTtlSeconds());
+		assertEquals(180L, cache.getIndeterminateFailTtlSeconds());
 		assertEquals(50, cache.getMaxEntries());
 		assertFalse(cache.isCompactAuditLogging());
 	}

@@ -80,6 +80,18 @@ class MockVssHandler(BaseHTTPRequestHandler):
             "/actuator/metrics/vss.pkix.path.validation.percentile?tag=outcome:success&tag=phi:0.99": {
                 "measurements": [{"value": 0.025}]
             },
+            "/actuator/metrics/vss.pkix.indeterminate.failures": {
+                "availableTags": [
+                    {"tag": "category", "values": ["no_trust_path_ee", "no_trust_path_ca"]}
+                ],
+                "measurements": [{"statistic": "COUNT", "value": 11.0}],
+            },
+            "/actuator/metrics/vss.pkix.indeterminate.failures?tag=category:no_trust_path_ee": {
+                "measurements": [{"statistic": "COUNT", "value": 6.0}]
+            },
+            "/actuator/metrics/vss.pkix.indeterminate.failures?tag=category:no_trust_path_ca": {
+                "measurements": [{"statistic": "COUNT", "value": 5.0}]
+            },
             "/actuator/vssgraph": {
                 "nodeCount": 2,
                 "edgeCount": 1,
@@ -156,6 +168,10 @@ class ObservabilityServerTest(unittest.TestCase):
             self.assertEqual(12.5, pkix["validation"]["avgMs"])
             self.assertEqual(10.0, pkix["validation"]["sharePct"])
             self.assertEqual(22.0, pkix["validation"]["success"]["p95Ms"])
+            self.assertTrue(pkix["indeterminate"]["available"])
+            self.assertEqual(11, pkix["indeterminate"]["total"])
+            self.assertEqual(6, pkix["indeterminate"]["categories"]["no_trust_path_ee"])
+            self.assertEqual(5, pkix["indeterminate"]["categories"]["no_trust_path_ca"])
 
         with urllib.request.urlopen(f"{self.base}/observability/api/graph") as r:
             graph = json.loads(r.read().decode())

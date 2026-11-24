@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -261,8 +262,12 @@ public class ValidatePKIX {
 					fail.invalidityReasonText = e.getLocalizedMessage();
 				}
 			} else {
-				fail.isAffirmativelyInvalid = X509Util.isSelfSigned(cert, JCE_PROVIDER);
+				boolean selfSigned = X509Util.isSelfSigned(cert, JCE_PROVIDER);
+				fail.isAffirmativelyInvalid = selfSigned;
 				fail.invalidityReasonText = e.getLocalizedMessage();
+				if (!selfSigned) {
+					pkixMetrics.recordIndeterminateFailure(classifyIndeterminateFailure(cert, e));
+				}
 			}
 			pkixMetrics.recordDiscovery(System.nanoTime() - discoveryStartNanos, false);
 			return response;
@@ -363,6 +368,20 @@ public class ValidatePKIX {
 		response.validationResult = success;
 		pkixMetrics.recordValidation(System.nanoTime() - validationStartNanos, true);
 		return response;
+	}
+
+	private static String classifyIndeterminateFailure(X509Certificate cert, CertPathBuilderException e) {
+		String msg = e.getMessage();
+		if (null != msg && msg.toLowerCase(Locale.ROOT).contains("policy")) {
+			return PkixMetricsSingleton.CATEGORY_POLICY_CONSTRAINTS;
+		}
+		if (null != cert.getSubjectX500Principal()
+				&& cert.getSubjectX500Principal().equals(cert.getIssuerX500Principal())) {
+			return PkixMetricsSingleton.CATEGORY_SELF_ISSUED_ROLLOVER;
+		}
+		return cert.getBasicConstraints() != -1
+				? PkixMetricsSingleton.CATEGORY_NO_TRUST_PATH_CA
+				: PkixMetricsSingleton.CATEGORY_NO_TRUST_PATH_EE;
 	}
 
 }

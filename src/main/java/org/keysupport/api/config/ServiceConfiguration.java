@@ -67,6 +67,7 @@ public class ServiceConfiguration {
 				ValidationCacheSingleton.DEFAULT_ENABLED,
 				ValidationCacheSingleton.DEFAULT_SUCCESS_TTL_SECONDS,
 				ValidationCacheSingleton.DEFAULT_AFFIRMATIVELY_INVALID_TTL_SECONDS,
+				ValidationCacheSingleton.DEFAULT_INDETERMINATE_FAIL_TTL_SECONDS,
 				ValidationCacheSingleton.DEFAULT_MAX_ENTRIES,
 				ValidationCacheSingleton.DEFAULT_COMPACT_AUDIT_LOGGING);
 	}
@@ -97,7 +98,39 @@ public class ServiceConfiguration {
 				revocationEnabled, revocationEeOnly, ocspEnabled, crlEnabled, crlMaxSize, certPathProvider,
 				certPathAlgorithm, intermediateValidateOnLoad, intermediateRevocationEnabled, revalidateIntervalSeconds,
 				validationCacheEnabled, validationCacheSuccessTtlSeconds, validationCacheInvalidTtlSeconds,
+				ValidationCacheSingleton.DEFAULT_INDETERMINATE_FAIL_TTL_SECONDS,
 				validationCacheMaxEntries, ValidationCacheSingleton.DEFAULT_COMPACT_AUDIT_LOGGING);
+	}
+
+	public ServiceConfiguration(
+			@Value("${service.policies.uri}") String polUri,
+			@Value("${service.intermediates.uri}") String intermediatesUri,
+			@Value("${service.validation.pkix.max-path-length}") int maxPathLen,
+			@Value("${service.systemlog.enabled}") boolean systemLogEnabled,
+			@Value("${service.systemlog.file:/opt/vss/ext/logs/system.log}") String systemLogFile,
+			@Value("${service.validation.pkix.aia-chase}") boolean aiaChase,
+			@Value("${service.validation.pkix.allowed-aia-locations:any}") String allowedAiaLocations,
+			@Value("${service.validation.pkix.revocation-enabled}") boolean revocationEnabled,
+			@Value("${service.validation.pkix.revocation-ee-only}") boolean revocationEeOnly,
+			@Value("${service.validation.pkix.ocsp-enabled}") boolean ocspEnabled,
+			@Value("${service.validation.pkix.crl-enabled}") boolean crlEnabled,
+			@Value("${service.validation.pkix.crl-max-size:52428800}") int crlMaxSize,
+			@Value("${service.validation.pkix.certpath-provider:SUN}") String certPathProvider,
+			@Value("${service.validation.pkix.certpath-algorithm:PKIX}") String certPathAlgorithm,
+			@Value("${service.intermediates.validate-on-load:true}") boolean intermediateValidateOnLoad,
+			@Value("${service.intermediates.revocation-enabled:true}") boolean intermediateRevocationEnabled,
+			@Value("${service.intermediates.revalidate-interval-seconds:3600}") long revalidateIntervalSeconds,
+			@Value("${service.validation.cache.enabled:true}") boolean validationCacheEnabled,
+			@Value("${service.validation.cache.success-ttl-seconds:900}") long validationCacheSuccessTtlSeconds,
+			@Value("${service.validation.cache.affirmatively-invalid-ttl-seconds:86400}") long validationCacheInvalidTtlSeconds,
+			@Value("${service.validation.cache.max-entries:10000}") int validationCacheMaxEntries,
+			@Value("${service.validation.cache.compact-audit-logging:true}") boolean validationCacheCompactAuditLogging) {
+		this(polUri, intermediatesUri, maxPathLen, systemLogEnabled, systemLogFile, aiaChase, allowedAiaLocations,
+				revocationEnabled, revocationEeOnly, ocspEnabled, crlEnabled, crlMaxSize, certPathProvider,
+				certPathAlgorithm, intermediateValidateOnLoad, intermediateRevocationEnabled, revalidateIntervalSeconds,
+				validationCacheEnabled, validationCacheSuccessTtlSeconds, validationCacheInvalidTtlSeconds,
+				ValidationCacheSingleton.DEFAULT_INDETERMINATE_FAIL_TTL_SECONDS,
+				validationCacheMaxEntries, validationCacheCompactAuditLogging);
 	}
 
 	@Autowired
@@ -122,6 +155,7 @@ public class ServiceConfiguration {
 			@Value("${service.validation.cache.enabled:true}") boolean validationCacheEnabled,
 			@Value("${service.validation.cache.success-ttl-seconds:900}") long validationCacheSuccessTtlSeconds,
 			@Value("${service.validation.cache.affirmatively-invalid-ttl-seconds:86400}") long validationCacheInvalidTtlSeconds,
+			@Value("${service.validation.cache.indeterminate-fail-ttl-seconds:120}") long validationCacheIndeterminateFailTtlSeconds,
 			@Value("${service.validation.cache.max-entries:10000}") int validationCacheMaxEntries,
 			@Value("${service.validation.cache.compact-audit-logging:true}") boolean validationCacheCompactAuditLogging) {
 		/*
@@ -156,12 +190,14 @@ public class ServiceConfiguration {
 				validationCacheEnabled,
 				validationCacheSuccessTtlSeconds,
 				validationCacheInvalidTtlSeconds,
+				validationCacheIndeterminateFailTtlSeconds,
 				validationCacheMaxEntries,
 				validationCacheCompactAuditLogging);
 		LOG.info(LoggingUtil.pojoToJson(Map.of(
 				"service.validation.cache.enabled", validationCacheEnabled,
 				"service.validation.cache.success-ttl-seconds", validationCacheSuccessTtlSeconds,
 				"service.validation.cache.affirmatively-invalid-ttl-seconds", validationCacheInvalidTtlSeconds,
+				"service.validation.cache.indeterminate-fail-ttl-seconds", validationCacheIndeterminateFailTtlSeconds,
 				"service.validation.cache.max-entries", validationCacheMaxEntries,
 				"service.validation.cache.compact-audit-logging", validationCacheCompactAuditLogging)));
 		/*

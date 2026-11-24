@@ -43,6 +43,7 @@ PKIX_TIMER_METRICS = {
     "discovery": "vss.pkix.path.discovery",
     "validation": "vss.pkix.path.validation",
 }
+INDETERMINATE_METRIC = "vss.pkix.indeterminate.failures"
 
 
 def _ssl_context():
@@ -176,6 +177,29 @@ def collect_pkix_timers(target, track_interval=True):
         "available": True,
         "discovery": disc,
         "validation": val,
+        "indeterminate": collect_indeterminate_failures(target),
+    }
+
+
+def collect_indeterminate_failures(target):
+    agg = _fetch_optional_json(target, f"/actuator/metrics/{INDETERMINATE_METRIC}", timeout=4)
+    if agg is None:
+        return {"available": False}
+    measurements = agg.get("measurements") or []
+    total = int(round(float(measurements[0].get("value", 0.0)))) if measurements else 0
+    categories = {}
+    for tag in agg.get("availableTags") or []:
+        if tag.get("tag") == "category":
+            for cat in tag.get("values") or []:
+                cat_payload = _fetch_optional_json(
+                    target, f"/actuator/metrics/{INDETERMINATE_METRIC}?tag=category:{cat}", timeout=4
+                )
+                cat_m = (cat_payload or {}).get("measurements") or []
+                categories[cat] = int(round(float(cat_m[0].get("value", 0.0)))) if cat_m else 0
+    return {
+        "available": True,
+        "total": total,
+        "categories": categories,
     }
 
 
@@ -699,6 +723,18 @@ HTML_TEMPLATE = r"""<!doctype html>
       </div>
 
       <div class="card">
+        <h2>Indeterminate PKIX Failures (Live Cache Misses by Category)</h2>
+        <table>
+          <thead><tr><th>Category</th><th>Count</th><th>Share</th></tr></thead>
+          <tbody id="indeterminateTable"></tbody>
+        </table>
+        <div class="pkix-note">
+          Counts live <code>ValidatePKIX.validate(...)</code> failures where <code>isAffirmativelyInvalid=false</code>
+          (cached short-term per <code>service.validation.cache.indeterminate-fail-ttl-seconds</code>).
+        </div>
+      </div>
+
+      <div class="card">
         <h2>Actuator &amp; Micrometer Telemetry</h2>
         <table>
           <thead><tr><th>Metric</th><th>Value</th></tr></thead>
@@ -900,6 +936,26 @@ HTML_TEMPLATE = r"""<!doctype html>
       addPhaseRows('Path Discovery', d);
       addPhaseRows('Path Validation', v);
       tbody.innerHTML = rows.join('');
+
+      const indTbody = document.getElementById('indeterminateTable');
+      const ind = pkix.indeterminate;
+      if (!ind || !ind.available) {
+        indTbody.innerHTML = '<tr><td colspan="3" style="color:var(--muted)">Indeterminate failure category counters are not exposed by the upstream instance.</td></tr>';
+      } else {
+        const cats = Object.entries(ind.categories || {});
+        const total = Number(ind.total || 0);
+        if (!cats.length) {
+          indTbody.innerHTML = `<tr><td>All indeterminate</td><td>${total.toLocaleString()}</td><td>100.0%</td></tr>`;
+        } else {
+          indTbody.innerHTML = cats
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+            .map(([cat, cnt]) => {
+              const pct = total > 0 ? ((cnt / total) * 100).toFixed(1) + '%' : '0.0%';
+              return `<tr><td><code>${esc(cat)}</code></td><td>${Number(cnt).toLocaleString()}</td><td>${pct}</td></tr>`;
+            }).join('')
+            + `<tr><td><strong>Total</strong></td><td><strong>${total.toLocaleString()}</strong></td><td><strong>${total > 0 ? '100.0%' : '0.0%'}</strong></td></tr>`;
+        }
+      }
     }
 
     async function refreshStatus() {

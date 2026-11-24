@@ -188,6 +188,6 @@ class ConfigTests {
 		var ctors = processor.determineCandidateConstructors(ServiceConfiguration.class, "serviceConfiguration");
 		assertNotNull(ctors);
 		assertEquals(1, ctors.length);
-		assertEquals(22, ctors[0].getParameterCount());
+		assertEquals(23, ctors[0].getParameterCount());
 	}
 }

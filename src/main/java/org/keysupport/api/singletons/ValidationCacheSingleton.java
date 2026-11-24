@@ -31,6 +31,7 @@ public class ValidationCacheSingleton {
 	public static final boolean DEFAULT_ENABLED = true;
 	public static final long DEFAULT_SUCCESS_TTL_SECONDS = 900L;
 	public static final long DEFAULT_AFFIRMATIVELY_INVALID_TTL_SECONDS = 86_400L;
+	public static final long DEFAULT_INDETERMINATE_FAIL_TTL_SECONDS = 120L;
 	public static final int DEFAULT_MAX_ENTRIES = 10_000;
 	public static final boolean DEFAULT_COMPACT_AUDIT_LOGGING = true;
 
@@ -58,6 +59,7 @@ public class ValidationCacheSingleton {
 	private volatile boolean enabled = DEFAULT_ENABLED;
 	private volatile long successTtlSeconds = DEFAULT_SUCCESS_TTL_SECONDS;
 	private volatile long affirmativelyInvalidTtlSeconds = DEFAULT_AFFIRMATIVELY_INVALID_TTL_SECONDS;
+	private volatile long indeterminateFailTtlSeconds = DEFAULT_INDETERMINATE_FAIL_TTL_SECONDS;
 	private volatile int maxEntries = DEFAULT_MAX_ENTRIES;
 	private volatile boolean compactAuditLogging = DEFAULT_COMPACT_AUDIT_LOGGING;
 
@@ -69,17 +71,26 @@ public class ValidationCacheSingleton {
 	}
 
 	public void configure(boolean enabled, long successTtlSeconds, long affirmativelyInvalidTtlSeconds, int maxEntries) {
-		configure(enabled, successTtlSeconds, affirmativelyInvalidTtlSeconds, maxEntries, DEFAULT_COMPACT_AUDIT_LOGGING);
+		configure(enabled, successTtlSeconds, affirmativelyInvalidTtlSeconds, DEFAULT_INDETERMINATE_FAIL_TTL_SECONDS,
+				maxEntries, DEFAULT_COMPACT_AUDIT_LOGGING);
 	}
 
 	public void configure(boolean enabled, long successTtlSeconds, long affirmativelyInvalidTtlSeconds, int maxEntries,
 			boolean compactAuditLogging) {
+		configure(enabled, successTtlSeconds, affirmativelyInvalidTtlSeconds, DEFAULT_INDETERMINATE_FAIL_TTL_SECONDS,
+				maxEntries, compactAuditLogging);
+	}
+
+	public void configure(boolean enabled, long successTtlSeconds, long affirmativelyInvalidTtlSeconds,
+			long indeterminateFailTtlSeconds, int maxEntries, boolean compactAuditLogging) {
 		this.enabled = enabled;
 		this.successTtlSeconds = Math.max(0L, successTtlSeconds);
 		this.affirmativelyInvalidTtlSeconds = Math.max(0L, affirmativelyInvalidTtlSeconds);
+		this.indeterminateFailTtlSeconds = Math.max(0L, indeterminateFailTtlSeconds);
 		this.maxEntries = Math.max(1, maxEntries);
 		this.compactAuditLogging = compactAuditLogging;
-		if (!enabled || (this.successTtlSeconds == 0L && this.affirmativelyInvalidTtlSeconds == 0L)) {
+		if (!enabled || (this.successTtlSeconds == 0L && this.affirmativelyInvalidTtlSeconds == 0L
+				&& this.indeterminateFailTtlSeconds == 0L)) {
 			cache.clear();
 		}
 	}
@@ -151,10 +162,23 @@ public class ValidationCacheSingleton {
 				return created;
 			}
 		} else if (response.validationResult instanceof Fail fail) {
-			if (!Boolean.TRUE.equals(fail.isAffirmativelyInvalid) || affirmativelyInvalidTtlSeconds <= 0L) {
-				return created;
+			if (Boolean.TRUE.equals(fail.isAffirmativelyInvalid)) {
+				if (affirmativelyInvalidTtlSeconds <= 0L) {
+					return created;
+				}
+				expiresAt = nowMillis + (affirmativelyInvalidTtlSeconds * 1000L);
+			} else {
+				if (indeterminateFailTtlSeconds <= 0L) {
+					return created;
+				}
+				expiresAt = nowMillis + (indeterminateFailTtlSeconds * 1000L);
+				if (null != certNotAfter && certNotAfter.getTime() < expiresAt) {
+					expiresAt = certNotAfter.getTime();
+				}
+				if (nowMillis >= expiresAt) {
+					return created;
+				}
 			}
-			expiresAt = nowMillis + (affirmativelyInvalidTtlSeconds * 1000L);
 		} else {
 			return created;
 		}
@@ -231,6 +255,10 @@ public class ValidationCacheSingleton {
 
 	public long getAffirmativelyInvalidTtlSeconds() {
 		return affirmativelyInvalidTtlSeconds;
+	}
+
+	public long getIndeterminateFailTtlSeconds() {
+		return indeterminateFailTtlSeconds;
 	}
 
 	public int getMaxEntries() {
