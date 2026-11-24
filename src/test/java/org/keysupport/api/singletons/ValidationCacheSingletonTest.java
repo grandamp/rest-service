@@ -101,6 +101,48 @@ class ValidationCacheSingletonTest {
 	}
 
 	@Test
+	void cachesAffirmativeInvalidUntilProcessExitWhenTtlIsNegative() {
+		cache.configure(true, 900L, -1L, 120L, 100, true);
+		assertEquals(-1L, cache.getAffirmativelyInvalidTtlSeconds());
+
+		long t0 = 10_000_000L;
+		VssResponse affInvalid = failResponse("req-forever", Boolean.TRUE);
+		// NotAfter in the past must not shorten an affirmative failure.
+		cache.put("req-forever", affInvalid, new Date(t0 - 10_000L), t0);
+		assertSame(affInvalid, cache.get("req-forever", t0 + 86_400_000L));
+		assertSame(affInvalid, cache.get("req-forever", Long.MAX_VALUE - 1));
+		assertEquals(1, cache.size());
+
+		cache.configure(true, 900L, 0L, 120L, 100, true);
+		cache.put("req-disabled", affInvalid, null, t0);
+		assertNull(cache.get("req-disabled", t0));
+	}
+
+	@Test
+	void successExpiresAtEarliestOfCapOcspNextUpdateAndNotAfter() {
+		cache.configure(true, 14_400L, -1L, 120L, 100, true);
+		long t0 = 50_000_000L;
+
+		VssResponse capped = successResponse("cap");
+		capped.revocationEvidenceNextUpdate = new Date(t0 + 7L * 86_400_000L);
+		cache.put("cap", capped, new Date(t0 + 30L * 86_400_000L), t0);
+		assertNotNull(cache.get("cap", t0 + 14_400_000L - 1));
+		assertNull(cache.get("cap", t0 + 14_400_000L));
+
+		VssResponse sooner = successResponse("soon");
+		sooner.revocationEvidenceNextUpdate = new Date(t0 + 3_600_000L);
+		cache.put("soon", sooner, new Date(t0 + 30L * 86_400_000L), t0);
+		assertNotNull(cache.get("soon", t0 + 3_600_000L - 1));
+		assertNull(cache.get("soon", t0 + 3_600_000L));
+
+		VssResponse notAfterWins = successResponse("not-after");
+		notAfterWins.revocationEvidenceNextUpdate = new Date(t0 + 10_000_000L);
+		cache.put("not-after", notAfterWins, new Date(t0 + 5_000L), t0);
+		assertNotNull(cache.get("not-after", t0 + 4_999L));
+		assertNull(cache.get("not-after", t0 + 5_000L));
+	}
+
+	@Test
 	void clampsSuccessTtlToCertNotAfter() {
 		long t0 = 2_000_000L;
 		VssResponse shortCert = successResponse("req-notafter");

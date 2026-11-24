@@ -20,8 +20,8 @@ import org.keysupport.api.pojo.vss.VssResponse;
  * validationPolicyId).
  *
  * <ul>
- *   <li>{@link Success} responses are cached for {@code successTtlSeconds} (default 15 minutes), clamped to {@code cert.getNotAfter()}.</li>
- *   <li>{@link Fail} responses are cached for {@code affirmativelyInvalidTtlSeconds} (default 24 hours) only when {@code isAffirmativelyInvalid == true}.</li>
+ *   <li>{@link Success} responses are cached until the earliest of {@code successTtlSeconds}, the OCSP {@code nextUpdate}, and {@code cert.getNotAfter()}. {@code successTtlSeconds} is the revocation-notification bound.</li>
+ *   <li>{@link Fail} responses are cached only when {@code isAffirmativelyInvalid == true}. A negative TTL keeps them until the process exits; {@code 0} disables that cache.</li>
  *   <li>Pre-serializes JSON alongside {@link VssResponse} so cache hits bypass Jackson reflection.</li>
  *   <li>Coalesces concurrent cache misses per {@code requestId} so only one upstream PKIX/OCSP/CRL lookup runs at a time.</li>
  * </ul>
@@ -29,8 +29,13 @@ import org.keysupport.api.pojo.vss.VssResponse;
 public class ValidationCacheSingleton {
 
 	public static final boolean DEFAULT_ENABLED = true;
-	public static final long DEFAULT_SUCCESS_TTL_SECONDS = 900L;
-	public static final long DEFAULT_AFFIRMATIVELY_INVALID_TTL_SECONDS = 86_400L;
+	/** Maximum success-cache lifetime. OCSP {@code nextUpdate} and {@code notAfter} can only shorten it. */
+	public static final long DEFAULT_SUCCESS_TTL_SECONDS = 14_400L;
+	/**
+	 * Negative means cache until the JVM exits. A container restart is the freshness
+	 * boundary for affirmatively invalid certificates. {@code 0} disables the cache.
+	 */
+	public static final long DEFAULT_AFFIRMATIVELY_INVALID_TTL_SECONDS = -1L;
 	public static final long DEFAULT_INDETERMINATE_FAIL_TTL_SECONDS = 120L;
 	public static final int DEFAULT_MAX_ENTRIES = 10_000;
 	public static final boolean DEFAULT_COMPACT_AUDIT_LOGGING = true;
@@ -85,7 +90,8 @@ public class ValidationCacheSingleton {
 			long indeterminateFailTtlSeconds, int maxEntries, boolean compactAuditLogging) {
 		this.enabled = enabled;
 		this.successTtlSeconds = Math.max(0L, successTtlSeconds);
-		this.affirmativelyInvalidTtlSeconds = Math.max(0L, affirmativelyInvalidTtlSeconds);
+		// Negative is significant: cache affirmatively invalid results until process exit.
+		this.affirmativelyInvalidTtlSeconds = affirmativelyInvalidTtlSeconds;
 		this.indeterminateFailTtlSeconds = Math.max(0L, indeterminateFailTtlSeconds);
 		this.maxEntries = Math.max(1, maxEntries);
 		this.compactAuditLogging = compactAuditLogging;
@@ -155,6 +161,10 @@ public class ValidationCacheSingleton {
 				return created;
 			}
 			expiresAt = nowMillis + (successTtlSeconds * 1000L);
+			Date evidenceNextUpdate = response.revocationEvidenceNextUpdate;
+			if (null != evidenceNextUpdate && evidenceNextUpdate.getTime() < expiresAt) {
+				expiresAt = evidenceNextUpdate.getTime();
+			}
 			if (null != certNotAfter && certNotAfter.getTime() < expiresAt) {
 				expiresAt = certNotAfter.getTime();
 			}
@@ -163,10 +173,19 @@ public class ValidationCacheSingleton {
 			}
 		} else if (response.validationResult instanceof Fail fail) {
 			if (Boolean.TRUE.equals(fail.isAffirmativelyInvalid)) {
-				if (affirmativelyInvalidTtlSeconds <= 0L) {
+				if (affirmativelyInvalidTtlSeconds == 0L) {
 					return created;
 				}
-				expiresAt = nowMillis + (affirmativelyInvalidTtlSeconds * 1000L);
+				if (affirmativelyInvalidTtlSeconds < 0L) {
+					expiresAt = Long.MAX_VALUE;
+				} else {
+					long ttlMillis = affirmativelyInvalidTtlSeconds * 1000L;
+					if (ttlMillis < 0L || nowMillis > Long.MAX_VALUE - ttlMillis) {
+						expiresAt = Long.MAX_VALUE;
+					} else {
+						expiresAt = nowMillis + ttlMillis;
+					}
+				}
 			} else {
 				if (indeterminateFailTtlSeconds <= 0L) {
 					return created;

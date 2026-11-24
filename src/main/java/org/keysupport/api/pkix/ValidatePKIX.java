@@ -77,6 +77,10 @@ public class ValidatePKIX {
 	 */
 	private final static String JCE_PROVIDER = "BCFIPS";
 
+	static String providerName() {
+		return JCE_PROVIDER;
+	}
+
 	static {
 		if (null == Security.getProvider(JCE_PROVIDER)) {
 			Security.addProvider(new BouncyCastleFipsProvider());
@@ -367,7 +371,17 @@ public class ValidatePKIX {
 		success.policyTree = policyTree;
 		response.validationResult = success;
 		pkixMetrics.recordValidation(System.nanoTime() - validationStartNanos, true);
+		if (policies.getRevocationEnabled() && policies.getOcspEnabled()) {
+			response.revocationEvidenceNextUpdate = OcspEvidence.nextUpdate(cert, issuerCertificate(validPath, pvr.getTrustAnchor()));
+		}
 		return response;
+	}
+
+	private static X509Certificate issuerCertificate(List<X509Certificate> path, TrustAnchor trustAnchor) {
+		if (null != path && path.size() > 1) {
+			return path.get(1);
+		}
+		return null != trustAnchor ? trustAnchor.getTrustedCert() : null;
 	}
 
 	private static String classifyIndeterminateFailure(X509Certificate cert, CertPathBuilderException e) {
