@@ -42,8 +42,8 @@ import org.keysupport.api.pojo.vss.v1.V1WantBack;
 import org.keysupport.api.pojo.vss.v1.V1WantBackTypeToken;
 import org.keysupport.api.pojo.vss.v1.V1X509CertificateList;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 class PojoSerializationTest {
 
@@ -260,9 +260,6 @@ class PojoSerializationTest {
 	}
 
 	private static List<String> fieldNames(String json) throws Exception {
-		List<String> names = new ArrayList<>();
-		Iterator<String> fields = MAPPER.readTree(json).fieldNames();
-		fields.forEachRemaining(names::add);
-		return names;
+		return new ArrayList<>(MAPPER.readTree(json).propertyNames());
 	}
 }

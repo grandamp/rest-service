@@ -6,8 +6,8 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 public class LoggingUtil {
 
@@ -20,7 +20,7 @@ public class LoggingUtil {
 	public static String pojoToJson(Object obj) {
 		try {
 			return MAPPER.writeValueAsString(obj);
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			LOG.error("Unable to convert object to JSON", e);
 			return null;
 		}
