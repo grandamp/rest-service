@@ -229,6 +229,14 @@ class ValidatePKIXTest {
 			Fail rolloverFail = assertInstanceOf(Fail.class, rolloverResp.validationResult);
 			assertFalse(rolloverFail.isAffirmativelyInvalid);
 
+			// 5d. Untrusted non-self-signed CA cert -> isAffirmativelyInvalid=false (no_trust_path_ca)
+			X509Certificate rogueCaCert = signCert(rogueDn, rogueKp,
+					new X500Name("CN=Rogue Intermediate CA, O=KeySupport Test, C=US"), interKp,
+					BigInteger.valueOf(7), notBefore, notAfter, true, CERT_POLICY_OID, null);
+			VssResponse rogueCaResp = ValidatePKIX.validate(rogueCaCert, "x5t-rogue-ca", valPol, validNow);
+			Fail rogueCaFail = assertInstanceOf(Fail.class, rogueCaResp.validationResult);
+			assertFalse(rogueCaFail.isAffirmativelyInvalid);
+
 			// 6. Intermediate discovery adds missing CA intermediate to IntermediateCacheSingleton
 			// (also verifies isCA=true path)
 			when(cacheMock.getIntermediates()).thenReturn(emptyStore);
@@ -237,15 +245,21 @@ class ValidatePKIXTest {
 			assertInstanceOf(Success.class, caMissingFromStore.validationResult);
 			org.mockito.Mockito.verify(cacheMock).addIntermediate(interCert);
 
-			// Expired & not-yet-valid fail before discovery; 2 valid paths + 4 discovery failures ran
+			// Expired & not-yet-valid fail before discovery; 2 valid paths + 5 discovery failures ran
 			assertEquals(2L, pkixMetrics.getDiscoverySuccessCount());
-			assertEquals(4L, pkixMetrics.getDiscoveryFailCount());
-			assertEquals(6L, pkixMetrics.getDiscoveryCount());
+			assertEquals(5L, pkixMetrics.getDiscoveryFailCount());
+			assertEquals(7L, pkixMetrics.getDiscoveryCount());
 			assertTrue(pkixMetrics.getDiscoveryTotalNanos() > 0L);
 			assertEquals(2L, pkixMetrics.getValidationSuccessCount());
 			assertEquals(0L, pkixMetrics.getValidationFailCount());
 			assertEquals(2L, pkixMetrics.getValidationCount());
 			assertTrue(pkixMetrics.getValidationTotalNanos() > 0L);
+			assertEquals(4L, pkixMetrics.getIndeterminateFailureTotal());
+			assertEquals(1L, pkixMetrics.getIndeterminateFailureCount(PkixMetricsSingleton.CATEGORY_SELF_ISSUED_ROLLOVER));
+			assertEquals(1L, pkixMetrics.getIndeterminateFailureCount(PkixMetricsSingleton.CATEGORY_NO_TRUST_PATH_CA));
+			assertEquals(2L,
+					pkixMetrics.getIndeterminateFailureCount(PkixMetricsSingleton.CATEGORY_NO_TRUST_PATH_EE)
+							+ pkixMetrics.getIndeterminateFailureCount(PkixMetricsSingleton.CATEGORY_POLICY_CONSTRAINTS));
 		}
 	}
 

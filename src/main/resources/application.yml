@@ -55,6 +55,7 @@ service:
       enabled: true
       success-ttl-seconds: 900
       affirmatively-invalid-ttl-seconds: 86400
+      indeterminate-fail-ttl-seconds: 120
       max-entries: 10000
       compact-audit-logging: true
 logging:
