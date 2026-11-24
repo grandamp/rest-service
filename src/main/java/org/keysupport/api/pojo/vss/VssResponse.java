@@ -1,5 +1,6 @@
 package org.keysupport.api.pojo.vss;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +94,14 @@ public class VssResponse {
 	 */
 	@JsonProperty("nextUpdate")
 	public String nextUpdate;
+
+	/**
+	 * OCSP {@code nextUpdate} used only to bound the success-cache lifetime.
+	 * Not part of the API response. Absent when the evidence could not be read;
+	 * the configured success TTL then applies on its own.
+	 */
+	@JsonIgnore
+	public Date revocationEvidenceNextUpdate;
 
 	/**
 	 * Field validationResult.

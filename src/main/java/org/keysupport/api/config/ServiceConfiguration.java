@@ -91,8 +91,8 @@ public class ServiceConfiguration {
 			@Value("${service.intermediates.revocation-enabled:true}") boolean intermediateRevocationEnabled,
 			@Value("${service.intermediates.revalidate-interval-seconds:3600}") long revalidateIntervalSeconds,
 			@Value("${service.validation.cache.enabled:true}") boolean validationCacheEnabled,
-			@Value("${service.validation.cache.success-ttl-seconds:900}") long validationCacheSuccessTtlSeconds,
-			@Value("${service.validation.cache.affirmatively-invalid-ttl-seconds:86400}") long validationCacheInvalidTtlSeconds,
+			@Value("${service.validation.cache.success-ttl-seconds:14400}") long validationCacheSuccessTtlSeconds,
+			@Value("${service.validation.cache.affirmatively-invalid-ttl-seconds:-1}") long validationCacheInvalidTtlSeconds,
 			@Value("${service.validation.cache.max-entries:10000}") int validationCacheMaxEntries) {
 		this(polUri, intermediatesUri, maxPathLen, systemLogEnabled, systemLogFile, aiaChase, allowedAiaLocations,
 				revocationEnabled, revocationEeOnly, ocspEnabled, crlEnabled, crlMaxSize, certPathProvider,
@@ -121,8 +121,8 @@ public class ServiceConfiguration {
 			@Value("${service.intermediates.revocation-enabled:true}") boolean intermediateRevocationEnabled,
 			@Value("${service.intermediates.revalidate-interval-seconds:3600}") long revalidateIntervalSeconds,
 			@Value("${service.validation.cache.enabled:true}") boolean validationCacheEnabled,
-			@Value("${service.validation.cache.success-ttl-seconds:900}") long validationCacheSuccessTtlSeconds,
-			@Value("${service.validation.cache.affirmatively-invalid-ttl-seconds:86400}") long validationCacheInvalidTtlSeconds,
+			@Value("${service.validation.cache.success-ttl-seconds:14400}") long validationCacheSuccessTtlSeconds,
+			@Value("${service.validation.cache.affirmatively-invalid-ttl-seconds:-1}") long validationCacheInvalidTtlSeconds,
 			@Value("${service.validation.cache.max-entries:10000}") int validationCacheMaxEntries,
 			@Value("${service.validation.cache.compact-audit-logging:true}") boolean validationCacheCompactAuditLogging) {
 		this(polUri, intermediatesUri, maxPathLen, systemLogEnabled, systemLogFile, aiaChase, allowedAiaLocations,
@@ -153,8 +153,8 @@ public class ServiceConfiguration {
 			@Value("${service.intermediates.revocation-enabled:true}") boolean intermediateRevocationEnabled,
 			@Value("${service.intermediates.revalidate-interval-seconds:3600}") long revalidateIntervalSeconds,
 			@Value("${service.validation.cache.enabled:true}") boolean validationCacheEnabled,
-			@Value("${service.validation.cache.success-ttl-seconds:900}") long validationCacheSuccessTtlSeconds,
-			@Value("${service.validation.cache.affirmatively-invalid-ttl-seconds:86400}") long validationCacheInvalidTtlSeconds,
+			@Value("${service.validation.cache.success-ttl-seconds:14400}") long validationCacheSuccessTtlSeconds,
+			@Value("${service.validation.cache.affirmatively-invalid-ttl-seconds:-1}") long validationCacheInvalidTtlSeconds,
 			@Value("${service.validation.cache.indeterminate-fail-ttl-seconds:120}") long validationCacheIndeterminateFailTtlSeconds,
 			@Value("${service.validation.cache.max-entries:10000}") int validationCacheMaxEntries,
 			@Value("${service.validation.cache.compact-audit-logging:true}") boolean validationCacheCompactAuditLogging) {

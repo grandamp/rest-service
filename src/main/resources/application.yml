@@ -53,8 +53,11 @@ service:
       certpath-algorithm: PKIX
     cache:
       enabled: true
-      success-ttl-seconds: 900
-      affirmatively-invalid-ttl-seconds: 86400
+      # Maximum success-cache lifetime. A success expires at the earliest of
+      # this bound, the OCSP nextUpdate, and the certificate notAfter.
+      success-ttl-seconds: 14400
+      # Negative caches until process exit (a restart is the freshness boundary). 0 disables.
+      affirmatively-invalid-ttl-seconds: -1
       indeterminate-fail-ttl-seconds: 120
       max-entries: 10000
       compact-audit-logging: true
